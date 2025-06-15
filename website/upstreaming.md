@@ -8,7 +8,7 @@ As such, it is crucial to continuously organise upstreaming from SemicircleLaw t
 
 The following files are `sorry`-free and do not depend on any other SemicircleLaw file, meaning they can be readily PRed to Mathlib.
 
-{% include ready_to_upstream.md %}
+ {% include ready_to_upstream.md %}
 
 ## Files easy to unlock
 
