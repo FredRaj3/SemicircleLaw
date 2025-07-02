@@ -39,6 +39,11 @@ linter.style.multiGoal = true
 linter.style.setOption = true
 
 [[require]]
+name = "Hammer"
+git = "https://github.com/JOSHCLUNE/LeanHammer"
+rev = "main"
+
+[[require]]
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
 
