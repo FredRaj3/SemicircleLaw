@@ -15,3 +15,59 @@
 \notready
 Proof
 \end{proof}
+
+\iffalse
+
+\begin{lemma}\label{lem:trace_smul}
+  %\uses{????}
+  \mathlibok %what does this mean
+  \lean{Matrix.trace_smul}
+  Let $R$ be a ring with a monoid action from $\alpha$ (i.e., $\alpha$ acts distributively on $R$).
+  For any scalar $r \in \alpha$ and any square matrix $A$ over $R$, the trace of the scalar
+  multiple $r \cdot A$ equals the scalar multiple of the trace of $A$, i.e.,
+  \[ \text{tr}(r \cdot A) = r \cdot \text{tr}(A). \]
+  \end{lemma}
+
+  \begin{proof}\leanok %what does this mean
+  %idk what to put in here
+  \end{proof}
+
+
+% 4.2
+% lemma (lemma1): using Matrix.mul_apply?? + induction?
+
+
+% definition of trace
+% linearity of expectation --> map_expect????
+% lemma1
+% defn of Y_i, [n].
+
+
+% define a graph (no idea how to do this in lean)
+
+% matrices commutative? don't really understand this part of the proof
+
+%define \omega ({i, j})
+% 4.3's statement
+
+% 4.4: true because multiplication is commutative (EReal.mul_comm)
+
+
+% more graph definitions (idk how lean would work)
+
+
+% smt smt get to 4.5
+
+% 4.6: use 4.5, scalar multiple of expectatio (Finset.smul_expect), trace of scalar multiple (Matrix.trace_smul)
+
+
+% lemma 4.3: lots more work needed
+
+%4.7: use lemma 4.3
+
+% w >= 2 stuff
+% 4.8
+
+% 4.3.1: maybe SimpleGraph.IsTree.card_edgeFinset??
+
+\fi
