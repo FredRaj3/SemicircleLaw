@@ -6,3 +6,5 @@ Our goal is to formalize Wigner's Semicircle Law in [Lean](https://leanprover-co
 Our project relies on the [Lean blueprint](https://github.com/PatrickMassot/leanblueprint/) tool by Patrick Massot.
 
 The project [webpage](https://fredraj3.github.io/SemicircleLaw/) contains the [blueprint](https://fredraj3.github.io/SemicircleLaw/blueprint/) and dependency graph.
+
+This project is a [Stanford Undergraduate Research Institute in Mathematics (SURIM)](https://surim.stanford.edu/) summer research project.

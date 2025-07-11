@@ -2,9 +2,9 @@
   \label{prop:matrix_moments_convergence}
   \notready
   \uses{def:}
-  Let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed.  Suppose that $r_k = \max\{\E(|Y_{11}|^k),\E(|Y_{12}|^k)\} <\infty$ for each $k\in\N$.  Suppose further than $\E(Y_{ij})=0$ for all $i,j$ and set $t=\E(Y_{12}^2)$.  If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$.  Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix.  Then
+  Let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed.  Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} <\infty$ for each $k\in\bN$.  Suppose further than $\bE(Y_{ij})=0$ for all $i,j$ and set $t=\bE(Y_{12}^2)$.  If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$.  Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix.  Then
 \[
-\lim_{n\to\infty} \frac{1}{n}\E\Tr(\mathbf{X}_n^k) = \begin{cases}
+\lim_{n\to\infty} \frac{1}{n}\bE\Tr(\mathbf{X}_n^k) = \begin{cases}
   t^{k/2}C_{k/2}, & k\text{ even} \\
   0, & k\text{ odd}
 \end{cases}.
@@ -69,5 +69,8 @@ Proof
 % 4.8
 
 % 4.3.1: maybe SimpleGraph.IsTree.card_edgeFinset??
+
+% test edit by Richard
+%% test edit 2 by Richard
 
 \fi
