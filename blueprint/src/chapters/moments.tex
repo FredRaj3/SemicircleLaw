@@ -32,6 +32,18 @@ Proof
   %idk what to put in here
   \end{proof}
 
+\begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
+  \label{def:graph}
+  \lean{graph}
+  \maybelean
+  \notready
+  Let $\mx{i} = (i_1,...,i_k) \in [n]^k$ be a $k$-index. Define a graph $G_\mx{i}$ as follows: the
+  vertices $V_\mx{i}$ are the distinct elements of $\{i_1,...,i_k\}$, and the edges $E_\mx{i}$ are
+  the distinct pairs among $\{i_1,i_2\},\{i_2,i_3\},...,\{i_{k-1},i_k\},\{i_k,i_1\}$. The path
+  $w_\mx{i}$ is the sequence
+  $$w_\mx{i} = \bigl( \{i_1,i_2\},\{i_2,i_3\},...,\{i_{k-1},i_k\},\{i_k,i_1\} \bigl)$$
+  of edges.
+\end{definition}
 
 % 4.2
 % lemma (lemma1): using Matrix.mul_apply?? + induction?
