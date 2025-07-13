@@ -124,7 +124,7 @@ lemma toReal_semicirclePDF {μ : ℝ} {v : ℝ≥0} (x : ℝ) :
     (semicirclePDF μ v x).toReal = semicirclePDFReal μ v x := by
   rw [semicirclePDF, ENNReal.toReal_ofReal (semicirclePDFReal_nonneg μ v x)]
 
-lemma semicirclePDF_pos (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) (x : ℝ) : 0 <= semicirclePDF μ v x := by
+lemma semicirclePDF_nonneg (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) (x : ℝ) : 0 ≤ semicirclePDF μ v x := by
   sorry
 
 lemma semicirclePDF_lt_top {μ : ℝ} {v : ℝ≥0} {x : ℝ} : semicirclePDF μ v x < ∞ := by
