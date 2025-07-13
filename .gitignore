@@ -8,6 +8,7 @@ web/
 lean_decls
 print/
 */.DS_Store
+.vscode/
 
 # Auxiliary latex files
 *.aux
