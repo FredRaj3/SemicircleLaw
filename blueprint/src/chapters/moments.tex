@@ -114,7 +114,7 @@ Proof
   \label{lemma:bounded_map}
   \notready
   \uses{lemma:factorial_product}
-  The sequence $n\mapsto \frac1n\E\Tr(\mx{X}_n^k)$ is bounded.
+  The sequence $n\mapsto \frac1n\bE\Tr(X_n^k)$ is bounded.
 \end{lemma}
 
 \begin{proof}
@@ -128,7 +128,7 @@ Proof
   \label{prop:odd_case}
   \notready
   \uses{lemma:vertex_bound}
-  Suppose $k$ odd. Then, $\lim_{n\to\infty} \E\Tr(\mx{X}_n^k) = 0$.
+  Suppose $k$ odd. Then, $\lim_{n\to\infty} \bE\Tr(X_n^k) = 0$.
 \end{proposition}
 
 \begin{proof}
@@ -180,7 +180,7 @@ Proof
   \label{prop:eqn_4_7}
   \notready
   \uses{def:big_o_with_base, prop:4_4} %also eqn 4.6
-  $\frac1n\E\Tr(\mx{X}_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w) \cdot \frac{n(n-1)\cdots(n-|G|+1)}{n^{k/2+1}} + O_k(n^{-1})$
+  $\frac1n\bE\Tr(X_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w) \cdot \frac{n(n-1)\cdots(n-|G|+1)}{n^{k/2+1}} + O_k(n^{-1})$
 \end{proposition}
 
 \begin{proof}
@@ -195,7 +195,7 @@ Proof
   \label{prop:4_7_5}
   \notready
   \uses{lemma:vertex_bound, lemma:factorial_product}
-  $\lim_{n\to\infty}\E\Tr(\mx{X}_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w)$
+  $\lim_{n\to\infty}\bE\Tr(X_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w)$
 \end{proposition}
 
 \begin{proof}
@@ -222,10 +222,10 @@ Proof
 
 
 \begin{proposition}%[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
-  \label{}
+  \label{prop:limit_stuff}
   \notready
   \uses{prop:4_7_5, prop:eqn_4_8}
-  $\lim_{n\to\infty} \E\Tr(\mx{X}_n^k) = t^{k/2}\cdot\#\mathcal{G}_k^{k/2+1}$
+  $\lim_{n\to\infty} \E\Tr(X_n^k) = t^{k/2}\cdot\#\mathcal{G}_k^{k/2+1}$
 \end{proposition}
 
 \begin{proof}
