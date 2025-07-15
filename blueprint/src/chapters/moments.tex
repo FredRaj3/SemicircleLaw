@@ -65,7 +65,7 @@ Proof
 
 
 \begin{proposition}%[Exercise 4.3.1 in \cite{Kemp2013RMTNotes}]
-  \label{prop:4_3_1}
+  \label{prop:tree_vertex_inequality}
   \notready
   %\uses{}
   Let $G=(V,E)$ be a connected finite graph. Show that $|G|=\#V\le \#E+1$, and that $|G|=\#V=\#E+1$ if and only if $G$ is a plane tree.
@@ -84,7 +84,7 @@ Proof
 \begin{lemma}
   \label{lemma:vertex_bound}
   \notready
-  \uses{prop:4_3_1}
+  \uses{tree_vertex_inequality}
   For any graph $G = (V, E)$ appearing in the sum in Equation 4.8, $|G| \le k/2 + 1$.
 \end{lemma}
 
@@ -139,7 +139,7 @@ Proof
 
 
 \begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
-  \label{prop:4_4}
+  \label{prop:g_bound}
   \notready
   %\uses{def:}
   Let $(G,w)\in\mathcal{G}_k$ with $w\ge 2$.
@@ -176,10 +176,10 @@ Proof
   Something is $O_k(n^{-1})$ if it is $\le B_k/n$ for some $n$-independent constant $B_k$
 \end{definition}
 
-\begin{proposition}[Equation 4.7 in \cite{Kemp2013RMTNotes}]
-  \label{prop:eqn_4_7}
+\begin{proposition}%[Equation 4.9 in \cite{Kemp2013RMTNotes}]
+  \label{prop:eqn_trace_sum}
   \notready
-  \uses{def:big_o_with_base, prop:4_4} %also eqn 4.6
+  \uses{def:big_o_with_base, prop:g_bound} %also eqn 4.6
   $\frac1n\bE\Tr(X_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w) \cdot \frac{n(n-1)\cdots(n-|G|+1)}{n^{k/2+1}} + O_k(n^{-1})$
 \end{proposition}
 
@@ -191,10 +191,10 @@ Proof
 
 
 
-\begin{proposition}
-  \label{prop:4_7_5}
+\begin{proposition}%4.7.5
+  \label{prop:eqn_4_7_5}
   \notready
-  \uses{lemma:vertex_bound, lemma:factorial_product}
+  \uses{lemma:vertex_bound, lemma:factorial_product, lemma:eqn_trace_sum}
   $\lim_{n\to\infty}\bE\Tr(X_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w)$
 \end{proposition}
 
@@ -209,8 +209,8 @@ Proof
 \begin{proposition}[Equation 4.8 in \cite{Kemp2013RMTNotes}]
   \label{prop:eqn_4_8}
   \notready
-  \uses{prop:4_4, prop:431}
-  $\Pi(G,w) = \prod_{e_c\in E^c} \E(Y_{12}^{w(e_c)}) = \prod_{e_c\in E^c} \E(Y_{12}^2) = t^{\#E} = t^{k/2}$.
+  \uses{prop:g_bound, prop:tree_vertex_inequality}
+  $\Pi(G,w) = \prod_{e_c\in E^c} \bE(Y_{12}^{w(e_c)}) = \prod_{e_c\in E^c} \bE(Y_{12}^2) = t^{\#E} = t^{k/2}$.
 \end{proposition}
 
 \begin{proof}
