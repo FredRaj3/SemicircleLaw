@@ -1,7 +1,7 @@
 \begin{proposition}%[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence}
   \notready
-  %\uses{def:}
+  %\uses{}
   Let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed.  Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} <\infty$ for each $k\in\bN$.  Suppose further than $\bE(Y_{ij})=0$ for all $i,j$ and set $t=\bE(Y_{12}^2)$.  If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$.  Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix.  Then
 \[
 \lim_{n\to\infty} \frac{1}{n}\bE\Tr(\mathbf{X}_n^k) = \begin{cases}
@@ -64,7 +64,7 @@ Proof
 
 
 
-\begin{proposition}[Exercise 4.3.1 in \cite{Kemp2013RMTNotes}]
+\begin{proposition}%[Exercise 4.3.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:4_3_1}
   \notready
   %\uses{}
@@ -161,20 +161,20 @@ Proof
 
 
 
-\begin{def}
+\begin{definition}
   \label{def:special_set_g}
   \notready
   %\uses{def:}
   Let $\mathcal{G}^{k/2+1}_k$ to be the set of pairs $(G,w)\in\mathcal{G}_k$ where $G$ has $k/2+1$ vertices, contains no self-edges, and the walk $w$ crosses every edge exactly $2$ times.
-\end{def}
+\end{definition}
 
 
-\begin{def}
+\begin{definition}
   \label{def:big_o_with_base}
   \notready
   %\uses{def:}
   Something is $O_k(n^{-1})$ if it is $\le B_k/n$ for some $n$-independent constant $B_k$
-\end{def}
+\end{definition}
 
 \begin{proposition}[Equation 4.7 in \cite{Kemp2013RMTNotes}]
   \label{prop:eqn_4_7}
