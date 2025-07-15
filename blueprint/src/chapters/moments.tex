@@ -1,7 +1,7 @@
-\begin{proposition}[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
+\begin{proposition}%[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence}
   \notready
-  \uses{def:}
+  %\uses{def:}
   Let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed.  Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} <\infty$ for each $k\in\bN$.  Suppose further than $\bE(Y_{ij})=0$ for all $i,j$ and set $t=\bE(Y_{12}^2)$.  If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$.  Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix.  Then
 \[
 \lim_{n\to\infty} \frac{1}{n}\bE\Tr(\mathbf{X}_n^k) = \begin{cases}
@@ -65,7 +65,7 @@ Proof
 
 
 \begin{proposition}[Exercise 4.3.1 in \cite{Kemp2013RMTNotes}]
-  \label{prop:4.3.1}
+  \label{prop:4_3_1}
   \notready
   %\uses{}
   Let $G=(V,E)$ be a connected finite graph. Show that $|G|=\#V\le \#E+1$, and that $|G|=\#V=\#E+1$ if and only if $G$ is a plane tree.
@@ -73,18 +73,18 @@ Proof
 
 \begin{proof}
   \notready
-  $|G|=\#V\le \#E+1$: proof by induction on $#V$. Base case $#V = 1$ is obvious. For each additional vertex, the number of edges must increase by at least one for the graph to remain connected.
+  $|G|= \#V\le \#E+1$: proof by induction on $\#V$. Base case $\#V = 1$ is obvious. For each additional vertex, the number of edges must increase by at least one for the graph to remain connected.
 
   $|G|=\#V=\#E+1$ if $G$ is a plane tree is already in Lean: SimpleGraph.IsTree.card_edgeFinset.
 
-  $G$ is a plane tree if $|G|=\#V=\#E+1$: proof by induction on $#V$. Base case $#V = 1$ is obvious. For each additional vertex, suppose there is a loop. Then, removing some edge reduces the numb
+  $G$ is a plane tree if $|G|=\#V=\#E+1$: proof by induction on $\#V$. Base case $\#V = 1$ is obvious. For each additional vertex, suppose there is a loop. Then, removing some edge reduces the numb
 \end{proof}
 
 
 \begin{lemma}
   \label{lemma:vertex_bound}
   \notready
-  \uses{prop:4.3.1}
+  \uses{prop:4_3_1}
   For any graph $G = (V, E)$ appearing in the sum in Equation 4.8, $|G| \le k/2 + 1$.
 \end{lemma}
 
@@ -101,7 +101,7 @@ Proof
   %\uses{}
   The product $n(n-1)\cdots (n-|G|+1)$ is asymptotically equal to $n^{|G|}$.
 
-\end{proposition}
+\end{lemma}
 
 \begin{proof}
   \notready
@@ -138,8 +138,8 @@ Proof
 
 
 
-\begin{proposition}[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
-  \label{prop:4.4}
+\begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
+  \label{prop:4_4}
   \notready
   %\uses{def:}
   Let $(G,w)\in\mathcal{G}_k$ with $w\ge 2$.
@@ -177,9 +177,9 @@ Proof
 \end{def}
 
 \begin{proposition}[Equation 4.7 in \cite{Kemp2013RMTNotes}]
-  \label{prop:eqn_4.7}
+  \label{prop:eqn_4_7}
   \notready
-  \uses{def:big_o_with_base, prop:4.4} %also eqn 4.6
+  \uses{def:big_o_with_base, prop:4_4} %also eqn 4.6
   $\frac1n\E\Tr(\mx{X}_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w) \cdot \frac{n(n-1)\cdots(n-|G|+1)}{n^{k/2+1}} + O_k(n^{-1})$
 \end{proposition}
 
@@ -192,7 +192,7 @@ Proof
 
 
 \begin{proposition}
-  \label{prop:4.7.5}
+  \label{prop:4_7_5}
   \notready
   \uses{lemma:vertex_bound, lemma:factorial_product}
   $\lim_{n\to\infty}\E\Tr(\mx{X}_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w)$
@@ -207,9 +207,9 @@ Proof
 
 
 \begin{proposition}[Equation 4.8 in \cite{Kemp2013RMTNotes}]
-  \label{prop:eqn_4.8}
+  \label{prop:eqn_4_8}
   \notready
-  \uses{prop:4.4, prop:4.3.1}
+  \uses{prop:4_4, prop:4_3_1}
   $\Pi(G,w) = \prod_{e_c\in E^c} \E(Y_{12}^{w(e_c)}) = \prod_{e_c\in E^c} \E(Y_{12}^2) = t^{\#E} = t^{k/2}$.
 \end{proposition}
 
@@ -221,10 +221,10 @@ Proof
 
 
 
-\begin{proposition}[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
+\begin{proposition}%[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
   \label{}
   \notready
-  \uses{prop:4.7.5, prop:eqn_4.8}
+  \uses{prop:4_7_5, prop:eqn_4_8}
   $\lim_{n\to\infty} \E\Tr(\mx{X}_n^k) = t^{k/2}\cdot\#\mathcal{G}_k^{k/2+1}$
 \end{proposition}
 
