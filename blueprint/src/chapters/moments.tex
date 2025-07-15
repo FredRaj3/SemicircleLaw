@@ -74,3 +74,184 @@ Proof
 %% test edit 2 by Richard
 
 \fi
+
+
+
+For any natural numbers $n$ and $k$,
+
+A connected graph has at least
+
+Statement 4.10
+
+Statement 4.11
+
+
+
+\begin{proposition}[Exercise 4.3.1 in \cite{Kemp2013RMTNotes}]
+  \label{prop:4.3.1}
+  \notready
+  %\uses{}
+  Let $G=(V,E)$ be a connected finite graph. Show that $|G|=\#V\le \#E+1$, and that $|G|=\#V=\#E+1$ if and only if $G$ is a plane tree.
+\end{proposition}
+
+\begin{proof}
+  \notready
+  $|G|=\#V\le \#E+1$: proof by induction on $#V$. Base case $#V = 1$ is obvious. For each additional vertex, the number of edges must increase by at least one for the graph to remain connected.
+
+  $|G|=\#V=\#E+1$ if $G$ is a plane tree is already in Lean: SimpleGraph.IsTree.card_edgeFinset.
+
+  $G$ is a plane tree if $|G|=\#V=\#E+1$: proof by induction on $#V$. Base case $#V = 1$ is obvious. For each additional vertex, suppose there is a loop. Then, removing some edge reduces the numb
+\end{proof}
+
+
+\begin{lemma}
+  \label{lemma:vertex_bound}
+  \notready
+  \uses{prop:4.3.1}
+  For any graph $G = (V, E)$ appearing in the sum in Equation 4.8, $|G| \le k/2 + 1$.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Proof
+\end{proof}
+
+
+
+\begin{lemma}
+  \label{lemma:factorial_product}
+  \notready
+  %\uses{}
+  The product $n(n-1)\cdots (n-|G|+1)$ is asymptotically equal to $n^{|G|}$.
+
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Use Nat.ascFactorial_eq_div.
+\end{proof}
+
+
+
+\begin{lemma}
+  \label{lemma:bounded_map}
+  \notready
+  \uses{lemma:factorial_product}
+  The sequence $n\mapsto \frac1n\E\Tr(\mx{X}_n^k)$ is bounded.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Proof
+\end{proof}
+
+
+
+\begin{proposition}
+  \label{prop:odd_case}
+  \notready
+  \uses{lemma:vertex_bound}
+  Suppose $k$ odd. Then, $\lim_{n\to\infty} \E\Tr(\mx{X}_n^k) = 0$.
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Since $|G|\le \#E+1 \le k/2+1$ and $|G|$ is an integer, it follows that $|G|\le (k-1)/2+1 = k/2 + 1/2$.  Hence, in this case, all the terms in the (finite $n$-independent) sum in Equation \ref{eq EX graphs 2} are $O(n^{-1/2})$
+\end{proof}
+
+
+
+\begin{proposition}[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
+  \label{prop:4.4}
+  \notready
+  %\uses{def:}
+  Let $(G,w)\in\mathcal{G}_k$ with $w\ge 2$.
+  \begin{itemize}
+  \item[(a)] If there exists a self-edge $e\in E_s$ in $G$, then $|G|\le k/2$.
+  \item[(b)] If there exists an edge $e$ in $G$ with $w(e)\ge 3$, then $|G|\le k/2$.
+  \end{itemize}
+\end{proposition}
+
+\begin{proof}
+  \notready
+  \begin{itemize}
+    \item[(a)] Since the graph $G = (V,E)$ contains a loop, it is not a tree; it follows from Exercise \ref{ex V < E+1} that $\#V < \#E+1$.  But $w\ge 2$ implies that $\#E\le k/2$, and so $\#V < k/2+1$, and so $|G| = \#V \le k/2$.
+
+    \item[(b)] The sum of $w$ over all edges $E$ in $G$ is $k$.  Hence, the sum of $w$ over $E\setminus\{e\}$ is $\le k-3$.  Since $w\ge 2$, this means that the number of edges excepting $e$ is $\le (k-3)/2$; hence, $\#E \le (k-3)/2+1 = (k-1)/2$.  By the result of Exercise \ref{ex V < E+1}, this means that $\#V \le (k-1)/2+1 = (k+1)/2$.  Since $k$ is even, it follows that $|G|=\#V \le k/2$.
+  \end{itemize}
+\end{proof}
+
+
+
+
+\begin{def}
+  \label{def:special_set_g}
+  \notready
+  %\uses{def:}
+  Let $\mathcal{G}^{k/2+1}_k$ to be the set of pairs $(G,w)\in\mathcal{G}_k$ where $G$ has $k/2+1$ vertices, contains no self-edges, and the walk $w$ crosses every edge exactly $2$ times.
+\end{def}
+
+
+\begin{def}
+  \label{def:big_o_with_base}
+  \notready
+  %\uses{def:}
+  Something is $O_k(n^{-1})$ if it is $\le B_k/n$ for some $n$-independent constant $B_k$
+\end{def}
+
+\begin{proposition}[Equation 4.7 in \cite{Kemp2013RMTNotes}]
+  \label{prop:eqn_4.7}
+  \notready
+  \uses{def:big_o_with_base, prop:4.4} %also eqn 4.6
+  $\frac1n\E\Tr(\mx{X}_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w) \cdot \frac{n(n-1)\cdots(n-|G|+1)}{n^{k/2+1}} + O_k(n^{-1})$
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Proof
+\end{proof}
+
+
+
+
+\begin{proposition}
+  \label{prop:4.7.5}
+  \notready
+  \uses{lemma:vertex_bound, lemma:factorial_product}
+  $\lim_{n\to\infty}\E\Tr(\mx{X}_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w)$
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Proof: use the fact that $|G|=k/2+1$ and $n(n-1)\cdots(n-k/2+1) \sim n^{k/2+1}$.
+\end{proof}
+
+
+
+
+\begin{proposition}[Equation 4.8 in \cite{Kemp2013RMTNotes}]
+  \label{prop:eqn_4.8}
+  \notready
+  \uses{prop:4.4, prop:4.3.1}
+  $\Pi(G,w) = \prod_{e_c\in E^c} \E(Y_{12}^{w(e_c)}) = \prod_{e_c\in E^c} \E(Y_{12}^2) = t^{\#E} = t^{k/2}$.
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Let $(G,w)\in\mathcal{G}^{k/2+1}_k$.  Since $w$ traverses each edge exactly twice, the number of edges in $G$ is $k/2$.  Since the number of vertices is $k/2+1$, Exercise (Prop) 4.3.1 shows that $G$ is a tree.  In particular there are no self-edges (as we saw already in Proposition 4.4)
+\end{proof}
+
+
+
+
+\begin{proposition}[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
+  \label{}
+  \notready
+  \uses{prop:4.7.5, prop:eqn_4.8}
+  $\lim_{n\to\infty} \E\Tr(\mx{X}_n^k) = t^{k/2}\cdot\#\mathcal{G}_k^{k/2+1}$
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Proof: 4.7.5 and 4.8.
+\end{proof}
