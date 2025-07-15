@@ -33,12 +33,10 @@ Proof
   \end{proof}
 
 \begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
-  \label{def:graph}
-  \lean{graph}
+  \label{def:}
   \maybelean
-  \notready
   Let $\mathbf{i} = (i_1,...,i_k) \in [n]^k$ be a $k$-index. Define a graph $G_\mathbf{i}$ as follows: the
-  vertices $V_\mx{i}$ are the distinct elements of $\{i_1,...,i_k\}$, and the edges $E_\mathbf{i}$ are
+  vertices $V_\mathbf{i}$ are the distinct elements of $\{i_1,...,i_k\}$, and the edges $E_\mathbf{i}$ are
   the distinct pairs among $\{i_1,i_2\},\{i_2,i_3\},...,\{i_{k-1},i_k\},\{i_k,i_1\}$. The path
   $w_\mathbf{i}$ is the sequence
   $$w_\mathbf{i} = \bigl( \{i_1,i_2\},\{i_2,i_3\},...,\{i_{k-1},i_k\},\{i_k,i_1\} \bigl)$$
@@ -104,19 +102,7 @@ Proof
 
 \begin{proof}
   \notready
-  Given two $k$-indexes $\mathbf{i}$ and $\mathbf{i}^*$, we first show that they generate *isomorphic* graphs $G_\mathbf{i} = (V_\mathbf{i},E_\mathbf{i})$ and $G_{\mathbf{i}^*} = (V_{\mathbf{i}^*},E_{\mathbf{i}^*})$ 
-  if and only if $|G_\mathbf{i}| = |G_{\mathbf{i}^*}|$.
-  The right direction directly follows from the definition of graph isomorphism. 
-  To prove the left direction, suppose $|G_\mathbf{i}| = m = |G_{\mathbf{i}^*}|$.
-  Let us order the distinct entries of $\mathbf{i}$ as $i_{\lambda_1},i_{\lambda_2},...,i_{\lambda_m}$, 
-  so that they appear in $\mathbf{i}$ in an ascending order (e.g. $\mathbf{i} = (i_{\lambda_1},i_{\lambda_1},i_{\lambda_2},...,i_{\lambda_m},i_{\lambda_m})$).
-  Similarly, we can order the distinct elements of $\mathbf{i}^*$ by the same criterion as $i_{\lambda_1}^*,i_{\lambda_2}^*,...,i_{\lambda_m}^*$.
-  Then we can establish a bijection $\varphi : V_\mathbf{i} \rightarrow V_{\mathbf{i}^*}$ defined by $\varphi(i_{\lambda_l})=i_\{\lambda_l}^*$ for each $l = 1,...,m$.
-  This implies
-  $$\{ i_{\lambda_{l_1}},i_{\lambda_{l_2}} \} \in E_\mathbf{i} \Longleftrightarrow \{ \varphi(i_{\lambda_{l_1}}),\varphi(i_{\lambda_{l_2}}) \} \in E_{\mathbf{i}^*}.$$
-  In other words, the entries $i_{\lambda_{l_1}}$ and $i_{\lambda_{l_2}}$ are adjacent entires in $\mathbf{i}$ if and only if $\varphi(i_{\lambda_{l_1}})$ and $\varphi(i_{\lambda_{l_2}})$ are adjacent entries in $\mathbf{i}^*$.
-  Note that we are also treating $i_{\lambda_1}$ and $i_{\lambda_m}$ as adjacent entries in $\mathbf{i}$ and $i_{\lambda_1}^*$ and $i_{\lambda_m}^*$ as adjacent entries in $\mathbf{i}^*$.
-  The fact that there are $n (n - 1) \cdots (n - |G| + 1)$ ways to assign $|G| = m$ distinct values from $[n]$ into the indices $i_1,...,i_m$ completes the proof.
+  ...
 \end{proof}
 
 % By Lemma \ref{* *}, Equation \ref{* *} can be reduced to
