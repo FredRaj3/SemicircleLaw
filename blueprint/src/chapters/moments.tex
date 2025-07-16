@@ -16,7 +16,7 @@
 Proof
 \end{proof}
 
-\iffalse
+
 
 \begin{lemma}\label{lem:trace_smul}
   %\uses{????}
@@ -31,17 +31,6 @@ Proof
   \begin{proof}\leanok %what does this mean
   %idk what to put in here
   \end{proof}
-
-\begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
-  \label{def:}
-  \maybelean
-  Let $\mathbf{i} = (i_1,...,i_k) \in [n]^k$ be a $k$-index. Define a graph $G_\mathbf{i}$ as follows: the
-  vertices $V_\mathbf{i}$ are the distinct elements of $\{i_1,...,i_k\}$, and the edges $E_\mathbf{i}$ are
-  the distinct pairs among $\{i_1,i_2\},\{i_2,i_3\},...,\{i_{k-1},i_k\},\{i_k,i_1\}$. The path
-  $w_\mathbf{i}$ is the sequence
-  $$w_\mathbf{i} = \bigl( \{i_1,i_2\},\{i_2,i_3\},...,\{i_{k-1},i_k\},\{i_k,i_1\} \bigl)$$
-  of edges.
-\end{definition}
 
 % 4.2
 % lemma (lemma1): using Matrix.mul_apply?? + induction?
@@ -63,10 +52,9 @@ Proof
 
 %---Richard's Part (Start)---% 
 
-
 For any $k$-index $\mathbf{i}$, the connected *oriented* graph $G_\mathbf{i}$ has at most $k$ vertices. 
-% Since $w_\mathbf{i}$ records all the non-zero exponents (which sum to the number of terms $k$) in $Y_\mathbf{i}$,
-%we have $|w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k$.
+Since $w_\mathbf{i}$ records all the non-zero exponents (which sum to the number of terms $k$) in $Y_\mathbf{i}$, 
+we have $|w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k$.
 
 \begin{lemma}
   \label{lem:}
@@ -83,43 +71,74 @@ Motivated by these conditions, we define $\mathcal{G}_k$:
 %---------%
 \begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
   \label{def:}
-  \notready
   \uses{}
   Let $\mathcal{G}_k$ denote the set of all pairs $(G,w)$ where $G = (V,E)$ is a connected graph with at most $k$ vertices, and
   $w$ is a closed walk covering $G$ satisfying $|w| = k$.
 \end{definition}
 %---------%
-
-% Using Equation \ref{* *}, we can re-index the sum of Equation \ref{* *} as
-
-% $$ \bE \Tr (\mathbf{Y}_\mathbf{i}^k) 
-%= \sum_{(G,w) \in \mathcal{G}_k} \sum_{\substack{\mathbf{i} \in [n]^k \\ (G_\mathbf{i},w_\mathbf{i}) = (G,w)}} \bE (Y_\mathbf{i})
-%= \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \}.$$
-
-% Combining with renormalization of Equation \ref{* *}, we get
-
-% $$ \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \frac{\# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \} }{n^{k/2+1}}.$$
-
-% It is, in fact, quite easy to count the set of $k$-indexes in Equation \ref{* *}. 
-% For any $(G,w) \in \mathcal{G}_k$, an index with that corresponding graph $G$ and walk $w$ is completely determined by assigning which distinct values of $[n]$ appear at the vertices of $G$.
-% In general, we have:
-
+We can explicitly count the set of $k$-indexes in Equation \ref{* *}: 
+% For any $(G,w) \in \mathcal{G}_k$, an index with that corresponding graph $G$ and walk $w$ is completely determined by assigning which distinct values of $[n]$ appear at the vertices of $G$:
+%---------%
+% The definition below proposes an alternate definition of $\mathcal{G}_k$ along with the equivalence relation. 
+%\begin{definition}
+%  \label{def: }
+%  \notready
+%  \uses{}
+%  We propose an alternate (and perhaps more explicit) construction of $\mathcal{G}_k$. We define 
+%  $\mathcal{G}_k$ as the set of equivalence classes of the set $\{ (G_\mathbf{i},w_\mathbf{i}) : \mathbf{i} \in [n]^k \text{ and } n \in \mathbb{N} \}$, where the equivalence relation is defined as: $(G_\mathbf{i},w_\mathbf{i}) \sim (G_{\mathbf{i}^*},w_{\mathbf{i}^*})$ if and only if there exists a bijection $\varphi$ from the set of entries $\mathbf{i}$ onto the set of entries $\mathbf{i}^*$ such that
+%  \[
+%  \mathbf{i} = (i_1,...,i_k) \,\, \Longleftrightarrow \,\, \mathbf{i}^* = \bigl( \varphi(i_1),\varphi(i_2),...,\varphi(i_k) \bigl).
+%  \]
+%  We denote an element of $\mathcal{G}_k$ as $(G,w)$.
+%\end{definition}
+%---------%
 \begin{lemma}[Lemma 4.3 in \cite{Kemp2013RMTNotes}]
   \label{lem:}
-  \notready
-  \uses{}
+  \uses{def:}
   Given $(G,w) \in \mathcal{G}_k$, denote by $|G|$ the number of vertices in $G$. Then
-  $$\# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \} = n (n-1) \cdots (n - |G| + 1).$$ 
+  \[
+  \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \} = n (n-1) \cdots (n - |G| + 1).
+  \]
 \end{lemma}
-
 \begin{proof}
-  \notready
-  ...
+  By the way the equivalence relation is defined in Definition \ref{* *}, 
+  the fact that there are $n (n - 1) \cdots (n -|G| + 1)$ ways to assign $|G|$ distinct values from $[n]$ into the indices $i_1,...,i_{|G|}$ completes the proof.
+\end{proof}
+%---------%
+% Using Equation \ref{* *}, we can re-index the sum of Equation \ref{* *} as
+%---------%
+\begin{lemma}
+  \label{lem:}
+  \uses{}
+  \[
+  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
+  \]
+\end{lemma}
+\begin{proof}
+  % Claim 1: Re-indexing the summation
+  Foremost, we can re-index the sum of Lemma \ref{* *} by using Lemma \ref{* *}: 
+  \[ 
+  \bE \Tr (\mathbf{Y}_\mathbf{i}^k) 
+  = \sum_{(G,w) \in \mathcal{G}_k} \sum_{\substack{\mathbf{i} \in [n]^k \\ (G_\mathbf{i},w_\mathbf{i}) = (G,w)}} \bE (Y_\mathbf{i})
+  = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \}.
+  \]
+  % Claim 2: Applying the counting argument
+  We can further reformulate this expression by applying Lemma \ref{* *}:
+  \begin{equation}\label{equation_111}
+  \bE \Tr (\mathbf{Y}_\mathbf{i}^k)
+  = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot n (n-1) \cdots (n - |G| + 1).
+  \end{equation}
+  % Claim 3: Introducing the renormalization factor
+  Combining with the renormalization factor $n^{-1}$ of Equation \ref{* *}
+  \[
+  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \frac{1}{n^{k/2+1}} \bE \Tr (\mathbf{Y}_\mathbf{i}^k).
+  \]
+  Substituting the term $\bE \Tr (\mathbf{Y}_\mathbf{i}^k)$ with the expression in Equation \ref{equation_111}
+  \[
+  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
+  \]
 \end{proof}
 
-% By Lemma \ref{* *}, Equation \ref{* *} can be reduced to
-
-% $$ \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.$$
 
 % Note that the summation is finite, and thus we only need to determine the values of $\Pi (G,w)$ to evaluate the summation. 
 % We begin with a simple observation: let $(G,w) \in \mathcal{G}_k$ and suppose there exists an edge $e = \{i,j\}$ with $w(e) = 1$.
@@ -137,6 +156,7 @@ Motivated by these conditions, we define $\mathcal{G}_k$:
 %---Richard's Part (End)---% 
 
 
+\iffalse
 
 
 % 4.4: true because multiplication is commutative (EReal.mul_comm)
