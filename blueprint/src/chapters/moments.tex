@@ -53,7 +53,7 @@ Proof
 %---Richard's Part (Start)---% 
 %---------% 
 \begin{lemma}
-  \label{lem:}
+  \label{lem:graph_walk_leq_k}
   \uses{}
   For any $k$-index $\mathbf{i}$, the connected *oriented* graph $G_\mathbf{i}$ has at most $k$ vertices.
   Furthermore
@@ -74,7 +74,7 @@ Proof
 % Motivated by these conditions, we define $\mathcal{G}_k$:
 %---------%
 \begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
-  \label{def:}
+  \label{def:g_k}
   \uses{}
   Let $\mathcal{G}_k$ denote the set of all pairs $(G,w)$ where $G = (V,E)$ is a connected graph with at most $k$ vertices, and
   $w$ is a closed walk covering $G$ satisfying $|w| = k$.
@@ -121,7 +121,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 %\end{proof}
 %---------%
 \begin{lemma}[Lemma 4.3 in \cite{Kemp2013RMTNotes}]
-  \label{lem:}
+  \label{lem:equiv_class_order}
   \uses{def:}
   Given $(G,w) \in \mathcal{G}_k$, denote by $|G|$ the number of vertices in $G$. Then
   \[
@@ -136,7 +136,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 % Using Equation \ref{* *}, we can re-index the sum of Equation \ref{* *} as
 %---------%
 \begin{lemma}
-  \label{lem:}
+  \label{lem:sum_simp_equiv_class_order}
   \uses{}
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
@@ -170,7 +170,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 % Note that the summation is finite, and thus we only need to determine the values of $\Pi (G,w)$ to evaluate the summation. 
 %---------%
 \begin{lemma}
-  \label{lem:}
+  \label{lem:sum_simp_w_geq_two}
   \uses{}
   Let us denote the condition that some walk $w$ crosses each edge at least twice as $w \geq 2$. Then
   \[
@@ -190,9 +190,9 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 \end{proof}
 %---------%
 \begin{lemma}
-  \label{lem:}
+  \label{lem:edge_set_order_leq_k_over_two}
   \uses{}
-  Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$, if $w_\mathbf{i} \leq 2$, then $\# E_\mathbf{i} \leq k/2$.
+  Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$, if $w_\mathbf{i} \geq 2$, then $\# E_\mathbf{i} \leq k/2$.
 \end{lemma}
 \begin{proof}
   Since $|w_\mathbf{i}| = k$, if each edge in $G_\mathbf{i}$ is traversed at least twice, then by construction the number of edges is at most $k/2$.
