@@ -51,13 +51,12 @@ Proof
 
 
 %---Richard's Part (Start)---% 
-%---------%
+%---------% 
 \begin{lemma}
   \label{lem:}
   \uses{}
   For any $k$-index $\mathbf{i}$, the connected *oriented* graph $G_\mathbf{i}$ has at most $k$ vertices.
-  Furthermore, let $w_\mathbf{i}$ record all the non-zero exponents in $Y_\mathbf{i}$, 
-  Then 
+  Furthermore
   \[
   |w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k.
   \]
@@ -65,14 +64,14 @@ Proof
 \begin{proof}
   Foremost, since the number of vertices of the graph $G_\mathbf{i}$ 
   are the number of distinct elements of the $k$-index $\mathbf{i}$, it clearly follows that $|G| \leq k$.
-  On the other hand, given an edge $e \in E_\mathbf{i}$, we can interpret $w_i(e)$ as the number of times the walk $w_\mathbf{i}$ traversed $e$. 
+  On the other hand, given an edge $e \in E_\mathbf{i}$, by Definition \ref{* *}, $w_i(e)$ as the number of times the walk $w_\mathbf{i}$ traversed $e$. 
   Since $|w_\mathbf{i}| = k$ by construction, it follows that
   \[
   |w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k.
   \]
 \end{proof}
 %---------%
-Motivated by these conditions, we define $\mathcal{G}_k$:
+% Motivated by these conditions, we define $\mathcal{G}_k$:
 %---------%
 \begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
   \label{def:}
