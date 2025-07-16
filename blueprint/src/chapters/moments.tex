@@ -1,7 +1,7 @@
 \begin{proposition}[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence}
   \notready
-  \uses{def:}
+  %\uses{def:}
   Let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed.  Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} <\infty$ for each $k\in\bN$.  Suppose further than $\bE(Y_{ij})=0$ for all $i,j$ and set $t=\bE(Y_{12}^2)$.  If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$.  Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix.  Then
 \[
 \lim_{n\to\infty} \frac{1}{n}\bE\Tr(\mathbf{X}_n^k) = \begin{cases}
@@ -15,6 +15,68 @@
 \notready
 Proof
 \end{proof}
+
+\begin{definition}\label{def:Dyck_paths}
+  A Dyck path of length $k$ is a sequence $(d_1,...,d_k) \in \{\pm 1\}^k$ such that their partial sum $\sum_{i=1}^j d_i \geq 0$
+  and total sum $\sum_{i = 1}^{k}d_i = 0$. More intuitively, consider a diagonal lattice path from $(0,0)$ to $(k, 0)$ consisting of
+  $\frac{k}{2}$ ups and $\frac{k}{2}$ downs such that the path never goes below thw $x$-axis.
+\end{definition}
+
+\begin{definition}\label{def:graph_to_Dyck_map}
+   Given a pair $(G,w)\in\mathcal{G}_k^{k/2+1}$, define a sequence $\mathbf{d}=\mathbf{d}(G,w)\in\{+1,-1\}^k$ recursively as follows.
+   Let $d_1=+1$.  For $1<j\le k$, if $w_j\notin\{w_1,\ldots,w_{j-1}\}$, set $d_j=+1$; otherwise, set $d_j=-1$; then
+   $\mathbf{d}(G,w) = (d_1,\ldots,d_k)$.
+\end{definition}
+
+\begin{lemma}\label{lem:graph_Dyck_paths_correspondence}
+  \uses{def:graph_to_Dyck_map, def:Dyck_paths}
+  $\mathbf{d}(G,w)$ is a Dyck path.
+  \begin{proof}
+    set $P_0 = (0,0)$ and $P_j = (j,d_1+\cdots+d_j)$ for $1\le j\le k$; then the piecewise linear path
+    connecting $P_0,P_1,\ldots,P_k$ is a lattice path.  Since $(G,w)\in\mathcal{G}_k^2$, each edge appears exactly two times in $w$,
+    meaning that the $\pm1$s come in pairs in $\mathbf{d}(G,w)$.  Hence $d_1+\cdots+d_k=0$.  What's more, for any edge $e$,
+    the $-1$ assigned to its second appearance in $w$ comes {\em after} the $+1$ corresponding to its first appearance;
+    this means that the partial sums $d_1+\cdots+d_j$ are all $\ge 0$.  That is: $\mathbf{d}(G,w)$ is a Dyck path
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:walk_to_Dyck_paths_bijection}
+  \uses{def:Dyck_paths}
+  \uses{lem:graph_Dyck_paths_correspondence}
+  Let $k$ be even and let $\mathcal{D}_k$ denote the set of Dyck paths of length $k$
+  \[ \mathcal{D}_k = \{(d_1,\ldots,d_k)\in\{\pm 1\}\colon \sum_{i=1}^k d_i\ge 0\text{ for }1\le j\le j\text{, and}\sum_{i=1}^kd_i=0\}. \]
+  Then $(G,w)\mapsto {d}(G,w)$ is a bijection $\mathcal{G}_k^{k/2+1}\to\mathcal{D}_k$.
+  \begin{proof}
+    \uses{}
+    For $(G,w)\in\mathcal{G}_k^{k/2+1}$, the above discussion shows that $\mathbf{d}(G,w)\in\mathcal{D}_k$. We
+    construct an inverse to this map. For any $(d_1,...,d_k) \in \mathcal{D}_k$, view it as a contour
+    reversal of a tree where an up ($d_i = 1$) corresponds to visiting a child node and a down ($d_i = -1$) corresponds
+    to returning to parent node. This gives a tree graph $G$ with $k/2 + 1$ vertices (including the starting node) and the
+    sequence of vertices visited is a closed walk with each vertex traversed twice to return to the top most vertex.
+  \end{proof}
+\end{lemma}
+
+\begin{definition}\label{def:Catalan_number}
+  %\lean{Combinatorics.Enumerative.Catalan}
+  \[C_0 = 1, \quad \text{and for } n \geq 1, \quad C_n = \sum_{k=0}^{n-1} C_k C_{n-1-k}.\]
+\end{definition}
+
+\begin{lemma}\label{lem:Catalan_Dyck_samecardinality}
+  \uses{def:Catalan_number, def:Dyck_paths}
+  %\lean{Catalan}
+  % \uses{}
+  %\lean{Mathlib.Combinatorics.Enumerative.Catalan}
+  \[|\mathcal{D}_k| = C_{k/2} \] where $|\mathcal{D}_k|$ denotes the number of Dyke paths of length $k$ while
+  $C_k$ is the $k$th Catalan number.
+  \begin{proof}
+    Similar to the above proof, we construct a bijection. Foward direction, given a binary tree with $k$ nodes, perform
+    preorder traversal: for each internal node visited, write an up-step \(U = (1,1)\). For each time return from a child,
+    write a down-step \(D = (1,-1)\). Since every internal node has exactly two children, there are
+    \(k/2\) \(U\)'s and \(k/2\) \(D\)'s, giving a path of length \(k\). Conversely, given a Dyck path, $U$ is
+    interpreted as adding new node while $D$ is returning to the parent node.
+  \end{proof}
+\end{lemma}
 
 \iffalse
 
