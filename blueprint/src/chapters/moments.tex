@@ -51,20 +51,25 @@ Proof
 
 
 %---Richard's Part (Start)---% 
-
-For any $k$-index $\mathbf{i}$, the connected *oriented* graph $G_\mathbf{i}$ has at most $k$ vertices. 
-Since $w_\mathbf{i}$ records all the non-zero exponents (which sum to the number of terms $k$) in $Y_\mathbf{i}$, 
-we have $|w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k$.
-
+%---------%
 \begin{lemma}
   \label{lem:}
-  \notready
   \uses{}
-  
-
+  For any $k$-index $\mathbf{i}$, the connected *oriented* graph $G_\mathbf{i}$ has at most $k$ vertices.
+  Furthermore, let $w_\mathbf{i}$ record all the non-zero exponents in $Y_\mathbf{i}$, 
+  Then 
+  \[
+  |w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k.
+  \]
 \end{lemma}
 \begin{proof}
-
+  Foremost, since the number of vertices of the graph $G_\mathbf{i}$ 
+  are the number of distinct elements of the $k$-index $\mathbf{i}$, it clearly follows that $|G| \leq k$.
+  On the other hand, given an edge $e \in E_\mathbf{i}$, we can interpret $w_i(e)$ as the number of times the walk $w_\mathbf{i}$ traversed $e$. 
+  Since $|w_\mathbf{i}| = k$ by construction, it follows that
+  \[
+  |w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k.
+  \]
 \end{proof}
 %---------%
 Motivated by these conditions, we define $\mathcal{G}_k$:
@@ -76,7 +81,7 @@ Motivated by these conditions, we define $\mathcal{G}_k$:
   $w$ is a closed walk covering $G$ satisfying $|w| = k$.
 \end{definition}
 %---------%
-We can explicitly count the set of $k$-indexes in Equation \ref{* *}: 
+We can count the set of $k$-indexes in Equation \ref{* *}: 
 % For any $(G,w) \in \mathcal{G}_k$, an index with that corresponding graph $G$ and walk $w$ is completely determined by assigning which distinct values of $[n]$ appear at the vertices of $G$:
 %---------%
 % The definition below proposes an alternate definition of $\mathcal{G}_k$ along with the equivalence relation. 
@@ -124,7 +129,7 @@ We can explicitly count the set of $k$-indexes in Equation \ref{* *}:
   \]
   % Claim 2: Applying the counting argument
   We can further reformulate this expression by applying Lemma \ref{* *}:
-  \begin{equation}\label{equation_111}
+  \begin{equation}\label{equation_???}
   \bE \Tr (\mathbf{Y}_\mathbf{i}^k)
   = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot n (n-1) \cdots (n - |G| + 1).
   \end{equation}
@@ -133,26 +138,45 @@ We can explicitly count the set of $k$-indexes in Equation \ref{* *}:
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \frac{1}{n^{k/2+1}} \bE \Tr (\mathbf{Y}_\mathbf{i}^k).
   \]
-  Substituting the term $\bE \Tr (\mathbf{Y}_\mathbf{i}^k)$ with the expression in Equation \ref{equation_111}
+  Substituting the term $\bE \Tr (\mathbf{Y}_\mathbf{i}^k)$ with the expression in Equation \ref{equation_???}
   \[
-  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
+  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
 \end{proof}
-
-
+%---------%
 % Note that the summation is finite, and thus we only need to determine the values of $\Pi (G,w)$ to evaluate the summation. 
-% We begin with a simple observation: let $(G,w) \in \mathcal{G}_k$ and suppose there exists an edge $e = \{i,j\}$ with $w(e) = 1$.
-% This means, by Equation \ref{* *}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
-% By assumption, the variables $Y_{ij}$ are all centered and hence the product $\Pi (G,w) = 0$ for any such pair $(G,w)$.
-% This considerably reduces the sum in Equation \ref{* *} since we only need to consider those $w$ that cross each edge at least twice.
-% We record this condition as $w \geq 2$, so
+%---------%
+\begin{lemma}
+  \label{lem:}
+  \uses{}
+  Let us denote the condition that some walk $w$ crosses each edge at least twice as $w \geq 2$. Then
+  \[
+  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) 
+  = \sum_{\substack{(G,w) \in \mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
+  \]
+\end{lemma}
+\begin{proof}
+  Let $(G,w) \in \mathcal{G}_k$ and suppose there exists an edge $e = \{i,j\}$ such that $w(e) = 1$.
+  This means, in Equation \ref{* *}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
+  The fact that the variables $Y_{ij}$ are all centered implies the product $\Pi (G,w) = 0$ for any such pair $(G,w)$.
+  Thus, we only need to consider those $w$ that cross each edge at least twice: 
+  % Reference the Proposition 4.1 condition?
 
-% $$ \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.$$
-
-% Thus, the condition $w \geq 2$ restricts those graphs that can appear. 
-% Since $|w_\mathbf{i}| = k$, if each edge in $G_\mathbf{i}$ is traversed at least twice, this means that the number of edges is $\leq k/2$.
-
-
+  \[
+  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}  = \sum_{\substack{(G,w) \in \mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
+  \]
+\end{proof}
+%---------%
+\begin{lemma}
+  \label{lem:}
+  \uses{}
+  Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$, if $w_\mathbf{i} \leq 2$, then $\# E_\mathbf{i} \leq 2$.
+\end{lemma}
+\begin{proof}
+  Since $|w_\mathbf{i}| = k$, if each edge in $G_\mathbf{i}$ is traversed at least twice, then by construction the number of edges is at most $k/2$.
+\end{proof}
+%---------%
+% This lemma might be merged with the following one(s).
 %---Richard's Part (End)---% 
 
 
@@ -179,7 +203,5 @@ We can explicitly count the set of $k$-indexes in Equation \ref{* *}:
 
 % 4.3.1: maybe SimpleGraph.IsTree.card_edgeFinset??
 
-% test edit by Richard
-%% test edit 2 by Richard
 
 \fi
