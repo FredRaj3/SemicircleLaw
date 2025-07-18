@@ -1,27 +1,14 @@
 \chapter{Convergence of Matrix Moments}
 \section{Convergence in Expectation}
 
-\begin{definition}[Matrix Multiplication]
-    \label{def:matrix_multiplication}
+\begin{lemma}[Matrix Powers Entries]
+    \label{lem:matrix_powers_entries}
     \notready
-    \uses{def:}
-Let $A = [a_{ij}] \in \mathbb{R}^{m \times n},\quad B = [b_{jk}] \in \mathbb{R}^{n \times p}.
-$ Then the product $C = AB \in \mathbb{R}^{m \times p} \text{ is defined by:}
-$
-\[
-c_{ik} = \sum_{j=1}^{n} a_{ij} b_{jk}, \quad \text{for all } 1 \leq i \leq m,\ 1 \leq k \leq p.
-\]
-\end{definition}
-
-\begin{theorem}[Matrix Powers Entries]
-    \label{thm:matrix_powers_entries}
-    \notready
-    \uses{def:}
-    Let $A$ be an $n\times n$ matrix and $k \in \mathbb{N}$. Then, for each  $(i, j)$-th entry of $A^{k}$, we have:
+    Let $Y$ be an $n\times n$ matrix and $k \in \mathbb{N}$. Then, for each  $(i, j)$-th entry of $Y^{k}$, we have:
     $$
-    (A^{k})_{ij} = \sum_{1 \leq i_2, \ldots ,i_{k} \leq n} Y_{ii_{2}} Y_{i_{2}i_{3}}\ldots Y_{i_{k}j}
+    (Y^{k})_{ij} = \sum_{1 \leq i_2, \ldots ,i_{k} \leq n} Y_{ii_{2}} Y_{i_{2}i_{3}}\ldots Y_{i_{k}j}
     $$ 
-\end{theorem}
+\end{lemma}
 
 \begin{proof}
 \notready
@@ -51,23 +38,194 @@ Thus, the formula holds for $k + 1$.
 By induction, the result holds for all $k \ge 1$.
 \end{proof}
 
+\begin{lemma}[Matrix Powers Trace]
+    \label{lem:matrix_powers_trace}
+    \notready
+    \uses{lem:matrix_powers_entries}
+    Let $Y$ be an $n\times n$ matrix and $k \in \mathbb{N}$. Then, the trace of $Y^{k}$ is given by:
+    $$
+    \Tr[Y^{k}] = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}.
+    $$
+\end{lemma}
+
+\begin{proof}
+\notready
+We can use the result from Lemma \ref{lem:matrix_powers_entries} to compute the trace of $Y^k$:
+\begin{align*}
+&\Tr[Y^{k}] = \sum_{i=1}^{n} (Y^{k})_{ii} = \sum_{i=1}^{n} (\sum_{1\leq i_{2}, \ldots i_{k} \leq n} Y_{i i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k} i}) \\
+&= \sum_{1\leq i_{1}, i_{2}, \ldots, i_{k} \leq n} Y_{i_{1} i_{2}} Y_{i_{2} i_{3}} \ldots Y_{i_{k} i_{1}}.
+\end{align*}
+
+\end{proof}
+
+\begin{definition}[Graphs from Multi Index]
+    \label{def:graph_multi_index}
+    \notready
+    \uses{def:}
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. A graph $G_{\mathbf{i}}$ is defined as follows: the vertices $V_{\mathbf{i}}$ are the distinct elements of 
+    $$\left\{i_1, i_2, \ldots, i_k\right\},$$
+     and the edges $E_{\mathbf{i}}$ are the distinct pairs among 
+    $$\left\{i_1, i_2\right\},\left\{i_2, i_3\right\}, \ldots,\left\{i_{k-1}, i_k\right\},\left\{i_k, i_1\right\}.$$
+\end{definition}
+
 \begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
   \label{def:graph_path}
   \notready
-  \uses{def:}
-Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Define a graph $G_{\mathbf{i}}$ as follows: the vertices $V_{\mathrm{i}}$ are the distinct elements of $\left\{i_1, i_2, \ldots, i_k\right\}$, and the edges $E_{\mathrm{i}}$ are the distinct pairs among $\left\{i_1, i_2\right\},\left\{i_2, i_3\right\}, \ldots,\left\{i_{k-1}, i_k\right\},\left\{i_k, i_1\right\}$. The path $w_{\mathbf{i}}$ is the sequence
-
+  \uses{def:graph_multi_index}
+  Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. the path $w_{\mathbf{i}}$ is the sequence
 $$
 w_{\mathbf{i}}=\left(\left\{i_1, i_2\right\},\left\{i_2, i_3\right\}, \ldots,\left\{i_{k-1}, i_k\right\},\left\{i_k, i_1\right\}\right)
 $$
-
-of edges.
+of edges from $E_{\mathbf{i}}$
 \end{definition}
+
+\begin{definition}[Graph Edge Count]
+    \label{def:graph_edge_count}
+    \notready
+    \uses{def:graph_multi_index, def:graph_path}
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. For any edge $e=\{i,j\}$ from $E_{\mathbf{i}}$, we define the edge count $w_{\mathbf{i}}(e)$ as the number of times each edge $e$ is traversed, and if $(i, j) \notin E_{\mathbf{i}}$, then $w_{\mathbf{i}}(\{i, j\}) = 0$.
+\end{definition}
+
+\begin{definition}[Matrix Multi Index]
+    \label{def:matrix_multi_index}
+    \notready
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix. The matrix multi index $Y_{\mathbf{i}}$ is defined as:
+    $$
+    Y_{\mathbf{i}} = Y_{i_{1}i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k}i_{1}}
+    $$ 
+\end{definition}
+
+\begin{lemma}[Matrix Multi Index and Graph Equivalence]
+    \label{lem:multi_index_graph_equivalence}
+    \notready
+    \uses{def:matrix_multi_index, def:graph_path}
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix. Then, we have the following:
+     $$
+     Y_{\mathbf{i}} = Y_{i_{1}i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k}i_{1}} = \prod_{w \in w_{\mathbf{i}}} Y_{w}
+    $$ 
+\end{lemma}
+
+\begin{proof}
+\notready
+    We see from definition $\ref{def:graph_path}$ that the path is defined as:
+    $$
+    w_{\mathbf{i}} = (\{i_{1}, i_{2}\}, \{i_{2}, i_{3}\}, \ldots, \{i_{k-1}, i_{k}\}, \{i_{k}, i_{1}\}).
+    $$ 
+    if we use each each edge $w \in w_{\mathbf{i}}$, due to symmetry, we can write the product:
+    $$
+    \prod_{w\in w_{\mathbf{i}}} Y_{w} = Y_{\{i_{1}, i_{2}\}} Y_{\{i_{2}, i_{3}\}} \ldots Y_{\{i_{k-1}, i_{k}\}} Y_{\{i_{k}, i_{1}\}} = Y_{i_{1}i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k}i_{1}} = Y_{\mathbf{i}}
+    $$ 
+    as required.
+\end{proof}
+
+\begin{lemma}[Graph Walk and Graph Count Equivalence]
+    \label{lem:graph_walk_count_equivalence}
+    \notready
+    \uses{def:graph_graph_path, def:graph_edge_count, def:matrix_multi_index, lem:multi_index_graph_equivalence}
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix. Then, we have the following:
+     $$
+     Y_{\mathbf{i}} = \prod_{w \in w_{\mathbf{i}}} Y_{w} = \prod_{1 \leq i \leq j \leq n} Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}.
+    $$
+\end{lemma}
+
+\begin{proof}
+\notready
+Using lemma \ref{lem:multi_index_graph_equivalence}, we already have that $Y_{\mathbf{i}} = \prod_{w \in w_{\mathbf{i}}} Y_{w}$. We consider the following cases for each $(i, j)$:\\\\
+\textbf{$(i, j) \notin w_{\mathbf{i}}$}: In this case, the entry $Y_{ij}^{w_{\mathbf{i}}(\{i, j\})} = 1$, making no contribution to the product. \\\\
+\textbf{$(i, j) \in w_{\mathbf{i}}$}: In this case, the entry $Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}$ is equal to the number of times the unordered edge $\{i, j\}$ appears in the path $w_{\mathbf{i}}$. \\\\
+These two cover all possibilities, so putting them together we obtain
+$$
+Y_{\mathbf i}
+      \;=\;
+      \prod_{1\le i\le j\le n}
+          Y_{ij}^{\,w_{\mathbf i}(\{i,j\})}.
+$$
+Indeed, if $(i,j)\notin w_{\mathbf i}$ then $w_{\mathbf i}(\{i,j\})=0$ and the corresponding factor contributes $Y_{ij}^{0}=1$, and if $(i,j)\in w_{\mathbf i}$ (hence also $(j,i)$ if $j<i$), the exponent $w_{\mathbf i}(\{i,j\})$ counts exactly how many times the unordered edge $\{i,j\}$ appears in the walk, so the factor is $Y_{ij}^{\,w_{\mathbf i}(\{i,j\})}$.
+
+Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one of these two cases and the product lists each edge exactly once.
+\end{proof}
+
+\begin{definition}[Self Edges]
+    \label{def:graph_self_edges}
+    \notready
+    \uses{def:graph_multi_index}
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index. Given graph $G_{\mathbf{i}}$, define the self-edges $E_{\mathbf{i}}^{s}$ as:
+    $$
+    \{\{i, i\} \in E_{\mathbf{i}}\},
+    $$ 
+    the set of edges where both vertices are the same.
+\end{definition}
+
+\begin{definition}[Connecting Edges]
+    \label{def:graph_connecting_edges}
+    \notready
+    \uses{def:graph_multi_index}
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index. Given graph $G_{\mathbf{i}}$, define the connecting-edges $E_{\mathbf{i}}^{c}$ as:
+    $$
+    \{\{i, j\} \in E_{\mathbf{i}} : i \neq j\}
+    $$ 
+\end{definition}
+
+\begin{lemma}[Expectation of Matrix Multi Index]
+    \label{lem:expectation_matrix_multi_index}
+    \notready
+    \uses{def:matrix_multi_index, def:graph_edge_count, def:graph_self_edges, def:graph_connecting_edges}
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, we have the following:
+    $$
+    \bE(Y_{\mathbf{i}}) = \prod_{e_s \in E_{\mathbf{i}}^s} \bE(Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E_{\mathbf{i}}^c} \bE(Y_{12}^{w_{\mathbf{i}}(e_c)}).
+    $$ 
+\end{lemma}
+
+\begin{proof}
+\notready
+Because each $Y_{ij}$ is independent, we can write:
+$$
+\bE(Y_{\mathbf{i}}) = \bE\left(\prod_{1 \leq i \leq j \leq n} Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}\right) = \prod_{1 \leq i \leq j \leq n} \bE(Y_{ij}^{w_{\mathbf{i}}(\{i, j\})})
+$$ 
+using lemma \ref{lem:graph_walk_count_equivalence}. Consider the following cases for each $(i, j)$ (we assume each $(i, j) \in w_{\mathbf{i}}$ since if they aren't, then $w_{\mathbf{i}}(i, j) = 0$ and this contributes nothing to the product):\\\\
+$\mathbf{i = j}$: in this case, we have $Y_{ij} = Y_{ii}$, and therefore the edge $(i, i) \in E_{\mathbf{i}}^{s}$. Since each $Y_{ii}$ is identically distributed for all $i$, we have:
+$$
+\bE(Y_{ii}) = \bE(Y_{11})
+$$
+so the factor in the product above becomes $\bE(Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}) = \bE(Y_{11}^{w_{\mathbf{i}}(i, i)})$.\\\\
+$\mathbf{i < j}$: in this case, we have  $Y_{ij} \in E_{\mathbf{i}}^{c}$. Since each non diagonal entry $Y_{ij}$ is identically distributed for all $i \neq j$ (and by symmetry $Y_{ij} = Y_{ji}$), we have:
+$$
+\bE(Y_{ij}) = \bE(Y_{12})
+$$ 
+so the factor in the product above becomes $\bE(Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}) = \bE(Y_{12}^{w_{\mathbf{i}}(i, j)})$.\\\\
+Plugging both of these cases into the earlier product over $E_{\mathbf{i}}^{c}$ and $E_{\mathbf{i}}^{s}$, we have:
+ $$
+ \prod_{1 \leq i \leq j \leq n} \bE(Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}) = \prod_{e_s \in E_{\mathbf{i}}^s} \bE(Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E_{\mathbf{i}}^c} \bE(Y_{12}^{w_{\mathbf{i}}(e_c)})
+$$ 
+as required.
+
+\end{proof}
+
+\begin{definition}[Expectation of Matrix Multi Index]
+    \label{def:expectation_matrix_multi_index}
+    \notready
+    \uses{def:matrix_multi_index, def:graph_edge_count, def:graph_self_edges, def:graph_connecting_edges, def:graph_multi_index, def:graph_path}
+    Let $\mathbf{i} \in [n]^{k}$ be a $k$-index, $\mathbf{i} = (i_1, i_2, \ldots, i_{k})$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. We define $\Pi(G_{\mathbf{i}}), w_{\mathbf{i}}$ as follows:
+    $$
+    \Pi (G_{\mathbf{i}}, w_{\mathbf{i}}) = \prod_{e_s \in E_{\mathbf{i}}^s} \bE(Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E_{\mathbf{i}}^c} \bE(Y_{12}^{w_{\mathbf{i}}(e_c)}) = \bE(Y_{\mathbf{i}}).
+    $$ 
+\end{definition}
+
+%% BIG PROPOSITION 
+%
+%
+%
+%
+%
+%
+%
+%
+
 
 \begin{proposition}[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence}
   \notready
-  \uses{def:}
+  \uses{lem:matrix_powers_entries, lem:matrix_powers_trace, def:graph_path, def:graph_edge_count, def:graph_multi_index, def:matrix_multi_index, lem:multi_index_graph_equivalence, lem:graph_walk_count_equivalence, def:graph_self_edges, def:graph_connecting_edges}
   Let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed.  Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} <\infty$ for each $k\in\bN$.  Suppose further than $\bE(Y_{ij})=0$ for all $i,j$ and set $t=\bE(Y_{12}^2)$.  If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$.  Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix.  Then
 \[
 \lim_{n\to\infty} \frac{1}{n}\bE\Tr(\mathbf{X}_n^k) = \begin{cases}
@@ -86,71 +244,31 @@ $$
 $$
 
 
-Now, from Theorem \ref{thm:matrix_powers_entries}, we have for any $1 \leq i, j \leq n$
+From Lemma \ref{lem:matrix_powers_entries}, we have for any $1 \leq i, j \leq n$
 
 $$
 \left[\mathbf{Y}_n^k\right]_{i j}=\sum_{1 \leq i_2, \ldots, i_k \leq n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_{k-1} i_k} Y_{i_k j}
 $$
 
 
-Summing over the diagonal entries and taking the expectation, we get the expected trace:
+using Lemma \ref{lem:matrix_powers_trace}:
 
 $$
 \mathbb{E} \operatorname{Tr}\left(\mathbf{Y}_n^k\right)=\sum_{i_1=1}^n \mathbb{E}\left(\left[\mathbf{Y}_n^k\right]_{i_1 i_1}\right)=\sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} \mathbb{E}\left(Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}\right) \equiv \sum_{\mathbf{i} \in[n]^k} \mathbb{E}\left(Y_{\mathbf{i}}\right)
 $$
 
-where $[n]=\{1, \ldots, n\}$, and for $\mathbf{i}=\left(i_1, \ldots, i_k\right)$ we define $Y_{\mathbf{i}}=Y_{i_1 i_2} \cdots Y_{i_k i_1}$. The term $\mathbb{E}\left(Y_{\mathbf{i}}\right)$ is determined by the $k$-index $\mathbf{i}$, but only very weakly. The sum is better indexed by a collection of walks on graphs arising from the indices.
-\end{proof}
-
-For example, take $\mathbf{i}=(1,2,2,3,5,2,4,1,4,2)$; then
-
+where $[n]=\{1, \ldots, n\}$. For $\mathbf{i}=\left(i_1, \ldots, i_k\right)$, let $Y_{\mathbf{i}}=Y_{i_1 i_2} \cdots Y_{i_k i_1}$ be the matrix multi index from definition \ref{def:matrix_multi_index}. Using lemma \ref{lem:graph_walk_count_equivalence}, we can rewrite $Y_{\mathbf{i}}$ as:
 $$
-V_{\mathbf{i}}=\{1,2,3,4,5\}, \quad E_{\mathbf{i}}=\{\{1,2\},\{1,4\},\{2,2\},\{2,3\},\{2,4\},\{2,5\},\{3,5\}\}
+Y_{\mathbf{i}}=\prod_{1 \leq i \leq j \leq n} Y_{i j}^{w_{\mathbf{i}}(\{i, j\})}.
 $$
-
-
-The index $\mathbf{i}$ which defines the graph now also defines a closed walk $w_{\mathbf{i}}$ on this graph. For this example, we have $Y_{\mathbf{i}}=Y_{12} Y_{22} Y_{23} Y_{35} Y_{52} Y_{24} Y_{41} Y_{14} Y_{42} Y_{21}$, which we can interpret as the walk $w_{\mathbf{i}}$ pictured below, in Figure 2. By definition, the walk $w_{\mathrm{i}}$ visits edge of $G_{\mathrm{i}}$ (including any self-edges present), beginning and ending at the beginning vertex. In particular, this means that the graph $G_{\mathrm{i}}$ is connected. The walk $w_{\mathrm{i}}$ encodes a labeling of the edges: the number of times each edge is traversed. We will denote this statistic also as $w_{\mathbf{i}}(e)$ for each edge $e$. In the above example, $w_{\mathbf{i}}(e)$ is equal to 2 on the edges $e \in\{\{1,2\},\{1,4\},\{2,4\}\}$, and is equal to 1 for all the other edges
-(including the self-edge $\{2,2\}$ ). These numbers are actually evident in the expansion $Y_{\mathrm{i}}$ : using the fact that $Y_{i j}=Y_{j i}$, we have
-
-$$
-Y_{\mathbf{i}}=Y_{12}^2 Y_{14}^2 Y_{24}^2 Y_{22} Y_{23} Y_{25} Y_{35}
-$$
-
-and in each case the exponent of $Y_{i j}$ is equal to $w_{\mathrm{i}}(\{i, j\})$. This is true in general (essentially by definition): if we define $w_{\mathbf{i}}(\{i, j\})=0$ if the pair $\{i, j\} \notin E_{\mathbf{i}}$, then
-
-$$
-Y_{\mathbf{i}}=\prod_{1 \leq i \leq j \leq n} Y_{i j}^{w_{\mathbf{i}}(\{i, j\})}
-$$
-
-
-Now, all the variables $Y_{i j}$ are independent. Since we allow the diagonal vs. off-diagonal terms to have different distributions, we should make a distinction between the self-edges $E_{\mathrm{i}}^s=\{\{i, i\} \in$ $\left.E_{\mathrm{i}}\right\}$ and connecting-edges $E_{\mathrm{i}}^c=\left\{\{i, j\} \in E_{\mathrm{i}}: i \neq j\right\}$. Then we have
+Now, all the variables $Y_{i j}$ are independent. Using lemma \ref{lem:expectation_matrix_multi_index}, we can write the expectation of $Y_{\mathbf{i}}$ as:
 
 $$
 \mathbb{E}\left(Y_{\mathbf{i}}\right)=\prod_{1 \leq i \leq j \leq n} \mathbb{E}\left(Y_{i j}^{w_{\mathbf{i}}(\{i, j\})}\right)=\prod_{e_s \in E_{\mathbf{i}}^s} \mathbb{E}\left(Y_{11}^{w_{\mathbf{i}}\left(e_s\right)}\right) \cdot \prod_{e_c \in E_{\mathbf{i}}^c} \mathbb{E}\left(Y_{12}^{w_{\mathbf{i}}\left(e_c\right)}\right)
 $$
+which is equivalent to $\Pi(G_{\mathbf{i}}, w_{\mathbf{i}})$ from definition \ref{def:expectation_matrix_multi_index}.
 
-
-That is: the value of $\mathbb{E}\left(Y_{\mathbf{i}}\right)$ is determined by the pair ( $G_{\mathbf{i}}, w_{\mathbf{i}}$ ) (or better yet ( $E_{\mathbf{i}}, w_{\mathbf{i}}$ )). Let us denote the common value in Equation 4.4 as $\Pi\left(G_{\mathbf{i}}, w_{\mathbf{i}}\right)$.
-
-For any $k$-index $\mathbf{i}$, the connected oriented graph $G_{\mathbf{i}}$ has at most $k$ vertices. Since $w_{\mathbf{i}}$ records all the non-zero exponents in $Y_{\mathbf{i}}$ (that sum to the number of terms $k$ ), we have $\left|w_{\mathbf{i}}\right| \equiv \sum_{e \in E_{\mathbf{i}}} w_{\mathbf{i}}(e)=k$. Motivated by these conditions, let $\mathcal{G}_k$ denote the set of all pairs $(G, w)$ where $G=(V, E)$ is a connected graph with at most $k$ vertices, and $w$ is a closed walk covering $G$ satisfying $|w|=k$. Using Equation 4.4, we can reindex the sum of Equation 4.2 as
-
-$$
-\mathbb{E} \operatorname{Tr}\left(\mathbf{Y}_n^k\right)=\sum_{(G, w) \in \mathcal{G}_k} \sum_{\substack{\mathbf{i} \in[n]^k \\\left(G_{\mathbf{i}}, w_{\mathbf{i}}\right)=(G, w)}} \mathbb{E}\left(Y_{\mathbf{i}}\right)=\sum_{(G, w) \in \mathcal{G}_k} \Pi(G, w) \cdot \#\left\{\mathbf{i} \in[n]^k:\left(G_{\mathbf{i}}, w_{\mathbf{i}}\right)=(G, w)\right\}
-$$
-
-
-Combining with the renormalization of Equation 4.1, we have
-
-$$
-\frac{1}{n} \mathbb{E} \operatorname{Tr}\left(\mathbf{X}_n^k\right)=\sum_{(G, w) \in \mathcal{G}_k} \Pi(G, w) \cdot \frac{\#\left\{\mathbf{i} \in[n]^k:\left(G_{\mathbf{i}}, w_{\mathbf{i}}\right)=(G, w)\right\}}{n^{k / 2+1}}
-$$
-It is, in fact, quite easy to count the sets of $k$-indices in Equation 4.6. For any $(G, w) \in \mathcal{G}_k$, an index with that corresponding graph $G$ and walk $w$ is completely determined by assigning which distinct values from $[n]$ appear at the vertices of $G$. For example, consider the pair $(G, w)$ in Figure 2. If $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$ is a $k$-index with this graph and walk, then reading along the walk we must have
-
-$$
-\mathbf{i}=\left(i_1, i_2, i_2, i_3, i_5, i_2, i_4, i_1, i_4, i_2, i_1\right)
-$$
-
-and so the set of all such $\mathbf{i}$ is determined by assigning 5 distinct values from $[n]$ to the indices $i_1, i_2, i_3, i_4, i_5$. There are $n(n-1)(n-2)(n-3)(n-4)$ ways of doing this. Following this example, in general we have:
+\end{proof}
 
 %\begin{lemma}\label{lem:trace_smul}
   %\uses{????}
