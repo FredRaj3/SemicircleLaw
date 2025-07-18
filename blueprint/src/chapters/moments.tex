@@ -19,8 +19,7 @@ Proof
 
 
 \begin{lemma}\label{lem:trace_smul}
-  %\uses{????}
-  \mathlibok %what does this mean
+  \mathlibok 
   \lean{Matrix.trace_smul}
   Let $R$ be a ring with a monoid action from $\alpha$ (i.e., $\alpha$ acts distributively on $R$).
   For any scalar $r \in \alpha$ and any square matrix $A$ over $R$, the trace of the scalar
@@ -28,25 +27,9 @@ Proof
   \[ \text{tr}(r \cdot A) = r \cdot \text{tr}(A). \]
   \end{lemma}
 
-  \begin{proof}\leanok %what does this mean
-  %idk what to put in here
+  \begin{proof}\leanok 
   \end{proof}
 
-% 4.2
-% lemma (lemma1): using Matrix.mul_apply?? + induction?
-
-
-% definition of trace
-% linearity of expectation --> map_expect????
-% lemma1
-% defn of Y_i, [n].
-
-
-% define a graph (no idea how to do this in lean)
-
-% matrices commutative? don't really understand this part of the proof
-
-%define \omega ({i, j})
 
 
 
@@ -54,9 +37,7 @@ Proof
 %---------% 
 \begin{lemma}
   \label{lem:graph_walk_le_k}
-  \uses{}
-  %\uses{def:graph_path}
-  % Need definition of the closed covering path $w_\mathbf{i}$ from Section 1;
+  \uses{def:graph_multi_index,def:graph_path,def:graph_edge_count}
   For any $k$-index $\mathbf{i}$, the connected graph $G_\mathbf{i}$ has at most $k$ vertices. Furthermore
   \[
   |w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k.
@@ -65,7 +46,7 @@ Proof
 \begin{proof}
   Foremost, since the number of vertices of the graph $G_\mathbf{i}$ 
   are the number of distinct elements of the $k$-index $\mathbf{i}$, it clearly follows that $|G| \leq k$.
-  On the other hand, given an edge $e \in E_\mathbf{i}$, by Definition \ref{* *}, $w_i(e)$ as the number of times the walk $w_\mathbf{i}$ traversed $e$. 
+  On the other hand, given an edge $e \in E_\mathbf{i}$, by Definition \ref{def:graph_edge_count}, $w_i(e)$ as the number of times the walk $w_\mathbf{i}$ traversed $e$. 
   Since $|w_\mathbf{i}| = k$ by construction, it follows that
   \[
   |w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k.
@@ -74,14 +55,14 @@ Proof
 %---------%
 % Motivated by these conditions, we define $\mathcal{G}_k$:
 %---------%
-\begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
+\begin{definition}
   \label{def:g_k}
-  \uses{}
+  \uses{def:graph_multi_index,def:graph_path,def:graph_edge_count}
   Let $\mathcal{G}_k$ denote the set of all ordered pairs $(G,w)$ where $G = (V,E)$ is a connected graph with at most $k$ vertices, and
   $w$ is a closed walk covering $G$ satisfying $|w| = k$.
 \end{definition}
 %---------%
-We can count the set of $k$-indexes in Equation \ref{* *}: 
+% We can count the set of $k$-indexes in Equation \ref{* *}: 
 % For any $(G,w) \in \mathcal{G}_k$, an index with that corresponding graph $G$ and walk $w$ is completely determined by assigning which distinct values of $[n]$ appear at the vertices of $G$:
 %---------%
 % The definition below proposes an alternate definition of $\mathcal{G}_k$ along with the equivalence relation. 
@@ -102,9 +83,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 \begin{lemma}
   \label{lem:equal_equiv_class_equal_expectation}
   \notready
-  \uses{}
-  %\uses:
-  %(1)Definition of $Y_\mathbf{i}$, 
+  \uses{def:graph_multi_index,def:graph_path,def:matrix_multi_index}
   Given two $k$-indexes $\mathbf{i} = (i_1,...,i_k)$ and $\mathbf{i}^* = (j_1,...,j_k)$, 
   suppose there exists a bijection $\varphi$ from the set of entries $\mathbf{i}$ onto the set of entries $\mathbf{i}^*$ such that
   \[
@@ -165,7 +144,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 %---------%
 \begin{lemma}
   \label{lem:equation_4.5_1}
-  \uses{def:g_k}
+  \uses{def:g_k,lem:trace_expectation_of_matrix}
   \[
   \bE \Tr (\mathbf{Y}_\mathbf{i}^k) = \sum_{(G,w) \in \mathcal{G}_k} \sum_{\substack{\mathbf{i} \in [n]^k \\ (G_\mathbf{i},w_\mathbf{i}) = (G,w)}} \bE (Y_\mathbf{i}).
   \]
@@ -178,17 +157,13 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 %---------%
 \begin{lemma}
   \label{lem:equation_4.5_2}
-  \uses{lem:lem_4.3,lem:equal_equiv_class_equal_expectation}
-  %\uses: 
-  %(a) $\Pi (G,w)$
-  %(b) equation_4.2
-  %(c) lem:equation_4.4
+  \uses{lem:lem_4.3,lem:equal_equiv_class_equal_expectation,lem:trace_expectation_of_matrix,lem:expectation_matrix_multi_index}
   \[
   \bE \Tr (\mathbf{Y}_\mathbf{i}^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \}.
   \]
 \end{lemma}
 \begin{proof}
-  This follows from re-indexing the sum of Equation 4.2 by using Equation 4.4.
+  This follows from re-indexing the sum of Lemma \ref{lem:trace_expectation_of_matrix} by using Lemma \ref{lem:expectation_matrix_multi_index}.
 \end{proof}
 %---------%
 \begin{lemma}
@@ -199,11 +174,11 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   \]
 \end{lemma}
 \begin{proof}
-  Combining with the renormalization factor $n^{-1}$ of Equation \ref{* *}
+  Combining with the renormalization factor $n^{-1}$ of Proposition \ref{prop:matrix_moments_convergence}
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \frac{1}{n^{k/2+1}} \bE \Tr (\mathbf{Y}_\mathbf{i}^k).
   \]
-  Substituting the term $\bE \Tr (\mathbf{Y}_\mathbf{i}^k)$ with the expression in Equation \ref{equation_???}
+  Substituting the term $\bE \Tr (\mathbf{Y}_\mathbf{i}^k)$ with the expression in Equation \ref{lem:equation_4.5_2}
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
@@ -249,8 +224,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 %---------%
 \begin{lemma}
   \label{lem:Pi.prod_eq_zero_if_w_le_two}
-  \uses{def:g_k,prop:matrix_moments_convergence}
-  %uses definition of $Y_\mathbf{i}$ AND $\Pi (G,w)$.
+  \uses{def:g_k,prop:matrix_moments_convergence,def:matrix_multi_index,def:expectation_matrix_multi_index}
   Given an ordered pair $(G,w) \in \mathcal{G}_k$, suppose there exists an edge $e \in E_\mathbf{i}$ in which it is traversed only once in the walk $w$. Then
   \[
   \Pi (G,w) = 0.
@@ -276,7 +250,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 %---------%
 \begin{lemma}
   \label{lem:equation_4.8}
-  \uses{def:g_k_ge_2,lem:equation_4.5_3,lem:Pi.prod_eq_zero_if_w_le_two}
+  \uses{def:g_k_ge_2,lem:equation_4.5_3,lem:Pi.prod_eq_zero_if_w_le_two,lem:expectation_matrix_multi_index,prop:matrix_moments_convergence}
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) 
   = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
@@ -284,10 +258,9 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 \end{lemma}
 \begin{proof}
   Let $(G,w) \in \mathcal{G}_k$ and suppose there exists an edge $e = \{i,j\}$ such that $w(e) = 1$.
-  This means, in Equation \ref{* *}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
-  The fact that the variables $Y_{ij}$ are all centered implies the product $\Pi (G,w) = 0$ for any such pair $(G,w)$.
+  This means, in LEmma \ref{lem:expectation_matrix_multi_index}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
+  Following the condition of Proposition \ref{prop:matrix_moments_convergence}, the fact that the variables $Y_{ij}$ are all centered implies the product $\Pi (G,w) = 0$ for any such pair $(G,w)$.
   Thus, we only need to consider those $w$ that cross each edge at least twice: 
-  % Reference the Proposition 4.1 condition?
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}  = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
@@ -303,36 +276,13 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 \end{proof}
 %---------%
 % This lemma might be merged with the following one(s).
-
-
-
-%%% It might be more convenient to introduce the Axiom of Choice to ease the notation on $(G,w)$.
+% If using the equivalence definition of $\mathcal{G}_k$, it might be more convenient to introduce the Axiom of Choice to ease the notation on $(G,w)$.
+%---------%
 %---Richard's Part (End)---% 
 
 
 \iffalse
 
-
-% 4.4: true because multiplication is commutative (EReal.mul_comm)
-
-
-% more graph definitions (idk how lean would work)
-
-
-% smt smt get to 4.5
-
-% 4.6: use 4.5, scalar multiple of expectatio (Finset.smul_expect), trace of scalar multiple (Matrix.trace_smul)
-
-
-% lemma 4.3: lots more work needed
-
-%4.7: use lemma 4.3
-
-% w >= 2 stuff
-% 4.8
-
-% 4.3.1: maybe SimpleGraph.IsTree.card_edgeFinset??
-
+%---$
 
 \fi
-lean
