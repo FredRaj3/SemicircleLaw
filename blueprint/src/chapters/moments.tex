@@ -176,6 +176,16 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
     $$ 
 \end{lemma}
 
+\begin{lemma}[Trace of Expectation of Matrix]
+    \label{lem:trace_expectation_of_matrix}
+    \notready
+    \uses{lem:expectation_matrix_multi_index}
+    Let $\mathbf{Y}_{n}$ be an $n \times n$ symmetric matrix with independent entries, where $\{Y_{ij}\}_{1\le i\le j}$ are independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, for any $k$-index $\mathbf{i} \in [n]^k$, we have:
+    $$
+    \bE(\Tr(\mathbf{Y}_{n}^{k})) = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} \bE(Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}) = \sum_{\mathbf{i} \in [n]^{k}} \bE(Y_{i})
+    $$ 
+\end{lemma}
+
 \begin{proof}
 \notready
 Because each $Y_{ij}$ is independent, we can write:
