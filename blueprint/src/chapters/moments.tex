@@ -53,8 +53,10 @@ Proof
 %---Richard's Part (Start)---% 
 %---------% 
 \begin{lemma}
-  \label{lem:graph_walk_leq_k}
+  \label{lem:graph_walk_le_k}
   \uses{}
+  %\uses{def:graph_path}
+  % Need definition of the closed covering path $w_\mathbf{i}$ from Section 1;
   For any $k$-index $\mathbf{i}$, the connected *oriented* graph $G_\mathbf{i}$ has at most $k$ vertices.
   Furthermore
   \[
@@ -73,90 +75,106 @@ Proof
 %---------%
 % Motivated by these conditions, we define $\mathcal{G}_k$:
 %---------%
-\begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
-  \label{def:g_k}
-  \uses{}
-  Let $\mathcal{G}_k$ denote the set of all pairs $(G,w)$ where $G = (V,E)$ is a connected graph with at most $k$ vertices, and
-  $w$ is a closed walk covering $G$ satisfying $|w| = k$.
-\end{definition}
+%\begin{definition}[Definition 4.2 in \cite{Kemp2013RMTNotes}]
+%  \label{def:g_k}
+%  \uses{}
+%  Let $\mathcal{G}_k$ denote the set of all ordered pairs $(G,w)$ where $G = (V,E)$ is a connected graph with at most $k$ vertices, and
+%  $w$ is a closed walk covering $G$ satisfying $|w| = k$.
+%\end{definition}
 %---------%
 We can count the set of $k$-indexes in Equation \ref{* *}: 
 % For any $(G,w) \in \mathcal{G}_k$, an index with that corresponding graph $G$ and walk $w$ is completely determined by assigning which distinct values of $[n]$ appear at the vertices of $G$:
 %---------%
 % The definition below proposes an alternate definition of $\mathcal{G}_k$ along with the equivalence relation. 
-%\begin{definition}
-%  \label{def: }
-%  \notready
-%  \uses{}
-%  We propose an alternate (and perhaps more explicit) construction of $\mathcal{G}_k$. We define 
-%  $\mathcal{G}_k$ as the set of equivalence classes of the set $\{ (G_\mathbf{i},w_\mathbf{i}) : \mathbf{i} \in [n]^k \text{ and } n \in \mathbb{N} \}$, 
-%  where the equivalence relation is defined as: $(G_\mathbf{i},w_\mathbf{i}) \sim (G_{\mathbf{i}^*},w_{\mathbf{i}^*})$ 
-%  if and only if there exists a bijection $\varphi$ from the set of entries $\mathbf{i}$ onto the set of entries $\mathbf{i}^*$ such that
-%  \[
-%  \mathbf{i} = (i_1,...,i_k) \,\, \Longleftrightarrow \,\, \mathbf{i}^* = \bigl( \varphi(i_1),\varphi(i_2),...,\varphi(i_k) \bigl).
-%  \]
-%  We denote an element of $\mathcal{G}_k$ as $(G,w)$.
-%\end{definition}
+\begin{definition}
+  \label{def:g_k}
+  \notready
+  \uses{}
+  %We propose an alternate (and perhaps more explicit) construction of $\mathcal{G}_k$. 
+  We define $\mathcal{G}_k$ as the set of equivalence classes of the set $\{ (G_\mathbf{i},w_\mathbf{i}) : \mathbf{i} \in [n]^k \text{ and } n \in \mathbb{N} \}$, 
+  where the equivalence relation is defined as: $(G_\mathbf{i},w_\mathbf{i}) \sim (G_{\mathbf{i}^*},w_{\mathbf{i}^*})$ 
+  if and only if there exists a bijection $\varphi$ from the set of entries $\mathbf{i}$ onto the set of entries $\mathbf{i}^*$ such that
+  \[
+  \mathbf{i} = (i_1,...,i_k) \,\, \Longleftrightarrow \,\, \mathbf{i}^* = \bigl( \varphi(i_1),\varphi(i_2),...,\varphi(i_k) \bigl).
+  \]
+  We denote an element of $\mathcal{G}_k$ as $(G,w)$.
+\end{definition}
 %---------%
-%\begin{lemma}
-%  \label{lem:}
-%  \notready
-%  \uses{}
-%  Given two $k$-indexes $\mathbf{i} = (i_1,...,i_k)$ and $\mathbf{i}^* = (j_1,...,j_k)$, 
-%  suppose there exists a bijection $\varphi$ from the set of entries $\mathbf{i}$ onto the set of entries $\mathbf{i}^*$ such that
-%  \[
-%  \mathbf{i} = (i_1,...,i_k) \,\, \Longleftrightarrow \,\, \mathbf{i}^* = \bigl( \varphi(i_1),\varphi(i_2),...,\varphi(i_k) \bigl).
-%  \]
-%  Then $\bE (Y_\mathbf{i}) = \bE (Y_{\mathbf{i}^*})$.
-%\end{lemma}
-%\begin{proof}
-%  It suffices to show that $Y_\mathbf{i}$ and $Y_{\mathbf{i}^*}$ represent the same number of, respectively, self-edges and connecting edges.
-%  Given $Y_\mathbf{i} = Y_{i_1 i_2}Y_{i_2 i_3} \cdots Y_{i_{k-1} i_k}Y_{i_k i_1}$,
-%  \[
-%  Y_{\mathbf{i}^*} = Y_{j_1 j_2}Y_{j_2 j_3} \cdots Y_{j_{k-1} j_k}Y_{j_k j_1} 
-%  = Y_{\varphi(i_1) \varphi(i_2)}Y_{\varphi(i_2) \varphi(i_3)} \cdots Y_{\varphi(i_{k-1}) \varphi(i_k)}Y_{\varphi(i_k) \varphi(i_1)}.
-%  \] 
-%  The fact that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \}$ is a self-edge 
-%  if (i.e. a singleton) and only if $\{ \varphi(i_{\lambda_l}),\varphi(i_{\lambda_{l+1}}) \}$ is a self-edge completes the proof.
-%\end{proof}
+\begin{lemma}
+  \label{lem:equal_equiv_class_equal_expectation}
+  \notready
+  \uses{}
+  %\uses:
+  %(1)Definition of $Y_\mathbf{i}$, 
+  Given two $k$-indexes $\mathbf{i} = (i_1,...,i_k)$ and $\mathbf{i}^* = (j_1,...,j_k)$, 
+  suppose there exists a bijection $\varphi$ from the set of entries $\mathbf{i}$ onto the set of entries $\mathbf{i}^*$ such that
+  \[
+  \mathbf{i} = (i_1,...,i_k) \,\, \Longleftrightarrow \,\, \mathbf{i}^* = \bigl( \varphi(i_1),\varphi(i_2),...,\varphi(i_k) \bigl).
+  \]
+  Then $\bE (Y_\mathbf{i}) = \bE (Y_{\mathbf{i}^*})$.
+\end{lemma}
+\begin{proof}
+  It suffices to show that $Y_\mathbf{i}$ and $Y_{\mathbf{i}^*}$ represent the same number of, respectively, self-edges and connecting edges.
+  Given $Y_\mathbf{i} = Y_{i_1 i_2}Y_{i_2 i_3} \cdots Y_{i_{k-1} i_k}Y_{i_k i_1}$,
+  \[
+  Y_{\mathbf{i}^*} = Y_{j_1 j_2}Y_{j_2 j_3} \cdots Y_{j_{k-1} j_k}Y_{j_k j_1} 
+  = Y_{\varphi(i_1) \varphi(i_2)}Y_{\varphi(i_2) \varphi(i_3)} \cdots Y_{\varphi(i_{k-1}) \varphi(i_k)}Y_{\varphi(i_k) \varphi(i_1)}.
+  \] 
+  The fact that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \}$ is a self-edge 
+  if (i.e. a singleton) and only if $\{ \varphi(i_{\lambda_l}),\varphi(i_{\lambda_{l+1}}) \}$ is a self-edge completes the proof.
+\end{proof}
 %---------%
 \begin{lemma}[Lemma 4.3 in \cite{Kemp2013RMTNotes}]
-  \label{lem:equiv_class_order}
-  \uses{def:}
+  \label{lem:lem_4.3}
+  \uses{def:g_k}
+  % Perhaps will need to explicitly lay out the equivalence relation.
   Given $(G,w) \in \mathcal{G}_k$, denote by $|G|$ the number of vertices in $G$. Then
   \[
-  \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \} = n (n-1) \cdots (n - |G| + 1).
+  \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) \in (G,w) \} = n (n-1) \cdots (n - |G| + 1).
   \]
 \end{lemma}
 \begin{proof}
-  By the way the equivalence relation is defined in Definition \ref{* *}, 
+  By the way the equivalence relation is defined in Definition \ref{def:g_k}, 
   the fact that there are $n (n - 1) \cdots (n -|G| + 1)$ ways to assign $|G|$ distinct values from $[n]$ into the indices $i_1,...,i_{|G|}$ completes the proof.
 \end{proof}
 %---------%
 % Using Equation \ref{* *}, we can re-index the sum of Equation \ref{* *} as
 %---------%
 \begin{lemma}
-  \label{lem:sum_simp_equiv_class_order}
-  \uses{}
+  \label{lem:equation_4.5_1}
+  \uses{def:g_k}
+  \[
+  \bE \Tr (\mathbf{Y}_\mathbf{i}^k) = \sum_{(G,w) \in \mathcal{G}_k} \sum_{\substack{\mathbf{i} \in [n]^k \\ (G_\mathbf{i},w_\mathbf{i}) \in (G,w)}} \bE (Y_\mathbf{i}).
+  \]
+\end{lemma}
+\begin{proof}
+  Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$ generated by a $k$-index $\mathbf{i}$ and $(G,w) \in \mathcal{G}_k$, 
+  only one of $(G_\mathbf{i},w_\mathbf{i}) \in (G,w)$ or $(G_\mathbf{i},w_\mathbf{i}) \notin (G,w)$ holds. 
+\end{proof}
+%---------%
+\begin{lemma}
+  \label{lem:equation_4.5_2}
+  \uses{lem:lem_4.3,lem:equal_equiv_class_equal_expectation}
+  %\uses: 
+  %(a) $\Pi (G,w)$
+  %(b) equation_4.2
+  %(c) lem:equation_4.4
+  \[
+  \bE \Tr (\mathbf{Y}_\mathbf{i}^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \}.
+  \]
+\end{lemma}
+\begin{proof}
+  We can re-index the sum of Equation 4.2 by using Equation 4.4.
+\end{proof}
+%---------%
+\begin{lemma}
+  \label{lem:equation_4.5_3}
+  \uses{lem:equation_4.5_1,lem:equation_4.5_2}
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
 \end{lemma}
 \begin{proof}
-  % Claim 1: Re-indexing the summation
-  Foremost, we can re-index the sum of Lemma \ref{* *} by using Lemma \ref{* *}: 
-  \[ 
-  \bE \Tr (\mathbf{Y}_\mathbf{i}^k) 
-  = \sum_{(G,w) \in \mathcal{G}_k} \sum_{\substack{\mathbf{i} \in [n]^k \\ (G_\mathbf{i},w_\mathbf{i}) = (G,w)}} \bE (Y_\mathbf{i})
-  = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \}.
-  \]
-  % Claim 2: Applying the counting argument
-  We can further reformulate this expression by applying Lemma \ref{* *}:
-  \begin{equation}\label{equation_???}
-  \bE \Tr (\mathbf{Y}_\mathbf{i}^k)
-  = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot n (n-1) \cdots (n - |G| + 1).
-  \end{equation}
-  % Claim 3: Introducing the renormalization factor
   Combining with the renormalization factor $n^{-1}$ of Equation \ref{* *}
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \frac{1}{n^{k/2+1}} \bE \Tr (\mathbf{Y}_\mathbf{i}^k).
@@ -166,16 +184,46 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
 \end{proof}
-%---------%
 % Note that the summation is finite, and thus we only need to determine the values of $\Pi (G,w)$ to evaluate the summation. 
 %---------%
+\begin{definition}
+  \label{def:g_k_ge_2}
+  \uses{def:g_k}
+  Given an equivalence class $(G,w) \in \mathcal{G}_k$, 
+  let $\substack{\mathcal{G}_k \\ w \geq 2}$ be a subset of $\mathcal{G}_k$ 
+  in which the walk $w_\mathbf{i}$ represetned by every $(G_\mathbf{i},w_\mathbf{i}) \in (G,w)$ 
+  crosses each edge at least twice.
+\end{definition}
+%---------%
 \begin{lemma}
-  \label{lem:sum_simp_w_geq_two}
-  \uses{}
-  Let us denote the condition that some walk $w$ crosses each edge at least twice as $w \geq 2$. Then
+  \label{lem:g_k_ge_2_wd}
+  \uses{def:g_k_ge_2,lem:equal_equiv_class_equal_expectation}
+  The set $\substack{\mathcal{G}_k \\ w \geq 2}$ in Definition \ref{def:g_k_ge_2} is well-defined.  
+\end{lemma}
+\begin{proof}
+  The proof follows an identical reasoning as in the proof of Lemma \ref{lem:equal_equiv_class_equal_expectation}.
+\end{proof}
+%---------%
+\begin{lemma}
+  \label{lem:Pi.prod_eq_zero_if_w_le_two}
+  \uses{def:g_k,prop:matrix_moments_convergence}
+  %uses definition of $Y_\mathbf{i}$ AND $\Pi (G,w)$.
+  Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$, suppose there exists an edge $e \in E_\mathbf{i}$ in which it is traversed only once in the walk $w_\mathbf{i}$.
+  Then
+  \[
+  \Pi (G,w) = 0.
+  \]
+\end{lemma}
+\begin{proof}
+  This directly follows from the assumption of Proposition \ref{prop:matrix_moments_convergence} that $\bE (Y_{ij}) = 0$ for every $i$ and $j$. 
+\end{proof}
+%---------%
+\begin{lemma}
+  \label{lem:equation_4.8}
+  \uses{def:g_k_ge_2,lem:equation_4.5_3,lem:Pi.prod_eq_zero_if_w_le_two}
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) 
-  = \sum_{\substack{(G,w) \in \mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
+  = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
 \end{lemma}
 \begin{proof}
@@ -191,7 +239,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 %---------%
 \begin{lemma}
   \label{lem:edge_set_order_leq_k_over_two}
-  \uses{}
+  \uses{def:g_k_ge_2}
   Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$, if $w_\mathbf{i} \geq 2$, then $\# E_\mathbf{i} \leq k/2$.
 \end{lemma}
 \begin{proof}
@@ -199,6 +247,10 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 \end{proof}
 %---------%
 % This lemma might be merged with the following one(s).
+
+
+
+%%% It might be more convenient to introduce the Axiom of Choice to ease the notation on $(G,w)$.
 %---Richard's Part (End)---% 
 
 
@@ -227,3 +279,4 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 
 
 \fi
+lean
