@@ -452,7 +452,7 @@ as required.
 \end{lemma}
 \begin{proof}
   Let $(G,w) \in \mathcal{G}_k$ and suppose there exists an edge $e = \{i,j\}$ such that $w(e) = 1$.
-  This means, in LEmma \ref{lem:expectation_matrix_multi_index}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
+  This means, in Lemma \ref{lem:expectation_matrix_multi_index}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
   Following the condition of Proposition \ref{prop:matrix_moments_convergence}, the fact that the variables $Y_{ij}$ are all centered implies the product $\Pi (G,w) = 0$ for any such pair $(G,w)$.
   Thus, we only need to consider those $w$ that cross each edge at least twice: 
   \[
@@ -462,7 +462,7 @@ as required.
 %---------%
 \begin{lemma}
   \label{lem:edge_set_order_leq_k_over_two}
-  \uses{def:g_k_ge_2,lem:graph_walk_le_k}
+  \uses{def:g_k_ge_2,lem:graph_walk_le_k,def:graph_edge_count}
   Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$, if $w_\mathbf{i} \geq 2$, then $\# E_\mathbf{i} \leq k/2$.
 \end{lemma}
 \begin{proof}
