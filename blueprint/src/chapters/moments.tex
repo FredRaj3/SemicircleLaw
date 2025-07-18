@@ -7,7 +7,7 @@
     Let $Y$ be an $n\times n$ matrix and $k \in \mathbb{N}$. Then, for each  $(i, j)$-th entry of $Y^{k}$, we have:
     $$
     (Y^{k})_{ij} = \sum_{1 \leq i_2, \ldots ,i_{k} \leq n} Y_{ii_{2}} Y_{i_{2}i_{3}}\ldots Y_{i_{k}j}
-    $$ 
+    $$
 \end{lemma}
 
 \begin{proof}
@@ -27,7 +27,7 @@ $$
 
 We must show that it holds for $k + 1$. Note that:
 \begin{align*}
-\left[Y_n^{k+1}\right]_{ij} 
+\left[Y_n^{k+1}\right]_{ij}
 &= \sum_{\ell = 1}^n \left[Y_n^k\right]_{i\ell} Y_{\ell j} \\
 &= \sum_{\ell = 1}^n \left( \sum_{1 \le i_2, \dots, i_k \le n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_k \ell} \right) Y_{\ell j} \\
 &= \sum_{1 \le i_2, \dots, i_k, i_{k+1} \le n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_k i_{k+1}} Y_{i_{k+1} j}.
@@ -62,9 +62,9 @@ We can use the result from Lemma \ref{lem:matrix_powers_entries} to compute the 
     \label{def:graph_multi_index}
     \notready
     \uses{def:}
-    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. A graph $G_{\mathbf{i}}$ is defined as follows: the vertices $V_{\mathbf{i}}$ are the distinct elements of 
+    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. A graph $G_{\mathbf{i}}$ is defined as follows: the vertices $V_{\mathbf{i}}$ are the distinct elements of
     $$\left\{i_1, i_2, \ldots, i_k\right\},$$
-     and the edges $E_{\mathbf{i}}$ are the distinct pairs among 
+     and the edges $E_{\mathbf{i}}$ are the distinct pairs among
     $$\left\{i_1, i_2\right\},\left\{i_2, i_3\right\}, \ldots,\left\{i_{k-1}, i_k\right\},\left\{i_k, i_1\right\}.$$
 \end{definition}
 
@@ -92,7 +92,7 @@ of edges from $E_{\mathbf{i}}$
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix. The matrix multi index $Y_{\mathbf{i}}$ is defined as:
     $$
     Y_{\mathbf{i}} = Y_{i_{1}i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k}i_{1}}
-    $$ 
+    $$
 \end{definition}
 
 \begin{lemma}[Matrix Multi Index and Graph Equivalence]
@@ -102,7 +102,7 @@ of edges from $E_{\mathbf{i}}$
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix. Then, we have the following:
      $$
      Y_{\mathbf{i}} = Y_{i_{1}i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k}i_{1}} = \prod_{w \in w_{\mathbf{i}}} Y_{w}
-    $$ 
+    $$
 \end{lemma}
 
 \begin{proof}
@@ -110,11 +110,11 @@ of edges from $E_{\mathbf{i}}$
     We see from definition $\ref{def:graph_path}$ that the path is defined as:
     $$
     w_{\mathbf{i}} = (\{i_{1}, i_{2}\}, \{i_{2}, i_{3}\}, \ldots, \{i_{k-1}, i_{k}\}, \{i_{k}, i_{1}\}).
-    $$ 
+    $$
     if we use each each edge $w \in w_{\mathbf{i}}$, due to symmetry, we can write the product:
     $$
     \prod_{w\in w_{\mathbf{i}}} Y_{w} = Y_{\{i_{1}, i_{2}\}} Y_{\{i_{2}, i_{3}\}} \ldots Y_{\{i_{k-1}, i_{k}\}} Y_{\{i_{k}, i_{1}\}} = Y_{i_{1}i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k}i_{1}} = Y_{\mathbf{i}}
-    $$ 
+    $$
     as required.
 \end{proof}
 
@@ -152,7 +152,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
     Let $\mathbf{i} \in[n]^k$ be a $k$-index. Given graph $G_{\mathbf{i}}$, define the self-edges $E_{\mathbf{i}}^{s}$ as:
     $$
     \{\{i, i\} \in E_{\mathbf{i}}\},
-    $$ 
+    $$
     the set of edges where both vertices are the same.
 \end{definition}
 
@@ -163,7 +163,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
     Let $\mathbf{i} \in[n]^k$ be a $k$-index. Given graph $G_{\mathbf{i}}$, define the connecting-edges $E_{\mathbf{i}}^{c}$ as:
     $$
     \{\{i, j\} \in E_{\mathbf{i}} : i \neq j\}
-    $$ 
+    $$
 \end{definition}
 
 \begin{lemma}[Expectation of Matrix Multi Index]
@@ -173,7 +173,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, we have the following:
     $$
     \bE(Y_{\mathbf{i}}) = \prod_{e_s \in E_{\mathbf{i}}^s} \bE(Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E_{\mathbf{i}}^c} \bE(Y_{12}^{w_{\mathbf{i}}(e_c)}).
-    $$ 
+    $$
 \end{lemma}
 
 \begin{lemma}[Trace of Expectation of Matrix]
@@ -183,7 +183,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
     Let $\mathbf{Y}_{n}$ be an $n \times n$ symmetric matrix with independent entries, where $\{Y_{ij}\}_{1\le i\le j}$ are independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, for any $k$-index $\mathbf{i} \in [n]^k$, we have:
     $$
     \bE(\Tr(\mathbf{Y}_{n}^{k})) = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} \bE(Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}) = \sum_{\mathbf{i} \in [n]^{k}} \bE(Y_{i})
-    $$ 
+    $$
 \end{lemma}
 
 \begin{proof}
@@ -191,7 +191,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 Because each $Y_{ij}$ is independent, we can write:
 $$
 \bE(Y_{\mathbf{i}}) = \bE\left(\prod_{1 \leq i \leq j \leq n} Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}\right) = \prod_{1 \leq i \leq j \leq n} \bE(Y_{ij}^{w_{\mathbf{i}}(\{i, j\})})
-$$ 
+$$
 using lemma \ref{lem:graph_walk_count_equivalence}. Consider the following cases for each $(i, j)$ (we assume each $(i, j) \in w_{\mathbf{i}}$ since if they aren't, then $w_{\mathbf{i}}(i, j) = 0$ and this contributes nothing to the product):\\\\
 $\mathbf{i = j}$: in this case, we have $Y_{ij} = Y_{ii}$, and therefore the edge $(i, i) \in E_{\mathbf{i}}^{s}$. Since each $Y_{ii}$ is identically distributed for all $i$, we have:
 $$
@@ -201,12 +201,12 @@ so the factor in the product above becomes $\bE(Y_{ij}^{w_{\mathbf{i}}(\{i, j\})
 $\mathbf{i < j}$: in this case, we have  $Y_{ij} \in E_{\mathbf{i}}^{c}$. Since each non diagonal entry $Y_{ij}$ is identically distributed for all $i \neq j$ (and by symmetry $Y_{ij} = Y_{ji}$), we have:
 $$
 \bE(Y_{ij}) = \bE(Y_{12})
-$$ 
+$$
 so the factor in the product above becomes $\bE(Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}) = \bE(Y_{12}^{w_{\mathbf{i}}(i, j)})$.\\\\
 Plugging both of these cases into the earlier product over $E_{\mathbf{i}}^{c}$ and $E_{\mathbf{i}}^{s}$, we have:
  $$
  \prod_{1 \leq i \leq j \leq n} \bE(Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}) = \prod_{e_s \in E_{\mathbf{i}}^s} \bE(Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E_{\mathbf{i}}^c} \bE(Y_{12}^{w_{\mathbf{i}}(e_c)})
-$$ 
+$$
 as required.
 
 \end{proof}
@@ -218,7 +218,7 @@ as required.
     Let $\mathbf{i} \in [n]^{k}$ be a $k$-index, $\mathbf{i} = (i_1, i_2, \ldots, i_{k})$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. We define $\Pi(G_{\mathbf{i}}), w_{\mathbf{i}}$ as follows:
     $$
     \Pi (G_{\mathbf{i}}, w_{\mathbf{i}}) = \prod_{e_s \in E_{\mathbf{i}}^s} \bE(Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E_{\mathbf{i}}^c} \bE(Y_{12}^{w_{\mathbf{i}}(e_c)}) = \bE(Y_{\mathbf{i}}).
-    $$ 
+    $$
 \end{definition}
 
 \begin{lemma}
@@ -232,9 +232,9 @@ as required.
   \]
 \end{lemma}
 \begin{proof}
-  Foremost, since the number of vertices of the graph $G_\mathbf{i}$ 
+  Foremost, since the number of vertices of the graph $G_\mathbf{i}$
   are the number of distinct elements of the $k$-index $\mathbf{i}$, it clearly follows that $|G| \leq k$.
-  On the other hand, given an edge $e \in E_\mathbf{i}$, by Definition \ref{* *}, $w_i(e)$ as the number of times the walk $w_\mathbf{i}$ traversed $e$. 
+  On the other hand, given an edge $e \in E_\mathbf{i}$, by Definition \ref{* *}, $w_i(e)$ as the number of times the walk $w_\mathbf{i}$ traversed $e$.
   Since $|w_\mathbf{i}| = k$ by construction, it follows that
   \[
   |w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k.
@@ -250,17 +250,17 @@ as required.
   $w$ is a closed walk covering $G$ satisfying $|w| = k$.
 \end{definition}
 %---------%
-We can count the set of $k$-indexes in Equation \ref{* *}: 
+We can count the set of $k$-indexes in Equation \ref{* *}:
 % For any $(G,w) \in \mathcal{G}_k$, an index with that corresponding graph $G$ and walk $w$ is completely determined by assigning which distinct values of $[n]$ appear at the vertices of $G$:
 %---------%
-% The definition below proposes an alternate definition of $\mathcal{G}_k$ along with the equivalence relation. 
+% The definition below proposes an alternate definition of $\mathcal{G}_k$ along with the equivalence relation.
 %\begin{definition}
 %  \label{def:g_k}
 %  \notready
 %  \uses{}
-%  %We propose an alternate (and perhaps more explicit) construction of $\mathcal{G}_k$. 
-%  We define $\mathcal{G}_k$ as the set of equivalence classes of the set $\{ (G_\mathbf{i},w_\mathbf{i}) : \mathbf{i} \in [n]^k \text{ and } n \in \mathbb{N} \}$, 
-%  where the equivalence relation is defined as: $(G_\mathbf{i},w_\mathbf{i}) \sim (G_{\mathbf{i}^*},w_{\mathbf{i}^*})$ 
+%  %We propose an alternate (and perhaps more explicit) construction of $\mathcal{G}_k$.
+%  We define $\mathcal{G}_k$ as the set of equivalence classes of the set $\{ (G_\mathbf{i},w_\mathbf{i}) : \mathbf{i} \in [n]^k \text{ and } n \in \mathbb{N} \}$,
+%  where the equivalence relation is defined as: $(G_\mathbf{i},w_\mathbf{i}) \sim (G_{\mathbf{i}^*},w_{\mathbf{i}^*})$
 %  if and only if there exists a bijection $\varphi$ from the set of entries $\mathbf{i}$ onto the set of entries $\mathbf{i}^*$ such that
 %  \[
 %  \mathbf{i} = (i_1,...,i_k) \,\, \Longleftrightarrow \,\, \mathbf{i}^* = \bigl( \varphi(i_1),\varphi(i_2),...,\varphi(i_k) \bigl).
@@ -273,8 +273,8 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   \notready
   \uses{}
   %\uses:
-  %(1)Definition of $Y_\mathbf{i}$, 
-  Given two $k$-indexes $\mathbf{i} = (i_1,...,i_k)$ and $\mathbf{i}^* = (j_1,...,j_k)$, 
+  %(1)Definition of $Y_\mathbf{i}$,
+  Given two $k$-indexes $\mathbf{i} = (i_1,...,i_k)$ and $\mathbf{i}^* = (j_1,...,j_k)$,
   suppose there exists a bijection $\varphi$ from the set of entries $\mathbf{i}$ onto the set of entries $\mathbf{i}^*$ such that
   \[
   \mathbf{i} = (i_1,...,i_k) \,\, \Longleftrightarrow \,\, \mathbf{i}^* = \bigl( \varphi(i_1),\varphi(i_2),...,\varphi(i_k) \bigl).
@@ -285,10 +285,10 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   It suffices to show that $Y_\mathbf{i}$ and $Y_{\mathbf{i}^*}$ represent the same number of, respectively, self-edges and connecting edges.
   Given $Y_\mathbf{i} = Y_{i_1 i_2}Y_{i_2 i_3} \cdots Y_{i_{k-1} i_k}Y_{i_k i_1}$,
   \[
-  Y_{\mathbf{i}^*} = Y_{j_1 j_2}Y_{j_2 j_3} \cdots Y_{j_{k-1} j_k}Y_{j_k j_1} 
+  Y_{\mathbf{i}^*} = Y_{j_1 j_2}Y_{j_2 j_3} \cdots Y_{j_{k-1} j_k}Y_{j_k j_1}
   = Y_{\varphi(i_1) \varphi(i_2)}Y_{\varphi(i_2) \varphi(i_3)} \cdots Y_{\varphi(i_{k-1}) \varphi(i_k)}Y_{\varphi(i_k) \varphi(i_1)}.
-  \] 
-  The fact that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \}$ is a self-edge 
+  \]
+  The fact that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \}$ is a self-edge
   if (i.e. a singleton) and only if $\{ \varphi(i_{\lambda_l}),\varphi(i_{\lambda_{l+1}}) \}$ is a self-edge completes the proof.
 \end{proof}
 
@@ -302,7 +302,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   \]
 \end{lemma}
 \begin{proof}
-  By the way the equivalence relation is defined in Definition \ref{def:g_k}, 
+  By the way the equivalence relation is defined in Definition \ref{def:g_k},
   the fact that there are $n (n - 1) \cdots (n -|G| + 1)$ ways to assign $|G|$ distinct values from $[n]$ into the indices $i_1,...,i_{|G|}$ completes the proof.
 \end{proof}
 %---------%
@@ -316,15 +316,15 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   \]
 \end{lemma}
 \begin{proof}
-  Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$ generated by a $k$-index $\mathbf{i}$ and $(G,w) \in \mathcal{G}_k$, 
-  only one of $(G_\mathbf{i},w_\mathbf{i}) = (G,w)$ or $(G_\mathbf{i},w_\mathbf{i}) \neq (G,w)$ holds. 
+  Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$ generated by a $k$-index $\mathbf{i}$ and $(G,w) \in \mathcal{G}_k$,
+  only one of $(G_\mathbf{i},w_\mathbf{i}) = (G,w)$ or $(G_\mathbf{i},w_\mathbf{i}) \neq (G,w)$ holds.
   Hence, the partition of the summation is well-defined.
 \end{proof}
 %---------%
 \begin{lemma}
   \label{lem:equation_4.5_2}
   \uses{lem:lem_4.3,lem:equal_equiv_class_equal_expectation}
-  %\uses: 
+  %\uses:
   %(a) $\Pi (G,w)$
   %(b) equation_4.2
   %(c) lem:equation_4.4
@@ -353,12 +353,12 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
 \end{proof}
-% Note that the summation is finite, and thus we only need to determine the values of $\Pi (G,w)$ to evaluate the summation. 
+% Note that the summation is finite, and thus we only need to determine the values of $\Pi (G,w)$ to evaluate the summation.
 %---------%
 \begin{definition}
   \label{def:g_k_ge_2}
   \uses{def:g_k}
-  Let $\substack{\mathcal{G}_k \\ w \geq 2}$ be a subset of $\mathcal{G}_k$ 
+  Let $\substack{\mathcal{G}_k \\ w \geq 2}$ be a subset of $\mathcal{G}_k$
   in which the walk $w$ traverses each edge at least twice.
 \end{definition}
 
@@ -372,14 +372,14 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   \]
 \end{lemma}
 \begin{proof}
-  This directly follows from the assumption of Proposition \ref{prop:matrix_moments_convergence} that $\bE (Y_{ij}) = 0$ for every $i$ and $j$. 
+  This directly follows from the assumption of Proposition \ref{prop:matrix_moments_convergence} that $\bE (Y_{ij}) = 0$ for every $i$ and $j$.
 \end{proof}
 
 \begin{lemma}
   \label{lem:equation_4.8}
   \uses{def:g_k_ge_2,lem:equation_4.5_3,lem:Pi.prod_eq_zero_if_w_le_two}
   \[
-  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) 
+  \frac{1}{n} \bE \Tr (\mathbf{X}_n^k)
   = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
 \end{lemma}
@@ -387,7 +387,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   Let $(G,w) \in \mathcal{G}_k$ and suppose there exists an edge $e = \{i,j\}$ such that $w(e) = 1$.
   This means, in Equation \ref{* *}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
   The fact that the variables $Y_{ij}$ are all centered implies the product $\Pi (G,w) = 0$ for any such pair $(G,w)$.
-  Thus, we only need to consider those $w$ that cross each edge at least twice: 
+  Thus, we only need to consider those $w$ that cross each edge at least twice:
   % Reference the Proposition 4.1 condition?
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}  = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
@@ -404,7 +404,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 \end{proof}
 
 
-%% BIG PROPOSITION 
+%% BIG PROPOSITION
 %
 %
 %
@@ -519,3 +519,4 @@ which is equivalent to $\Pi(G_{\mathbf{i}}, w_{\mathbf{i}})$ from definition \re
 %% test edit 2 by Richard
 
 \section{Convergence in Probability}
+% test
