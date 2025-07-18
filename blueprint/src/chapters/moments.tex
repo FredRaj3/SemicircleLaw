@@ -16,65 +16,30 @@
 Proof
 \end{proof}
 
-%\iffalse
-
-
-% 4.2
-% lemma (lemma1): using Matrix.mul_apply?? + induction?
-
-
-% definition of trace
-% linearity of expectation --> map_expect????
-% lemma1
-% defn of Y_i, [n].
-
-
-% define a graph (no idea how to do this in lean)
-
-% matrices commutative? don't really understand this part of the proof
-
-%define \omega ({i, j})
-% 4.3's statement
-
-% 4.4: true because multiplication is commutative (EReal.mul_comm)
-
-
-% more graph definitions (idk how lean would work)
-
-
-% smt smt get to 4.5
-
-% 4.6: use 4.5, scalar multiple of expectatio (Finset.smul_expect), trace of scalar multiple (Matrix.trace_smul)
-
-
-% lemma 4.3: lots more work needed
-
-%4.7: use lemma 4.3
-
-% w >= 2 stuff
-% 4.8
-
-% 4.3.1: maybe SimpleGraph.IsTree.card_edgeFinset??
-
-% test edit by Richard
-%% test edit 2 by Richard
-
-%\fi
-
 
 
 
 \begin{proposition}%[Exercise 4.3.1 in \cite{Kemp2013RMTNotes}]
-  \label{prop:tree_vertex_inequality}
+  \label{prop:vertex_edge_inequality}
   \notready
   %\uses{}
-  Let $G=(V,E)$ be a connected finite graph. Show that $|G|=\#V\le \#E+1$, and that $|G|=\#V=\#E+1$ if and only if $G$ is a plane tree.
+  Let $G=(V,E)$ be a connected finite graph. Then, $|G|=\#V\le \#E+1$.
 \end{proposition}
 
 \begin{proof}
   \notready
   $|G|= \#V\le \#E+1$: proof by induction on $\#V$. Base case $\#V = 1$ is obvious. For each additional vertex, the number of edges must increase by at least one for the graph to remain connected.
+\end{proof}
 
+\begin{proposition}
+  \label{prop:vertex_edge_tree_equality}
+  \notready
+  Let $G=(V,E)$ be a connected finite graph. Then, $|G|=\#V=\#E+1$ if and only if $G$ is a plane tree.
+  \uses{prop:vertex_edge_inequality}
+\end{proposition}
+
+\begin{proof}
+  \notready
   $|G|=\#V=\#E+1$ if $G$ is a plane tree is already in Lean: SimpleGraph.IsTree.card\_edgeFinset.
 
   $G$ is a plane tree if $|G|=\#V=\#E+1$: proof by induction on $\#V$. Base case $\#V = 1$ has no edges. Assume $\#V = \#E + 1$ for $\#V = k$. Now, consider a tree with $\#V = k+1$ nodes. Removing a leaf node leaves us with a tree with $\#V = k$ nodes. By IH, there are $k - 1$ edges. So including the leaf node gives us $k$ edges.
@@ -84,7 +49,7 @@ Proof
 \begin{lemma}
   \label{lemma:vertex_bound}
   \notready
-  \uses{tree_vertex_inequality} % also include that # edges < k/2
+  \uses{prop:vertex_edge_inequality} %uses: also include that # edges < k/2
   For any graph $G = (V, E)$ appearing in the sum in Equation 4.8, $|G| \le k/2 + 1$.
 \end{lemma}
 
@@ -96,16 +61,15 @@ Proof
 
 
 \begin{lemma}
-  \label{lemma:factorial_product}
+  \label{lemma:asc_factorial_product}
   \notready
-  %\uses{}
-  The product $n(n-1)\cdots (n-|G|+1)$ is asymptotically equal to $n^{|G|}$.
+  $n(n-1)\cdots (n-|G|+1) \le n^{|G|}$.
 
 \end{lemma}
 
 \begin{proof}
   \notready
-  Use Nat.ascFactorial\_eq\_div.
+  Use Nat.ascFactorial\_eq\_div. Or prove directly.
 \end{proof}
 
 
@@ -113,7 +77,7 @@ Proof
 \begin{lemma}
   \label{lemma:bounded_map}
   \notready
-  \uses{lemma:factorial_product}
+  \uses{lemma:asc_factorial_product, lemma:vertex_bound} %uses: big statement from richard
   The sequence $n\mapsto \frac1n\bE\Tr(X_n^k)$ is bounded.
 \end{lemma}
 
@@ -122,12 +86,37 @@ Proof
   The only part that depends on $n$ is the big fraction. Since we only care about $w \ge 2$, $|G| \le k/2 + 1$. Use the fact that the product $n(n-1)\cdots (n-|G|+1)$ is asymptotically equal to $n^{|G|}$ to conclude that the fraction is bounded and doesn't explode.
 \end{proof}
 
+\begin{lemma}
+  \label{lemma:odd_vertex_bound}
+  \notready
+  \uses{lemma:vertex_bound}
+  Suppose $k$ odd. Then, $|G| \le \frac{k}{2} + \frac{1}{2}$.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  %prove
+\end{proof}
+
+\begin{lemma}
+  \label{lemma:odd_ratio_bound}
+  \notready
+  \uses{lemma:odd_vertex_bound, lemma:asc_factorial_product}
+  Suppose $k$ odd. Then, $\frac{n(n-1)\cdots(n-|G|+1)}{n^{k/2+1}} \le \frac{1}{\sqrt{n}}$.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  %prove
+\end{proof}
+
+
 
 
 \begin{proposition}
   \label{prop:odd_case}
   \notready
-  \uses{lemma:vertex_bound} %equation 4.8
+  \uses{lemma:odd_ratio_bound} %uses: big statement from richard
   Suppose $k$ odd. Then, $\lim_{n\to\infty} \bE\Tr(X_n^k) = 0$.
 \end{proposition}
 
@@ -136,26 +125,42 @@ Proof
   Since $|G|\le \#E+1 \le k/2+1$ and $|G|$ is an integer, it follows that $|G|\le (k-1)/2+1 = k/2 + 1/2$.  Hence, in this case, all the terms in the (finite $n$-independent) sum in Equation 4.8 are $O(n^{-1/2})$
 \end{proof}
 
-
-
-\begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
-  \label{prop:g_bound}
+\begin{lemma}
+  \label{lemma:edge_bound_large_w}
   \notready
-  \uses{prop:tree_vertex_inequality} %also that things are even
-  Let $(G,w)\in\mathcal{G}_k$ with $w\ge 2$.
-  \begin{itemize}
-  \item[(a)] If there exists a self-edge $e\in E_s$ in $G$, then $|G|\le k/2$.
-  \item[(b)] If there exists an edge $e$ in $G$ with $w(e)\ge 3$, then $|G|\le k/2$.
-  \end{itemize}
+  %\uses{}
+  If $k$ is even and there exists $e$ such that $w(e) \ge 3$, then $\#E \le \frac{k-1}{2}$.
 \end{proposition}
 
 \begin{proof}
   \notready
-  \begin{itemize}
-    \item[(a)] Since the graph $G = (V,E)$ contains a loop, it is not a tree; it follows from Exercise \ref{ex V < E+1} that $\#V < \#E+1$.  But $w\ge 2$ implies that $\#E\le k/2$, and so $\#V < k/2+1$, and so $|G| = \#V \le k/2$.
+  %proof
+\end{proof}
 
-    \item[(b)] The sum of $w$ over all edges $E$ in $G$ is $k$.  Hence, the sum of $w$ over $E\setminus\{e\}$ is $\le k-3$.  Since $w\ge 2$, this means that the number of edges excepting $e$ is $\le (k-3)/2$; hence, $\#E \le (k-3)/2+1 = (k-1)/2$.  By the result of a previous lemma, this means that $\#V \le (k-1)/2+1 = (k+1)/2$.  Since $k$ is even, it follows that $|G|=\#V \le k/2$.
-  \end{itemize}
+
+
+\begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
+  \label{prop:g_bound_self_edge}
+  \notready
+  \uses{prop:vertex_edge_inequality, prop:vertex_edge_tree_equality} %uses: richard's E <= k/2
+  Let $(G,w)\in\mathcal{G}_k$ with $w\ge 2$, and suppose $k$ is even. If there exists a self-edge $e\in E_s$ in $G$, then $|G|\le k/2$.
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Since the graph $G = (V,E)$ contains a loop, it is not a tree; it follows from Exercise \ref{ex V < E+1} that $\#V < \#E+1$.  But $w\ge 2$ implies that $\#E\le k/2$, and so $\#V < k/2+1$, and so $|G| = \#V \le k/2$.
+\end{proof}
+
+\begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
+  \label{prop:g_bound_large_w}
+  \notready
+  \uses{prop:vertex_edge_inequality, prop:vertex_edge_tree_equality, lemma:edge_bound_large_w}
+  Let $(G,w)\in\mathcal{G}_k$ with $w\ge 2$, and suppose $k$ is even. If there exists an edge $e$ in $G$ with $w(e)\ge 3$, then $|G|\le k/2$.
+\end{proposition}
+
+\begin{proof}
+  \notready
+  The sum of $w$ over all edges $E$ in $G$ is $k$.  Hence, the sum of $w$ over $E\setminus\{e\}$ is $\le k-3$.  Since $w\ge 2$, this means that the number of edges excepting $e$ is $\le (k-3)/2$; hence, $\#E \le (k-3)/2+1 = (k-1)/2$.  By the result of a previous lemma, this means that $\#V \le (k-1)/2+1 = (k+1)/2$.  Since $k$ is even, it follows that $|G|=\#V \le k/2$.
 \end{proof}
 
 
@@ -169,18 +174,77 @@ Proof
 \end{definition}
 
 
-\begin{definition}
-  \label{def:big_o_with_base}
+\begin{lemma}
+  \label{lemma:graph_set_finite}
   \notready
-  %\uses{def:}
-  Something is $O_k(n^{-1})$ if it is $\le B_k/n$ for some $n$-independent constant $B_k$
-\end{definition}
+  %\uses{} %uses: definition of G_k
+  $|G_k|$ is finite.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Follows from definition.
+\end{proof}
+
+
+\begin{lemma}
+  \label{lemma:special_g_tree}
+  \notready
+  \uses{def:special_set_g}
+  Elements of $G_k^{k/2+1}$ are trees.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  %proof
+\end{proof}
+
+\begin{lemma}
+  \label{lemma:special_g_edge_count}
+  \notready
+  \uses{def:special_set_g}
+  Elements of $G_k^{k/2+1}$ have $|E| = k/2$.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  %proof
+\end{proof}
+
+\begin{lemma}
+  \label{lemma:special_g_vertex_count}
+  \notready
+  \uses{def:special_set_g, lemma:special_g_edge_count, lemma:special_set_g, prop:vertex_edge_tree_equality}
+  Elements of $G_k^{k/2+1}$ have $|V| = k/2 + 1$.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Follows directly from dependency graph.
+\end{proof}
+
+
+
+\begin{proposition}
+  \label{prop:g_difference_bound}
+  \notready
+  \uses{lemma:graph_set_finite, def:special_set_g, lemma:asc_factorial_product}
+  $|\sum_{\mathcal{G}_{k}, w \ge 2} - \sum_{\mathcal{G}_k^{k/2+1}}| \le |\mathcal{G}_k|/n$.
+\end{proposition}
+
+\begin{proof}
+  \notready
+  %proof
+\end{proof}
+
+
 
 \begin{proposition}%[Equation 4.9 in \cite{Kemp2013RMTNotes}]
-  \label{prop:eqn_trace_sum}
+  \label{prop:trace_ev_special_g}
   \notready
-  \uses{def:big_o_with_base, prop:g_bound} %also eqn 4.6
+  \uses{prop:g_difference_bound} %uses: richard big formula
   $\frac1n\bE\Tr(X_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w) \cdot \frac{n(n-1)\cdots(n-|G|+1)}{n^{k/2+1}} + O_k(n^{-1})$
+  %edit: remove big O notation
 \end{proposition}
 
 \begin{proof}
@@ -188,13 +252,24 @@ Proof
   If $|G| < k/2 + 1$, then there is at least one more $n$ in the denominator than the numerator.
 \end{proof}
 
-
-
-
-\begin{proposition}%4.7.5
-  \label{prop:eqn_4_7_5}
+\begin{proposition}
+  \label{lemma:fraction_limit_one}
   \notready
-  \uses{lemma:vertex_bound, lemma:factorial_product, lemma:eqn_trace_sum}
+  \uses{lemma:asc_factorial_product} %uses some lower bound stuff?
+  $\lim_{n\to\infty}\frac{n^{k/2}}{n(n-1)\cdots(n-k/2+1)} = 1$.
+\end{proposition}
+
+\begin{proof}
+  \notready
+  %proof
+  some lower bound stuff + other stuff?
+\end{proof}
+
+
+\begin{proposition}
+  \label{prop:trace_ev_limit_equals_sum}
+  \notready
+  \uses{def:special_set_g, prop:g_difference_bound, lemma:fraction_limit_one}
   $\lim_{n\to\infty}\bE\Tr(X_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w)$
 \end{proposition}
 
@@ -206,10 +281,10 @@ Proof
 
 
 
-\begin{proposition}[Equation 4.8 in \cite{Kemp2013RMTNotes}]
-  \label{prop:eqn_4_8}
+\begin{proposition}%[Equation 4.10 in \cite{Kemp2013RMTNotes}]
+  \label{prop:product_g_w_to_exponential}
   \notready
-  \uses{prop:g_bound, prop:tree_vertex_inequality}
+  \uses{lemma:special_g_tree, lemma:special_g_edge_count, lemma:special_g_vertex_count, prop:vertex_edge_tree_equality, prop:g_bound_self_edge, prop:g_bound_large_w} %uses: defn of t, defn of pi(G,w)
   $\Pi(G,w) = \prod_{e_c\in E^c} \bE(Y_{12}^{w(e_c)}) = \prod_{e_c\in E^c} \bE(Y_{12}^2) = t^{\#E} = t^{k/2}$.
 \end{proposition}
 
@@ -226,10 +301,10 @@ Proof
 
 
 
-\begin{proposition}%[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
+\begin{proposition}%[Proposition 4.11 in \cite{Kemp2013RMTNotes}]
   \label{prop:limit_stuff}
   \notready
-  \uses{prop:4_7_5, prop:eqn_4_8}
+  \uses{prop:trace_ev_limit_equals_sum, prop:product_g_w_to_exponential}
   $\lim_{n\to\infty} \bE\Tr(X_n^k) = t^{k/2}\cdot\#\mathcal{G}_k^{k/2+1}$
 \end{proposition}
 
