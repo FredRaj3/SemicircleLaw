@@ -195,13 +195,25 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
   crosses each edge at least twice.
 \end{definition}
 %---------%
+\begin{definition}
+  \label{def:Pi.graph}
+  \uses{def:g_k}
+  %uses the definition of $\Pi (G_\mathbf{i},w_\mathbf{i})$.
+  Given an equivalence class $(G,w) \in \mathcal{G}_k$, let 
+  \[
+  \Pi (G,w) = \Pi (G_\mathbf{i},w_\mathbf{i})
+  \]
+  where $(G_\mathbf{i},w_\mathbf{i}) \in (G,w)$.
+\end{definition}
+%---------%
 \begin{lemma}
   \label{lem:g_k_ge_2_wd}
   \uses{def:g_k_ge_2,lem:equal_equiv_class_equal_expectation}
-  The set $\substack{\mathcal{G}_k \\ w \geq 2}$ in Definition \ref{def:g_k_ge_2} is well-defined.  
+  The set $\substack{\mathcal{G}_k \\ w \geq 2}$ in Definition \ref{def:g_k_ge_2} is well-defined.
+  Furthermore, the common value $\Pi (G,w)$ in Definition \ref{def:Pi.graph} is well-defined.  
 \end{lemma}
 \begin{proof}
-  The proof follows an identical reasoning as in the proof of Lemma \ref{lem:equal_equiv_class_equal_expectation}.
+  The proof for both statements follows an identical reasoning as in the proof of Lemma \ref{lem:equal_equiv_class_equal_expectation}.
 \end{proof}
 %---------%
 \begin{lemma}
@@ -239,7 +251,7 @@ We can count the set of $k$-indexes in Equation \ref{* *}:
 %---------%
 \begin{lemma}
   \label{lem:edge_set_order_leq_k_over_two}
-  \uses{def:g_k_ge_2}
+  \uses{def:g_k_ge_2,lem:graph_walk_le_k}
   Given an ordered pair $(G_\mathbf{i},w_\mathbf{i})$, if $w_\mathbf{i} \geq 2$, then $\# E_\mathbf{i} \leq k/2$.
 \end{lemma}
 \begin{proof}
