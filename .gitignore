@@ -15,7 +15,6 @@ print/
 *.fdb_latexmk
 *.out
 *.paux
-*.pdf
 *.pygstyle
 *.pygtex
 *.synctex(busy)
