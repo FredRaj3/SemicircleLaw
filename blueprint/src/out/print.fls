@@ -217,6 +217,11 @@ INPUT chapters/biblio.tex
 INPUT out/print.bbl
 INPUT out/print.bbl
 INPUT out/print.bbl
+INPUT ./chapters/semicircledistribution.tex
+INPUT ./chapters/semicircledistribution.tex
+INPUT ./chapters/semicircledistribution.tex
+INPUT ./chapters/semicircledistribution.tex
+INPUT chapters/semicircledistribution.tex
 INPUT out/print.aux
 INPUT out/print.out
 INPUT out/print.out
