@@ -16,6 +16,7 @@ print/
 *.log
 *.fdb_latexmk
 *.out
+*.fls
 *.paux
 *.pdf
 *.pygstyle
