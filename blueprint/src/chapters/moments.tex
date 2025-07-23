@@ -35,6 +35,13 @@ Proof
 
 %---Richard's Part for Proposition 4.1 (Start)---% 
 %---------% 
+\begin{definition}
+  Define abs $|w_\mathbf{i}|$. 
+\end{definition}
+%---------% 
+\begin{definition}
+  Define pi for non-indexed graph (G,w). 
+%---------% 
 \begin{lemma}
   \label{lem:graph_walk_le_k}
   \uses{def:graph_multi_index,def:graph_path,def:graph_edge_count}
@@ -57,7 +64,7 @@ Proof
 %---------%
 \begin{definition}
   \label{def:g_k}
-  \uses{def:graph_multi_index,def:graph_path,def:graph_edge_count}
+  \uses{def:graph_edge_count}
   Let $\mathcal{G}_k$ denote the set of all ordered pairs $(G,w)$ where $G = (V,E)$ is a connected graph with at most $k$ vertices, and
   $w$ is a closed walk covering $G$ satisfying $|w| = k$.
 \end{definition}
@@ -128,7 +135,7 @@ Proof
 %---------%
 \begin{lemma}[Lemma 4.3 in \cite{Kemp2013RMTNotes}]
   \label{lem:lem_4.3}
-  \uses{def:g_k}
+  \uses{def:g_k,def:graph_path}
   % Perhaps will need to explicitly lay out the equivalence relation.
   Given $(G,w) \in \mathcal{G}_k$, denote by $|G|$ the number of vertices in $G$. Then
   \[
@@ -157,7 +164,7 @@ Proof
 %---------%
 \begin{lemma}
   \label{lem:equation_4.5_2}
-  \uses{lem:lem_4.3,lem:equal_equiv_class_equal_expectation,lem:trace_expectation_of_matrix,lem:expectation_matrix_multi_index}
+  \uses{lem:lem_4.5_1,lem:equal_equiv_class_equal_expectation,prop:}
   \[
   \bE \Tr (\mathbf{Y}_\mathbf{i}^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \}.
   \]
@@ -187,7 +194,7 @@ Proof
 %---------%
 \begin{definition}
   \label{def:g_k_ge_2}
-  \uses{def:g_k}
+  \uses{def:g_k,def:graph_path}
   Let $\substack{\mathcal{G}_k \\ w \geq 2}$ be a subset of $\mathcal{G}_k$ 
   in which the walk $w$ traverses each edge at least twice.
 \end{definition}
