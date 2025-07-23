@@ -1072,7 +1072,7 @@ which is equivalent to $\Pi(G_{\mathbf{i}}, w_{\mathbf{i}})$ from definition \re
 
 
 \begin{lemma}
-  \label{lemma:simplied_var_trace_as_sum}
+  \label{lemma:simplified_var_trace_as_sum}
   \uses{prop:var_trace_as_sum}
   \notready
   \[ \Var\left( \frac1n\Tr({X}_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
@@ -1085,7 +1085,7 @@ which is equivalent to $\Pi(G_{\mathbf{i}}, w_{\mathbf{i}})$ from definition \re
 
 \begin{proposition}
   \label{prop:var_upper_bound}
-  \uses{prop:vertex_edge_inequality, lemma:simpilified_var_trace_as_sum}
+  \uses{prop:vertex_edge_inequality, lemma:simplified_var_trace_as_sum}
   \notready
   \[ \Var\left( \frac1n\Tr({X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
 \end{proposition}
