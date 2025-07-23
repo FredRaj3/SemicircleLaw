@@ -61,7 +61,6 @@ We can use the result from Lemma \ref{lem:matrix_powers_entries} to compute the 
 \begin{definition}[Graphs from Multi Index]
     \label{def:graph_multi_index}
     \notready
-    \uses{def:}
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. A graph $G_{\mathbf{i}}$ is defined as follows: the vertices $V_{\mathbf{i}}$ are the distinct elements of
     $$\left\{i_1, i_2, \ldots, i_k\right\},$$
      and the edges $E_{\mathbf{i}}$ are the distinct pairs among
@@ -121,7 +120,7 @@ of edges from $E_{\mathbf{i}}$
 \begin{lemma}[Graph Walk and Graph Count Equivalence]
     \label{lem:graph_walk_count_equivalence}
     \notready
-    \uses{def:graph_graph_path, def:graph_edge_count, def:matrix_multi_index, lem:multi_index_graph_equivalence}
+    \uses{def:graph_path, def:graph_edge_count, def:matrix_multi_index, lem:multi_index_graph_equivalence}
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix. Then, we have the following:
      $$
      Y_{\mathbf{i}} = \prod_{w \in w_{\mathbf{i}}} Y_{w} = \prod_{1 \leq i \leq j \leq n} Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}.
@@ -640,7 +639,7 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 
 \begin{proof}
   \notready
-  Since the graph $G = (V,E)$ contains a loop, it is not a tree; it follows from Exercise \ref{ex V < E+1} that $\#V < \#E+1$.  But $w\ge 2$ implies that $\#E\le k/2$, and so $\#V < k/2+1$, and so $|G| = \#V \le k/2$.
+  Since the graph $G = (V,E)$ contains a loop, it is not a tree; it follows from Proposition \ref{prop:vertex_edge_tree_equality} that $\#V < \#E+1$.  But $w\ge 2$ implies that $\#E\le k/2$, and so $\#V < k/2+1$, and so $|G| = \#V \le k/2$.
 \end{proof}
 
 \begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
@@ -706,7 +705,7 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \begin{lemma}
   \label{lemma:special_g_vertex_count}
   \notready
-  \uses{def:special_set_g, lemma:special_g_edge_count, lemma:special_set_g, prop:vertex_edge_tree_equality}
+  \uses{def:special_set_g, lemma:special_g_edge_count, prop:vertex_edge_tree_equality}
   Elements of $G_k^{k/2+1}$ have $|V| = k/2 + 1$.
 \end{lemma}
 
