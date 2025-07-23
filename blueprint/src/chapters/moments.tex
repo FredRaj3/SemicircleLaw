@@ -1079,31 +1079,31 @@ which is equivalent to $\Pi(G_{\mathbf{i}}, w_{\mathbf{i}})$ from definition \re
 \end{lemma}
 
 \begin{proof}
-  \noteready
+  \notready
   The enumeration of the number of $2k$-tuples yielding a certain graph with two walks is the same as in the previous proposition: the structure $(G,w,w')$ specifies the $2k$-tuple precisely once we select the $|G|$ distinct indices for the vertices.  So, as before, this ratio becomes \[ \frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
 \end{proof}
 
 \begin{proposition}
   \label{prop:var_upper_bound}
   \uses{prop:vertex_edge_inequality, lemma:simpilified_var_trace_as_sum}
-  \noteready
+  \notready
   \[ \Var\left( \frac1n\Tr({X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
 \end{proposition}
 
 \begin{proof}
-  \noteready
+  \notready
   Now, we have the condition $w+w'\ge 2$, meaning every edge is traversed at least twice.  Since there are $k$ steps in each of the two paths, this means there are at most $k$ edges.  Appealing again to \ref{prop:vertex_edge_inequality}, it follows that $|G|\le k+1$.  Hence, $n(n-1)\cdots(n-|G|+1) \le n^{|G|} \le n^{k+1}$
 \end{proof}
 
 \begin{theorem}
   \label{thm:wigner_law_matrix_moments}
   \uses{prop:var_upper_bound}
-  \noteready
+  \notready
   Theorem 2.4. (Unsure if it goes in this doc.)
 \end{theorem}
 
 \begin{proof}
-  \noteready
+  \notready
   The (potentially enormous) number $B_k=2M_{2k}\cdot\#\mathcal{G}_{k,k}$ is independent of $n$, and so we have already proved that the variance is $=O_k(1/n)$.
 \end{proof}
 
