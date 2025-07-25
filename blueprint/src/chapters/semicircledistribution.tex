@@ -1,6 +1,5 @@
 
 %section Transformation
-
 \begin{lemma}\label{lem:semicircleReal_map_add_const}
   \notready
   \lean{semicircleReal_map_add_const}
@@ -10,6 +9,7 @@
     %sorry
   \end{proof}
 \end{lemma}
+
 
 \begin{lemma}\label{lem:semicircleReal_map_const_add}
   \mathlibok
@@ -21,6 +21,7 @@
   \end{proof}
 \end{lemma}
 
+
 \begin{lemma}\label{lem:semicircleReal_map_const_mul}
   \notready
   \lean{semicircleReal_map_const_mul}
@@ -30,6 +31,8 @@
      %sorry
   \end{proof}
 \end{lemma}
+
+
 
 \begin{lemma}\label{lem:semicircleReal_map_mul_const}
   \mathlibok
@@ -41,6 +44,8 @@
     Use commutativity between $Xc$ and $cX$.
   \end{proof}
 \end{lemma}
+
+
 
 \begin{lemma}\label{lem:semicircleReal_map_neg}
   \mathlibok
@@ -61,8 +66,8 @@
   \begin{proof}
    Use the map by addition of constant and substitute constant for its $-1$ multiple.
   \end{proof}
-
 \end{lemma}
+
 
 \begin{lemma}\label{lem:semicircleReal_map_const_sub}
   \mathlibok
@@ -75,21 +80,22 @@
   \end{proof}
 \end{lemma}
 
+
 \begin{lemma}\label{lem:semicircleReal_add_const}
   \mathlibok
   \lean{semicircleReal_add_const}
-  \uses{}
+  \uses{lem:semicircleReal_map_add_const}
   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
   then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(\mu + y, v)$
   \begin{proof}
-
   \end{proof}
 \end{lemma}
+
 
 \begin{lemma}\label{lem:semicircleReal_const_add}
   \mathlibok
   \lean{semicircleReal_const_add}
-  \uses{}
+  \uses{lem:semicircleReal_add_const}
   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
   then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(y + \mu, v)$
   \begin{proof}
@@ -97,10 +103,11 @@
   \end{proof}
 \end{lemma}
 
+
 \begin{lemma}\label{lem:semicircleReal_const_mul}
   \mathlibok
   \lean{semicircleReal_const_mul}
-  \uses{}
+  \uses{lem:semicircleReal_map_const_mul}
   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
   then for a constant $c \in \mathbb{R}$, $cX \sim \mathrm{SC}(c\mu , c^2v)$
   \begin{proof}
@@ -108,10 +115,11 @@
   \end{proof}
 \end{lemma}
 
+
 \begin{lemma}\label{lem:semicircleReal_mul_const}
   \mathlibok
   \lean{semicircleReal_mul_const}
-  \uses{}
+  \uses{lem:semicircleReal_const_mul}
    Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
   then for a constant $c \in \mathbb{R}$, $Xc \sim \mathrm{SC}(\mu c , c^2v)$
   \begin{proof}
@@ -120,6 +128,9 @@
 \end{lemma}
 
 %end Transformation
+
+
+
 
 %moments
 
@@ -135,11 +146,6 @@
   $Var(X) = v$
 \end{lemma}
 
-/-- The variance of a real semicircle distribution `semicircleReal μ v` is
-its variance parameter `v`. -/
-@[simp]
-lemma variance_fun_id_semicircleReal : Var[fun x ↦ x; semicircleReal μ v] = v := by
-  sorry
 
 \begin{lemma}\label{lem:variance_id_semicircleReal}
   lean{variance_id_semicircleReal}
@@ -149,24 +155,13 @@ lemma variance_fun_id_semicircleReal : Var[fun x ↦ x; semicircleReal μ v] = v
 \end{lemma}
 
 
-/-- All the moments of a real semicircle distribution are finite. That is, the identity is in Lp for
-all finite `p`. -/
-lemma memLp_id_semicircleReal (p : ℝ≥0) : MemLp id p (semicircleReal μ v) :=
-  sorry
+\begin{lemma}\label{lem:memLp_id_semicircleReal}
+  \lean{memLp_id_semicircleReal}
+  \notready
+  All the moments of a real semicircle distribution are finite. That is, the identity is in $L_p$ for
+  all finite $p$
+\end{lemma}
 
-
-/-- All the moments of a real semicircle distribution are finite. That is, the identity is in Lp for
-all finite `p`. -/
-lemma memLp_id_semicircleReal' (p : ℝ≥0∞) (hp : p ≠ ∞) : MemLp id p (semicircleReal μ v) := by
-  lift p to ℝ≥0 using hp
-  exact memLp_id_semicircleReal p
-
-
-
-lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
-    centralMoment id (2 * n) (semicircleReal μ v)
-    = v ^ n * catalan n := by
-  sorry
 
 \begin{lemma}\label{lem:centralMoment_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
@@ -174,24 +169,22 @@ lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
    $\mathbb{E}[(X  - \mu)^{2n}] = v_n C_n $
 \end{lemma}
 
-lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
-    centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v)
-    = v ^ n * catalan n :=
-  sorry
-
 \begin{lemma}\label{lem:centralMoment_fun_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n}] = v_n C_n $
 \end{lemma}
 
-lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
-    centralMoment id ((2 * n) + 1) (semicircleReal μ v)
-    = 0 := by
-  sorry
+\begin{lemma}\label{lem:centralMoment_odd_semicircleReal}
+  lean{centralMoment_odd_semicircleReal}
+  \notready
+  $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
+\end{lemma}
 
 \begin{lemma}\label{lem:centralMoment_fun_odd_semicircleReal}
   \lean{centralMoment_fun_odd_semicircleReal}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
 \end{lemma}
+
+%Moments end
