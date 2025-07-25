@@ -434,7 +434,7 @@ as desired.
     \label{lemma:rnDeriv_semicircleReal}
     \uses{lemma:semicircleReal_zero_var, lemma:semicirclePDF_zero_var, lemma:semicircleReal_of_var_ne_zero, lemma:measurable_semicirclePDF}
     \leanok
-    The Radon–Nikodym derivative of the semicircle measure semicircleReal $\mu$ $v$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function semicirclePDF $\mu$ $v$.
+    The Radon–Nikodym derivative of the semicircle measure semicircleReal $\mu$ $v$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function semicirclePDF $(\mu$, $v)$.
 \end{lemma}
 
 \begin{lemma}
@@ -453,3 +453,200 @@ as desired.
 \end{lemma}
 
 %---Kiran's Part for Semicircle Distribution (End)---% 
+
+
+\section{Transformations}
+
+
+%---Haoyan's Part for Semicircle Distribution (Start)---%
+
+
+\begin{lemma}\label{lem:semicircleReal_map_add_const}
+  \notready
+  \lean{semicircleReal_map_add_const}
+  The map of a semicircle distribution by addition of a constant is semicircular. That is,
+  given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto X + y )^{-1} = \mathrm{SC}(\mu + y, v)$.
+  \begin{proof}
+    %sorry
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_map_const_add}
+  \mathlibok
+  \lean{semicircleReal_map_const_add}
+  The map of a semicircle distribution by addition of a constant is semicircular. That is,
+  given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto y + X )^{-1} = \mathrm{SC}(y + \mu, v)$.
+  \begin{proof}
+    Obvious from commutativity between $X + y$ and $y + X$.
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_map_const_mul}
+  \notready
+  \lean{semicircleReal_map_const_mul}
+    The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
+  given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto cX )^{-1} = \mathrm{SC}(c\mu , c^2v)$.
+  \begin{proof}
+     %sorry
+  \end{proof}
+\end{lemma}
+
+
+
+\begin{lemma}\label{lem:semicircleReal_map_mul_const}
+  \mathlibok
+  \lean{semicircleReal_map_mul_const}
+  \uses{lem:semicircleReal_map_const_mul}
+   The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
+  given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto Xc )^{-1} = \mathrm{SC}(\mu c , c^2v)$.
+  \begin{proof}
+    Use commutativity between $Xc$ and $cX$.
+  \end{proof}
+\end{lemma}
+
+
+
+\begin{lemma}\label{lem:semicircleReal_map_neg}
+  \mathlibok
+  \lean{semicircleReal_map_neg}
+  \uses{lem:semicircleReal_map_const_mul}
+  Given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto -X )^{-1} = \mathrm{SC}(-\mu  , v)$
+  \begin{proof}
+     Special case of the multiplication by constant map with constant being $-1$.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{lem:semicircleReal_map_sub_const}
+  \mathlibok
+  \lean{semicircleReal_map_sub_const}
+  \uses{lem:semicircleReal_map_add_const}
+   The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
+  given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X  \mapsto X - y )^{-1} = \mathrm{SC}(\mu - y  , v)$
+  \begin{proof}
+   Use the map by addition of constant and substitute constant for its $-1$ multiple.
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_map_const_sub}
+  \mathlibok
+  \lean{semicircleReal_map_const_sub}
+  \uses{lem:semicircleReal_map_neg, lem:semicircleReal_map_const_add}
+  The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
+  given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto y-X  )^{-1} = \mathrm{SC}(y-\mu  , v)$
+  \begin{proof}
+
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_add_const}
+  \mathlibok
+  \lean{semicircleReal_add_const}
+  \uses{lem:semicircleReal_map_add_const}
+  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
+  then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(\mu + y, v)$
+  \begin{proof}
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_const_add}
+  \mathlibok
+  \lean{semicircleReal_const_add}
+  \uses{lem:semicircleReal_add_const}
+  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
+  then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(y + \mu, v)$
+  \begin{proof}
+
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_const_mul}
+  \mathlibok
+  \lean{semicircleReal_const_mul}
+  \uses{lem:semicircleReal_map_const_mul}
+  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
+  then for a constant $c \in \mathbb{R}$, $cX \sim \mathrm{SC}(c\mu , c^2v)$
+  \begin{proof}
+
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_mul_const}
+  \mathlibok
+  \lean{semicircleReal_mul_const}
+  \uses{lem:semicircleReal_const_mul}
+   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
+  then for a constant $c \in \mathbb{R}$, $Xc \sim \mathrm{SC}(\mu c , c^2v)$
+  \begin{proof}
+
+  \end{proof}
+\end{lemma}
+
+%end Transformation
+
+
+
+
+%moments
+
+\begin{lemma}\label{lem:integral_id_semicircleReal}
+  \lean{integral_id_semicircleReal}
+  \notready
+  $$\mathbb{E}[X] = \int x d \sigma = \mu$$
+\end{lemma}
+
+\begin{lemma}\label{lem:variance_fun_id_semicircleReal}
+  \lean{variance_fun_id_semicircleReal}
+  \notready
+  $Var(X) = v$
+\end{lemma}
+
+
+\begin{lemma}\label{lem:variance_id_semicircleReal}
+  \lean{variance_id_semicircleReal}
+  \notready
+  The variance of a real semicircle distribution with parameter $(\mu, v)$ is
+  its variance parameter $v$
+\end{lemma}
+
+
+\begin{lemma}\label{lem:memLp_id_semicircleReal}
+  \lean{memLp_id_semicircleReal}
+  \notready
+  All the moments of a real semicircle distribution are finite. That is, the identity is in $L_p$ for
+  all finite $p$
+\end{lemma}
+
+
+\begin{lemma}\label{lem:centralMoment_two_mul_semicircleReal}
+  \lean{centralMoment_fun_two_mul_semicircleReal}
+  \notready
+   $\mathbb{E}[(X  - \mu)^{2n}] = v_n C_n $
+\end{lemma}
+
+\begin{lemma}\label{lem:centralMoment_fun_two_mul_semicircleReal}
+  \lean{centralMoment_fun_two_mul_semicircleReal}
+  \notready
+   $\mathbb{E}[(X  - \mu)^{2n}] = v_n C_n $
+\end{lemma}
+
+\begin{lemma}\label{lem:centralMoment_odd_semicircleReal}
+  \lean{centralMoment_odd_semicircleReal}
+  \notready
+  $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
+\end{lemma}
+
+\begin{lemma}\label{lem:centralMoment_fun_odd_semicircleReal}
+  \lean{centralMoment_fun_odd_semicircleReal}
+  \notready
+   $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
+\end{lemma}
+
+
+%--- Haoyan's Part for Semicircle Distribution (End)---%
