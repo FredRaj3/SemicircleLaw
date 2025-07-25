@@ -17,6 +17,7 @@ print/
 *.fdb_latexmk
 *.out
 *.fls
+*.blg
 *.paux
 *.pdf
 *.pygstyle
