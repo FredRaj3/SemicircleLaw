@@ -1,6 +1,369 @@
 \chapter{SemicircleDistribution}
 
-\section{SemicircleDistribution}
+\section{Semicircle Probability Density Function}
+
+
+
+%---Richard's Part for Semicircle Distribution (Start)---% 
+%---------%
+%---------%
+\begin{definition}\label{def:semicirclePDFReal}
+  \mathlibok 
+  \lean{semicirclePDFReal}
+    The function $f : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \rightarrow \mathbb{R}$ defined by
+   \[
+    f(\mu,v,x) 
+    = \frac{1}{2πv} \sqrt{(4v - (x - μ)^2)_+}
+   \]
+   is called the probability density function (p.d.f.) of the semicircle distribution.
+\end{definition}
+%---------%
+%---------%
+\begin{lemma}\label{lem:semicirclePDFReal_def}
+  \mathlibok 
+  \lean{semicirclePDFReal_def}
+  \uses{def:semicirclePDFReal}
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution with mean $\mu$ and variance $v$ is given by
+  \[
+    f(x) = 
+    \frac{1}{2πv} \sqrt{(4v - (x - μ)^2)_+}.
+  \]
+\end{lemma}
+%---------%
+%---------%
+\begin{lemma}\label{lem:semicirclePDFReal_zero_var}
+    \mathlibok
+    \lean{semicirclePDF_zero_var}
+    \uses{def:semicirclePDFReal}
+    If the variance $v$ is given to be zero, then the p.d.f. of the semicircle distribution is the zero functional.
+%    In other words, for any mean $m \in \mathbb{R}$ and $x \in \mathbb{R}$, we have
+%    \[
+%    f(m,0,x) = 0.
+%    \]
+\end{lemma}
+\begin{proof}
+    By Definition \ref{def:semicirclePDFReal}, the square root of a nonpositive number is defined to be zero.
+    Hence, the p.d.f. with a zero variance must be the zero functional.
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:semicirclePDFReal_nonneg}
+    \mathlibok
+    \lean{semicirclePDFReal_nonneg}
+    \uses{def:semicirclePDFReal}
+    The p.d.f. of the semicircle distribution is always nonnegative. 
+\end{lemma}
+\begin{proof}
+   By Definition \ref{def:semicirclePDFReal}, the square root of a nonpositive number is defined to be zero. 
+   Furthermore, the variance is always assumed to be nonnegative.
+   Therefore, since the fractional term and the square root term are always nonnegative,
+   we conclude the p.d.f. is always nonnegative. 
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:measurable_semicirclePDFReal}
+    \lean{measurable_semicirclePDFReal}
+    \uses{}
+    \notready
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution with mean $\mu$ and variance $v$ is measurable.
+\end{lemma}
+\begin{proof}
+% sorry
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:stronglyMeasurable_semicirclePDFReal}
+    \mathlibok
+    \lean{stronglyMeasurable_semicirclePDFReal}
+    \uses{def:semicirclePDFReal,lem:measurable_semicirclePDFReal}
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution with mean $\mu$ and variance $v$ is strongly measurable.
+\end{lemma}
+\begin{proof}
+    By Lemma \ref{lem:measurable_semicirclePDFReal}, we know the p.d.f. $f$ with fixed mean $\mu$ and variance $v$ is measurable.
+    Since $\mathbb{R}$ is equipped with a second countable topology, the fact that $f$ with fixed mean $\mu$ and variance $v$ implies $f$ is strongly measurable.  
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:integrable_semicirclePDFReal}
+    \lean{integrable_semicirclePDFReal}
+    \uses{def:semicirclePDFReal}
+    \notready
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution with mean $\mu$ and variance $v$ is integrable.
+\end{lemma}
+\begin{proof}
+% sorry
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:lintegral_semicirclePDFReal_eq_one}
+    \lean{lintegral_semicirclePDFReal_eq_one}
+    \uses{def:semicirclePDFReal}
+    \notready
+    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the lower integral of the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution with mean $\mu$ and variance $v$ equals $1$.
+\end{lemma}
+\begin{proof}
+% sorry
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:integral_semicirclePDFReal_eq_one}
+    \lean{integral_semicirclePDFReal_eq_one}
+    \uses{def:semicirclePDFReal}
+    \notready
+    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the integral of the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution with mean $\mu$ and variance $v$ equals $1$.
+\end{lemma}
+\begin{proof}
+% sorry
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:semicirclePDFReal_sub}
+    \mathlibok
+    \lean{semicirclePDFReal_sub}
+    \uses{def:semicirclePDFReal}
+    For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution, the following relation is satisfied:
+    \[
+    f(\mu,v,x-y) = f(\mu+y,v,x)
+    \]
+    for any $u \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$. 
+\end{lemma}
+\begin{proof}
+   Expanding Definition \ref{def:semicirclePDFReal} gives
+   \[
+   f(\mu,v,x-y) 
+   = \frac{1}{2πv} \sqrt{\bigl( 4v - ( (x - y) - μ)^2 \bigl)_+} 
+   = \frac{1}{2πv} \sqrt{\bigl( 4v - (x - (μ + y))^2 \bigl)_+}
+   = f(\mu+y,v,x).
+   \]
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:semicirclePDFReal_add}
+    \mathlibok
+    \lean{semicirclePDFReal_add}
+    \uses{def:semicirclePDFReal,lem:semicirclePDFReal_sub}
+    For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution, the following relation is satisfied:
+    \[
+    f(\mu,v,x+y) = f(\mu-y,v,x)
+    \]
+    for any $u \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$. 
+\end{lemma}
+\begin{proof}
+   Expanding Definition \ref{def:semicirclePDFReal} gives
+   \[
+   f(\mu,v,x+y) 
+   = \frac{1}{2πv} \sqrt{\bigl( 4v - ( (x + y) - μ)^2 \bigl)_+} 
+   = \frac{1}{2πv} \sqrt{\bigl( 4v - (x - (μ - y))^2 \bigl)_+}
+   = f(\mu-y,v,x).
+   \]
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:semicirclePDFReal_inv_mul}
+    \lean{semicirclePDFReal_inv_mul}
+    \uses{def:semicirclePDFReal}
+    \notready
+    For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution, the following relation is satisfied:
+    \[
+    f(\mu,v,c^{-1} x) = |c| \cdot f(c \mu,c^2 v,x)
+    \]
+    for any $u \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$. 
+\end{lemma}
+\begin{proof}
+% sorry
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}\label{lem:semicirclePDFReal_mul}
+    \mathlibok
+    \lean{semicirclePDFReal_mul}
+    \uses{def:semicirclePDFReal,lem:semicirclePDFReal_inv_mul}
+    For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    of the semicircle distribution, the following relation is satisfied:
+    \[
+    f(\mu,v,cx) = |c^{-1}| \cdot f(c^{-1} \mu,c^{-2} v,x)
+    \]
+    for any $u \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$. 
+\end{lemma}
+\begin{proof}
+   Expanding Definition \ref{def:semicirclePDFReal} gives
+   \[
+   f(\mu,v,c x)
+   = \frac{1}{2πv} \sqrt{\bigl( 4v - ( cx - μ)^2 \bigl)_+} 
+   = \frac{1}{2πv} \sqrt{\bigl( 4v -  c^2(x -  c^{-1}μ)^2 \bigl)_+} 
+   = |c^{-1}| \frac{1}{2π(c^{-2}v)} \sqrt{\bigl( 4(c^{-2}v)  - (x - c^{-1} \mu)^2 \bigl)_+}
+   = |c^{-1}| \cdot f(c^{-1} \mu,c^{-2} v,x).
+   \]
+\end{proof}
+%---------%
+%---------%
+%---Richard's Part for Semicircle Distribution (End)---% 
+
+
+\section{To Extended Nonnegative Reals}
+
+
+%---Paul's Part for Semicircle Distribution (Start)---% 
+
+
+\begin{definition}
+  \label{def:semicirclePDF}
+  \mathlibok 
+  \lean{semicirclePDF}
+  \uses{def:semicirclePDFReal}
+  Let $f : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \to \mathbb{R}$ denote the real-valued semicircle density defined in Definition \ref{def:semicirclePDFReal}. Define the function $h: \mathbb{R} \to \mathbb{R} \cup \{\infty\} $ as follows:
+  $$
+  h(x) := \begin{cases}
+x & \text{if } x \ge 0, \\
+0 & \text{otherwise}.
+\end{cases}
+  $$ 
+  Then we define the function $ g : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \to [0,\infty] \subseteq \overline{\mathbb{R}}_{\ge 0}$ by:
+    $$
+    g(\mu,v,x) := h(f(\mu,v,x)),
+    $$
+\end{definition}
+
+\begin{lemma}
+  \label{lem:semicirclePDF_def}
+  \mathlibok
+  \lean{semicirclePDF_def}
+  \uses{def:semicirclePDF}
+  For all $\mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\geq 0} \), the extended p. d. f. \( g : \mathbb{R} \to [0,\infty]$  satisfies:
+  $$
+    g(\mu,v) = \left( x \mapsto h(f(\mu,v,x)) \right).
+  $$
+\end{lemma}
+
+\begin{lemma}
+  \label{lem:semicirclePDF_zero_var}
+  \mathlibok
+  \lean{semicirclePDF_zero_var}
+  \uses{def:semicirclePDF,lem:semicirclePDFreal_zero_var}
+  If the variance $v$ is zero, then the extended p.d.f. is identically zero:
+ $$ 
+    \forall x \in \mathbb{R}, \quad g(\mu,0,x) = 0.
+ $$ 
+\end{lemma}
+\begin{proof}
+  This follows immediately from the definition of $g$ as $h(f(\mu,0,x))$, and the fact that $f(\mu,0,x) = 0$ from Lemma \ref{lem:semicirclePDFReal_zero_var}.
+\end{proof}
+
+\begin{lemma}
+    \label{lem:semicirclePDF_toReal}
+    \uses{lem:semicirclePDFReal_nonneg}
+Let \( \mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\ge 0} \), and \( x \in \mathbb{R} \).
+Then the real value recovered from the extended semicircle PDF satisfies:
+\[
+g(\mu, v, x)^{\operatorname{toReal}} = f(\mu, v, x).
+\]
+\end{lemma}
+\begin{proof}
+Since \( f(\mu, v, x) \ge 0 \), we have \( h(f(\mu, v, x)) = f(\mu, v, x) \), and thus
+\[
+g(\mu, v, x) = h(f(\mu, v, x)) = f(\mu, v, x).
+\]
+Therefore,
+\[
+g(\mu, v, x)^{\operatorname{toReal}} = f(\mu, v, x),
+\]
+as desired.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:semicirclePDF_nonneg}
+  \lean{semicirclePDF_nonneg}
+  \uses{def:semicirclePDF}
+  If $v > 0$, then for all $\mu, x \in \mathbb{R}$, the extended p.d.f. is nonnegative:
+  \[
+    0 \le g(\mu,v,x).
+  \]
+\end{lemma}
+\begin{proof}
+  This is immediate from the definition of $g$ as $h(f(\mu,v,x))$ and the nonnegativity of $f$ (Lemma~\ref{lem:semicirclePDFReal_nonneg}).
+\end{proof}
+
+\begin{lemma}
+  \label{lem:semicirclePDF_finite}
+  \lean{semicirclePDF_lt_top}
+  \uses{def:semicirclePDF}
+  For all $\mu, x \in \mathbb{R}$, and $v \in \mathbb{R}_{\ge 0}$, we have:
+    $$ 
+    g(\mu,v,x) < \infty.
+    $$ 
+\end{lemma}
+\begin{proof}
+  Since $f(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $g(\mu,v,x) = h(f(\mu,v,x)) < \infty$.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:semicirclePDF_ne_top}
+  \lean{semicirclePDF_ne_top}
+  \uses{def:semicirclePDF}
+  For all \( \mu, x \in \mathbb{R} \), and \( v \in \mathbb{R}_{\ge 0} \), the extended p.d.f. is finite:
+  \[
+    g(\mu,v,x) \ne \infty.
+  \]
+\end{lemma}
+
+\begin{lemma}
+  \label{lem:support_semicirclePDF}
+  \lean{support_semicirclePDF}
+  \uses{def:semicirclePDF,def:semicirclePDFReal}
+  Let \( \mu \in \mathbb{R} \) and \( v \in \mathbb{R}_{> 0} \). Then the support of the extended p.d.f. is
+  \[
+    \operatorname{supp}(g(\mu,v)) = \left\{ x \in \mathbb{R} : f(\mu,v,x) \ne 0 \right\}
+    = \left[ \mu - 2\sqrt{v}, \mu + 2\sqrt{v} \right].
+  \]
+\end{lemma}
+\begin{proof}
+    sorry
+\end{proof}
+
+\begin{lemma}
+  \label{lem:measurable_semicirclePDF}
+  \lean{measurable_semicirclePDF}
+  \uses{lem:measurable_semicirclePDFReal}
+  The function \( x \mapsto g(\mu,v,x) \) is measurable for all \( \mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\ge 0} \).
+\end{lemma}
+\begin{proof}
+  Since $h$ is measurable, and $h$ is a measurable map \( \mathbb{R}_{\ge 0} \to \overline{\mathbb{R}}_{\ge 0} \), their composition is measurable.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:lintegral_semicirclePDF_eq_one}
+  \lean{lintegral_semicirclePDF_eq_one}
+  \uses{def:semicirclePDF,lem:lintegral_semicirclePDFReal_eq_one}
+  If \( v > 0 \), then the total integral of \( g \) with respect to Lebesgue measure is 1:
+  \[
+    \int_{\mathbb{R}} g(\mu,v,x) \, dx = 1.
+  \]
+\end{lemma}
+\begin{proof}
+  This follows from the equality:
+  \[
+  \int_{\mathbb{R}} h(f(\mu,v,x)) \, dx = h( \left( \int_{\mathbb{R}} f(\mu,v,x) \, dx \right) = h(1) = 1
+  \]
+  using Lemma \ref{lem:lintegral_semicirclePDFReal_eq_one}.
+\end{proof}
+
+%---Paul's Part for Semicircle Distribution (End)---% 
+
+
+\section{Semicircle Distribution}
+
+
+%---Kiran's Part for Semicircle Distribution (End)---% 
+
 
 \begin{definition}
     \label{def:semicircle_distribution}
@@ -72,7 +435,7 @@
     \label{lemma:rnDeriv_semicircleReal}
     \uses{lemma:semicircleReal_zero_var, lemma:semicirclePDF_zero_var, lemma:semicircleReal_of_var_ne_zero, lemma:measurable_semicirclePDF}
     \leanok
-    The Radon–Nikodym derivative of the semicircle measure semicircleReal $\mu$ $v$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function semicirclePDF $\mu$ $v$.
+    The Radon–Nikodym derivative of the semicircle measure semicircleReal $\mu$ $v$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function semicirclePDF $(\mu$, $v)$.
 \end{lemma}
 
 \begin{lemma}
@@ -89,4 +452,203 @@
     % In other words, integrating $ f $ with respect to the semicircle measure is equivalent to integrating the product of $ f $ and the semicircle probability density function with respect to Lebesgue measure.
     
 \end{lemma}
+
+%---Kiran's Part for Semicircle Distribution (End)---% 
+
+
+\section{Transformations}
+
+
+%---Haoyan's Part for Semicircle Distribution (Start)---%
+
+
+\begin{lemma}\label{lem:semicircleReal_map_add_const}
+  \notready
+  \lean{semicircleReal_map_add_const}
+  The map of a semicircle distribution by addition of a constant is semicircular. That is,
+  given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto X + y )^{-1} = \mathrm{SC}(\mu + y, v)$.
+  \begin{proof}
+    %sorry
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_map_const_add}
+  \mathlibok
+  \lean{semicircleReal_map_const_add}
+  The map of a semicircle distribution by addition of a constant is semicircular. That is,
+  given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto y + X )^{-1} = \mathrm{SC}(y + \mu, v)$.
+  \begin{proof}
+    Obvious from commutativity between $X + y$ and $y + X$.
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_map_const_mul}
+  \notready
+  \lean{semicircleReal_map_const_mul}
+    The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
+  given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto cX )^{-1} = \mathrm{SC}(c\mu , c^2v)$.
+  \begin{proof}
+     %sorry
+  \end{proof}
+\end{lemma}
+
+
+
+\begin{lemma}\label{lem:semicircleReal_map_mul_const}
+  \mathlibok
+  \lean{semicircleReal_map_mul_const}
+  \uses{lem:semicircleReal_map_const_mul}
+   The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
+  given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto Xc )^{-1} = \mathrm{SC}(\mu c , c^2v)$.
+  \begin{proof}
+    Use commutativity between $Xc$ and $cX$.
+  \end{proof}
+\end{lemma}
+
+
+
+\begin{lemma}\label{lem:semicircleReal_map_neg}
+  \mathlibok
+  \lean{semicircleReal_map_neg}
+  \uses{lem:semicircleReal_map_const_mul}
+  Given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto -X )^{-1} = \mathrm{SC}(-\mu  , v)$
+  \begin{proof}
+     Special case of the multiplication by constant map with constant being $-1$.
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{lem:semicircleReal_map_sub_const}
+  \mathlibok
+  \lean{semicircleReal_map_sub_const}
+  \uses{lem:semicircleReal_map_add_const}
+   The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
+  given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X  \mapsto X - y )^{-1} = \mathrm{SC}(\mu - y  , v)$
+  \begin{proof}
+   Use the map by addition of constant and substitute constant for its $-1$ multiple.
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_map_const_sub}
+  \mathlibok
+  \lean{semicircleReal_map_const_sub}
+  \uses{lem:semicircleReal_map_neg, lem:semicircleReal_map_const_add}
+  The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
+  given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto y-X  )^{-1} = \mathrm{SC}(y-\mu  , v)$
+  \begin{proof}
+
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_add_const}
+  \mathlibok
+  \lean{semicircleReal_add_const}
+  \uses{lem:semicircleReal_map_add_const}
+  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
+  then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(\mu + y, v)$
+  \begin{proof}
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_const_add}
+  \mathlibok
+  \lean{semicircleReal_const_add}
+  \uses{lem:semicircleReal_add_const}
+  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
+  then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(y + \mu, v)$
+  \begin{proof}
+
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_const_mul}
+  \mathlibok
+  \lean{semicircleReal_const_mul}
+  \uses{lem:semicircleReal_map_const_mul}
+  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
+  then for a constant $c \in \mathbb{R}$, $cX \sim \mathrm{SC}(c\mu , c^2v)$
+  \begin{proof}
+
+  \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:semicircleReal_mul_const}
+  \mathlibok
+  \lean{semicircleReal_mul_const}
+  \uses{lem:semicircleReal_const_mul}
+   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
+  then for a constant $c \in \mathbb{R}$, $Xc \sim \mathrm{SC}(\mu c , c^2v)$
+  \begin{proof}
+
+  \end{proof}
+\end{lemma}
+
+%end Transformation
+
+
+
+
+%moments
+
+\begin{lemma}\label{lem:integral_id_semicircleReal}
+  \lean{integral_id_semicircleReal}
+  \notready
+  $$\mathbb{E}[X] = \int x d \sigma = \mu$$
+\end{lemma}
+
+\begin{lemma}\label{lem:variance_fun_id_semicircleReal}
+  \lean{variance_fun_id_semicircleReal}
+  \notready
+  $Var(X) = v$
+\end{lemma}
+
+
+\begin{lemma}\label{lem:variance_id_semicircleReal}
+  \lean{variance_id_semicircleReal}
+  \notready
+  The variance of a real semicircle distribution with parameter $(\mu, v)$ is
+  its variance parameter $v$
+\end{lemma}
+
+
+\begin{lemma}\label{lem:memLp_id_semicircleReal}
+  \lean{memLp_id_semicircleReal}
+  \notready
+  All the moments of a real semicircle distribution are finite. That is, the identity is in $L_p$ for
+  all finite $p$
+\end{lemma}
+
+
+\begin{lemma}\label{lem:centralMoment_two_mul_semicircleReal}
+  \lean{centralMoment_fun_two_mul_semicircleReal}
+  \notready
+   $\mathbb{E}[(X  - \mu)^{2n}] = v_n C_n $
+\end{lemma}
+
+\begin{lemma}\label{lem:centralMoment_fun_two_mul_semicircleReal}
+  \lean{centralMoment_fun_two_mul_semicircleReal}
+  \notready
+   $\mathbb{E}[(X  - \mu)^{2n}] = v_n C_n $
+\end{lemma}
+
+\begin{lemma}\label{lem:centralMoment_odd_semicircleReal}
+  \lean{centralMoment_odd_semicircleReal}
+  \notready
+  $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
+\end{lemma}
+
+\begin{lemma}\label{lem:centralMoment_fun_odd_semicircleReal}
+  \lean{centralMoment_fun_odd_semicircleReal}
+  \notready
+   $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
+\end{lemma}
+
+
+%--- Haoyan's Part for Semicircle Distribution (End)---%
 
