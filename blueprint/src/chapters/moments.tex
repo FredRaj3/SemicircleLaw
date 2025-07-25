@@ -371,11 +371,13 @@ as required.
 \begin{proof}
   Given $Y_\mathbf{i} = Y_{i_1 i_2}Y_{i_2 i_3} \cdots Y_{i_{k-1} i_k}Y_{i_k i_1}$, we have
   \[
+
   Y_{\mathbf{j}} = Y_{j_1 j_2}Y_{j_2 j_3} \cdots Y_{j_{k-1} j_k}Y_{j_k j_1} 
   = Y_{\varphi(i_1) \varphi(i_2)}Y_{\varphi(i_2) \varphi(i_3)} \cdots Y_{\varphi(i_{k-1}) \varphi(i_k)}Y_{\varphi(i_k) \varphi(i_1)}.
   \] 
   Observe that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \}$ is a singleton and only if $\{ \varphi(i_{\lambda_l}),\varphi(i_{\lambda_{l+1}}) \}$ is a singleton.
   The fact that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \} = \{ i_{\lambda_\mu},i_{\lambda_{\mu+1}} \}$ if and only if $\{ \varphi(i_{\lambda_l}),\varphi(i_{\lambda_{l+1}}) \} = \{ \varphi(i_{\lambda_\mu}),\varphi(i_{\lambda_{\mu+1}}) \}$ completes the proof.
+
 \end{proof}
 %---------%
 %---------%
@@ -553,6 +555,7 @@ as required.
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) 
   = \sum_{(G,w) \in \mathcal{G}_{k, w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
+
 \end{lemma}
 \begin{proof}
   This follows from applying the result of Lemma \ref{lem:Pi.prod_eq_zero_if_w_le_two} to Lemma \ref{lem:equation_4.5_3}.
@@ -929,6 +932,7 @@ as required.
 
 % end of kiran's part
 
+
 %Haoyan part
 
 
@@ -1123,3 +1127,70 @@ as required.
   \operatorname{Var}(\frac{1}{n}\Tr(\mathbf{X}_{n}^{k})) = O_{k}(\frac{1}{n^2})
   $$ 
 \end{proposition}
+
+
+
+
+
+
+
+%kiran's part (part 3) begins
+
+
+\begin{proposition}
+  \label{prop:var_trace_as_sum}
+  \notready
+  \uses{}
+  \[ \Var\left( \frac1n\Tr(X_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{\#\left\{(i,{j})\in [n]^{2k}\colon (G_{i\#j},w_{i},w_{j}) = (G,w,w')\right\}}{n^{k+2}}. \]
+\end{proposition}
+
+\begin{proof}
+  \notready
+  By construction, every edge in the joined graph $G_{{i}\#{j}}$ is traversed at least once by the union of the two paths $w_{i}$ and $w_{j}$.  Suppose that $e$ is an edge that is traversed only {\em once}.  This means that $w_{{i}\#{j}}(e) = 1$, and so it follows that the two values $w_{i}(e),w_{j}(e)$ are $\{0,1\}$.  Hence, the above expansion and the fact that $\bE(Y_{11})=\bE(Y_{12})=0$ show that $\pi(G_{{i}\#{j}},w_{i},w_{j}) = 0$ in this case.
+\end{proof}
+
+
+\begin{lemma}
+  \label{lemma:simplified_var_trace_as_sum}
+  \uses{prop:var_trace_as_sum}
+  \notready
+  \[ \Var\left( \frac1n\Tr({X}_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
+\end{lemma}
+
+\begin{proof}
+  \notready
+  The enumeration of the number of $2k$-tuples yielding a certain graph with two walks is the same as in the previous proposition: the structure $(G,w,w')$ specifies the $2k$-tuple precisely once we select the $|G|$ distinct indices for the vertices.  So, as before, this ratio becomes \[ \frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
+\end{proof}
+
+\begin{proposition}
+  \label{prop:var_upper_bound}
+  \uses{prop:vertex_edge_inequality, lemma:simplified_var_trace_as_sum}
+  \notready
+  \[ \Var\left( \frac1n\Tr({X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Now, we have the condition $w+w'\ge 2$, meaning every edge is traversed at least twice.  Since there are $k$ steps in each of the two paths, this means there are at most $k$ edges.  Appealing again to \ref{prop:vertex_edge_inequality}, it follows that $|G|\le k+1$.  Hence, $n(n-1)\cdots(n-|G|+1) \le n^{|G|} \le n^{k+1}$
+\end{proof}
+
+\begin{theorem}
+  \label{thm:wigner_law_matrix_moments}
+  \uses{prop:var_upper_bound}
+  \notready
+  Theorem 2.4. (Unsure if it goes in this doc.)
+\end{theorem}
+
+\begin{proof}
+  \notready
+  The (potentially enormous) number $B_k=2M_{2k}\cdot\#\mathcal{G}_{k,k}$ is independent of $n$, and so we have already proved that the variance is $=O_k(1/n)$.
+\end{proof}
+
+
+
+
+
+
+
+%kiran's part (part 3) ends
+
