@@ -7,6 +7,7 @@
 
 
 \begin{definition}\label{def:graph_to_Dyck_map}
+  \uses{def:special_set_g}
    Define a map $\phi$ whose input is $(G, w) \in \mathcal{G}^{k/2 + 1}_k$. Then for its output,
    define a sequence $\mathbf{d}=\mathbf{d}(G,w)\in\{+1,-1\}^k$ recursively as follows.
    Let $d_1=+1$.  For $1<j\le k$, if $w_j\notin\{w_1,\ldots,w_{j-1}\}$, set $d_j=+1$; otherwise, set $d_j=-1$; then
@@ -89,7 +90,7 @@
 
 \begin{lemma}\label{lem:binary_tree_Catalan_number}
   \uses{def:Catalan_number}
-  \#\{binary trees with $k$ vertices\} is given by Catalan number $C_k$
+  \#\{binary trees with $\frac{k}{2}$ vertices\} is given by Catalan number $C_{k/2}$
   \begin{proof}
   \end{proof}
 \end{lemma}
@@ -116,6 +117,27 @@
   \uses{prop:Catalan_Dyck_samecardinality, lem:walk_to_Dyck_paths_bijection}
   \[|\mathcal{G}^{k/2 + 1}_k| = C_{k/2}\]
 \end{proposition}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
