@@ -166,7 +166,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{definition}
 
 \begin{lemma}[Expectation of Matrix Multi Index]
-    \label{lem:expectation_matrix_multi_index}
+    \label{lem:prod_expectation_matrix_multi_index}
     \notready
     \uses{def:matrix_multi_index, def:graph_edge_count, def:graph_self_edges, def:graph_connecting_edges}
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, we have the following:
@@ -175,10 +175,13 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
     $$
 \end{lemma}
 
+\begin{proof}
+\end{proof}
+
 \begin{lemma}[Trace of Expectation of Matrix]
     \label{lem:trace_expectation_of_matrix}
     \notready
-    \uses{lem:expectation_matrix_multi_index}
+    \uses{lem:prod_expectation_matrix_multi_index, lem:matrix_powers_trace}
     Let $\mathbf{Y}_{n}$ be an $n \times n$ symmetric matrix with independent entries, where $\{Y_{ij}\}_{1\le i\le j}$ are independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, for any $k$-index $\mathbf{i} \in [n]^k$, we have:
     $$
     \bE(\Tr(\mathbf{Y}_{n}^{k})) = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} \bE(Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}) = \sum_{\mathbf{i} \in [n]^{k}} \bE(Y_{i})
@@ -292,11 +295,10 @@ as required.
 \begin{proof}
   It suffices to show that $Y_\mathbf{i}$ and $Y_{\mathbf{i}^*}$ represent the same number of, respectively, self-edges and connecting edges.
   Given $Y_\mathbf{i} = Y_{i_1 i_2}Y_{i_2 i_3} \cdots Y_{i_{k-1} i_k}Y_{i_k i_1}$,
-  \[
-
+  $$
   Y_{\mathbf{i}^*} = Y_{j_1 j_2}Y_{j_2 j_3} \cdots Y_{j_{k-1} j_k}Y_{j_k j_1} 
   = Y_{\varphi(i_1) \varphi(i_2)}Y_{\varphi(i_2) \varphi(i_3)} \cdots Y_{\varphi(i_{k-1}) \varphi(i_k)}Y_{\varphi(i_k) \varphi(i_1)}.
-  \] 
+  $$
   The fact that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \}$ is a self-edge 
 
   if (i.e. a singleton) and only if $\{ \varphi(i_{\lambda_l}),\varphi(i_{\lambda_{l+1}}) \}$ is a self-edge completes the proof.
@@ -363,13 +365,13 @@ as required.
 %---------%
 \begin{lemma}
   \label{lem:equation_4.5_2}
-  \uses{lem:lem_4.3,lem:equal_equiv_class_equal_expectation,lem:trace_expectation_of_matrix,lem:expectation_matrix_multi_index}
+  \uses{lem:lem_4.3,lem:equal_equiv_class_equal_expectation,lem:trace_expectation_of_matrix,lem:prod_expectation_matrix_multi_index}
   \[
   \bE \Tr (\mathbf{Y}_\mathbf{i}^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \}.
   \]
 \end{lemma}
 \begin{proof}
-  This follows from re-indexing the sum of Lemma \ref{lem:trace_expectation_of_matrix} by using Lemma \ref{lem:expectation_matrix_multi_index}.
+  This follows from re-indexing the sum of Lemma \ref{lem:trace_expectation_of_matrix} by using Lemma \ref{lem:prod_expectation_matrix_multi_index}.
 \end{proof}
 %---------%
 \begin{lemma}
@@ -469,24 +471,21 @@ This directly follows from the assumption of Proposition \ref{prop:matrix_moment
 %---------%
 \begin{lemma}
   \label{lem:equation_4.8}
-  \uses{def:g_k_ge_2,lem:equation_4.5_3,lem:Pi.prod_eq_zero_if_w_le_two,lem:expectation_matrix_multi_index,prop:matrix_moments_convergence}
-  \[
-
-\frac{1}{n} \bE \Tr (\mathbf{X}_n^k) 
-
-  = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
-  \]
+  \uses{def:g_k_ge_2,lem:equation_4.5_3,lem:Pi.prod_eq_zero_if_w_le_two,lem:prod_expectation_matrix_multi_index,prop:matrix_moments_convergence}
+  $$
+\frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
+  $$
 \end{lemma}
 \begin{proof}
   Let $(G,w) \in \mathcal{G}_k$ and suppose there exists an edge $e = \{i,j\}$ such that $w(e) = 1$.
-  This means, in Lemma \ref{lem:expectation_matrix_multi_index}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
+  This means, in Lemma \ref{lem:prod_expectation_matrix_multi_index}, a singleton term $\bE (Y_{ij}^{w(e)}) = \bE (Y_{ij})$ appears.
   Following the condition of Proposition \ref{prop:matrix_moments_convergence}, the fact that the variables $Y_{ij}$ are all centered implies the product $\Pi (G,w) = 0$ for any such pair $(G,w)$.
 
 Thus, we only need to consider those $w$ that cross each edge at least twice: 
 
-  \[
+    $$
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{\substack{(G,w) \in \mathcal{G}_k}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}  = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
-  \]
+  $$
 \end{proof}
 %---------%
 \begin{lemma}
@@ -945,7 +944,7 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \begin{proposition}[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence}
   \notready
-  \uses{lem:matrix_powers_entries, lem:matrix_powers_trace, def:graph_path, def:graph_edge_count, def:graph_multi_index, def:matrix_multi_index, lem:multi_index_graph_equivalence, lem:graph_walk_count_equivalence, def:graph_self_edges, def:graph_connecting_edges, prop:graph_Catalan_number}
+  \uses{prop:trace_ev_limit_equals_t_special_g, prop:odd_case, prop:graph_catlan_number}
   Let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed.  Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} <\infty$ for each $k\in\bN$.  Suppose further than $\bE(Y_{ij})=0$ for all $i,j$ and set $t=\bE(Y_{12}^2)$.  If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$.  Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix.  Then
 \[
 \lim_{n\to\infty} \frac{1}{n}\bE\Tr(\mathbf{X}_n^k) = \begin{cases}
@@ -957,37 +956,6 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 
 \begin{proof}
 \notready
-To begin the proof, we expand the expected trace terms in terms of the entries. First, we have
-
-$$
-\frac{1}{n} \mathbb{E} \operatorname{Tr}\left(\mathbf{X}_n^k\right)=\frac{1}{n} \mathbb{E} \operatorname{Tr}\left[\left(n^{-1 / 2} \mathbf{Y}_n\right)^k\right]=n^{-k / 2-1} \mathbb{E} \operatorname{Tr}\left(\mathbf{Y}_n^k\right)
-$$
-
-
-From Lemma \ref{lem:matrix_powers_entries}, we have for any $1 \leq i, j \leq n$
-
-$$
-\left[\mathbf{Y}_n^k\right]_{i j}=\sum_{1 \leq i_2, \ldots, i_k \leq n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_{k-1} i_k} Y_{i_k j}
-$$
-
-
-using Lemma \ref{lem:matrix_powers_trace}:
-
-$$
-\mathbb{E} \operatorname{Tr}\left(\mathbf{Y}_n^k\right)=\sum_{i_1=1}^n \mathbb{E}\left(\left[\mathbf{Y}_n^k\right]_{i_1 i_1}\right)=\sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} \mathbb{E}\left(Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}\right) \equiv \sum_{\mathbf{i} \in[n]^k} \mathbb{E}\left(Y_{\mathbf{i}}\right)
-$$
-
-where $[n]=\{1, \ldots, n\}$. For $\mathbf{i}=\left(i_1, \ldots, i_k\right)$, let $Y_{\mathbf{i}}=Y_{i_1 i_2} \cdots Y_{i_k i_1}$ be the matrix multi index from definition \ref{def:matrix_multi_index}. Using lemma \ref{lem:graph_walk_count_equivalence}, we can rewrite $Y_{\mathbf{i}}$ as:
-$$
-Y_{\mathbf{i}}=\prod_{1 \leq i \leq j \leq n} Y_{i j}^{w_{\mathbf{i}}(\{i, j\})}.
-$$
-Now, all the variables $Y_{i j}$ are independent. Using lemma \ref{lem:expectation_matrix_multi_index}, we can write the expectation of $Y_{\mathbf{i}}$ as:
-
-$$
-\mathbb{E}\left(Y_{\mathbf{i}}\right)=\prod_{1 \leq i \leq j \leq n} \mathbb{E}\left(Y_{i j}^{w_{\mathbf{i}}(\{i, j\})}\right)=\prod_{e_s \in E_{\mathbf{i}}^s} \mathbb{E}\left(Y_{11}^{w_{\mathbf{i}}\left(e_s\right)}\right) \cdot \prod_{e_c \in E_{\mathbf{i}}^c} \mathbb{E}\left(Y_{12}^{w_{\mathbf{i}}\left(e_c\right)}\right)
-$$
-which is equivalent to $\Pi(G_{\mathbf{i}}, w_{\mathbf{i}})$ from definition \ref{def:expectation_matrix_multi_index}.
-
 \end{proof}
 
 %\begin{lemma}\label{lem:trace_smul}
@@ -1047,4 +1015,13 @@ which is equivalent to $\Pi(G_{\mathbf{i}}, w_{\mathbf{i}})$ from definition \re
 %% test edit 2 by Richard
 
 \section{Convergence in Probability}
-% test
+
+\begin{proposition}[Proposition 4.2 in \cite{Kemp2013RMTNotes}]
+  \label{prop:matrix_moments_convergence_probability}
+  \notready
+  \uses{}
+  Let $\{Y_{ij}\}_{1 \leq i \leq j}$ be independent random variables, with $\{Y_{ii}\}_{i\geq 1}$ identically distributed and $\{Y_{ij}\}_{1 \leq i < j}$ identically distributed. Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} < \infty$ for each $k\in\bN$. Suppose further than $\bE(Y_{ij})=0$ for all $i,j$. If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$. Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix. Then
+  $$
+  \operatorname{Var}(\frac{1}{n}\Tr(\mathbf{X}_{n}^{k})) = O_{k}(\frac{1}{n^2})
+  $$ 
+\end{proposition}
