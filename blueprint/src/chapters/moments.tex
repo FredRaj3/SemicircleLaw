@@ -1,6 +1,9 @@
 \chapter{Convergence of Matrix Moments}
 \section{Convergence in Expectation}
 
+%%%% BEGIN -- PAUL'S PART
+%%%%
+%%%%
 \begin{lemma}[Matrix Powers Entries]
     \label{lem:matrix_powers_entries}
     \notready
@@ -223,9 +226,10 @@ as required.
     $$
 \end{definition}
 
-
-
-
+%%%% END -- PAUL'S PART
+%%%%
+%%%%
+%%%%
 
 
 
@@ -441,7 +445,7 @@ Let $\substack{\mathcal{G}_k \\ w \geq 2}$ be a subset of $\mathcal{G}_k$
 %---------%
 \begin{lemma}
   \label{lem:Pi.prod_eq_zero_if_w_le_two}
-  \uses{def:g_k,prop:matrix_moments_convergence,def:matrix_multi_index,def:expectation_matrix_multi_index}
+  \uses{def:g_k,def:matrix_multi_index,def:expectation_matrix_multi_index}
   Given an ordered pair $(G,w) \in \mathcal{G}_k$, suppose there exists an edge $e \in E_\mathbf{i}$ in which it is traversed only once in the walk $w$. Then
   \[
   \Pi (G,w) = 0.
@@ -471,7 +475,7 @@ This directly follows from the assumption of Proposition \ref{prop:matrix_moment
 %---------%
 \begin{lemma}
   \label{lem:equation_4.8}
-  \uses{def:g_k_ge_2,lem:equation_4.5_3,lem:Pi.prod_eq_zero_if_w_le_two,lem:prod_expectation_matrix_multi_index,prop:matrix_moments_convergence}
+  \uses{def:g_k_ge_2,lem:equation_4.5_3,lem:Pi.prod_eq_zero_if_w_le_two,lem:prod_expectation_matrix_multi_index}
   $$
 \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{(G,w) \in \substack{\mathcal{G}_k \\ w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   $$
@@ -774,7 +778,7 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \begin{proposition}%[Equation 4.10 in \cite{Kemp2013RMTNotes}]
   \label{prop:product_g_w_to_exponential}
   \notready
-  \uses{lemma:special_g_tree, lemma:special_g_edge_count, lemma:special_g_vertex_count, prop:vertex_edge_tree_equality, prop:g_bound_self_edge, prop:g_bound_large_w, prop:matrix_moments_convergence, def:expectation_matrix_multi_index} %uses: prop:matrix_moments_convergence for defn of t (but can replace)
+  \uses{lemma:special_g_tree, lemma:special_g_edge_count, lemma:special_g_vertex_count, prop:vertex_edge_tree_equality, prop:g_bound_self_edge, prop:g_bound_large_w, def:expectation_matrix_multi_index} %uses: prop:matrix_moments_convergence for defn of t (but can replace)
   $\Pi(G,w) = \prod_{e_c\in E^c} \bE(Y_{12}^{w(e_c)}) = \prod_{e_c\in E^c} \bE(Y_{12}^2) = t^{\#E} = t^{k/2}$.
 \end{proposition}
 
@@ -809,14 +813,16 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 %Haoyan part
 
 
-\begin{definition}\label{def:Dyck_paths}
+\begin{definition}
+    \label{def:Dyck_paths}
   A Dyck path of length $k$ is a sequence $(d_1,...,d_k) \in \{\pm 1\}^k$ such that their partial sum $\sum_{i=1}^j d_i \geq 0$
   and total sum $\sum_{i = 1}^{k}d_i = 0$. More intuitively, consider a diagonal lattice path from $(0,0)$ to $(k, 0)$ consisting of
   $\frac{k}{2}$ ups and $\frac{k}{2}$ downs such that the path never goes below thw $x$-axis.
 \end{definition}
 
 
-\begin{definition}\label{def:graph_to_Dyck_map}
+\begin{definition}
+    \label{def:graph_to_Dyck_map}
    Define a map $\phi$ whose input is $(G, w) \in \mathcal{G}^{k/2 + 1}_k$. Then for its output,
    define a sequence $\mathbf{d}=\mathbf{d}(G,w)\in\{+1,-1\}^k$ recursively as follows.
    Let $d_1=+1$.  For $1<j\le k$, if $w_j\notin\{w_1,\ldots,w_{j-1}\}$, set $d_j=+1$; otherwise, set $d_j=-1$; then
@@ -824,7 +830,8 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \end{definition}
 
 
-\begin{lemma}\label{lem:graph_Dyck_correspondence}
+\begin{lemma}
+    \label{lem:graph_Dyck_correspondence}
   \uses{def:Dyck_paths, def:graph_to_Dyck_map}
   $\phi((G,w)) = \mathbf{d}(G,w) \subseteq \mathcal{D}_k$, where $\mathcal{D}_k$ denotes the set of Dyck path of order $k$.
   \begin{proof}
@@ -837,14 +844,16 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \end{lemma}
 
 
-\begin{definition}\label{def:Dyck_to_graph_map}
+\begin{definition}
+    \label{def:Dyck_to_graph_map}
    Define a map $\psi$ whose input is a Dyck path of order $k$: $\mathbf{d} \in \{\pm1\}^k$. Then the output is viewing
   this Dyck path as a contour reversal of a tree where an up ($d_i = 1$) corresponds to visiting a child node
   and a down ($d_i = -1$) corresponds to returning to parent node.
 \end{definition}
 
 
-\begin{lemma}\label{lem:Dyck_graph_correspondence}
+\begin{lemma}
+    \label{lem:Dyck_graph_correspondence}
   \uses{def:Dyck_paths, def:Dyck_to_graph_map}
   $\psi(\mathbf{d}_k) \subseteq \mathcal{G}^{k/2 + 1}_k$
   \begin{proof}
@@ -856,11 +865,11 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \end{lemma}
 
 
-\begin{lemma}\label{lem:composition1}
+\begin{lemma}
+    \label{lem:composition1}
   \uses{def:Dyck_to_graph_map, def:graph_to_Dyck_map, lem:Dyck_graph_correspondence}
   $$\phi \circ \psi = id_{\mathcal{D}_k}$$
   \begin{proof}
-    \uses{def:Dyck_to_graph_map, def:graph_to_Dyck_map}
     % \leanok
     Apply $\psi$ to a given Dyck path $\mathbf{d}$ by definition, then apply $\phi$ to get a new sequence
     $\mathbf{d}'$ such that $d_j' = 1$ for new vertex, $-1$ otherwise. For the original Dyck path, the new
@@ -869,35 +878,37 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \end{lemma}
 
 
-\begin{lemma}\label{lem:composition2}
+\begin{lemma}
+    \label{lem:composition2}
   \uses{def:Dyck_to_graph_map, def:graph_to_Dyck_map, lem:graph_Dyck_correspondence}
   $$\psi \circ \phi = id_{\mathcal{G}^{k/2 + 1}_k}$$
    \begin{proof}
-    \uses{def:Dyck_to_graph_map, def:graph_to_Dyck_map}
     % \leanok
     The map $\psi$ recovers the graph walk structure of the input from its Dyck path by the definition.
   \end{proof}
 \end{lemma}
 
 
-\begin{lemma}\label{lem:walk_to_Dyck_paths_bijection}
+\begin{lemma}
+    \label{lem:walk_to_Dyck_paths_bijection}
   \uses{lem:composition1, lem:composition2}
   Let $k$ be even and let $\mathcal{D}_k$ denote the set of Dyck paths of length $k$
   \[ \mathcal{D}_k = \{(d_1,\ldots,d_k)\in\{\pm 1\}\colon \sum_{i=1}^k d_i\ge 0\text{ for }1\le j\le j\text{, and}\sum_{i=1}^kd_i=0\}. \]
   Then $(G,w)\mapsto {d}(G,w)$ is a bijection $\mathcal{G}_k^{k/2+1}\to\mathcal{D}_k$.
   \begin{proof}
-    \uses{}
     obvious from the previous lemmas.
   \end{proof}
 \end{lemma}
 
-\begin{definition}\label{def:Catalan_number}
+\begin{definition}
+    \label{def:Catalan_number}
   %\lean{Combinatorics.Enumerative.Catalan}
   \[C_0 = 1, \quad \text{and for } n \geq 1, \quad C_n = \sum_{k=0}^{n-1} C_k C_{n-1-k}.\]
 \end{definition}
 
 
-\begin{lemma}\label{lem:binary_tree_Catalan_number}
+\begin{lemma}
+    \label{lem:binary_tree_Catalan_number}
   \uses{def:Catalan_number}
   \#\{binary trees with $k$ vertices\} is given by Catalan number $C_k$
   \begin{proof}
@@ -905,7 +916,8 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \end{lemma}
 
 
-\begin{proposition}\label{prop:Catalan_Dyck_samecardinality}
+\begin{proposition}
+    \label{prop:Catalan_Dyck_samecardinality}
   \uses{def:Catalan_number, def:Dyck_paths, lem:binary_tree_Catalan_number}
   %\lean{Catalan}
   % \uses{}
@@ -922,7 +934,8 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
   \end{proof}
 \end{proposition}
 
-\begin{proposition}\label{prop:graph_Catalan_number}
+\begin{proposition}
+    \label{prop:graph_Catalan_number}
   \uses{prop:Catalan_Dyck_samecardinality, lem:walk_to_Dyck_paths_bijection}
   \[|\mathcal{G}^{k/2 + 1}_k| = C_{k/2}\]
 \end{proposition}
@@ -944,7 +957,7 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \begin{proposition}[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence}
   \notready
-  \uses{prop:trace_ev_limit_equals_t_special_g, prop:odd_case, prop:graph_catlan_number}
+  \uses{prop:trace_ev_limit_equals_t_special_g, prop:odd_case, prop:graph_Catalan_number}
   Let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed.  Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} <\infty$ for each $k\in\bN$.  Suppose further than $\bE(Y_{ij})=0$ for all $i,j$ and set $t=\bE(Y_{12}^2)$.  If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$.  Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix.  Then
 \[
 \lim_{n\to\infty} \frac{1}{n}\bE\Tr(\mathbf{X}_n^k) = \begin{cases}
@@ -958,68 +971,14 @@ Thus, we only need to consider those $w$ that cross each edge at least twice:
 \notready
 \end{proof}
 
-%\begin{lemma}\label{lem:trace_smul}
- %,.,,
-  %\uses{????}
- % \mathlibok %what does this mean
-  %\lean{Matrix.trace_smul}
- % Let $R$ be a ring with a monoid action from $\alpha$ (i.e., $\alpha$ acts distributively on $R$).
- % For any scalar $r \in \alpha$ and any square matrix $A$ over $R$, the trace of the scalar
- % multiple $r \cdot A$ equals the scalar multiple of the trace of $A$, i.e.,
- % \[ \text{tr}(r \cdot A) = r \cdot \text{tr}(A). \]
- % \end{lemma}
-%
- % \begin{proof}\leanok %what does this mean
-  %idk what to put in here
- % \end{proof}
 
 
-% 4.2
-% lemma (lemma1): using Matrix.mul_apply?? + induction?
-
-
-% definition of trace
-% linearity of expectation --> map_expect????
-% lemma1
-% defn of Y_i, [n].
-
-
-% define a graph (no idea how to do this in lean)
-
-% matrices commutative? don't really understand this part of the proof
-
-%define \omega ({i, j})
-% 4.3's statement
-
-% 4.4: true because multiplication is commutative (EReal.mul_comm)
-
-
-% more graph definitions (idk how lean would work)
-
-
-% smt smt get to 4.5
-
-% 4.6: use 4.5, scalar multiple of expectatio (Finset.smul_expect), trace of scalar multiple (Matrix.trace_smul)
-
-
-% lemma 4.3: lots more work needed
-
-%4.7: use lemma 4.3
-
-% w >= 2 stuff
-% 4.8
-
-% 4.3.1: maybe SimpleGraph.IsTree.card_edgeFinset??
-
-% test edit by Richard
-%% test edit 2 by Richard
 
 \section{Convergence in Probability}
 
 \begin{proposition}[Proposition 4.2 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence_probability}
   \notready
-  \uses{}
   Let $\{Y_{ij}\}_{1 \leq i \leq j}$ be independent random variables, with $\{Y_{ii}\}_{i\geq 1}$ identically distributed and $\{Y_{ij}\}_{1 \leq i < j}$ identically distributed. Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} < \infty$ for each $k\in\bN$. Suppose further than $\bE(Y_{ij})=0$ for all $i,j$. If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$. Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix. Then
   $$
   \operatorname{Var}(\frac{1}{n}\Tr(\mathbf{X}_{n}^{k})) = O_{k}(\frac{1}{n^2})
