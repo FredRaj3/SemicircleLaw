@@ -12,7 +12,7 @@
     f(\mu,v,x) 
     = \frac{1}{2πv} \sqrt{(4v - (x - μ)^2)_+}
    \]
-   is called the probability density function (p.d.f.) of the semicircle distribution.
+   is called the probability density function (pdf) of the semicircle distribution.
 \end{definition}
 %---------%
 %---------%
@@ -20,7 +20,7 @@
   \mathlibok 
   \lean{semicirclePDFReal_def}
   \uses{def:semicirclePDFReal}
-    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is given by
   \[
     f(x) = 
@@ -33,7 +33,7 @@
     \mathlibok
     \lean{semicirclePDFReal_zero_var}
     \uses{def:semicirclePDFReal}
-    If the variance $v$ is given to be zero, then the p.d.f. of the semicircle distribution is the zero functional.
+    If the variance $v$ is given to be zero, then the pdf of the semicircle distribution is the function that is identically zero.
 %    In other words, for any mean $m \in \mathbb{R}$ and $x \in \mathbb{R}$, we have
 %    \[
 %    f(m,0,x) = 0.
@@ -41,7 +41,7 @@
 \end{lemma}
 \begin{proof}
     By Definition \ref{def:semicirclePDFReal}, the square root of a nonpositive number is defined to be zero.
-    Hence, the p.d.f. with a zero variance must be the zero functional.
+    Hence, the pdf with a zero variance must be the function that is identically zero.
 \end{proof}
 %---------%
 %---------%
@@ -49,13 +49,13 @@
     \mathlibok
     \lean{semicirclePDFReal_nonneg}
     \uses{def:semicirclePDFReal}
-    The p.d.f. of the semicircle distribution is always nonnegative. 
+    The pdf of the semicircle distribution is always nonnegative. 
 \end{lemma}
 \begin{proof}
    By Definition \ref{def:semicirclePDFReal}, the square root of a nonpositive number is defined to be zero. 
    Furthermore, the variance is always assumed to be nonnegative.
    Therefore, since the fractional term and the square root term are always nonnegative,
-   we conclude the p.d.f. is always nonnegative. 
+   we conclude the pdf is always nonnegative. 
 \end{proof}
 %---------%
 %---------%
@@ -63,7 +63,7 @@
     \lean{measurable_semicirclePDFReal}
     \uses{}
     \notready
-    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is measurable.
 \end{lemma}
 \begin{proof}
@@ -75,11 +75,11 @@
     \mathlibok
     \lean{stronglyMeasurable_semicirclePDFReal}
     \uses{def:semicirclePDFReal,lem:measurable_semicirclePDFReal}
-    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is strongly measurable.
 \end{lemma}
 \begin{proof}
-    By Lemma \ref{lem:measurable_semicirclePDFReal}, we know the p.d.f. $f$ with fixed mean $\mu$ and variance $v$ is measurable.
+    By Lemma \ref{lem:measurable_semicirclePDFReal}, we know the pdf $f$ with fixed mean $\mu$ and variance $v$ is measurable.
     Since $\mathbb{R}$ is equipped with a second countable topology, the fact that $f$ with fixed mean $\mu$ and variance $v$ implies $f$ is strongly measurable.  
 \end{proof}
 %---------%
@@ -88,7 +88,7 @@
     \lean{integrable_semicirclePDFReal}
     \uses{def:semicirclePDFReal}
     \notready
-    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is integrable.
 \end{lemma}
 \begin{proof}
@@ -100,7 +100,7 @@
     \lean{lintegral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     \notready
-    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the lower integral of the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the lower Lebesgue integral of the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ equals $1$.
 \end{lemma}
 \begin{proof}
@@ -112,7 +112,7 @@
     \lean{integral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     \notready
-    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the integral of the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the integral of the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ equals $1$.
 \end{lemma}
 \begin{proof}
@@ -124,12 +124,12 @@
     \mathlibok
     \lean{semicirclePDFReal_sub}
     \uses{def:semicirclePDFReal}
-    For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    For any pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
     \[
     f(\mu,v,x-y) = f(\mu+y,v,x)
     \]
-    for any $u \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$. 
+    for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$. 
 \end{lemma}
 \begin{proof}
    Expanding Definition \ref{def:semicirclePDFReal} gives
@@ -146,12 +146,12 @@
     \mathlibok
     \lean{semicirclePDFReal_add}
     \uses{def:semicirclePDFReal,lem:semicirclePDFReal_sub}
-    For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    For any pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
     \[
     f(\mu,v,x+y) = f(\mu-y,v,x)
     \]
-    for any $u \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$. 
+    for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$. 
 \end{lemma}
 \begin{proof}
    Expanding Definition \ref{def:semicirclePDFReal} gives
@@ -168,12 +168,12 @@
     \lean{semicirclePDFReal_inv_mul}
     \uses{def:semicirclePDFReal}
     \notready
-    For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    For any pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
     \[
     f(\mu,v,c^{-1} x) = |c| \cdot f(c \mu,c^2 v,x)
     \]
-    for any $u \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$. 
+    for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$. 
 \end{lemma}
 \begin{proof}
 % sorry
@@ -184,12 +184,12 @@
     \mathlibok
     \lean{semicirclePDFReal_mul}
     \uses{def:semicirclePDFReal,lem:semicirclePDFReal_inv_mul}
-    For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    For any pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
     \[
     f(\mu,v,cx) = |c^{-1}| \cdot f(c^{-1} \mu,c^{-2} v,x)
     \]
-    for any $u \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$. 
+    for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$. 
 \end{lemma}
 \begin{proof}
    Expanding Definition \ref{def:semicirclePDFReal} gives
