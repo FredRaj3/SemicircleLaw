@@ -1,0 +1,105 @@
+
+\begin{lemma}\label{lem:exactly_k_edges}
+    \uses{lem:vertex_edge_inequality}  
+    \notready
+    $G \in \mathcal{G}_{k, k}$. If $|G| = k + 1$, then $G$ has exactly $k$ edges.
+\end{lemma}
+
+\begin{lemma}\label{lem:G_is_tree}
+    \uses{lem:vertex_edge_tree_equality}
+    \notready
+    $G \in \mathcal{G}_{k, k}$. If $|G| = k + 1$, then $G \in \mathcal{G}_{k, k}$ is a tree.
+\end{lemma}
+
+
+\begin{lemma}\label{lem:subgraph_of_tree}
+    \notready
+    $G_{\mathbf{i} \# \mathbf{j}}$ is a tree, then its subgraph $G_{\mathbf{i}}$ and $G_{\mathbf{j}}$ are also trees.
+\end{lemma}
+
+
+\begin{lemma}\label{lem:traverse_exactly_twice}
+    \notready
+    \uses{lem:exactly_k_edges}     % also depends on  total length of walk i, j is exactly 2k
+    $(G, w, w') \in \mathcal{G}_{k, k}$. If $|G| = k + 1$, then for a common edge $e$ between the two walks, $w(e) + w'(e) =2$. In other words, every edge is traversed exactly twice.
+    \begin{proof}
+        Assume for contradiction there is one edge $l$ such that $w(l) + w'(l) > 2$, then $\sum_{e \in G} w(e) + w'(e) > 2k$.
+    \end{proof}
+\end{lemma}
+
+
+%maybe require the statement that they are closed walks
+\begin{lemma}\label{lem:i_j_traverse_once}
+    \notready
+    \uses{lem:traverse_exactly_twice, lem:subgraph_of_tree}
+     $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$, then for a common edge it is impossible that $w(e) = w'(e) = 1$.
+     \begin{proof}
+       Each walk is a closed walk, which implies their edge needs to be traversed in even number.
+     \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:walk_i_traverse_twice}
+    \notready
+    \uses{lem:traverse_eaxctly_twice}
+     $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$, then for a common edge it is impossible that $w(e) = 2, w'(e) = 0$.
+     \begin{proof}
+      As a common edge, it is impossible that $w'$ does not traverse it.
+     \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:walk_j_traverse_twice}
+    \notready
+    \uses{lem:walk_i_traverse_twice}
+    \begin{proof}
+     Symmetric argument by the previous lemma.
+    \end{proof}
+\end{lemma}
+
+
+\begin{lemma}\label{lem:no_shared_edges}
+    \uses{lem:i_j_traverse_once, lem:walk_i_traverse_twice, lem:walk_j_traverse_twice}
+    $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$. Then two walks have no shared edges $e$ which they have traversed.
+\end{lemma}
+
+
+\begin{lemma}\label{lem:disjoint_edge_set}
+    \notready
+    \uses{lem:no_shared_edges}
+    the only graph walks $(G,w,w')\in \mathcal{G}_{k,k}$ with $|G|=k+1$ must have the edge sets covered by $w$ and $w'$ distinct.  
+    In other words, if $(G_{\mx{i}\#\mx{j}},w_\mx{i},w_\mx{j}) = (G,w,w')$, then the edge sets do not intersect: 
+    $\{\{i_1,i_2\},\ldots,\{i_k,i_1\}\}\cap\{\{j_1,j_2\},\ldots,\{j_k,j_1\}\}=\emptyset$. 
+\end{lemma}
+
+
+
+\begin{lemma}\label{lem:independent_expectation}
+   \notready
+   If $X_{\mx{i}}$ and $X_{\mx{j}}$ are independent random variable, then $$\mathbb{E}(X_{\mx{i}}X_{\mx{j}}) = \mathbb{E}(X_{\mx{i}})\mathbb{E}(X_{\mx{j}}) $$
+
+\end{lemma}
+
+
+%depends on the definition of \mathcal{G}_{k,k} and \pi(G, w, w')
+\begin{lemma}\label{lem:G_leq_k}
+    \notready
+    \uses{lem:independent_expectation, lem:disjoint_edge_set}
+    For any $(G_{\mx{i}\#\mx{j}},w_\mx{i},w_\mx{j}) \in \mathcal{G}_{k,k}$, with $k + 1$ vertices, $\pi(G_{\mx{i}\#\mx{j}},w_\mx{i},w_\mx{j})  = 0$ 
+    \begin{proof}
+     $\pi(G_{\mx{i}\#\mx{j}},w_\mx{i},w_\mx{j}) = mathbb{E}(X_{\mx{i}}X_{\mx{j}}) - \mathbb{E}(X_{\mx{i}})\mathbb{E}(X_{\mx{j}})  = 0$
+    \end{proof}
+\end{lemma}
+
+
+%depends on the previous inequality showing variance bounded by O(1/n)
+% this is the only statement from my part being depended by the Prop 4.5
+\begin{lemma}\label{lem:elimination_k+1}
+    \notready
+    \uses{lem:G_leq_k}
+
+    \[ \Var\left( \frac1n\Tr(\mx{X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
+
+\end{lemma}
+
+

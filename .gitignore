@@ -7,6 +7,8 @@
 web/
 lean_decls
 print/
+*/.DS_Store
+.vscode/
 
 # Auxiliary latex files
 *.aux
@@ -14,6 +16,7 @@ print/
 *.log
 *.fdb_latexmk
 *.out
+*.fls
 *.paux
 *.pdf
 *.pygstyle
