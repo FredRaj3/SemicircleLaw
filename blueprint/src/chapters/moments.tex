@@ -169,7 +169,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{definition}
 
 \begin{lemma}[Expectation of Matrix Multi Index]
-    \label{lem:prod_expectation_matrix_multi_index}
+    \label{lem:expectation_matrix_multi_index}
     \notready
     \uses{def:matrix_multi_index, def:graph_edge_count, def:graph_self_edges, def:graph_connecting_edges}
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, we have the following:
@@ -184,7 +184,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \begin{lemma}[Trace of Expectation of Matrix]
     \label{lem:trace_expectation_of_matrix}
     \notready
-    \uses{lem:prod_expectation_matrix_multi_index, lem:matrix_powers_trace}
+    \uses{lem:expectation_matrix_multi_index, lem:matrix_powers_trace}
     Let $\mathbf{Y}_{n}$ be an $n \times n$ symmetric matrix with independent entries, where $\{Y_{ij}\}_{1\le i\le j}$ are independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, for any $k$-index $\mathbf{i} \in [n]^k$, we have:
     $$
     \bE(\Tr(\mathbf{Y}_{n}^{k})) = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} \bE(Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}) = \sum_{\mathbf{i} \in [n]^{k}} \bE(Y_{i})
@@ -217,7 +217,7 @@ as required.
 \end{proof}
 
 \begin{definition}[Product of Expectation of Matrix Multi Index]
-    \label{def:expectation_matrix_multi_index}
+    \label{def:prod_expectation_matrix_multi_index}
     \notready
     \uses{def:matrix_multi_index, def:graph_edge_count, def:graph_self_edges, def:graph_connecting_edges, def:graph_multi_index, def:graph_path}
     Let $\mathbf{i} \in [n]^{k}$ be a $k$-index, $\mathbf{i} = (i_1, i_2, \ldots, i_{k})$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. We define $\Pi(G_{\mathbf{i}}), w_{\mathbf{i}}$ as follows:
@@ -519,7 +519,7 @@ as required.
 %---------%
 \begin{lemma}[$\Pi (G,w) = 0$ : R-1-15 : lem:Pi.prod\_eq\_zero\_if\_w\_le\_two]
   \label{lem:Pi.prod_eq_zero_if_w_le_two}
-  \uses{def:g_k,def:expectation_matrix_multi_index,def:length_of_w_i,def:g_k_j}
+  \uses{def:g_k,def:prod_expectation_matrix_multi_index,def:length_of_w_i,def:g_k_j}
   Given an ordered pair $(G,w) \in \mathcal{G}_k$, suppose there exists an edge $e \in E$ in which it is traversed only once in the walk $w$. Then
   \[
   \Pi (G,w) = 0.
@@ -845,7 +845,7 @@ as required.
 \begin{lemma}
   \label{lemma:prod_expansion}
   \notready
-  \uses{def:special_set_g, def:expectation_matrix_multi_index}
+  \uses{def:special_set_g, def:prod_expectation_matrix_multi_index}
   $\Pi(G,w) = \prod_{e_c\in E^c} \bE(Y_{12}^{w(e_c)})$
 \end{lemma}
 
@@ -1114,6 +1114,29 @@ as required.
 
 
 \section{Convergence in Probability}
+
+\begin{lemma}[Variance Trace Expansion]
+    \label{lem:variance_expansion}
+    \uses{lem:trace_expectation_of_matrix}
+    \notready
+    Let $\mathbf{Y}_{n}$ be an $n \times n$ symmetric matrix with independent entries, where $\{Y_{ij}\}_{1\le i\le j}$ are independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed, and let $\mathbf{X}_{n} = n^{-1 / 2}\mathbf{Y}_{n}$ be the corresponding Wigner matrix. Then:
+    $$
+    \operatorname{Var}\left(\frac{1}{n}\Tr(\mathbf{X}_{n}^{k})\right) = \frac{1}{n^{k+2}} \sum_{\mathbf{i}, \mathbf{j} \in [n]^{k}} [\bE(Y_{\mathbf{i}} Y_{\mathbf{j}}) - \bE(Y_{\mathbf{i}})\bE(Y_{\mathbf{j}})]
+    $$ 
+\end{lemma}
+
+\begin{proof}
+    \notready
+    Expanding the variance by definition, we get:
+    $$
+    \operatorname{Var}\left(\frac{1}{n}\Tr(\mathbf{X}_{n}^{k})\right) = \bE[\frac{1}{n} \cdot \frac{1}{n^{\frac{k}{2}}} \Tr(\mathbf{Y}_{n}^{k})]^2 - (\bE[\frac{1}{n}\cdot \frac{1}{n^{\frac{k}{2}}} \Tr(\mathbf{Y})_{n}^{k}])^2
+    $$ 
+    use the linearity of expectation to factor out $\frac{1}{n^{k+2}}$ from both expectations:
+    $$
+    \bE[\frac{1}{n} \cdot \frac{1}{n^{\frac{k}{2}}} \Tr(\mathbf{Y}_{n}^{k})]^2 - (\bE[\frac{1}{n}\cdot \frac{1}{n^{\frac{k}{2}}} \Tr(\mathbf{Y})_{n}^{k}])^2 = \frac{1}{n^{k+2}} \{\bE[\operatorname{Tr}(\mathbf{Y}_{n}^{k})]^2 - (\bE \operatorname{Tr}(\mathbf{Y}_{n}^{k}))^2\}
+    $$ 
+    using \ref{lem:trace_expectation_of_matrix}, we can expand and square:
+\end{proof}
 
 \begin{proposition}[Proposition 4.2 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence_probability}
