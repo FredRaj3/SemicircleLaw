@@ -68,7 +68,7 @@
     \notready
     \uses{lem:no_shared_edges}
     the only graph walks $(G,w,w')\in \mathcal{G}_{k,k}$ with $|G|=k+1$ must have the edge sets covered by $w$ and $w'$ distinct.  
-    In other words, if $(G_{\mx{i}\#\mx{j}},w_\mx{i},w_\mx{j}) = (G,w,w')$, then the edge sets do not intersect: 
+    In other words, if $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')$, then the edge sets do not intersect: 
     $\{\{i_1,i_2\},\ldots,\{i_k,i_1\}\}\cap\{\{j_1,j_2\},\ldots,\{j_k,j_1\}\}=\emptyset$. 
 \end{lemma}
 
@@ -76,18 +76,18 @@
 
 \begin{lemma}\label{lem:independent_expectation}
    \notready
-   If $X_{\mx{i}}$ and $X_{\mx{j}}$ are independent random variable, then $$\mathbb{E}(X_{\mx{i}}X_{\mx{j}}) = \mathbb{E}(X_{\mx{i}})\mathbb{E}(X_{\mx{j}}) $$
+   If $X_{\mx{i}}$ and $X_{\mx{j}}$ are independent random variable, then $$\mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) = \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}}) $$
 
 \end{lemma}
 
 
-%depends on the definition of \mathcal{G}_{k,k} and \pi(G, w, w')
+%depends on the definition of \mathcal{G}_{k,k} and \pi(G, w, w'    %R-2-5-1)
 \begin{lemma}\label{lem:G_leq_k}
     \notready
-    \uses{lem:independent_expectation, lem:disjoint_edge_set}
-    For any $(G_{\mx{i}\#\mx{j}},w_\mx{i},w_\mx{j}) \in \mathcal{G}_{k,k}$, with $k + 1$ vertices, $\pi(G_{\mx{i}\#\mx{j}},w_\mx{i},w_\mx{j})  = 0$ 
+    \uses{lem:independent_expectation, lem:disjoint_edge_set}  
+    For any $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \in \mathcal{G}_{k,k}$, with $k + 1$ vertices, $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})  = 0$ 
     \begin{proof}
-     $\pi(G_{\mx{i}\#\mx{j}},w_\mx{i},w_\mx{j}) = mathbb{E}(X_{\mx{i}}X_{\mx{j}}) - \mathbb{E}(X_{\mx{i}})\mathbb{E}(X_{\mx{j}})  = 0$
+     $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) - \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}})  = 0$
     \end{proof}
 \end{lemma}
 
