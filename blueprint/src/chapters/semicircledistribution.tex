@@ -3,7 +3,7 @@
 \begin{lemma}\label{lem:semicircleReal_map_add_const}
   \notready
   \lean{semicircleReal_map_add_const}
-  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the for any constant $y \in \mathbb{R}$, the pushforward
+  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto x + y$ is again a semicircular measure $\mathrm{SC}(\mu + y, v)$. 
   \begin{proof}
     %sorry
@@ -15,8 +15,8 @@
 \begin{lemma}\label{lem:semicircleReal_map_const_add}
   \mathlibok
   \lean{semicircleReal_map_const_add}
-  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the for any constant $y \in \mathbb{R}$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto y + x$ is again a semicircular measure $\mathrm{SC}(\mu - y, v)$. 
+  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
+  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto y + x$ is again a semicircular measure $\mathrm{SC}(\mu + y, v)$. 
   \begin{proof}
     Obvious from commutativity between $x + y$ and $y + x$.
   \end{proof}
@@ -27,7 +27,7 @@
 \begin{lemma}\label{lem:semicircleReal_map_const_mul}
   \notready
   \lean{semicircleReal_map_const_mul}
-    Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the for any constant $c \in \mathbb{R}$, the pushforward
+    Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
   of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto c * x$ is again a semicircular measure $\mathrm{SC}(c\mu, c^2v)$. 
   \begin{proof}
      %sorry
@@ -40,7 +40,7 @@
   \mathlibok
   \lean{semicircleReal_map_mul_const}
   \uses{lem:semicircleReal_map_const_mul}
-   Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the for any constant $c \in \mathbb{R}$, the pushforward
+   Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
   of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto x * c$ is again a semicircular measure $\mathrm{SC}(c\mu, c^2v)$. 
   \begin{proof}
     Use commutativity between $Xc$ and $cX$.
@@ -53,18 +53,20 @@
   \mathlibok
   \lean{semicircleReal_map_neg}
   \uses{lem:semicircleReal_map_const_mul}
-  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the for any constant $y \in \mathbb{R}$, the pushforward
+  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the pushforward
   of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto -x$ is again a semicircular measure $\mathrm{SC}(- \mu, v)$. 
   \begin{proof}
      Special case of the multiplication by constant map with constant being $-1$.
   \end{proof}
 \end{lemma}
 
+
+
 \begin{lemma}\label{lem:semicircleReal_map_sub_const}
   \mathlibok
   \lean{semicircleReal_map_sub_const}
   \uses{lem:semicircleReal_map_add_const, lem:semicircleReal_map_neg}
-  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the for any constant $y \in \mathbb{R}$, the pushforward
+  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto x - y$ is again a semicircular measure $\mathrm{SC}( \mu - y, v)$. 
   \begin{proof}
    Use the map by addition of constant and substitute constant for its $-1$ multiple.
@@ -76,12 +78,13 @@
   \mathlibok
   \lean{semicircleReal_map_const_sub}
   \uses{lem:semicircleReal_map_neg, lem:semicircleReal_map_const_add}
-   Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the for any constant $y \in \mathbb{R}$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto x - y$ is again a semicircular measure $\mathrm{SC}(\mu - y, v)$. 
+   Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
+  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto y - x$ is again a semicircular measure $\mathrm{SC}(y - \mu, v)$. 
   \begin{proof}
 
   \end{proof}
 \end{lemma}
+
 
 
 
