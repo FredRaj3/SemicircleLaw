@@ -1,6 +1,7 @@
 
 %section Transformation
 \begin{lemma}\label{lem:semicircleReal_map_add_const}
+  \uses{lem:integral_semicircleReal_eq_integral_smul}
   \notready
   \lean{semicircleReal_map_add_const}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
@@ -25,6 +26,7 @@
 \begin{lemma}\label{lem:semicircleReal_map_const_mul}
   \notready
   \lean{semicircleReal_map_const_mul}
+  \uses{lem:integral_semicircleReal_eq_integral_smul}
     Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto c * x$ is again a semicircular measure $\sigma(c\mu, c^2v)$. 
   \begin{proof}
@@ -133,25 +135,25 @@
 %end Transformation
 
 
-
-
-
-
 %moments
 
+%convert the random variable into standard semicircle distribution which has 0 mean
 \begin{lemma}\label{lem:integral_id_semicircleReal}
   \lean{integral_id_semicircleReal}
+  \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \notready
-  $$\mathbb{E}[X] = \int x d \sigma(\mu, v) = \mu$$
+  If $X \sim \sigma(\mu, v)$, then its expectation $$\mathbb{E}[X] = \int x d \sigma(\mu, v) = \mu$$
   \begin{proof}
    %sorry
   \end{proof}
 \end{lemma}
 
+%similar to above
 \begin{lemma}\label{lem:variance_fun_id_semicircleReal}
   \lean{variance_fun_id_semicircleReal}
+  \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \notready
-  $Var(X) = v$
+  If $X \sim \sigma(\mu, v)$, then its variance $Var(X) = v$
   \begin{proof}
    %sorry
   \end{proof}
@@ -177,6 +179,7 @@
 
 \begin{lemma}\label{lem:centralMoment_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
+  \uses{lem:integral_id_semicircleReal, lem:variance_fun_id_semicircleReal, lem:variance_id_semicircleReal, lem:semicircleReal_add_const, lem:semicircleReal_const_add,lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
    \begin{proof}
@@ -187,6 +190,7 @@
 
 \begin{lemma}\label{lem:centralMoment_fun_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
+  \uses{lem:centralMoment_two_mul_semicircleReal}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
    \begin{proof}
@@ -197,6 +201,7 @@
 
 \begin{lemma}\label{lem:centralMoment_odd_semicircleReal}
   \lean{centralMoment_odd_semicircleReal}
+  \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add}
   \notready
   $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
   \begin{proof}
@@ -207,6 +212,7 @@
 
 \begin{lemma}\label{lem:centralMoment_fun_odd_semicircleReal}
   \lean{centralMoment_fun_odd_semicircleReal}
+  \uses{lem:centralMoment_odd_semicircleReal}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
    \begin{proof}
