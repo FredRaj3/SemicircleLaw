@@ -401,7 +401,9 @@ as desired.
     The measure semicircleReal is a probability measure, no matter the values of $\mu \in \mathbb{R}$ and $v \in \mathbb{R}_{\ge 0}$.
 \end{lemma}
 
-%proof for instance? unsure
+\begin{proof}
+  \leanok
+\end{proof}
 
 \begin{lemma}
     \label{lemma:noAtoms_semicircleReal}
@@ -410,12 +412,20 @@ as desired.
     If the variance v is nonzero, then the semicircle distribution has no atoms.
 \end{lemma}
 
+\begin{proof}
+  \leanok
+\end{proof}
+
 \begin{lemma}
     \label{lemma:semicircleReal_apply}
     \uses{lemma:semicircleReal_of_var_ne_zero}
     \leanok
     For a semicircle measure with mean $\mu$ and nonzero variance v, the measure of any measurable set $s$ equals the Lebesgue integral over $s$ of the semicircle probability density function at x.
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 \begin{lemma}
     \label{lemma:semicircleReal_apply_eq_integral}
@@ -424,6 +434,10 @@ as desired.
     For any real mean $\mu$, and any nonnegative variance $v$ that is not zero, and any measurable set $s$ of real numbers, the semicircle distribution measure of the set $s$ equals the extended nonnegative real number version (ENNReal.ofReal) of the integral of the semicircle probability density function over s.
 \end{lemma}
 
+\begin{proof}
+  \leanok
+\end{proof}
+
 \begin{lemma}
     \label{lemma:semicircleReal_absolutelyContinuous}
     \uses{lemma:semicircleReal_of_var_ne_zero}
@@ -431,12 +445,20 @@ as desired.
     For a semicircle distribution with mean $\mu$ and nonzero variance $v$, the measure semicircleReal $μ$ $v$ is absolutely continuous with respect to the Lebesgue measure.
 \end{lemma}
 
+\begin{proof}
+  \leanok
+\end{proof}
+
 \begin{lemma}
     \label{lemma:rnDeriv_semicircleReal}
     \uses{lemma:semicircleReal_zero_var, lemma:semicirclePDF_zero_var, lemma:semicircleReal_of_var_ne_zero, lemma:measurable_semicirclePDF}
     \leanok
     The Radon–Nikodym derivative of the semicircle measure semicircleReal $\mu$ $v$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function semicirclePDF $(\mu$, $v)$.
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 \begin{lemma}
     \label{lemma:integral_semicircleReal_eq_integral_smul}
@@ -452,6 +474,10 @@ as desired.
     % In other words, integrating $ f $ with respect to the semicircle measure is equivalent to integrating the product of $ f $ and the semicircle probability density function with respect to Lebesgue measure.
     
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 %---Kiran's Part for Semicircle Distribution (End)---% 
 
