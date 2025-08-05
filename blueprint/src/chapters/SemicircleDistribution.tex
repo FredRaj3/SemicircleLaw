@@ -9,7 +9,7 @@
 %---------%
 \begin{definition}\label{def:semicirclePDFReal}
   \mathlibok 
-  \lean{semicirclePDFReal}
+  \lean{ProbabilityTheory.semicirclePDFReal}
     The function $f : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \rightarrow \mathbb{R}$ defined by
    \[
     f(\mu,v,x) 
@@ -21,7 +21,7 @@
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_def}
   \mathlibok 
-  \lean{semicirclePDFReal_def}
+  \lean{ProbabilityTheory.semicirclePDFReal_def}
   \uses{def:semicirclePDFReal}
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is given by
@@ -34,7 +34,7 @@
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_zero_var}
     \mathlibok
-    \lean{semicirclePDF_zero_var}
+    \lean{ProbabilityTheory.semicirclePDF_zero_var}
     \uses{def:semicirclePDFReal}
     If the variance $v$ is given to be zero, then the p.d.f. of the semicircle distribution is the zero functional.
 %    In other words, for any mean $m \in \mathbb{R}$ and $x \in \mathbb{R}$, we have
@@ -50,7 +50,7 @@
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_nonneg}
     \mathlibok
-    \lean{semicirclePDFReal_nonneg}
+    \lean{ProbabilityTheory.semicirclePDFReal_nonneg}
     \uses{def:semicirclePDFReal}
     The p.d.f. of the semicircle distribution is always nonnegative. 
 \end{lemma}
@@ -63,7 +63,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:measurable_semicirclePDFReal}
-    \lean{measurable_semicirclePDFReal}
+    \lean{ProbabilityTheory.measurable_semicirclePDFReal}
     \uses{}
     \notready
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
@@ -76,7 +76,7 @@
 %---------%
 \begin{lemma}\label{lem:stronglyMeasurable_semicirclePDFReal}
     \mathlibok
-    \lean{stronglyMeasurable_semicirclePDFReal}
+    \lean{ProbabilityTheory.stronglyMeasurable_semicirclePDFReal} 
     \uses{def:semicirclePDFReal,lem:measurable_semicirclePDFReal}
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is strongly measurable.
@@ -88,7 +88,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:integrable_semicirclePDFReal}
-    \lean{integrable_semicirclePDFReal}
+    \lean{ProbabilityTheory.integrable_semicirclePDFReal}
     \uses{def:semicirclePDFReal}
     \notready
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
@@ -100,7 +100,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:lintegral_semicirclePDFReal_eq_one}
-    \lean{lintegral_semicirclePDFReal_eq_one}
+    \lean{ProbabilityTheory.lintegral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     \notready
     Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the lower integral of the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
@@ -112,7 +112,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:integral_semicirclePDFReal_eq_one}
-    \lean{integral_semicirclePDFReal_eq_one}
+    \lean{ProbabilityTheory.integral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     \notready
     Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the integral of the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
@@ -125,7 +125,7 @@
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_sub}
     \mathlibok
-    \lean{semicirclePDFReal_sub}
+    \lean{ProbabilityTheory.semicirclePDFReal_sub}
     \uses{def:semicirclePDFReal}
     For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
@@ -147,7 +147,7 @@
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_add}
     \mathlibok
-    \lean{semicirclePDFReal_add}
+    \lean{ProbabilityTheory.semicirclePDFReal_add}
     \uses{def:semicirclePDFReal,lem:semicirclePDFReal_sub}
     For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
@@ -168,7 +168,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_inv_mul}
-    \lean{semicirclePDFReal_inv_mul}
+    \lean{ProbabilityTheory.semicirclePDFReal_inv_mul}
     \uses{def:semicirclePDFReal}
     \notready
     For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
@@ -185,7 +185,7 @@
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_mul}
     \mathlibok
-    \lean{semicirclePDFReal_mul}
+    \lean{ProbabilityTheory.semicirclePDFReal_mul}
     \uses{def:semicirclePDFReal,lem:semicirclePDFReal_inv_mul}
     For any p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
@@ -218,7 +218,7 @@
 \begin{definition}
   \label{def:semicirclePDF}
   \mathlibok 
-  \lean{semicirclePDF}
+  \lean{ProbabilityTheory.semicirclePDF}
   \uses{def:semicirclePDFReal}
   Let $f : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \to \mathbb{R}$ denote the real-valued semicircle density defined in Definition \ref{def:semicirclePDFReal}. Define the function $h: \mathbb{R} \to \mathbb{R} \cup \{\infty\} $ as follows:
   $$
@@ -236,7 +236,7 @@ x & \text{if } x \ge 0, \\
 \begin{lemma}
   \label{lem:semicirclePDF_def}
   \mathlibok
-  \lean{semicirclePDF_def}
+  \lean{ProbabilityTheory.semicirclePDF_def}
   \uses{def:semicirclePDF}
   For all $\mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\geq 0} \), the extended p. d. f. \( g : \mathbb{R} \to [0,\infty]$  satisfies:
   $$
@@ -247,7 +247,7 @@ x & \text{if } x \ge 0, \\
 \begin{lemma}
   \label{lem:semicirclePDF_zero_var}
   \mathlibok
-  \lean{semicirclePDF_zero_var}
+  \lean{ProbabilityTheory.semicirclePDF_zero_var}
   \uses{def:semicirclePDF,lem:semicirclePDFreal_zero_var}
   If the variance $v$ is zero, then the extended p.d.f. is identically zero:
  $$ 
@@ -281,7 +281,7 @@ as desired.
 
 \begin{lemma}
   \label{lem:semicirclePDF_nonneg}
-  \lean{semicirclePDF_nonneg}
+  \lean{ProbabilityTheory.semicirclePDF_nonneg}
   \uses{def:semicirclePDF}
   If $v > 0$, then for all $\mu, x \in \mathbb{R}$, the extended p.d.f. is nonnegative:
   \[
@@ -294,7 +294,7 @@ as desired.
 
 \begin{lemma}
   \label{lem:semicirclePDF_finite}
-  \lean{semicirclePDF_lt_top}
+  \lean{ProbabilityTheory.semicirclePDF_lt_top}
   \uses{def:semicirclePDF}
   For all $\mu, x \in \mathbb{R}$, and $v \in \mathbb{R}_{\ge 0}$, we have:
     $$ 
@@ -307,7 +307,7 @@ as desired.
 
 \begin{lemma}
   \label{lem:semicirclePDF_ne_top}
-  \lean{semicirclePDF_ne_top}
+  \lean{ProbabilityTheory.semicirclePDF_ne_top}
   \uses{def:semicirclePDF}
   For all \( \mu, x \in \mathbb{R} \), and \( v \in \mathbb{R}_{\ge 0} \), the extended p.d.f. is finite:
   \[
@@ -317,7 +317,7 @@ as desired.
 
 \begin{lemma}
   \label{lem:support_semicirclePDF}
-  \lean{support_semicirclePDF}
+  \lean{ProbabilityTheory.support_semicirclePDF}
   \uses{def:semicirclePDF,def:semicirclePDFReal}
   Let \( \mu \in \mathbb{R} \) and \( v \in \mathbb{R}_{> 0} \). Then the support of the extended p.d.f. is
   \[
@@ -331,7 +331,7 @@ as desired.
 
 \begin{lemma}
   \label{lem:measurable_semicirclePDF}
-  \lean{measurable_semicirclePDF}
+  \lean{ProbabilityTheory.measurable_semicirclePDF}
   \uses{lem:measurable_semicirclePDFReal}
   The function \( x \mapsto g(\mu,v,x) \) is measurable for all \( \mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\ge 0} \).
 \end{lemma}
@@ -341,7 +341,7 @@ as desired.
 
 \begin{lemma}
   \label{lem:lintegral_semicirclePDF_eq_one}
-  \lean{lintegral_semicirclePDF_eq_one}
+  \lean{ProbabilityTheory.lintegral_semicirclePDF_eq_one}
   \uses{def:semicirclePDF,lem:lintegral_semicirclePDFReal_eq_one}
   If \( v > 0 \), then the total integral of \( g \) with respect to Lebesgue measure is 1:
   \[
@@ -464,7 +464,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_map_add_const}
   \notready
-  \lean{semicircleReal_map_add_const}
+  \lean{ProbabilityTheory.semicircleReal_map_add_const}
   The map of a semicircle distribution by addition of a constant is semicircular. That is,
   given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto X + y )^{-1} = \mathrm{SC}(\mu + y, v)$.
   \begin{proof}
@@ -475,7 +475,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_map_const_add}
   \mathlibok
-  \lean{semicircleReal_map_const_add}
+  \lean{ProbabilityTheory.semicircleReal_map_const_add}
   The map of a semicircle distribution by addition of a constant is semicircular. That is,
   given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto y + X )^{-1} = \mathrm{SC}(y + \mu, v)$.
   \begin{proof}
@@ -486,7 +486,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_map_const_mul}
   \notready
-  \lean{semicircleReal_map_const_mul}
+  \lean{ProbabilityTheory.semicircleReal_map_const_mul}
     The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
   given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto cX )^{-1} = \mathrm{SC}(c\mu , c^2v)$.
   \begin{proof}
@@ -498,7 +498,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_map_mul_const}
   \mathlibok
-  \lean{semicircleReal_map_mul_const}
+  \lean{ProbabilityTheory.semicircleReal_map_mul_const}
   \uses{lem:semicircleReal_map_const_mul}
    The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
   given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto Xc )^{-1} = \mathrm{SC}(\mu c , c^2v)$.
@@ -511,7 +511,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_map_neg}
   \mathlibok
-  \lean{semicircleReal_map_neg}
+  \lean{ProbabilityTheory.semicircleReal_map_neg}
   \uses{lem:semicircleReal_map_const_mul}
   Given a constant $c \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto -X )^{-1} = \mathrm{SC}(-\mu  , v)$
   \begin{proof}
@@ -521,7 +521,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_map_sub_const}
   \mathlibok
-  \lean{semicircleReal_map_sub_const}
+  \lean{ProbabilityTheory.semicircleReal_map_sub_const}
   \uses{lem:semicircleReal_map_add_const}
    The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
   given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X  \mapsto X - y )^{-1} = \mathrm{SC}(\mu - y  , v)$
@@ -533,7 +533,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_map_const_sub}
   \mathlibok
-  \lean{semicircleReal_map_const_sub}
+  \lean{ProbabilityTheory.semicircleReal_map_const_sub}
   \uses{lem:semicircleReal_map_neg, lem:semicircleReal_map_const_add}
   The map of a semicircle distribution by multiplication by a constant is semicircular. That is,
   given a constant $y \in \mathbb{R}$, $ \mathrm{SC}(\mu, v) \circ (X \mapsto y-X  )^{-1} = \mathrm{SC}(y-\mu  , v)$
@@ -545,7 +545,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_add_const}
   \mathlibok
-  \lean{semicircleReal_add_const}
+  \lean{ProbabilityTheory.semicircleReal_add_const}
   \uses{lem:semicircleReal_map_add_const}
   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
   then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(\mu + y, v)$
@@ -556,7 +556,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_const_add}
   \mathlibok
-  \lean{semicircleReal_const_add}
+  \lean{ProbabilityTheory.semicircleReal_const_add}
   \uses{lem:semicircleReal_add_const}
   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
   then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(y + \mu, v)$
@@ -568,7 +568,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_const_mul}
   \mathlibok
-  \lean{semicircleReal_const_mul}
+  \lean{ProbabilityTheory.semicircleReal_const_mul}
   \uses{lem:semicircleReal_map_const_mul}
   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
   then for a constant $c \in \mathbb{R}$, $cX \sim \mathrm{SC}(c\mu , c^2v)$
@@ -580,7 +580,7 @@ as desired.
 
 \begin{lemma}\label{lem:semicircleReal_mul_const}
   \mathlibok
-  \lean{semicircleReal_mul_const}
+  \lean{ProbabilityTheory.semicircleReal_mul_const}
   \uses{lem:semicircleReal_const_mul}
    Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
   then for a constant $c \in \mathbb{R}$, $Xc \sim \mathrm{SC}(\mu c , c^2v)$
@@ -597,20 +597,20 @@ as desired.
 %moments
 
 \begin{lemma}\label{lem:integral_id_semicircleReal}
-  \lean{integral_id_semicircleReal}
+  \lean{ProbabilityTheory.integral_id_semicircleReal}
   \notready
   $$\mathbb{E}[X] = \int x d \sigma = \mu$$
 \end{lemma}
 
 \begin{lemma}\label{lem:variance_fun_id_semicircleReal}
-  \lean{variance_fun_id_semicircleReal}
+  \lean{ProbabilityTheory.variance_fun_id_semicircleReal}
   \notready
   $Var(X) = v$
 \end{lemma}
 
 
 \begin{lemma}\label{lem:variance_id_semicircleReal}
-  \lean{variance_id_semicircleReal}
+  \lean{ProbabilityTheory.variance_id_semicircleReal}
   \notready
   The variance of a real semicircle distribution with parameter $(\mu, v)$ is
   its variance parameter $v$
@@ -618,7 +618,7 @@ as desired.
 
 
 \begin{lemma}\label{lem:memLp_id_semicircleReal}
-  \lean{memLp_id_semicircleReal}
+  \lean{ProbabilityTheory.memLp_id_semicircleReal}
   \notready
   All the moments of a real semicircle distribution are finite. That is, the identity is in $L_p$ for
   all finite $p$
@@ -626,25 +626,25 @@ as desired.
 
 
 \begin{lemma}\label{lem:centralMoment_two_mul_semicircleReal}
-  \lean{centralMoment_fun_two_mul_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_fun_two_mul_semicircleReal}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n}] = v_n C_n $
 \end{lemma}
 
 \begin{lemma}\label{lem:centralMoment_fun_two_mul_semicircleReal}
-  \lean{centralMoment_fun_two_mul_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_fun_two_mul_semicircleReal}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n}] = v_n C_n $
 \end{lemma}
 
 \begin{lemma}\label{lem:centralMoment_odd_semicircleReal}
-  \lean{centralMoment_odd_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_odd_semicircleReal}
   \notready
   $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
 \end{lemma}
 
 \begin{lemma}\label{lem:centralMoment_fun_odd_semicircleReal}
-  \lean{centralMoment_fun_odd_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_fun_odd_semicircleReal}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
 \end{lemma}
