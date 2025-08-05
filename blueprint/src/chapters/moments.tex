@@ -1141,6 +1141,7 @@ as required.
     using \ref{lem:trace_expectation_of_matrix}, we can expand and square:
 \end{proof}
 
+
 \begin{proposition}[Proposition 4.2 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence_probability}
   \notready
@@ -1149,70 +1150,4 @@ as required.
   \operatorname{Var}(\frac{1}{n}\Tr(\mathbf{X}_{n}^{k})) = O_{k}(\frac{1}{n^2})
   $$ 
 \end{proposition}
-
-
-
-
-
-
-
-%kiran's part (part 3) begins
-
-
-\begin{proposition}
-  \label{prop:var_trace_as_sum}
-  \notready
-  \uses{}
-  \[ \Var\left( \frac1n\Tr(X_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{\#\left\{(i,{j})\in [n]^{2k}\colon (G_{i\#j},w_{i},w_{j}) = (G,w,w')\right\}}{n^{k+2}}. \]
-\end{proposition}
-
-\begin{proof}
-  \notready
-  By construction, every edge in the joined graph $G_{{i}\#{j}}$ is traversed at least once by the union of the two paths $w_{i}$ and $w_{j}$.  Suppose that $e$ is an edge that is traversed only {\em once}.  This means that $w_{{i}\#{j}}(e) = 1$, and so it follows that the two values $w_{i}(e),w_{j}(e)$ are $\{0,1\}$.  Hence, the above expansion and the fact that $\bE(Y_{11})=\bE(Y_{12})=0$ show that $\pi(G_{{i}\#{j}},w_{i},w_{j}) = 0$ in this case.
-\end{proof}
-
-
-\begin{lemma}
-  \label{lemma:simplified_var_trace_as_sum}
-  \uses{prop:var_trace_as_sum}
-  \notready
-  \[ \Var\left( \frac1n\Tr({X}_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
-\end{lemma}
-
-\begin{proof}
-  \notready
-  The enumeration of the number of $2k$-tuples yielding a certain graph with two walks is the same as in the previous proposition: the structure $(G,w,w')$ specifies the $2k$-tuple precisely once we select the $|G|$ distinct indices for the vertices.  So, as before, this ratio becomes \[ \frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
-\end{proof}
-
-\begin{proposition}
-  \label{prop:var_upper_bound}
-  \uses{prop:vertex_edge_inequality, lemma:simplified_var_trace_as_sum}
-  \notready
-  \[ \Var\left( \frac1n\Tr({X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
-\end{proposition}
-
-\begin{proof}
-  \notready
-  Now, we have the condition $w+w'\ge 2$, meaning every edge is traversed at least twice.  Since there are $k$ steps in each of the two paths, this means there are at most $k$ edges.  Appealing again to \ref{prop:vertex_edge_inequality}, it follows that $|G|\le k+1$.  Hence, $n(n-1)\cdots(n-|G|+1) \le n^{|G|} \le n^{k+1}$
-\end{proof}
-
-\begin{theorem}
-  \label{thm:wigner_law_matrix_moments}
-  \uses{prop:var_upper_bound}
-  \notready
-  Theorem 2.4. (Unsure if it goes in this doc.)
-\end{theorem}
-
-\begin{proof}
-  \notready
-  The (potentially enormous) number $B_k=2M_{2k}\cdot\#\mathcal{G}_{k,k}$ is independent of $n$, and so we have already proved that the variance is $=O_k(1/n)$.
-\end{proof}
-
-
-
-
-
-
-
-%kiran's part (part 3) ends
 

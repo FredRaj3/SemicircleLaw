@@ -217,8 +217,8 @@
 
 \begin{definition}
   \label{def:semicirclePDF}
-  \mathlibok 
-  \lean{semicirclePDF}
+  \leanok
+  \lean{ProbabilityTheory.semicirclePDF}
   \uses{def:semicirclePDFReal}
   Let $f : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \to \mathbb{R}$ denote the real-valued semicircle density defined in Definition \ref{def:semicirclePDFReal}. Define the function $h: \mathbb{R} \to \mathbb{R} \cup \{\infty\} $ as follows:
   $$
@@ -229,100 +229,106 @@ x & \text{if } x \ge 0, \\
   $$ 
   Then we define the function $ g : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \to [0,\infty] \subseteq \overline{\mathbb{R}}_{\ge 0}$ by:
     $$
-    g(\mu,v,x) := h(f(\mu,v,x)),
+    \bar{sc} (\mu,v,x) := h(sc(\mu,v,x)),
     $$
 \end{definition}
 
 \begin{lemma}
+  \leanok
   \label{lem:semicirclePDF_def}
-  \mathlibok
-  \lean{semicirclePDF_def}
+  \lean{ProbabilityTheory.semicirclePDF_def}
   \uses{def:semicirclePDF}
-  For all $\mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\geq 0} \), the extended p. d. f. \( g : \mathbb{R} \to [0,\infty]$  satisfies:
+  For all $\mu \in \mathbb{R} , v \in \mathbb{R}_{\geq 0}$, the extended pdf. $ \bar{sc} : \mathbb{R} \to [0,\infty]$  satisfies:
   $$
-    g(\mu,v) = \left( x \mapsto h(f(\mu,v,x)) \right).
+    \bar{sc}(\mu,v) = \left( x \mapsto h(sc(\mu,v,x)) \right).
   $$
 \end{lemma}
 
 \begin{lemma}
+  \leanok
   \label{lem:semicirclePDF_zero_var}
-  \mathlibok
-  \lean{semicirclePDF_zero_var}
+  \lean{ProbabilityTheory.semicirclePDF_zero_var}
   \uses{def:semicirclePDF,lem:semicirclePDFreal_zero_var}
-  If the variance $v$ is zero, then the extended p.d.f. is identically zero:
+  If the variance $v$ is zero, then the extended pdf. is identically zero:
  $$ 
-    \forall x \in \mathbb{R}, \quad g(\mu,0,x) = 0.
+    \forall x \in \mathbb{R}, \quad \bar{sc}(\mu,0,x) = 0.
  $$ 
 \end{lemma}
 \begin{proof}
-  This follows immediately from the definition of $g$ as $h(f(\mu,0,x))$, and the fact that $f(\mu,0,x) = 0$ from Lemma \ref{lem:semicirclePDFReal_zero_var}.
+    This follows immediately from the definition of $\bar{sc}$ as $h(sc(\mu,0,x))$, and the fact that $sc(\mu,0,x) = 0$ from Lemma \ref{lem:semicirclePDFReal_zero_var}.
 \end{proof}
 
 \begin{lemma}
-    \label{lem:semicirclePDF_toReal}
+    \leanok
+    \label{lem:toReal_semicirclePDF}
+    \lean{ProbabilityTheory.toReal_semicirclePDF}
     \uses{lem:semicirclePDFReal_nonneg}
-Let \( \mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\ge 0} \), and \( x \in \mathbb{R} \).
+    Let $ \mu \in \mathbb{R} ,  v \in \mathbb{R}_{\ge 0}$, and $x \in \mathbb{R} $.
 Then the real value recovered from the extended semicircle PDF satisfies:
 \[
-g(\mu, v, x)^{\operatorname{toReal}} = f(\mu, v, x).
+    \bar{sc}(\mu, v, x)^{\operatorname{toReal}} = sc(\mu, v, x).
 \]
 \end{lemma}
 \begin{proof}
-Since \( f(\mu, v, x) \ge 0 \), we have \( h(f(\mu, v, x)) = f(\mu, v, x) \), and thus
+Since $sc(\mu, v, x) \ge 0$, we have $h(sc(\mu, v, x)) = sc(\mu, v, x)$, and thus
 \[
-g(\mu, v, x) = h(f(\mu, v, x)) = f(\mu, v, x).
+    \bar{sc}(\mu, v, x) = h(sc(\mu, v, x)) = sc(\mu, v, x).
 \]
 Therefore,
 \[
-g(\mu, v, x)^{\operatorname{toReal}} = f(\mu, v, x),
+    \bar{sc}(\mu, v, x)^{\operatorname{toReal}} = sc(\mu, v, x),
 \]
 as desired.
 \end{proof}
 
 \begin{lemma}
+  \leanok
   \label{lem:semicirclePDF_nonneg}
-  \lean{semicirclePDF_nonneg}
+  \lean{ProbabilityTheory.semicirclePDF_nonneg}
   \uses{def:semicirclePDF}
-  If $v > 0$, then for all $\mu, x \in \mathbb{R}$, the extended p.d.f. is nonnegative:
+  If $v > 0$, then for all $\mu, x \in \mathbb{R}$, the extended pdf is nonnegative:
   \[
-    0 \le g(\mu,v,x).
+      0 \le \bar{sc}(\mu,v,x).
   \]
 \end{lemma}
 \begin{proof}
-  This is immediate from the definition of $g$ as $h(f(\mu,v,x))$ and the nonnegativity of $f$ (Lemma~\ref{lem:semicirclePDFReal_nonneg}).
+    This is immediate from the definition of $\bar{sc}$ as $h(sc(\mu,v,x))$ and the nonnegativity of $sc$ (Lemma~\ref{lem:semicirclePDFReal_nonneg}).
 \end{proof}
 
 \begin{lemma}
+  \leanok
   \label{lem:semicirclePDF_finite}
-  \lean{semicirclePDF_lt_top}
+  \lean{ProbabilityTheory.semicirclePDF_lt_top}
   \uses{def:semicirclePDF}
   For all $\mu, x \in \mathbb{R}$, and $v \in \mathbb{R}_{\ge 0}$, we have:
     $$ 
-    g(\mu,v,x) < \infty.
+    \bar{sc}(\mu,v,x) < \infty.
     $$ 
 \end{lemma}
 \begin{proof}
-  Since $f(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $g(\mu,v,x) = h(f(\mu,v,x)) < \infty$.
+Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\mu,v,x)) < \infty$.
 \end{proof}
 
 \begin{lemma}
+  \leanok
   \label{lem:semicirclePDF_ne_top}
-  \lean{semicirclePDF_ne_top}
+  \lean{ProbabilityTheory.semicirclePDF_ne_top}
   \uses{def:semicirclePDF}
-  For all \( \mu, x \in \mathbb{R} \), and \( v \in \mathbb{R}_{\ge 0} \), the extended p.d.f. is finite:
+  For all \( \mu, x \in \mathbb{R} \), and \( v \in \mathbb{R}_{\ge 0} \), the extended pdf is finite:
   \[
-    g(\mu,v,x) \ne \infty.
+    \bar{sc}(\mu,v,x) \ne \infty.
   \]
 \end{lemma}
 
 \begin{lemma}
+  \leanok
   \label{lem:support_semicirclePDF}
-  \lean{support_semicirclePDF}
+  \lean{ProbabilityTheory.support_semicirclePDF}
   \uses{def:semicirclePDF,def:semicirclePDFReal}
-  Let \( \mu \in \mathbb{R} \) and \( v \in \mathbb{R}_{> 0} \). Then the support of the extended p.d.f. is
+  Let \( \mu \in \mathbb{R} \) and \( v \in \mathbb{R}_{> 0} \). Then the support of the extended pdf is
   \[
-    \operatorname{supp}(g(\mu,v)) = \left\{ x \in \mathbb{R} : f(\mu,v,x) \ne 0 \right\}
-    = \left[ \mu - 2\sqrt{v}, \mu + 2\sqrt{v} \right].
+      \operatorname{supp}(\bar{sc}(\mu,v)) = \left\{ x \in \mathbb{R} : sc(\mu,v,x) \ne 0 \right\}
+    = \left(\mu - 2\sqrt{v}, \mu + 2\sqrt{v})\right.
   \]
 \end{lemma}
 \begin{proof}
@@ -330,28 +336,30 @@ as desired.
 \end{proof}
 
 \begin{lemma}
+  \leanok
   \label{lem:measurable_semicirclePDF}
-  \lean{measurable_semicirclePDF}
+  \lean{ProbabilityTheory.measurable_semicirclePDF}
   \uses{lem:measurable_semicirclePDFReal}
-  The function \( x \mapsto g(\mu,v,x) \) is measurable for all \( \mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\ge 0} \).
+  The function \( x \mapsto \bar{sc}(\mu,v,x) \) is measurable for all \( \mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\ge 0} \).
 \end{lemma}
 \begin{proof}
   Since $h$ is measurable, and $h$ is a measurable map \( \mathbb{R}_{\ge 0} \to \overline{\mathbb{R}}_{\ge 0} \), their composition is measurable.
 \end{proof}
 
 \begin{lemma}
+  \leanok
   \label{lem:lintegral_semicirclePDF_eq_one}
-  \lean{lintegral_semicirclePDF_eq_one}
+  \lean{ProbabilityTheory.lintegral_semicirclePDF_eq_one}
   \uses{def:semicirclePDF,lem:lintegral_semicirclePDFReal_eq_one}
-  If \( v > 0 \), then the total integral of \( g \) with respect to Lebesgue measure is 1:
+  If $v > 0$, then the total integral of $\bar{sc}$ with respect to Lebesgue measure is 1:
   \[
-    \int_{\mathbb{R}} g(\mu,v,x) \, dx = 1.
+      \int_{\mathbb{R}} \bar{sc}(\mu,v,x) \, dx = 1.
   \]
 \end{lemma}
 \begin{proof}
   This follows from the equality:
   \[
-  \int_{\mathbb{R}} h(f(\mu,v,x)) \, dx = h( \left( \int_{\mathbb{R}} f(\mu,v,x) \, dx \right) = h(1) = 1
+  \int_{\mathbb{R}} h(sc(\mu,v,x)) \, dx = h( \left( \int_{\mathbb{R}} sc(\mu,v,x) \, dx \right) = h(1) = 1
   \]
   using Lemma \ref{lem:lintegral_semicirclePDFReal_eq_one}.
 \end{proof}
