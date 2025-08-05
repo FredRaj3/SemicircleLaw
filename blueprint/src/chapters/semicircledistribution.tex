@@ -6,10 +6,10 @@
 %---------%
 \begin{definition}\label{def:semicirclePDFReal}
   \mathlibok 
-  \lean{ProbabilityTheory.semicirclePDFReal}
-    The function $\text{sc} : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \rightarrow \mathbb{R}$ defined by
+  \lean{semicirclePDFReal}
+    The function $\mathrm{sc} : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \rightarrow \mathbb{R}$ defined by
    \[
-    f(\mu,v,x) 
+    \mathrm{sc}(\mu,v,x) 
     = \frac{1}{2πv} \sqrt{(4v - (x - μ)^2)_+}
    \]
    is called the probability density function (pdf) of the semicircle distribution.
@@ -20,10 +20,10 @@
   \mathlibok 
   \lean{semicirclePDFReal_def}
   \uses{def:semicirclePDFReal}
-    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is given by
   \[
-    f(x) = 
+    \mathrm{sc}(x) = 
     \frac{1}{2πv} \sqrt{(4v - (x - μ)^2)_+}.
   \]
 \end{lemma}
@@ -63,7 +63,7 @@
     \lean{measurable_semicirclePDFReal}
     \uses{}
     \notready
-    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is measurable.
 \end{lemma}
 \begin{proof}
@@ -75,12 +75,12 @@
     \mathlibok
     \lean{stronglyMeasurable_semicirclePDFReal}
     \uses{def:semicirclePDFReal,lem:measurable_semicirclePDFReal}
-    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is strongly measurable.
 \end{lemma}
 \begin{proof}
-    By Lemma \ref{lem:measurable_semicirclePDFReal}, we know the pdf $f$ with fixed mean $\mu$ and variance $v$ is measurable.
-    Since $\mathbb{R}$ is equipped with a second countable topology, the fact that $f$ with fixed mean $\mu$ and variance $v$ implies $f$ is strongly measurable.  
+    By Lemma \ref{lem:measurable_semicirclePDFReal}, we know the pdf $\mathrm{sc}$ with fixed mean $\mu$ and variance $v$ is measurable.
+    Since $\mathbb{R}$ is equipped with a second countable topology, the fact that $\mathrm{sc}$ with fixed mean $\mu$ and variance $v$ implies $\mathrm{sc}$ is strongly measurable.  
 \end{proof}
 %---------%
 %---------%
@@ -88,7 +88,7 @@
     \lean{integrable_semicirclePDFReal}
     \uses{def:semicirclePDFReal}
     \notready
-    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is integrable.
 \end{lemma}
 \begin{proof}
@@ -100,7 +100,7 @@
     \lean{lintegral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     \notready
-    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the lower Lebesgue integral of the p.d.f. $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the lower Lebesgue integral of the p.d.f. $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ equals $1$.
 \end{lemma}
 \begin{proof}
@@ -112,7 +112,7 @@
     \lean{integral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     \notready
-    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the integral of the pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the integral of the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ equals $1$.
 \end{lemma}
 \begin{proof}
@@ -124,20 +124,20 @@
     \mathlibok
     \lean{semicirclePDFReal_sub}
     \uses{def:semicirclePDFReal}
-    For any pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
     \[
-    f(\mu,v,x-y) = f(\mu+y,v,x)
+    \mathrm{sc}(\mu,v,x-y) = \mathrm{sc}(\mu+y,v,x)
     \]
     for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$. 
 \end{lemma}
 \begin{proof}
    Expanding Definition \ref{def:semicirclePDFReal} gives
    \[
-   f(\mu,v,x-y) 
+   \mathrm{sc}(\mu,v,x-y) 
    = \frac{1}{2πv} \sqrt{\bigl( 4v - ( (x - y) - μ)^2 \bigl)_+} 
    = \frac{1}{2πv} \sqrt{\bigl( 4v - (x - (μ + y))^2 \bigl)_+}
-   = f(\mu+y,v,x).
+   = \mathrm{sc}(\mu+y,v,x).
    \]
 \end{proof}
 %---------%
@@ -146,20 +146,20 @@
     \mathlibok
     \lean{semicirclePDFReal_add}
     \uses{def:semicirclePDFReal,lem:semicirclePDFReal_sub}
-    For any pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
     \[
-    f(\mu,v,x+y) = f(\mu-y,v,x)
+    \mathrm{sc}(\mu,v,x+y) = \mathrm{sc}(\mu-y,v,x)
     \]
     for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$. 
 \end{lemma}
 \begin{proof}
    Expanding Definition \ref{def:semicirclePDFReal} gives
    \[
-   f(\mu,v,x+y) 
+   \mathrm{sc}(\mu,v,x+y) 
    = \frac{1}{2πv} \sqrt{\bigl( 4v - ( (x + y) - μ)^2 \bigl)_+} 
    = \frac{1}{2πv} \sqrt{\bigl( 4v - (x - (μ - y))^2 \bigl)_+}
-   = f(\mu-y,v,x).
+   = \mathrm{sc}(\mu-y,v,x).
    \]
 \end{proof}
 %---------%
@@ -168,10 +168,10 @@
     \lean{semicirclePDFReal_inv_mul}
     \uses{def:semicirclePDFReal}
     \notready
-    For any pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
     \[
-    f(\mu,v,c^{-1} x) = |c| \cdot f(c \mu,c^2 v,x)
+    \mathrm{sc}(\mu,v,c^{-1} x) = |c| \cdot \mathrm{sc}(c \mu,c^2 v,x)
     \]
     for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$. 
 \end{lemma}
@@ -184,21 +184,21 @@
     \mathlibok
     \lean{semicirclePDFReal_mul}
     \uses{def:semicirclePDFReal,lem:semicirclePDFReal_inv_mul}
-    For any pdf $f : \mathbb{R} \rightarrow \mathbb{R}$ 
+    For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
     \[
-    f(\mu,v,cx) = |c^{-1}| \cdot f(c^{-1} \mu,c^{-2} v,x)
+    \mathrm{sc}(\mu,v,cx) = |c^{-1}| \cdot \mathrm{sc}(c^{-1} \mu,c^{-2} v,x)
     \]
     for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$. 
 \end{lemma}
 \begin{proof}
    Expanding Definition \ref{def:semicirclePDFReal} gives
    \[
-   f(\mu,v,c x)
+   \mathrm{sc}(\mu,v,c x)
    = \frac{1}{2πv} \sqrt{\bigl( 4v - ( cx - μ)^2 \bigl)_+} 
    = \frac{1}{2πv} \sqrt{\bigl( 4v -  c^2(x -  c^{-1}μ)^2 \bigl)_+} 
    = |c^{-1}| \frac{1}{2π(c^{-2}v)} \sqrt{\bigl( 4(c^{-2}v)  - (x - c^{-1} \mu)^2 \bigl)_+}
-   = |c^{-1}| \cdot f(c^{-1} \mu,c^{-2} v,x).
+   = |c^{-1}| \cdot \mathrm{sc}(c^{-1} \mu,c^{-2} v,x).
    \]
 \end{proof}
 %---------%
