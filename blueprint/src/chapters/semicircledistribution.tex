@@ -3,32 +3,30 @@
 \begin{lemma}\label{lem:semicircleReal_map_add_const}
   \notready
   \lean{semicircleReal_map_add_const}
-  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto x + y$ is again a semicircular measure $\mathrm{SC}(\mu + y, v)$. 
+  Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
+  of $\sigma(\mu, v)$ under the map $x \mapsto x + y$ is again a semicircular measure $\sigma(\mu + y, v)$. 
   \begin{proof}
     %sorry
   \end{proof}
 \end{lemma}
 
 
-
 \begin{lemma}\label{lem:semicircleReal_map_const_add}
   \mathlibok
   \lean{semicircleReal_map_const_add}
-  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto y + x$ is again a semicircular measure $\mathrm{SC}(\mu + y, v)$. 
+  Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
+  of $\sigma(\mu, v)$ under the map $x \mapsto y + x$ is again a semicircular measure $\sigma(\mu + y, v)$. 
   \begin{proof}
     Obvious from commutativity between $x + y$ and $y + x$.
   \end{proof}
 \end{lemma}
 
 
-
 \begin{lemma}\label{lem:semicircleReal_map_const_mul}
   \notready
   \lean{semicircleReal_map_const_mul}
-    Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto c * x$ is again a semicircular measure $\mathrm{SC}(c\mu, c^2v)$. 
+    Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
+  of $\sigma(\mu, v)$ under the map $x \mapsto c * x$ is again a semicircular measure $\sigma(c\mu, c^2v)$. 
   \begin{proof}
      %sorry
   \end{proof}
@@ -40,8 +38,8 @@
   \mathlibok
   \lean{semicircleReal_map_mul_const}
   \uses{lem:semicircleReal_map_const_mul}
-   Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto x * c$ is again a semicircular measure $\mathrm{SC}(c\mu, c^2v)$. 
+   Given semicircular measure $\sigma$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
+  of $\sigma(\mu, v)$ under the map $x \mapsto x * c$ is again a semicircular measure $\sigma(c\mu, c^2v)$. 
   \begin{proof}
     Use commutativity between $Xc$ and $cX$.
   \end{proof}
@@ -53,8 +51,8 @@
   \mathlibok
   \lean{semicircleReal_map_neg}
   \uses{lem:semicircleReal_map_const_mul}
-  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto -x$ is again a semicircular measure $\mathrm{SC}(- \mu, v)$. 
+  Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, the pushforward
+  of $\sigma(\mu, v)$ under the map $x \mapsto -x$ is again a semicircular measure $\sigma(- \mu, v)$. 
   \begin{proof}
      Special case of the multiplication by constant map with constant being $-1$.
   \end{proof}
@@ -66,8 +64,8 @@
   \mathlibok
   \lean{semicircleReal_map_sub_const}
   \uses{lem:semicircleReal_map_add_const, lem:semicircleReal_map_neg}
-  Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto x - y$ is again a semicircular measure $\mathrm{SC}( \mu - y, v)$. 
+  Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
+  of $\sigma(\mu, v)$ under the map $x \mapsto x - y$ is again a semicircular measure $\sigma( \mu - y, v)$. 
   \begin{proof}
    Use the map by addition of constant and substitute constant for its $-1$ multiple.
   \end{proof}
@@ -78,22 +76,20 @@
   \mathlibok
   \lean{semicircleReal_map_const_sub}
   \uses{lem:semicircleReal_map_neg, lem:semicircleReal_map_const_add}
-   Given semicircular measure $\mathrm{SC}(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
-  of $\mathrm{SC}(\mu, v)$ under the map $x \mapsto y - x$ is again a semicircular measure $\mathrm{SC}(y - \mu, v)$. 
+   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
+  of $\sigma(\mu, v)$ under the map $x \mapsto y - x$ is again a semicircular measure $\sigma(y - \mu, v)$. 
   \begin{proof}
 
   \end{proof}
 \end{lemma}
 
 
-
-
 \begin{lemma}\label{lem:semicircleReal_add_const}
   \mathlibok
   \lean{semicircleReal_add_const}
   \uses{lem:semicircleReal_map_add_const}
-  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
-  then for a constant $y \in \mathbb{R}$, $X + y \sim \mathrm{SC}(\mu + y, v)$
+  Given a real random variable $X \sim \sigma(\mu, v)$
+  then for a constant $y \in \mathbb{R}$, $X + y \sim \sigma(\mu + y, v)$
   \begin{proof}
   \end{proof}
 \end{lemma}
@@ -103,8 +99,8 @@
   \mathlibok
   \lean{semicircleReal_const_add}
   \uses{lem:semicircleReal_add_const}
-  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$
-  then for a constant $y \in \mathbb{R}$, $y + X \sim \mathrm{SC}(\mu + y, v)$
+  Given a real random variable $X \sim \sigma(\mu, v)$
+  then for a constant $y \in \mathbb{R}$, $y + X \sim \sigma(\mu + y, v)$
   \begin{proof}
 
   \end{proof}
@@ -115,8 +111,8 @@
   \mathlibok
   \lean{semicircleReal_const_mul}
   \uses{lem:semicircleReal_map_const_mul}
-  Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
-  then for a constant $c \in \mathbb{R}$, $cX \sim \mathrm{SC}(c\mu , c^2v)$
+  Given a real random variable $X \sim \sigma(\mu, v)$,
+  then for a constant $c \in \mathbb{R}$, $cX \sim \sigma(c\mu , c^2v)$
   \begin{proof}
 
   \end{proof}
@@ -127,8 +123,8 @@
   \mathlibok
   \lean{semicircleReal_mul_const}
   \uses{lem:semicircleReal_const_mul}
-   Given a real random variable $X \sim \mathrm{SC}(\mu, v)$,
-  then for a constant $c \in \mathbb{R}$, $Xc \sim \mathrm{SC}(c \mu  , c^2v)$
+   Given a real random variable $X \sim \sigma(\mu, v)$,
+  then for a constant $c \in \mathbb{R}$, $Xc \sim \sigma(c \mu  , c^2v)$
   \begin{proof}
 
   \end{proof}
@@ -146,7 +142,7 @@
 \begin{lemma}\label{lem:integral_id_semicircleReal}
   \lean{integral_id_semicircleReal}
   \notready
-  $$\mathbb{E}[X] = \int x d \sigma = \mu$$
+  $$\mathbb{E}[X] = \int x d \sigma(\mu, v) = \mu$$
   \begin{proof}
    %sorry
   \end{proof}
@@ -188,6 +184,7 @@
    \end{proof}
 \end{lemma}
 
+
 \begin{lemma}\label{lem:centralMoment_fun_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
   \notready
@@ -197,6 +194,7 @@
    \end{proof}
 \end{lemma}
 
+
 \begin{lemma}\label{lem:centralMoment_odd_semicircleReal}
   \lean{centralMoment_odd_semicircleReal}
   \notready
@@ -205,6 +203,7 @@
     %sorry
    \end{proof}
 \end{lemma}
+
 
 \begin{lemma}\label{lem:centralMoment_fun_odd_semicircleReal}
   \lean{centralMoment_fun_odd_semicircleReal}
