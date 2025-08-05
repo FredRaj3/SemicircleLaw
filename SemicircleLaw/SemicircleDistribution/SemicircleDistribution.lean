@@ -65,8 +65,9 @@ lemma semicirclePDFReal_nonneg (μ : ℝ) (v : ℝ≥0) (x : ℝ) : 0 ≤ semici
   positivity
 
 /-- The semicircle pdf is measurable. -/
+
 @[fun_prop]
-lemma measurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDFReal μ v) :=
+lemma measurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDFReal μ v) := by
   sorry
 
 /-- The semicircle pdf is strongly measurable. -/
