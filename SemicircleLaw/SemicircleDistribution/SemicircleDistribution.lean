@@ -5,6 +5,7 @@ import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Combinatorics.Enumerative.Catalan
+import SemicircleLaw.SemicircleDistribution.SemicircleDistribution
 import Hammer
 
 
