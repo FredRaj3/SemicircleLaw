@@ -10,7 +10,11 @@ import Hammer
 
 /-Richard's imports-/
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Set.Basic
 import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.Topology.MetricSpace.Bounded
+import Mathlib.Topology.ContinuousMap.Basic
+import Mathlib.Topology.ContinuousMap.Bounded.Basic
 import Mathlib.Tactic.Continuity
 import Mathlib.Topology.Basic
 import Aesop
@@ -75,15 +79,18 @@ lemma semicirclePDFReal_nonneg (μ : ℝ) (v : ℝ≥0) (x : ℝ) : 0 ≤ semici
   rw [semicirclePDFReal]
   positivity
 
+/-- The semicircle pdf is continuous. -/
+lemma Cont_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) : Continuous (semicirclePDFReal μ v) := by
+    rw [semicirclePDFReal_def]
+    set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+    have h : Continuous f := by continuity
+    exact h
+
 /-- The semicircle pdf is measurable. -/
 @[fun_prop]
 lemma measurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDFReal μ v) := by
-  have h1 : Continuous (semicirclePDFReal μ v) := by
-    rw [semicirclePDFReal_def]
-    set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
-    have h3 : Continuous f := by continuity
-    exact h3
-  apply Continuous.borel_measurable h1
+  have h : Continuous (semicirclePDFReal μ v) := by apply Cont_semicirclePDFReal
+  apply Continuous.borel_measurable h
 
 /-- The semicircle pdf is strongly measurable. -/
 @[fun_prop]
@@ -94,7 +101,14 @@ lemma stronglyMeasurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
 @[fun_prop]
 lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     Integrable (semicirclePDFReal μ v) := by
-  sorry
+  set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+  have h2 : Continuous f := by continuity
+  have h3 : ∀x, ‖f x‖ ≤ 1 / (π * v) * 2 * v := by sorry
+  have h4 : Bornology.IsBounded (Set.range f) := by sorry
+  have h5 : Integrable f := by sorry
+  have h6 : (semicirclePDFReal μ v) = f := by apply semicirclePDFReal_def
+  rw[h6]; exact h5
+
 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
