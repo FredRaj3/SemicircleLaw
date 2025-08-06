@@ -1,7 +1,7 @@
 
 %section Transformation
 \begin{lemma}\label{lem:semicircleReal_map_add_const}
-  \uses{lem:integral_semicircleReal_eq_integral_smul}
+  \uses{lem:integral_semicircleReal_eq_integral_smul}    %convert the statement into integral and use semicirclereal pdf...
   \notready
   \lean{semicircleReal_map_add_const}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
@@ -177,9 +177,11 @@
   all finite $p$
 \end{lemma}
 
+% probably need to reformulate the recursive definition of Catalan number into the closed form for the integration to be equal.
+%or maybe simply use mathlib........
 \begin{lemma}\label{lem:centralMoment_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
-  \uses{lem:integral_id_semicircleReal, lem:variance_fun_id_semicircleReal, lem:variance_id_semicircleReal, lem:semicircleReal_add_const, lem:semicircleReal_const_add,lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
+  \uses{def:Catalan_number, lem:integral_id_semicircleReal, lem:variance_fun_id_semicircleReal, lem:variance_id_semicircleReal, lem:semicircleReal_add_const, lem:semicircleReal_const_add,lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \notready
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
    \begin{proof}
