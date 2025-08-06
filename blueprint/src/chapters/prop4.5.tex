@@ -68,7 +68,7 @@
 \begin{lemma}\label{lem:disjoint_edge_set}
     \notready
     \uses{lem:no_shared_edges}
-    the only graph walks $(G,w,w')\in \mathcal{G}_{k,k}$ with $|G|=k+1$ must have the edge sets covered by $w$ and $w'$ distinct.  
+    The only graph walks $(G,w,w')\in \mathcal{G}_{k,k}$ with $|G|=k+1$ must have the edge sets covered by $w$ and $w'$ distinct.  
     In other words, if $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')$, then the edge sets do not intersect: 
     $\{\{i_1,i_2\},\ldots,\{i_k,i_1\}\}\cap\{\{j_1,j_2\},\ldots,\{j_k,j_1\}\}=\emptyset$. 
 \end{lemma}
@@ -77,7 +77,7 @@
 
 \begin{lemma}\label{lem:independent_expectation}
    \notready
-   If $X_{\mx{i}}$ and $X_{\mx{j}}$ are independent random variable, then $$\mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) = \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}}) $$
+   If $X_{\mathbf{i}}$ and $X_{\mathbf{j}}$ are independent random variable, then $$\mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) = \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}}) $$
 
 \end{lemma}
 
@@ -85,7 +85,7 @@
 %depends on the definition of \mathcal{G}_{k,k} and \pi(G, w, w'    %R-2-5-1)
 \begin{lemma}\label{lem:G_leq_k}
     \notready
-    \uses{lem:independent_expectation, lem:disjoint_edge_set}  
+    \uses{lem:independent_expectation, lem:disjoint_edge_set, def:common_val_prod}  
     For any $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \in \mathcal{G}_{k,k}$, with $k + 1$ vertices, $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})  = 0$ 
     \begin{proof}
      $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) - \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}})  = 0$
@@ -97,10 +97,9 @@
 % this is the only statement from my part being depended by the Prop 4.5
 \begin{lemma}\label{lem:elimination_k+1}
     \notready
-    \uses{lem:G_leq_k}
+    \uses{lem:G_leq_k, prop:var_upper_bound}
 
-    \[ \Var\left( \frac1n\Tr(\mx{X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
-
+    \[ \Var\left( \frac1n\Tr(\mathbf{X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
 \end{lemma}
 
 
