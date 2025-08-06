@@ -446,7 +446,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
     The Radon–Nikodym derivative of the semicircle measure semicircleReal $\mu$ $v$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function semicirclePDF $(\mu$, $v)$.
 \end{lemma}
 
-\begin{lemma}
+\begin{lemma} 
     \label{lemma:integral_semicircleReal_eq_integral_smul}
     \uses{def:semicircleReal, lemma:measurable_semicirclePDF, lemma:semicirclePDF_lt_top}
     \leanok
@@ -469,7 +469,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 
 %section Transformation
-\begin{lemma}\label{lem:semicircleReal_map_add_const}
+\begin{lemma}
+  \label{lem:semicircleReal_map_add_const}
   \uses{lem:integral_semicircleReal_eq_integral_smul}    %convert the statement into integral and use semicirclereal pdf...
   \notready
   \lean{semicircleReal_map_add_const}
@@ -481,7 +482,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:semicircleReal_map_const_add}
+\begin{lemma}
+  \label{lem:semicircleReal_map_const_add}
   \mathlibok
   \lean{semicircleReal_map_const_add}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
@@ -492,7 +494,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:semicircleReal_map_const_mul}
+\begin{lemma}
+  \label{lem:semicircleReal_map_const_mul}
   \notready
   \lean{semicircleReal_map_const_mul}
   \uses{lem:integral_semicircleReal_eq_integral_smul}
@@ -505,7 +508,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 
 
-\begin{lemma}\label{lem:semicircleReal_map_mul_const}
+\begin{lemma}
+  \label{lem:semicircleReal_map_mul_const}
   \mathlibok
   \lean{semicircleReal_map_mul_const}
   \uses{lem:semicircleReal_map_const_mul}
@@ -518,7 +522,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 
 
-\begin{lemma}\label{lem:semicircleReal_map_neg}
+\begin{lemma}
+  \label{lem:semicircleReal_map_neg}
   \mathlibok
   \lean{semicircleReal_map_neg}
   \uses{lem:semicircleReal_map_const_mul}
@@ -531,7 +536,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 
 
-\begin{lemma}\label{lem:semicircleReal_map_sub_const}
+\begin{lemma}
+  \label{lem:semicircleReal_map_sub_const}
   \mathlibok
   \lean{semicircleReal_map_sub_const}
   \uses{lem:semicircleReal_map_add_const, lem:semicircleReal_map_neg}
@@ -543,7 +549,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:semicircleReal_map_const_sub}
+\begin{lemma}
+  \label{lem:semicircleReal_map_const_sub}
   \mathlibok
   \lean{semicircleReal_map_const_sub}
   \uses{lem:semicircleReal_map_neg, lem:semicircleReal_map_const_add}
@@ -555,7 +562,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:semicircleReal_add_const}
+\begin{lemma}
+  \label{lem:semicircleReal_add_const}
   \mathlibok
   \lean{semicircleReal_add_const}
   \uses{lem:semicircleReal_map_add_const}
@@ -566,7 +574,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:semicircleReal_const_add}
+\begin{lemma}
+  \label{lem:semicircleReal_const_add}
   \mathlibok
   \lean{semicircleReal_const_add}
   \uses{lem:semicircleReal_add_const}
@@ -578,7 +587,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:semicircleReal_const_mul}
+\begin{lemma}
+  \label{lem:semicircleReal_const_mul}
   \mathlibok
   \lean{semicircleReal_const_mul}
   \uses{lem:semicircleReal_map_const_mul}
@@ -590,7 +600,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:semicircleReal_mul_const}
+\begin{lemma}
+  \label{lem:semicircleReal_mul_const}
   \mathlibok
   \lean{semicircleReal_mul_const}
   \uses{lem:semicircleReal_const_mul}
@@ -607,7 +618,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 %moments
 
 %convert the random variable into standard semicircle distribution which has 0 mean
-\begin{lemma}\label{lem:integral_id_semicircleReal}
+\begin{lemma}
+  \label{lem:integral_id_semicircleReal}
   \lean{integral_id_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \notready
@@ -618,7 +630,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 %similar to above
-\begin{lemma}\label{lem:variance_fun_id_semicircleReal}
+\begin{lemma}
+  \label{lem:variance_fun_id_semicircleReal}
   \lean{variance_fun_id_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \notready
@@ -629,7 +642,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:variance_id_semicircleReal}
+\begin{lemma}
+  \label{lem:variance_id_semicircleReal}
   \lean{variance_id_semicircleReal}
   \uses{lem:variance_fun_id_semicircleReal}
   \mathlibok
@@ -638,7 +652,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:memLp_id_semicircleReal'}
+\begin{lemma}
+  \label{lem:memLp_id_semicircleReal'}
   \lean{memLp_id_semicircleReal}
   \mathlibok
   \uses{lem:variance_id_semicircleReal}
@@ -648,7 +663,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 % probably need to reformulate the recursive definition of Catalan number into the closed form for the integration to be equal.
 %or maybe simply use mathlib........
-\begin{lemma}\label{lem:centralMoment_two_mul_semicircleReal}
+\begin{lemma}
+  \label{lem:centralMoment_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
   \uses{def:Catalan_number, lem:integral_id_semicircleReal, lem:variance_fun_id_semicircleReal, lem:variance_id_semicircleReal, lem:semicircleReal_add_const, lem:semicircleReal_const_add,lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \notready
@@ -659,7 +675,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:centralMoment_fun_two_mul_semicircleReal}
+\begin{lemma}
+  \label{lem:centralMoment_fun_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
   \uses{lem:centralMoment_two_mul_semicircleReal}
   \notready
@@ -670,7 +687,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:centralMoment_odd_semicircleReal}
+\begin{lemma}
+  \label{lem:centralMoment_odd_semicircleReal}
   \lean{centralMoment_odd_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add}
   \notready
@@ -681,7 +699,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{lemma}
 
 
-\begin{lemma}\label{lem:centralMoment_fun_odd_semicircleReal}
+\begin{lemma}
+  \label{lem:centralMoment_fun_odd_semicircleReal}
   \lean{centralMoment_fun_odd_semicircleReal}
   \uses{lem:centralMoment_odd_semicircleReal}
   \notready
