@@ -1,3 +1,4 @@
+/-Default imports-/
 import Mathlib.MeasureTheory.Group.Convolution
 import Mathlib.Probability.Moments.MGFAnalytic
 import Mathlib.Probability.Independence.Basic
@@ -6,6 +7,15 @@ import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Combinatorics.Enumerative.Catalan
 import Hammer
+
+/-Richard's imports-/
+import Mathlib.Data.Real.Basic
+import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.Tactic.Continuity
+import Mathlib.Topology.Basic
+import Aesop
+
+/-Option settings-/
 
 
 /-!
@@ -43,6 +53,7 @@ namespace ProbabilityTheory
 
 section SemicirclePDF
 
+
 /-- Probability density function of the semicircle distribution with mean `μ` and variance `v`.
 Note that the squared root of a negative number is defined to be zero.  -/
 noncomputable
@@ -65,10 +76,14 @@ lemma semicirclePDFReal_nonneg (μ : ℝ) (v : ℝ≥0) (x : ℝ) : 0 ≤ semici
   positivity
 
 /-- The semicircle pdf is measurable. -/
-
 @[fun_prop]
 lemma measurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDFReal μ v) := by
-  sorry
+  have h1 : Continuous (semicirclePDFReal μ v) := by
+    rw [semicirclePDFReal_def]
+    set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+    have h3 : Continuous f := by continuity
+    exact h3
+  apply Continuous.borel_measurable h1
 
 /-- The semicircle pdf is strongly measurable. -/
 @[fun_prop]
@@ -334,8 +349,43 @@ lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     = 0 :=
   sorry
 
+
 end Moments
 
+section Scribbles
+
+noncomputable
+def f (x : ℝ) : ℝ := if x < 0 then 0 else x
+
+def g (x : ℝ) : ℝ := x
+
+def h (x : ℝ) : ℝ := x^2 - 1
+
+lemma g_cont : Continuous g := by
+  unfold g
+  continuity
+
+lemma h_cont : Continuous h := by
+  unfold h
+  continuity
+
+@[simp] lemma f_def (x : ℝ) : f x = if x < 0 then 0 else x := rfl
+
+lemma f_cont : Continuous f := by
+  unfold f
+  apply continuous_if
+  rintro a ha
+  · {sorry}
+  · {sorry}
+  · {sorry}
+
+
+
+
+
+
+
+end Scribbles
 
 end SemicircleDistribution
 
