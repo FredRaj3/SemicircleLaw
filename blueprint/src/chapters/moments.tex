@@ -1142,6 +1142,30 @@ as required.
 \end{proof}
 
 
+\begin{definition}[Graph Union]
+    \label{def:graph_union}
+    \notready
+    \uses{def:graph_multi_index}
+    Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$, and Graphs $G_{\mathbf{i}}, G_{\mathbf{j}}$, we define the graph union $G_{\mathbf{i} \# \mathbf{j}}$ as follows:
+    $$
+    G_{\mathbf{i} \# \mathbf{j}}  = G_{\mathbf{i}} \cup G_{\mathbf{j}} = (V_{\mathbf{i}} \cup V_{\mathbf{j}}, E_{\mathbf{i}} \cup E_{\mathbf{j}})
+    $$
+\end{definition}
+
+
+\begin{definition}[Ordered Triple]
+    \label{def:ordered_triple}
+    \notready
+    \uses{def:graph_union, def:graph_path}
+    Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$, we define the ordered triple $(\mathbf{i}, \mathbf{j}, G_{\mathbf{i} \# \mathbf{j}})$ as follows:
+    \begin{itemize}
+        \item $w_{\mathbf{i}}$ is the closed walk defined by $\mathbf{i}$ from definition \ref{def:graph_path}
+        \item $w_{\mathbf{i}}$ is the closed walk defined by $\mathbf{j}$ from definition \ref{def:graph_path}
+        \item $G_{\mathbf{i} \# \mathbf{j}}$ is the graph union of the graphs defined by $\mathbf{i}$ and $\mathbf{j}$ from definition \ref{def:graph_union}
+    \end{itemize}
+\end{definition}
+
+
 \begin{proposition}[Proposition 4.2 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence_probability}
   \notready
