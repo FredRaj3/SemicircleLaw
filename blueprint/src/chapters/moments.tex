@@ -1139,7 +1139,7 @@ as required.
 \begin{proposition}
   \label{prop:var_trace_as_sum}
   \notready
-  \uses{}
+  \uses{lem:inner_sum_eq_common_val_prod_mul_card}
   \[ \Var\left( \frac1n\Tr(X_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{\#\left\{(i,{j})\in [n]^{2k}\colon (G_{i\#j},w_{i},w_{j}) = (G,w,w')\right\}}{n^{k+2}}. \]
 \end{proposition}
 
@@ -1163,7 +1163,7 @@ as required.
 
 \begin{proposition}
   \label{prop:var_upper_bound}
-  \uses{prop:vertex_edge_inequality, lemma:simplified_var_trace_as_sum}
+  \uses{prop:vertex_edge_inequality, lemma:simplified_var_trace_as_sum, lem:R-2-17}
   \notready
   \[ \Var\left( \frac1n\Tr({X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
 \end{proposition}
