@@ -374,92 +374,121 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 
 \begin{definition}
-    \label{def:semicircle_distribution}
-    \uses{def:semicirclePDF}
-    \leanok
-    The semicircle distribution with mean $\mu$ and variance $v$ is the Dirac delta at μ if v = 0; otherwise, it's the Lebesgue measure weighted by the semicircle PDF.
+  \label{def:semicircle_distribution}
+  \uses{def:semicirclePDF}
+  \leanok
+  The semicircle distribution with mean $\mu$ and variance $v$ is the Dirac delta at μ if v = 0; otherwise, it's the measure with density with respect to the Lebesgue measure given by the semicircle pdf.
 \end{definition}
 
 \begin{lemma}
-    \label{lemma:semicircleReal_of_var_ne_zero}
-    \uses{def:semicircle_distribution}
-    \leanok
-    If $v \neq 0$, then the definition the semicircle distribution is defined as the Lebesgue measure weighted by the semicircle probability density function.
+  \label{lemma:semicircleReal_of_var_ne_zero}
+  \uses{def:semicircle_distribution}
+  \leanok
+  If $v \neq 0$, then the definition the semicircle distribution is defined as the measure with density with respect to the Lebesgue measure given by the semicircle pdf.
 \end{lemma}
 
 \begin{proof}
-    Follows directly from definition of semicircle distribution.
+  \leanok
+  Follows directly from definition of semicircle distribution.
 \end{proof}
 
 \begin{lemma}
-    \label{lemma:semicircleReal_zero_var}
-    \uses{def:semicircle_distribution}
-    \leanok
-    If the variance is 0, then the semicircle distribution is exactly the Dirac measure at $\mu$.
+  \label{lemma:semicircleReal_zero_var}
+  \uses{def:semicircle_distribution}
+  \leanok
+  If the variance is 0, then the semicircle distribution is exactly the Dirac measure at $\mu$.
 \end{lemma}
 
 \begin{proof}
-    Follows directly from definition of semicircle distribution.
+  \leanok
+  Follows directly from definition of semicircle distribution.
 \end{proof}
 
 \begin{lemma} %instance: unsure if this should be a lemma or something else
-    \label{lemma:instIsProbabilityMeasuresemicircleReal}
-    \uses{lemma:semicircleReal_of_var_ne_zero}
-    \leanok
-    The measure semicircleReal is a probability measure, no matter the values of $\mu \in \mathbb{R}$ and $v \in \mathbb{R}_{\ge 0}$.
+  \label{lemma:instIsProbabilityMeasuresemicircleReal}
+  \uses{lemma:semicircleReal_of_var_ne_zero}
+  \leanok
+
+  For all $\mu \in \mathbb{R}$ and $v \in \mathbb{R}_{\ge 0}$, semicircleReal is a probability measure.
 \end{lemma}
 
-%proof for instance? unsure
+\begin{proof}
+\leanok
+\end{proof}
 
 \begin{lemma}
-    \label{lemma:noAtoms_semicircleReal}
-    \uses{lemma:semicircleReal_of_var_ne_zero, lemma:instIsProbabilityMeasuresemicircleReal} %idk if this is right
-    \leanok
-    If the variance v is nonzero, then the semicircle distribution has no atoms.
+  \label{lemma:noAtoms_semicircleReal}
+  \uses{lemma:semicircleReal_of_var_ne_zero, lemma:instIsProbabilityMeasuresemicircleReal} %idk if this is right
+  \leanok
+  If $v > 0$, then the semicircle distribution has no atoms.
 \end{lemma}
+
+\begin{proof}
+\leanok
+\end{proof}
 
 \begin{lemma}
-    \label{lemma:semicircleReal_apply}
-    \uses{lemma:semicircleReal_of_var_ne_zero}
-    \leanok
-    For a semicircle measure with mean $\mu$ and nonzero variance v, the measure of any measurable set $s$ equals the Lebesgue integral over $s$ of the semicircle probability density function at x.
+  \label{lemma:semicircleReal_apply}
+  \uses{lemma:semicircleReal_of_var_ne_zero}
+  \leanok
+  For a semicircle measure with mean $\mu$ and variance $v > 0$, the measure of any measurable set $s$ equals the Lebesgue integral over $s$ of the semicircle probability density function at x.
 \end{lemma}
+
+\begin{proof}
+\leanok
+\end{proof}
 
 \begin{lemma}
-    \label{lemma:semicircleReal_apply_eq_integral}
-    \uses{lemma:semicircleReal_apply, lemma:integrable_semicirclePDFReal, lemma:semicirclePDFReal_nonneg}
-    \leanok
-    For any real mean $\mu$, and any nonnegative variance $v$ that is not zero, and any measurable set $s$ of real numbers, the semicircle distribution measure of the set $s$ equals the extended nonnegative real number version (ENNReal.ofReal) of the integral of the semicircle probability density function over s.
+  \label{lemma:semicircleReal_apply_eq_integral}
+  \uses{lemma:semicircleReal_apply, lemma:integrable_semicirclePDFReal, lemma:semicirclePDFReal_nonneg}
+  \leanok
+  For any mean $\mu \in \mathbb{R}$, any variance $v > 0$, and any measurable set $s$ of real numbers, the semicircle distribution measure of the set $s$ equals the extended nonnegative real number version (ENNReal.ofReal) of the integral of the semicircle probability density function over s.
 \end{lemma}
+
+\begin{proof}
+\leanok
+\end{proof}
 
 \begin{lemma}
-    \label{lemma:semicircleReal_absolutelyContinuous}
-    \uses{lemma:semicircleReal_of_var_ne_zero}
-    \leanok
-    For a semicircle distribution with mean $\mu$ and nonzero variance $v$, the measure semicircleReal $μ$ $v$ is absolutely continuous with respect to the Lebesgue measure.
+  \label{lemma:semicircleReal_absolutelyContinuous}
+  \uses{lemma:semicircleReal_of_var_ne_zero}
+  \leanok
+  For a semicircle distribution with mean $\mu$ and variance $v > 0$, the measure $\sigma(\mu, v)$ is absolutely continuous with respect to the Lebesgue measure.
 \end{lemma}
+
+\begin{proof}
+\leanok
+\end{proof}
 
 \begin{lemma}
-    \label{lemma:rnDeriv_semicircleReal}
-    \uses{lemma:semicircleReal_zero_var, lemma:semicirclePDF_zero_var, lemma:semicircleReal_of_var_ne_zero, lemma:measurable_semicirclePDF}
-    \leanok
-    The Radon–Nikodym derivative of the semicircle measure semicircleReal $\mu$ $v$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function semicirclePDF $(\mu$, $v)$.
+  \label{lemma:rnDeriv_semicircleReal}
+  \uses{lemma:semicircleReal_zero_var, lemma:semicirclePDF_zero_var, lemma:semicircleReal_of_var_ne_zero, lemma:measurable_semicirclePDF}
+  \leanok
+  The Radon–Nikodym derivative of the semicircle measure $\sigma(\mu, v)$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function $SC(\mu$, $v)$.
 \end{lemma}
+
+\begin{proof}
+\leanok
+\end{proof}
 
 \begin{lemma}
-    \label{lemma:integral_semicircleReal_eq_integral_smul}
-    \uses{def:semicircleReal, lemma:measurable_semicirclePDF, lemma:semicirclePDF_lt_top}
-    \leanok
+  \label{lemma:integral_semicircleReal_eq_integral_smul}
+  \uses{def:semicircleReal, lemma:measurable_semicirclePDF, lemma:semicirclePDF_lt_top}
+  \leanok
 
-    Let $ f : \mathbb{R} \to E $ be a function where $ E $ is a normed vector space over $\mathbb{R}$. For the semicircle distribution with mean $\mu \in \mathbb{R}$ and variance $ v > 0 $, we have:
+  Let $ f : \mathbb{R} \to E $ be a function where $ E $ is a normed vector space over $\mathbb{R}$. For the semicircle distribution with mean $\mu \in \mathbb{R}$ and variance $ v > 0 $, we have:
 
-    \[
-    \int f(x) \, d(\mathrm{semicircleReal}\ \mu\, v)(x) = \int \mathrm{semicirclePDFReal}(\mu, v, x) \cdot f(x) \, dx.
-    \]
-    
-    % In other words, integrating $ f $ with respect to the semicircle measure is equivalent to integrating the product of $ f $ and the semicircle probability density function with respect to Lebesgue measure.
-    
+  \[
+  \int f(x) \, d(\mathrm{semicircleReal}\ \mu\, v)(x) = \int \mathrm{semicirclePDFReal}(\mu, v, x) \cdot f(x) \, dx.
+  \]
+  
+  % In other words, integrating $ f $ with respect to the semicircle measure is equivalent to integrating the product of $ f $ and the semicircle probability density function with respect to Lebesgue measure.
+  
 \end{lemma}
+
+\begin{proof}
+\leanok
+\end{proof}
 
 %---Kiran's Part for Semicircle Distribution (End)---% 
 
