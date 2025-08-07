@@ -381,7 +381,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{definition}
 
 \begin{lemma}
-  \label{lemma:semicircleReal_of_var_ne_zero}
+  \label{lem:semicircleReal_of_var_ne_zero}
   \uses{def:semicircle_distribution}
   \leanok
   If $v \neq 0$, then the definition the semicircle distribution is defined as the measure with density with respect to the Lebesgue measure given by the semicircle pdf.
@@ -393,7 +393,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:semicircleReal_zero_var}
+  \label{lem:semicircleReal_zero_var}
   \uses{def:semicircle_distribution}
   \leanok
   If the variance is 0, then the semicircle distribution is exactly the Dirac measure at $\mu$.
@@ -405,8 +405,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{proof}
 
 \begin{lemma} %instance: unsure if this should be a lemma or something else
-  \label{lemma:instIsProbabilityMeasuresemicircleReal}
-  \uses{lemma:semicircleReal_of_var_ne_zero}
+  \label{lem:instIsProbabilityMeasuresemicircleReal}
+  \uses{lem:semicircleReal_of_var_ne_zero}
   \leanok
 
   For all $\mu \in \mathbb{R}$ and $v \in \mathbb{R}_{\ge 0}$, semicircleReal is a probability measure.
@@ -417,8 +417,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:noAtoms_semicircleReal}
-  \uses{lemma:semicircleReal_of_var_ne_zero, lemma:instIsProbabilityMeasuresemicircleReal} %idk if this is right
+  \label{lem:noAtoms_semicircleReal}
+  \uses{lem:semicircleReal_of_var_ne_zero, lem:instIsProbabilityMeasuresemicircleReal} %idk if this is right
   \leanok
   If $v > 0$, then the semicircle distribution has no atoms.
 \end{lemma}
@@ -428,8 +428,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:semicircleReal_apply}
-  \uses{lemma:semicircleReal_of_var_ne_zero}
+  \label{lem:semicircleReal_apply}
+  \uses{lem:semicircleReal_of_var_ne_zero}
   \leanok
   For a semicircle measure with mean $\mu$ and variance $v > 0$, the measure of any measurable set $s$ equals the Lebesgue integral over $s$ of the semicircle probability density function at x.
 \end{lemma}
@@ -439,8 +439,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:semicircleReal_apply_eq_integral}
-  \uses{lemma:semicircleReal_apply, lemma:integrable_semicirclePDFReal, lemma:semicirclePDFReal_nonneg}
+  \label{lem:semicircleReal_apply_eq_integral}
+  \uses{lem:semicircleReal_apply, lem:integrable_semicirclePDFReal, lem:semicirclePDFReal_nonneg}
   \leanok
   For any mean $\mu \in \mathbb{R}$, any variance $v > 0$, and any measurable set $s$ of real numbers, the semicircle distribution measure of the set $s$ equals the extended nonnegative real number version (ENNReal.ofReal) of the integral of the semicircle probability density function over s.
 \end{lemma}
@@ -450,8 +450,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:semicircleReal_absolutelyContinuous}
-  \uses{lemma:semicircleReal_of_var_ne_zero}
+  \label{lem:semicircleReal_absolutelyContinuous}
+  \uses{lem:semicircleReal_of_var_ne_zero}
   \leanok
   For a semicircle distribution with mean $\mu$ and variance $v > 0$, the measure $\sigma(\mu, v)$ is absolutely continuous with respect to the Lebesgue measure.
 \end{lemma}
@@ -461,8 +461,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:rnDeriv_semicircleReal}
-  \uses{lemma:semicircleReal_zero_var, lemma:semicirclePDF_zero_var, lemma:semicircleReal_of_var_ne_zero, lemma:measurable_semicirclePDF}
+  \label{lem:rnDeriv_semicircleReal}
+  \uses{lem:semicircleReal_zero_var, lem:semicirclePDF_zero_var, lem:semicircleReal_of_var_ne_zero, lem:measurable_semicirclePDF}
   \leanok
   The Radon–Nikodym derivative of the semicircle measure $\sigma(\mu, v)$ with respect to the Lebesgue measure is almost everywhere equal to the semicircle probability density function $SC(\mu$, $v)$.
 \end{lemma}
@@ -472,8 +472,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:integral_semicircleReal_eq_integral_smul}
-  \uses{def:semicircleReal, lemma:measurable_semicirclePDF, lemma:semicirclePDF_lt_top}
+  \label{lem:integral_semicircleReal_eq_integral_smul}
+  \uses{def:semicircleReal, lem:measurable_semicirclePDF, lem:semicirclePDF_lt_top}
   \leanok
 
   Let $ f : \mathbb{R} \to E $ be a function where $ E $ is a normed vector space over $\mathbb{R}$. For the semicircle distribution with mean $\mu \in \mathbb{R}$ and variance $ v > 0 $, we have:
