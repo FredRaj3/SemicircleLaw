@@ -499,8 +499,8 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 %section Transformation
 \begin{lemma}
   \label{lem:semicircleReal_map_add_const}
-  \uses{lem:integral_semicircleReal_eq_integral_smul}    %convert the statement into integral and use semicirclereal pdf...
-  \notready
+  \uses{lem:integral_semicircleReal_eq_integral_smul, lem:semicirclePDFReal_add}    %convert the statement into integral and use semicirclereal pdf...
+  \leanok
   \lean{semicircleReal_map_add_const}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto x + y$ is again a semicircular measure $\sigma(\mu + y, v)$. 
@@ -514,6 +514,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \label{lem:semicircleReal_map_const_add}
   \leanok
   \lean{semicircleReal_map_const_add}
+  \uses{lem:semicircleReal_map_add_const}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto y + x$ is again a semicircular measure $\sigma(\mu + y, v)$. 
   \begin{proof}
@@ -524,9 +525,9 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 \begin{lemma}
   \label{lem:semicircleReal_map_const_mul}
-  \notready
+  \leanok
   \lean{semicircleReal_map_const_mul}
-  \uses{lem:integral_semicircleReal_eq_integral_smul}
+  \uses{lem:integral_semicircleReal_eq_integral_smul, lem:semicirclePDFReal_mul}
     Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto c * x$ is again a semicircular measure $\sigma(c\mu, c^2v)$. 
   \begin{proof}
@@ -650,7 +651,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \label{lem:integral_id_semicircleReal}
   \lean{integral_id_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
-  \notready
+  \leanok
   If $X \sim \sigma(\mu, v)$, then its expectation $$\mathbb{E}[X] = \int x d \sigma(\mu, v) = \mu$$
   \begin{proof}
    %sorry
@@ -662,7 +663,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \label{lem:variance_fun_id_semicircleReal}
   \lean{variance_fun_id_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
-  \notready
+  \leanok
   If $X \sim \sigma(\mu, v)$, then its variance $Var(X) = v$
   \begin{proof}
    %sorry
@@ -689,13 +690,14 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   all finite $p$
 \end{lemma}
 
+
 % probably need to reformulate the recursive definition of Catalan number into the closed form for the integration to be equal.
 %or maybe simply use mathlib........
 \begin{lemma}
   \label{lem:centralMoment_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
   \uses{def:Catalan_number, lem:integral_id_semicircleReal, lem:variance_fun_id_semicircleReal, lem:variance_id_semicircleReal, lem:semicircleReal_add_const, lem:semicircleReal_const_add,lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
-  \notready
+  \leanok
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
    \begin{proof}
     %sorry
@@ -707,7 +709,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \label{lem:centralMoment_fun_two_mul_semicircleReal}
   \lean{centralMoment_fun_two_mul_semicircleReal}
   \uses{lem:centralMoment_two_mul_semicircleReal}
-  \notready
+  \leanok
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
    \begin{proof}
     %sorry
@@ -719,7 +721,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \label{lem:centralMoment_odd_semicircleReal}
   \lean{centralMoment_odd_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add}
-  \notready
+  \leanok
   $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
   \begin{proof}
     %sorry
@@ -731,7 +733,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \label{lem:centralMoment_fun_odd_semicircleReal}
   \lean{centralMoment_fun_odd_semicircleReal}
   \uses{lem:centralMoment_odd_semicircleReal}
-  \notready
+  \leanok
    $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
    \begin{proof}
     %sorry

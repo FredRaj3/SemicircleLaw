@@ -1712,7 +1712,7 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
     \uses{lem:independent_expectation, lem:disjoint_edge_set, def:common_val_prod}  
     For any $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \in \mathcal{G}_{k,k}$, with $k + 1$ vertices, $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})  = 0$ 
     \begin{proof}
-     $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) - \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}})  = 0$
+     $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = \mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) - \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}})  = 0$
     \end{proof}
 \end{lemma}
 
@@ -1724,7 +1724,7 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
     \notready
     \uses{lem:G_leq_k, prop:var_upper_bound}
 
-    \[ \Var\left( \frac1n\Tr(\mathbf{X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
+    \[ \Var\left( \frac1n\Tr(\mathbf{X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2, |G| \leq k} \pi(G,w,w')\cdot \frac{n^{k}}{n^{k+2}} \le \frac{1}{n^2}\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
 \end{lemma}
 
 %---------%
