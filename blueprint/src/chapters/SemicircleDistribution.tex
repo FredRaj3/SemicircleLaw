@@ -8,8 +8,8 @@
 %---------%
 %---------%
 \begin{definition}\label{def:semicirclePDFReal}
-  \mathlibok 
-  \lean{semicirclePDFReal}
+  \leanok
+  \lean{ProbabilityTheory.semicirclePDFReal}
     The function $\mathrm{sc} : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \rightarrow \mathbb{R}$ defined by
    \[
     \mathrm{sc}(\mu,v,x) 
@@ -20,8 +20,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_def}
-  \mathlibok 
-  \lean{semicirclePDFReal_def}
+  \leanok
+  \lean{ProbabilityTheory.semicirclePDFReal_def}
   \uses{def:semicirclePDFReal}
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is given by
@@ -33,8 +33,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_zero_var}
-    \mathlibok
-    \lean{semicirclePDFReal_zero_var}
+    \leanok
+    \lean{ProbabilityTheory.semicirclePDFReal_zero_var}
     \uses{def:semicirclePDFReal}
     If the variance $v$ is given to be zero, then the pdf of the semicircle distribution is the function that is identically zero.
 %    In other words, for any mean $m \in \mathbb{R}$ and $x \in \mathbb{R}$, we have
@@ -49,8 +49,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_nonneg}
-    \mathlibok
-    \lean{semicirclePDFReal_nonneg}
+    \leanok
+    \lean{ProbabilityTheory.semicirclePDFReal_nonneg}
     \uses{def:semicirclePDFReal}
     The pdf of the semicircle distribution is always nonnegative. 
 \end{lemma}
@@ -63,9 +63,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:measurable_semicirclePDFReal}
-    \lean{measurable_semicirclePDFReal}
+    \lean{ProbabilityTheory.measurable_semicirclePDFReal}
     \uses{}
-    \notready
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is measurable.
 \end{lemma}
@@ -75,8 +74,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:stronglyMeasurable_semicirclePDFReal}
-    \mathlibok
-    \lean{stronglyMeasurable_semicirclePDFReal}
+    \leanok
+    \lean{ProbabilityTheory.stronglyMeasurable_semicirclePDFReal}
     \uses{def:semicirclePDFReal,lem:measurable_semicirclePDFReal}
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is strongly measurable.
@@ -88,9 +87,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:integrable_semicirclePDFReal}
-    \lean{integrable_semicirclePDFReal}
+    \lean{ProbabilityTheory.integrable_semicirclePDFReal}
     \uses{def:semicirclePDFReal}
-    \notready
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution with mean $\mu$ and variance $v$ is integrable.
 \end{lemma}
@@ -100,7 +98,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:lintegral_semicirclePDFReal_eq_one}
-    \lean{lintegral_semicirclePDFReal_eq_one}
+    \lean{ProbabilityTheory.lintegral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     \notready
     Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the lower Lebesgue integral of the p.d.f. $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
@@ -112,7 +110,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:integral_semicirclePDFReal_eq_one}
-    \lean{integral_semicirclePDFReal_eq_one}
+    \lean{ProbabilityTheory.integral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     \notready
     Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the integral of the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
@@ -124,8 +122,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_sub}
-    \mathlibok
-    \lean{semicirclePDFReal_sub}
+    \leanok
+    \lean{ProbabilityTheory.semicirclePDFReal_sub}
     \uses{def:semicirclePDFReal}
     For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
@@ -146,8 +144,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_add}
-    \mathlibok
-    \lean{semicirclePDFReal_add}
+    \leanok
+    \lean{ProbabilityTheory.semicirclePDFReal_add}
     \uses{def:semicirclePDFReal,lem:semicirclePDFReal_sub}
     For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
@@ -168,7 +166,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_inv_mul}
-    \lean{semicirclePDFReal_inv_mul}
+    \lean{ProbabilityTheory.semicirclePDFReal_inv_mul}
     \uses{def:semicirclePDFReal}
     \notready
     For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
@@ -184,8 +182,8 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_mul}
-    \mathlibok
-    \lean{semicirclePDFReal_mul}
+    \leanok
+    \lean{ProbabilityTheory.semicirclePDFReal_mul}
     \uses{def:semicirclePDFReal,lem:semicirclePDFReal_inv_mul}
     For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$ 
     of the semicircle distribution, the following relation is satisfied:
@@ -218,7 +216,7 @@
 \begin{definition}
   \label{def:semicirclePDF}
   \leanok
-  \lean{ProbabilityTheory.semicirclePDF}
+  \lean{ProbabilityTheory.ProbabilityTheory.semicirclePDF}
   \uses{def:semicirclePDFReal}
   Let $f : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \to \mathbb{R}$ denote the real-valued semicircle density defined in Definition \ref{def:semicirclePDFReal}. Define the function $h: \mathbb{R} \to \mathbb{R} \cup \{\infty\} $ as follows:
   $$
