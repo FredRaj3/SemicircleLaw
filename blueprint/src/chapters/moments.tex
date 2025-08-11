@@ -1546,6 +1546,13 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
 %---------%
 %---------%
 
+\begin{definition}[R-2-2 : def:graph\_walk\_triple\_set]
+  \notready
+  \label{def:graph_walk_triple_set_w_ge_two}
+  \uses{def:graph_walk_triple_set} % n/a
+  $(G,w,w')\in \mathcal{G}_{k,k,w+w'\ge 2}$ if $(G,w,w') \in \mathcal{G}_{k,k}$ and $w + w' \ge 2$.
+\end{definition}
+
 
 \begin{proposition}
   \label{prop:var_trace_as_sum}
@@ -1559,29 +1566,54 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
   By construction, every edge in the joined graph $G_{{i}\#{j}}$ is traversed at least once by the union of the two paths $w_{i}$ and $w_{j}$.  Suppose that $e$ is an edge that is traversed only {\em once}.  This means that $w_{{i}\#{j}}(e) = 1$, and so it follows that the two values $w_{i}(e),w_{j}(e)$ are $\{0,1\}$.  Hence, the above expansion and the fact that $\bE(Y_{11})=\bE(Y_{12})=0$ show that $\pi(G_{{i}\#{j}},w_{i},w_{j}) = 0$ in this case.
 \end{proof}
 
-
-\begin{lemma}
-  \label{lem:simplified_var_trace_as_sum}
-  \uses{prop:var_trace_as_sum}
+\begin{proposition}
+  \label{lem:g_w_w_count}
   \notready
-  \[ \Var\left( \frac1n\Tr({X}_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
-\end{lemma}
+  \uses{def:index_pair_rel, def:graph_walk_triple_set_w_ge_two}
+  For $(G, w, w') \in \mathcal{G}_{k,k,w+w'\ge 2}$, $\#\left\{(i,{j})\in [n]^{2k}\colon (G_{i\#j},w_{i},w_{j}) = (G,w,w')\right\} = n(n-1)\cdots (n-|G|+1)$.
+\end{proposition}
 
 \begin{proof}
   \notready
   The enumeration of the number of $2k$-tuples yielding a certain graph with two walks is the same as in the previous proposition: the structure $(G,w,w')$ specifies the $2k$-tuple precisely once we select the $|G|$ distinct indices for the vertices.  So, as before, this ratio becomes \[ \frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
 \end{proof}
 
+
+\begin{lemma}
+  \label{lem:simplified_var_trace_as_sum}
+  \uses{prop:var_trace_as_sum, lem:g_w_w_count}
+  \notready
+  \[ \Var\left( \frac1n\Tr({X}_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Follows directly.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:g_k_k_edge_count_maximum}
+  \uses{def:graph_walk_triple_set_w_ge_two}
+  \notready
+
+  In the set $\mathcal{G}_{k,k,w+w'\ge 2}$, edge count is at most $k$.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Now, we have the condition $w+w'\ge 2$, meaning every edge is traversed at least twice.  Since there are $k$ steps in each of the two paths, this means there are at most $k$ edges.
+\end{proof}
+
 \begin{proposition}
   \label{prop:var_upper_bound}
-  \uses{prop:vertex_edge_inequality, lem:simplified_var_trace_as_sum, lem:abs_expect_mul_sub_mul_expect_le}
+  \uses{prop:vertex_edge_inequality, lem:simplified_var_trace_as_sum, lem:abs_expect_mul_sub_mul_expect_le, lem:g_k_k_edge_count_maximum}
   \notready
   \[ \Var\left( \frac1n\Tr({X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
 \end{proposition}
 
 \begin{proof}
   \notready
-  Now, we have the condition $w+w'\ge 2$, meaning every edge is traversed at least twice.  Since there are $k$ steps in each of the two paths, this means there are at most $k$ edges.  Appealing again to \ref{prop:vertex_edge_inequality}, it follows that $|G|\le k+1$.  Hence, $n(n-1)\cdots(n-|G|+1) \le n^{|G|} \le n^{k+1}$
+  Appealing again to \ref{prop:vertex_edge_inequality}, it follows that $|G|\le k+1$.  Hence, $n(n-1)\cdots(n-|G|+1) \le n^{|G|} \le n^{k+1}$
 \end{proof}
 
 \begin{theorem}
