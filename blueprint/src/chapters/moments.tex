@@ -1569,7 +1569,7 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
 \begin{proposition}
   \label{lem:g_w_w_count}
   \notready
-  \uses{def:index_pair_rel, def:graph_walk_triple_set_w_ge_two}
+  \uses{def:index_pair_rel, def:graph_walk_triple_set_w_ge_two, def:graph_walk_triple_rel}
   For $(G, w, w') \in \mathcal{G}_{k,k,w+w'\ge 2}$, $\#\left\{(i,{j})\in [n]^{2k}\colon (G_{i\#j},w_{i},w_{j}) = (G,w,w')\right\} = n(n-1)\cdots (n-|G|+1)$.
 \end{proposition}
 
@@ -1606,7 +1606,7 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
 
 \begin{proposition}
   \label{prop:var_upper_bound}
-  \uses{prop:vertex_edge_inequality, lem:simplified_var_trace_as_sum, lem:abs_expect_mul_sub_mul_expect_le, lem:g_k_k_edge_count_maximum}
+  \uses{prop:vertex_edge_inequality, lem:simplified_var_trace_as_sum, lem:abs_expect_mul_sub_mul_expect_le, lem:g_k_k_edge_count_maximum, def:common_val_prod}
   \notready
   \[ \Var\left( \frac1n\Tr({X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
 \end{proposition}
