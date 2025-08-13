@@ -1162,11 +1162,11 @@ as required.
     \label{def:ordered_triple}
     \notready
     \uses{def:graph_union, def:graph_path}
-    Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$, we define the ordered triple $(\mathbf{i}, \mathbf{j}, G_{\mathbf{i} \# \mathbf{j}})$ as follows:
+    Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$, we define the ordered triple $(G_{\mathbf{i} \# \mathbf{j}}, w_{\mathbf{i}}, w_{\mathbf{j}})$ as follows:
     \begin{itemize}
+        \item $G_{\mathbf{i} \# \mathbf{j}}$ is the graph union of the graphs defined by $\mathbf{i}$ and $\mathbf{j}$ from definition \ref{def:graph_union}
         \item $w_{\mathbf{i}}$ is the closed walk defined by $\mathbf{i}$ from definition \ref{def:graph_path}
         \item $w_{\mathbf{i}}$ is the closed walk defined by $\mathbf{j}$ from definition \ref{def:graph_path}
-        \item $G_{\mathbf{i} \# \mathbf{j}}$ is the graph union of the graphs defined by $\mathbf{i}$ and $\mathbf{j}$ from definition \ref{def:graph_union}
     \end{itemize}
 \end{definition}
 
