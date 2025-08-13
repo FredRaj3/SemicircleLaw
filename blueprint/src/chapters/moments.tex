@@ -1688,29 +1688,20 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
 
 
 \begin{lemma}
-    \label{lem:walk_i_traverse_twice}
+    \label{lem:one_walk_traverse_twice}
     \notready
-    \uses{lem:traverse_eaxctly_twice}
-     $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$, then for a common edge it is impossible that $w(e) = 2, w'(e) = 0$.
+    \uses{lem:i_j_traverse_once}
+     $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$, then it can only be the case that $w(e) = 2, w'(e) = 0$, or $w(e) = 0, w'(e) = 2$ .
      \begin{proof}
       As a common edge, it is impossible that $w'$ does not traverse it.
      \end{proof}
 \end{lemma}
 
 
-\begin{lemma}
-    \label{lem:walk_j_traverse_twice}
-    \notready
-    \uses{lem:walk_i_traverse_twice}
-    \begin{proof}
-     Symmetric argument by the previous lemma.
-    \end{proof}
-\end{lemma}
-
 
 \begin{lemma}
     \label{lem:no_shared_edges}
-    \uses{lem:i_j_traverse_once, lem:walk_i_traverse_twice, lem:walk_j_traverse_twice}
+    \uses{lem:one_walk_traverse_twice}
     $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$. Then two walks have no shared edges $e$ which they have traversed.
 \end{lemma}
 
@@ -1726,20 +1717,11 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
 
 
 
-\begin{lemma}
-   \label{lem:independent_expectation}
-   \uses{def:matrix_multi_index}
-   \notready
-   If $X_{\mathbf{i}}$ and $X_{\mathbf{j}}$ are independent random variable, then $$\mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) = \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}}) $$
-
-\end{lemma}
-
-
 %depends on the definition of \mathcal{G}_{k,k} and \pi(G, w, w'    %R-2-5-1)
 \begin{lemma}
     \label{lem:G_leq_k}
     \notready
-    \uses{lem:independent_expectation, lem:disjoint_edge_set, def:common_val_prod}  
+    \uses{lem:disjoint_edge_set, def:common_val_prod}  
     For any $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \in \mathcal{G}_{k,k}$, with $k + 1$ vertices, $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})  = 0$ 
     \begin{proof}
      $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = \mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) - \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}})  = 0$
