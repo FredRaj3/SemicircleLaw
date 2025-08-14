@@ -124,6 +124,9 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     exact h9 hx
   exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
 
+  /- apply IntegrableOn.integrable_of_ae_notMem_eq_zero h3
+  have h5 : ∀ (x : ℝ), x ∉ I → f x = 0 := by sorry -/
+
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
     ∫⁻ x, ENNReal.ofReal (semicirclePDFReal μ v x) = 1 := by
