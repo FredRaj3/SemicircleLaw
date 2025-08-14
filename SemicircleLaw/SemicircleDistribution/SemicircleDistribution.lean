@@ -109,15 +109,20 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
   rw [semicirclePDFReal_def]
   set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
   have h1 : Continuous f := by apply Cont_semicirclePDFReal
-  set I := uIcc (μ + √v) (μ - √v) with hI
+  set I := uIcc (μ + 2 * √v) (μ - 2 * √v) with hI
   have h2 : IsCompact I := by simpa [hI] using isCompact_uIcc
   have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
-  have h4 : IntegrableOn f Iᶜ := by sorry
-  have h : IntegrableOn f (I ∪ Iᶜ) := IntegrableOn.union h3 h4
-  have h' : I ∪ Iᶜ = Set.univ := Set.union_compl_self I
-  rw [h'] at h
-  rw [← integrableOn_univ]; exact h
-
+  have h4 : Function.support f ⊆ I := by
+    intro x hx
+    by_contra hxI
+    have h5 : x ∈ Iᶜ := by simpa using hxI
+    have h6 : f x = 0 := by
+      have h7 : 4 * v - (x - μ) ^ 2 ≤ 0 := sorry
+      have h8 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h7
+      simp [f,h8]
+    have h9 : x ∉ Function.support f := by simpa [Function.support] using h6
+    exact h9 hx
+  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
@@ -390,6 +395,13 @@ lemma g_cont : Continuous g := by
 lemma h_cont : Continuous h := by
   unfold h
   continuity
+
+/- have h4 : IntegrableOn f Iᶜ := by
+    have h5 : IntegrableOn
+  have h : IntegrableOn f (I ∪ Iᶜ) := IntegrableOn.union h3 h4
+  have h' : I ∪ Iᶜ = Set.univ := Set.union_compl_self I
+  rw [h'] at h
+  rw [← integrableOn_univ]; exact h -/
 
 end Scribbles
 
