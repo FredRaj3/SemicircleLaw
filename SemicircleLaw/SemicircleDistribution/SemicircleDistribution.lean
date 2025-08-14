@@ -102,6 +102,7 @@ lemma stronglyMeasurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     StronglyMeasurable (semicirclePDFReal μ v) :=
   (measurable_semicirclePDFReal μ v).stronglyMeasurable
 
+/-- The semicircle pdf is integrable. -/
 @[fun_prop]
 lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     Integrable (semicirclePDFReal μ v) := by
@@ -111,15 +112,12 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
   set I := uIcc (μ + √v) (μ - √v) with hI
   have h2 : IsCompact I := by simpa [hI] using isCompact_uIcc
   have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
-  have h4 : IntegrableOn f Iᶜ := by
-    have h5 : ∀ {x : ℝ}, x ∈ Iᶜ → f x = 0 := by sorry
-    sorry
-  have h : Integrable f := by sorry
-  exact h
+  have h4 : IntegrableOn f Iᶜ := by sorry
+  have h : IntegrableOn f (I ∪ Iᶜ) := IntegrableOn.union h3 h4
+  have h' : I ∪ Iᶜ = Set.univ := Set.union_compl_self I
+  rw [h'] at h
+  rw [← integrableOn_univ]; exact h
 
-/-Alternatively, we can write the lemma as:
-  lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
-    MeasureTheory.Integrable (semicirclePDFReal μ v) ℙ := by-/
 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
