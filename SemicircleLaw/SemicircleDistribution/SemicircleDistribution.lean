@@ -113,11 +113,66 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
   have h2 : IsCompact I := by simpa [hI] using isCompact_Icc
   have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
   have h4 : Function.support f ⊆ I := by
+    intro x hx
+    by_contra hxI
+    have h6 : f x = 0 := by
+      have h7 : 4 * v - (x - μ) ^ 2 ≤ 0 := by
+        dsimp [I,Icc] at hxI
+        by_contra hxIc
+        push_neg at hxIc
+        have hxIc_1 : (x - μ)^2 < 4 * v := by exact lt_add_neg_iff_lt.mp hxIc
+        have hxIc_2 : |x - μ| < 2 * √v := by
+          set A := x - μ
+          have hxIc_21 : (2 * √v)^2 = 4 * v := by
+            calc
+            (2 * √v)^2 = 2^2 * (√v)^2 := by exact mul_pow 2 (√↑v) 2
+                     _ = 4 * (√v)^2 := by norm_num
+                     _ = 4 * v := by norm_num
+          rw [← hxIc_21] at hxIc_1
+          set B := 2 * √v
+          have : 0 ≤ B := by positivity
+          apply abs_lt_of_sq_lt_sq; exact hxIc_1; exact this
+        have hxIc_3 : -(x - μ) < 2 * √v := by
+          set A := x - μ with hA
+          calc
+            -A ≤ |A| := by exact neg_le_abs A
+             _ < 2 * √v := hxIc_2
+        have hxIc_31 : - x + μ < 2 * √v := by
+          set A := x - μ
+          calc
+            -x + μ = -(x - μ) := by ring
+                 _ = -A := by exact rfl
+                 _ ≤ |A| := by exact neg_le_abs A
+                 _ < 2 * √v := hxIc_2
+        have hxIc_32 : μ < x + 2 * √v := by exact lt_add_of_neg_add_lt hxIc_31
+        have hxIc_33 : μ - 2 * √v < x := by
+          set B := 2 * √v
+          exact sub_right_lt_of_lt_add hxIc_32
+        have hxIc_4 : x - μ < 2 * √v := by exact lt_of_abs_lt hxIc_2
+        have hxIc_41 : x < μ + 2 * √v := by exact lt_add_of_tsub_lt_left hxIc_4
+        apply (not_and_or).mp at hxI
+        have C1 : x ≤ μ + 2 * √v := by exact le_of_lt hxIc_41
+        have C2 : μ - 2 * √v ≤ x := by exact le_of_lt hxIc_33
+        have C3 : μ - 2 * √v ≤ x ∧ x ≤ μ + 2 * √v := by exact ⟨C2, C1⟩
+        set Co1 := μ - 2 * √v ≤ x
+        set Co2 := x ≤ μ + 2 * √v
+        have C : (¬Co1 ∨ ¬Co2) ↔ ¬(Co1 ∧ Co2) := by exact Iff.symm Decidable.not_and_iff_or_not
+        rw [C] at hxI; absurd C3; exact hxI
+      have h8 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h7
+      simp [f,h8]
+    have h9 : x ∉ Function.support f := by simpa [Function.support] using h6
+    exact h9 hx
+  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
+
+  /-have h5 : x ∈ Iᶜ := by simpa using hxI-/
+
+
+  /-have h4 : Function.support f ⊆ I := by
     have h5 : Function.support f = Ioo (μ - 2 * √v) (μ + 2 * √v) := by sorry
     have h6 : Ioo (μ - 2 * √v) (μ + 2 * √v) ⊆ I := by
       rw [hI]; intro x; simp; sorry
     simpa [h5] using h6
-  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
+  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3-/
 
   /-intro x hx
     by_contra hxI
