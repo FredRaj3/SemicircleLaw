@@ -196,6 +196,8 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
     ∫⁻ x, ENNReal.ofReal (semicirclePDFReal μ v x) = 1 := by
+  rw [semicirclePDFReal_def]
+  simp
   sorry
 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
@@ -214,7 +216,53 @@ lemma semicirclePDFReal_add {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
 
 lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c⁻¹ * x) = |c| * semicirclePDFReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) x := by
-  sorry
+  rw [semicirclePDFReal, semicirclePDFReal]; simp
+  have h1 : √(4 * v - (c⁻¹ * x - μ)^2) = √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) := by
+    have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by
+      have h111 : c⁻¹ * x - μ = c⁻¹ * x - 1 * μ := by linarith
+      have h112 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
+      have h113 : c⁻¹ * x - 1 * μ = c⁻¹ * x - (c⁻¹ * c) * μ := by rw [h112]
+      have h114 : c⁻¹ * x - (c⁻¹ * c) * μ = c⁻¹ * (x - c * μ) := by ring
+      rw [h111,h113]; exact h114
+    have h12 : (c⁻¹ * x - μ)^2 = (c⁻¹)^2 * (x - c * μ)^2 := by rw [h11]; ring
+    rw [h12]
+  have h2 : √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) = |c⁻¹| * √(4 * (c^2 * v) - (x - c * μ)^2) := by
+    have h21 : 4 * v = (c⁻¹ * c)^2 * (4 * v) := by
+      have h211 : (c⁻¹ * c)^2 = 1 := by
+        have h2111 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
+        rw [h2111]; ring
+      rw [h211]; ring
+    have h22 : (c⁻¹ * c)^2 * (4 * v) - (c⁻¹)^2 * (x - c * μ)^2 = (c⁻¹)^2 * (4 * (c^2 * v)) - (c⁻¹)^2 * (x - c * μ)^2 := by ring
+    rw [h21,h22]
+    set A := 4 * (c^2 * v)
+    set B := (x - c * μ)^2
+    have h23 : √((c⁻¹)^2 * A - (c⁻¹)^2 * B) = √((c⁻¹)^2 * (A - B)) := by ring_nf
+    have h24 : √((c⁻¹)^2 * (A - B)) = √(|c⁻¹|^2 * (A - B)) := by
+      have h241 : (c⁻¹)^2 = |c⁻¹|^2 := by exact Eq.symm (sq_abs c⁻¹)
+      rw [h241]
+    rw [h23,h24]
+    set C := |c⁻¹|
+    set D := A - B
+    rw [Real.sqrt_mul,Real.sqrt_sq]; exact abs_nonneg c⁻¹; exact sq_nonneg C
+  rw [h1,h2]
+  set E := √(4 * (c ^ 2 * v) - (x - c * μ) ^ 2)
+  have h3 : |c⁻¹| = |c|⁻¹ := by exact abs_inv c
+  rw [h3]
+  have h4 : |c|⁻¹ = |c| * (|c|⁻¹)^2 := by
+    have h41 : |c|⁻¹ = (|c| * |c|⁻¹) * |c|⁻¹ := by
+      have h411 :|c| * |c|⁻¹ = 1 := by
+        refine mul_inv_cancel₀ ?_; exact abs_ne_zero.mpr hc
+      rw [h411]; ring
+    calc
+      |c|⁻¹ = (|c| * |c|⁻¹) * |c|⁻¹ := by apply h41
+          _ = |c| * (|c|⁻¹ * |c|⁻¹) := by ring
+          _ = |c| * (|c|⁻¹)^2 := by ring
+  rw [h4]
+  have h5 : (|c|⁻¹)^2 = (c^2)⁻¹ := by
+    have h51 : (|c|⁻¹)^2 = (|c|^2)⁻¹ := by rw [inv_pow]
+    have h52 : |c|^2 = c^2 := by exact sq_abs c
+    rw [h51, h52]
+  rw [h5]; ring
 
 lemma semicirclePDFReal_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c * x)
@@ -238,7 +286,8 @@ lemma toReal_semicirclePDF {μ : ℝ} {v : ℝ≥0} (x : ℝ) :
   rw [semicirclePDF, ENNReal.toReal_ofReal (semicirclePDFReal_nonneg μ v x)]
 
 lemma semicirclePDF_nonneg (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) (x : ℝ) : 0 ≤ semicirclePDF μ v x := by
-  sorry
+  rw [semicirclePDF]; positivity
+
 
 lemma semicirclePDF_lt_top {μ : ℝ} {v : ℝ≥0} {x : ℝ} : semicirclePDF μ v x < ∞ := by
 simp [semicirclePDF]
