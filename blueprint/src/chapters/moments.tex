@@ -742,25 +742,103 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
 
 
 
-
-
-\iffalse
+%---Richard's Part for Section 4.3 (Start)---% 
 %---------%
 %---------%
-\begin{definition}
-  \label{}
-  \uses{}%Uses: 1) 
-
-\end{definition}
+\begin{lemma}[R-3-1 : lem:weak\_convergence]
+  \notready
+  \label{lem:weak_convergence}
+  Let $k \in \mathbb{N}$ and $\epsilon > 0$. Then for any $b > 4$,
+  \[
+  \underset{n \rightarrow \infty}{\lim \sup} \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) = 0.
+  \]
+\end{lemma}
 %---------%
 %---------%
-\begin{lemma}
-  \label{}
+\begin{lemma}[R-3-2 : lem:R-3-2]
+  \notready
+  \label{lem:R-3-2}
   \uses{}
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon} \mathbb{E} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \biggl).
+  \]
 \end{lemma}
 \begin{proof}
-  % TBW
+  This follows from Markov's inequality.
 \end{proof}
 %---------%
 %---------%
-\fi
+\begin{definition}[R-3-3 : def:R-3-3]
+  \notready
+  \label{def:R-3-3}
+  \uses{} % Definition of the ESD.
+  We define $\nu$ to be the random measure $\nu(dx) = |x|^k \mu_{\mathbf{X}_n}(dx)$.
+\end{definition}
+%---------%
+%---------%
+\begin{lemma}[R-3-4 : lem:R-3-4]
+  \notready
+  \label{lem:R-3-4}
+  \uses{def:R-3-3} % Definition of $\nu$.
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) = \nu\{x : |x|^k > b^k\}.
+  \]
+\end{lemma}
+\begin{proof}
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) = \nu\{x : |x| > b\} = \nu\{x : |x|^k > b^k\}.
+  \]
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-3-5 : lem:R-3-5]
+  \notready
+  \label{lem:R-3-5}
+  \uses{lem:R-3-4,def:R-3-3} % Previous result & definition of $\nu$.
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \leq \frac{1}{b^k} \int |x|^{2k} \mu_{\mathbf{X}_n}(dx).
+  \]
+\end{lemma}
+\begin{proof}
+  First, applying Markov's inequality on Lemma \ref{lem:R-3-4} gives
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \leq \frac{1}{b^k} \int |x|^k \nu(dx).
+  \] 
+  Next, `substituting' $\nu(dx)$ with $|x|^k \mu_{\mathbf{X}_n}(dx)$ gives
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \leq \frac{1}{b^k} \int |x|^{2k} \mu_{\mathbf{X}_n}(dx).
+  \] 
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-3-6 : lem:R-3-6]
+  \notready
+  \label{lem:R-3-6}
+  \uses{lem:R-3-5,lem:R-3-2} % Previous result & first equation.
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon b^k} \mathbb{E} \biggl( \int |x|^{2k} \mu_{\mathbf{X}_n}(dx) \biggl).
+  \]
+\end{lemma}
+\begin{proof}
+  Substituting the term inside the expectation of Lemma \ref{lem:R-3-2} with the expression acquired from Lemma \ref{lem:R-3-5} gives
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon} \mathbb{E} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \biggl) \leq \frac{1}{\epsilon b^k} \mathbb{E} \biggl( \int |x|^{2k} \mu_{\mathbf{X}_n}(dx) \biggl).
+  \]
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-3-7 : lem:R-3-7]
+  \notready
+  \label{lem:R-3-7}
+  \uses{lem:R-3-6} % Previous result & the spectral theorem argument used under Theorem 2.3.
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon b^k} \cdot \frac{1}{n} \mathbb{E} \mathrm{Tr} (\mathbf{X}_n^k).
+  \]
+\end{lemma}
+\begin{proof}
+  Substituting the term inside the expectation of Lemma \ref{lem:R-3-6} with the expression acquired in Lemma \ref{} gives
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon b^k} \mathbb{E} \biggl( \int |x|^{2k} \mu_{\mathbf{X}_n}(dx) \biggl) = \frac{1}{\epsilon b^k} \cdot \frac{1}{n} \mathbb{E} \mathrm{Tr} (\mathbf{X}_n^k).
+  \]
+\end{proof}
+%---Richard's Part for Section 4.3 (End)---% 
