@@ -166,7 +166,6 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
 
   /-have h5 : x ∈ Iᶜ := by simpa using hxI-/
 
-
   /-have h4 : Function.support f ⊆ I := by
     have h5 : Function.support f = Ioo (μ - 2 * √v) (μ + 2 * √v) := by sorry
     have h6 : Ioo (μ - 2 * √v) (μ + 2 * √v) ⊆ I := by
@@ -203,8 +202,15 @@ lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) :
     ∫ x, semicirclePDFReal μ v x = 1 := by
-  sorry
-
+  rw [semicirclePDFReal_def]
+  simp
+  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
+  set A := (2 * π * v)⁻¹
+  calc
+    ∫ (x : ℝ), (v)⁻¹ * (π⁻¹ * 2⁻¹) * √(4 * v - (x - μ) ^ 2) = ∫ x in I, A * √(4 * v - (x - μ)^2) := by sorry
+                                                          _ = A * ∫ x in I, √(4 * v - (x - μ)^2) := by sorry
+                                                          _ = A * A⁻¹ := by sorry
+                                                          _ = 1 := by sorry
 lemma semicirclePDFReal_sub {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
     semicirclePDFReal μ v (x - y) = semicirclePDFReal (μ + y) v x := by
   simp only [semicirclePDFReal]
@@ -287,7 +293,6 @@ lemma toReal_semicirclePDF {μ : ℝ} {v : ℝ≥0} (x : ℝ) :
 
 lemma semicirclePDF_nonneg (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) (x : ℝ) : 0 ≤ semicirclePDF μ v x := by
   rw [semicirclePDF]; positivity
-
 
 lemma semicirclePDF_lt_top {μ : ℝ} {v : ℝ≥0} {x : ℝ} : semicirclePDF μ v x < ∞ := by
 simp [semicirclePDF]
