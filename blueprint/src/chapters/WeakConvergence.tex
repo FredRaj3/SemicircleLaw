@@ -244,3 +244,99 @@
     \left|\int f d\mu_{\mathbf{x}_{n}} - \int f d\sigma_{1}\right| \leq \left|\int f d\mu_{\mathbf{x}_{n}} - \int P_{\epsilon} d\mu_{\mathbf{x}_{n}}\right| + \left|\int P_{\epsilon} d\mu_{\mathbf{x}_{n}} - \int P_{\epsilon} d\sigma_{1}\right| + \left|\int P_{\epsilon} d\sigma_1 - \int f d\sigma_1\right|
     $$ 
 \end{lemma}
+
+%------- Paul's part ends
+
+
+%------- Kiran's part begins
+
+\begin{lemma}
+  \label{lem:f_pigeonhole}
+  \uses{lem:estimates_from_triangle_inequality} 
+  \notready
+  If $\left|\int f\,d\mu_{X_n} - \int f\,d\sigma_1\right|>\epsilon$, then  $\left|\int f\,d\mu_{X_n} - \int P_\epsilon\,d\mu_{X_n}\right|>\epsilon/3, 
+    \left|\int P_\epsilon\,d\mu_{X_n} - \int P_\epsilon\,d\sigma_1\right| >\epsilon/3,$ or $\left|\int P_\epsilon\,d\sigma_1 - \int f\,d\sigma_1\right|>\epsilon/3$.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Pigeonhole.
+\end{proof}
+
+
+
+\begin{lemma}
+  \label{lem:f_probability_inequality}
+  \uses{lem:f_pigeonhole, lem:estimates_from_triangle_inequality} 
+  \notready
+  \[
+    \bP\left( \left|\int f\,d\mu_{X_n} - \int f\,d\sigma_1\right|>\epsilon\right) \le \bP\left(\left|\int f\,d\mu_{X_n} - \int P_\epsilon\,d\mu_{X_n}\right|>\epsilon/3\right)
+    + \bP\left(\left|\int P_\epsilon\,d\mu_{X_n} - \int P_\epsilon\,d\sigma_1\right| >\epsilon/3\right) 
+    + \bP\left(\left|\int P_\epsilon\,d\sigma_1 - \int f\,d\sigma_1\right|>\epsilon/3\right)
+  \]
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Triangle equality: use MeasureTheory.lintegral_edist_triangle. 
+  (Not 100\% sure if this is needed)
+\end{proof}
+
+
+\begin{lemma}
+  \label{lem:p_epsilon_minus_f_d_sigma_eq_zero}
+  \uses{lem:function_weierstrass_approx, lem:estimates_from_triangle_inequality} % sup from wat, def b
+  \notready
+  $\bP\left(\left|\int P_\epsilon\,d\sigma_1 - \int f\,d\sigma_1\right|>\epsilon/3\right)$ is identically zero.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  By construction, $|P_\e-f|<\e/6$ on $[-b,b]$, which includes the support $[-2,2]$ of $\sigma_1$.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:f_p_epsilon_inequality}
+  \uses{}
+  \notready
+  \[ \left|\int (f-P_\epsilon)\,d\mu_{X_n}\right| \le \int_{|x|\le b} |f(x)-P_\epsilon(x)|\,\mu_{X_n}(dx) + \int_{|x|>b} |f(x)-P_\epsilon(x)|\,\mu_{X_n}(dx). \]
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Break up the integral.
+\end{proof}
+
+
+\begin{lemma}
+  \label{lem:f_p_epsilon_pigeonhole}
+  \uses{}
+  \notready
+  If $\left|\int f\,d\mu_{X_n} - \int P_\epsilon\,d\mu_{X_n}\right|>\epsilon/3$, then $\int |f-P_\epsilon|\mathbb{1}_{|x|\le b}\,d\mu_{X_n}>\epsilon/6$ or $\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{X_n}>\epsilon/6$.
+  
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Pigeonhole.
+\end{proof}
+
+
+\begin{lemma}
+  \label{lem:f_p_epsilon_probability_inequality}
+  \uses{lem:f_p_epsilon_inequality, lem:f_p_epsilon_pigeonhole}
+  \notready
+  \[
+    \bP\left(\left|\int f\,d\mu_{X_n} - \int P_\epsilon\,d\mu_{X_n}\right|>\epsilon/3\right) \le \bP\left(\int |f-P_\epsilon|\mathbb{1}_{|x|\le b}\,d\mu_{X_n}>\epsilon/6\right)
+  + \bP\left(\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{X_n}>\epsilon/6\right).
+  \]
+  
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Use previous two lemmas.
+\end{proof}
+
+%------- Kiran's part ends
+
