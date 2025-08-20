@@ -26,8 +26,6 @@
 
 
 
-
-
 \begin{lemma}
     \label{lem:first_term_of_first_term_zero}
     \uses{} %also uses |f - P| < \epsilon /6 on [-b, b]  and first term expansion
@@ -51,12 +49,10 @@
 % \end{lemma}
 
 
-
-
 \begin{lemma}
     \label{lem:reestimate}
     \uses{lem:first_term_estimate}     %also requires last term being zero, requires the lem for the three terms....
-    $\begin{align*} \mathbb{P}\left( \left|\int f\,d\mu_{\mathrm{X}_n} - \int f\,d\sigma_1\right|>\epsilon\right) &\le \mathbb{P}\left(\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{\mathrm{X}_n}>\epsilon/6\right) \\ 
+     $\begin{align*} \mathbb{P}\left( \left|\int f\,d\mu_{\mathrm{X}_n} - \int f\,d\sigma_1\right|>\epsilon\right) &\le \mathbb{P}\left(\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{\mathrm{X}_n}>\epsilon/6\right) \\ 
      &+ \mathbb{P}\left(\left|\int P_\epsilon\,d\mu_{\mathrm{X}_n} - \int P_\epsilon\,d\sigma_1\right| >\epsilon/3\right).
      \end{align*}$
 \end{lemma}
@@ -84,13 +80,15 @@
     \label{lem:polynomial_ineq}
     \uses{}
     $ \mathbb{P}\left(\int |f-P_\epsilon| \mathbb{1}_{|x|\ge b}\,d\mu_{\mathrm{X}_n} > \epsilon/6\right) \le \mathbb{P}\left(\int c|x|^k\mathbb{1}_{|x|\ge b}\,\mu_{\mathrm{X}_n}(dx) > \epsilon/6\right) $
-
+    \begin{proof}
+    Let $k =$deg$P_\epsilon$, and since $f$ is bounded, $|f(x) - P_{\epsilon}(x)| \leq \|f\|_{\infty} + |P_\epsilon(x)|$. Also note it is on interval $|x| > b$, which completes the proof.
+    \end{proof}
 \end{lemma}
 
 
 \begin{lemma}
     \label{lem:fP_bound}
-    \uses{}
+    \uses{}   %need the one for lemma 4.7
     $\limsup_{n \to \infty}\mathbb{P}\left(\int c|x|^k\mathbb{1}_{|x|\ge b}\,\mu_{\mathrm{X}_n}(dx) > \epsilon/6\right) = 0 $
 \end{lemma}
 

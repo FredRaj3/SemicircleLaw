@@ -30,8 +30,6 @@ import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Combinatorics.Enumerative.Catalan
 import Hammer
 
-
-
 /-!
 # Semicircle Distributions over ℝ
 
@@ -232,6 +230,7 @@ section Transformations
 
 variable {μ : ℝ} {v : ℝ≥0}
 
+
 /-- The map of a semicircle distribution by addition of a constant is semicircular. -/
 lemma semicircleReal_map_add_const (y : ℝ) :
     (semicircleReal μ v).map (· + y) = semicircleReal (μ + y) v := by
@@ -281,9 +280,6 @@ lemma semicircleReal_map_add_const (y : ℝ) :
 
     exact semicirclePDFReal_sub_ENNReal x y
 
-
-
-
 /-- The map of a semicircle distribution by addition of a constant is semicircular. -/
 lemma semicircleReal_map_const_add (y : ℝ) :
     (semicircleReal μ v).map (y + ·) = semicircleReal (μ + y) v := by
@@ -293,13 +289,61 @@ lemma semicircleReal_map_const_add (y : ℝ) :
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_const_mul (c : ℝ) :
     (semicircleReal μ v).map (c * ·) = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
+
+  by_cases hc : c = 0
+  · simp [hc, Measure.map_zero]
+
   by_cases hv : v = 0
   · rw [hv, semicircleReal_zero_var]
+    simp [mul_zero]
     rw [Measure.map_dirac (measurable_const_mul c)]
 
   · apply Measure.ext
     intro s hs
-    rw [semicircleReal_of_var_ne_zero μ hv, semicircleReal_of_var_ne_zero c*μ hv]
+    rw [semicircleReal_of_var_ne_zero μ hv]
+    have h_nonzero : ⟨c^2, sq_nonneg _⟩ * v ≠ 0 := by
+      rw [ne_eq, mul_eq_zero, not_or]
+      constructor
+      · intro h
+        have h_sq : c^2 = 0 := by
+          have : (⟨c^2, sq_nonneg _⟩ : ℝ≥0).val = 0 := by rw [h]; rfl
+          exact this
+        have h_c : c = 0 := by rwa [sq_eq_zero_iff] at h_sq
+        exact hc h_c
+
+      · exact hv
+    rw [semicircleReal_of_var_ne_zero (c * μ) h_nonzero]
+
+    rw [Measure.map_apply (measurable_const_mul c) hs]
+    rw [withDensity_apply' _]
+    rw [withDensity_apply' _]
+
+    have h_change : ∫⁻ (a : ℝ) in (c * ·) ⁻¹' s, semicirclePDF μ v a =
+                         ∫⁻ (u : ℝ) in s, semicirclePDF (c * μ) (⟨c^2, sq_nonneg _⟩ * v) u := by
+
+      have h_meas : Measurable (c * ·) := measurable_const_mul c
+
+      have h1 : ∫⁻ (a : ℝ) in (c * ·) ⁻¹' s, semicirclePDF μ v a
+      = ∫⁻ (a : ℝ) in (c * ·) ⁻¹' s, semicirclePDF μ v (c⁻¹ * (c * a)) := by
+        apply lintegral_congr_ae
+        filter_upwards [] with a
+        rw [← mul_assoc]
+        have : c⁻¹ * (c * a) = a := by simp [hc]
+        exact
+
+      have h_comp : Measurable (fun u ↦ semicirclePDF (c * μ) (⟨c^2, sq_nonneg _⟩ * v) u) :=
+              (measurable_semicirclePDF (c * μ) (⟨c^2, sq_nonneg _⟩ * v))
+      rw [h1]
+      rw [<- setLIntegral_map hs h_comp]
+      rw [map_mul_left_eq_smul_map_div_mul_const volume c]
+      simp [h_meas]
+
+    rw[h_change]
+
+
+
+
+
 
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_mul_const (c : ℝ) :
