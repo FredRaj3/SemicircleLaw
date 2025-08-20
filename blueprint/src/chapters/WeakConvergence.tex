@@ -1,0 +1,246 @@
+\chapter{Weak Convergence}
+
+%---Richard's Part for Section 4.3 (Start)---% 
+%---------%
+%---------%
+\begin{lemma}[R-3-1 : lem:weak\_convergence]
+  \notready
+  \label{lem:weak_convergence}
+  Let $k \in \mathbb{N}$ and $\epsilon > 0$. Then for any $b > 4$,
+  \[
+  \underset{n \rightarrow \infty}{\lim \sup} \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) = 0.
+  \]
+\end{lemma}
+%---------%
+%---------%
+\begin{lemma}[R-3-2 : lem:R-3-2]
+  \notready
+  \label{lem:R-3-2}
+  \uses{}
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon} \mathbb{E} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \biggl).
+  \]
+\end{lemma}
+\begin{proof}
+  This follows from Markov's inequality.
+\end{proof}
+%---------%
+%---------%
+\begin{definition}[R-3-3 : def:R-3-3]
+  \notready
+  \label{def:R-3-3}
+  \uses{} % Definition of the ESD.
+  We define $\nu$ to be the random measure $\nu(dx) = |x|^k \mu_{\mathbf{X}_n}(dx)$.
+\end{definition}
+%---------%
+%---------%
+\begin{lemma}[R-3-4 : lem:R-3-4]
+  \notready
+  \label{lem:R-3-4}
+  \uses{def:R-3-3} % Definition of $\nu$.
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) = \nu\{x : |x|^k > b^k\}.
+  \]
+\end{lemma}
+\begin{proof}
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) = \nu\{x : |x| > b\} = \nu\{x : |x|^k > b^k\}.
+  \]
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-3-5 : lem:R-3-5]
+  \notready
+  \label{lem:R-3-5}
+  \uses{lem:R-3-4,def:R-3-3} % Previous result & definition of $\nu$.
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \leq \frac{1}{b^k} \int |x|^{2k} \mu_{\mathbf{X}_n}(dx).
+  \]
+\end{lemma}
+\begin{proof}
+  First, applying Markov's inequality on Lemma \ref{lem:R-3-4} gives
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \leq \frac{1}{b^k} \int |x|^k \nu(dx).
+  \] 
+  Next, `substituting' $\nu(dx)$ with $|x|^k \mu_{\mathbf{X}_n}(dx)$ gives
+  \[
+  \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \leq \frac{1}{b^k} \int |x|^{2k} \mu_{\mathbf{X}_n}(dx).
+  \] 
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-3-6 : lem:R-3-6]
+  \notready
+  \label{lem:R-3-6}
+  \uses{lem:R-3-5,lem:R-3-2} % Previous result & first equation.
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon b^k} \mathbb{E} \biggl( \int |x|^{2k} \mu_{\mathbf{X}_n}(dx) \biggl).
+  \]
+\end{lemma}
+\begin{proof}
+  Substituting the term inside the expectation of Lemma \ref{lem:R-3-2} with the expression acquired from Lemma \ref{lem:R-3-5} gives
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon} \mathbb{E} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) \biggl) \leq \frac{1}{\epsilon b^k} \mathbb{E} \biggl( \int |x|^{2k} \mu_{\mathbf{X}_n}(dx) \biggl).
+  \]
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-3-7 : lem:R-3-7]
+  \notready
+  \label{lem:R-3-7}
+  \uses{lem:R-3-6} % Previous result & the spectral theorem argument used under Theorem 2.3.
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon b^k} \cdot \frac{1}{n} \mathbb{E} \mathrm{Tr} (\mathbf{X}_n^k).
+  \]
+\end{lemma}
+\begin{proof}
+  Substituting the term inside the expectation of Lemma \ref{lem:R-3-6} with the expression acquired in Lemma \ref{} gives
+  \[
+  \mathbb{P} \biggl( \int_{|x| > b} |x|^k \mu_{\mathbf{X}_n}(dx) > \epsilon \biggl) \leq \frac{1}{\epsilon b^k} \mathbb{E} \biggl( \int |x|^{2k} \mu_{\mathbf{X}_n}(dx) \biggl) = \frac{1}{\epsilon b^k} \cdot \frac{1}{n} \mathbb{E} \mathrm{Tr} (\mathbf{X}_n^k).
+  \]
+\end{proof}
+%---Richard's Part for Section 4.3 (End)---% 
+
+
+%---Paul's Part for Section 4.3 (Start)---% 
+\begin{lemma}[Catalan Number bound]
+    \label{lem:Catalan_bound}
+    \notready
+    Let $C_{k}$ be the Catalan number. Then, for all $k \in \mathbb{N}$, we have:
+    $$
+    C_{k} \leq 4^{k}
+    $$ 
+\end{lemma}
+
+\begin{lemma}[Bound for $\lim \sup_{n\to\infty}\frac{1}{n}\mathbb{E} \operatorname{Tr} (\mathbf{X}_{n}^{k})$]
+    \label{lem:bound_for_expectation_trace}
+    \uses{lem:Catalan_bound, prop:matrix_moments_convergence}
+    \notready
+    Let $\{Y_{ij}\}_{1 \leq i \leq j}$ be independent random variables, with $\{Y_{ii}\}_{i\geq 1}$ identically distributed and $\{Y_{ij}\}_{1 \leq i < j}$ identically distributed. Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} < \infty$ for each $k\in\bN$. Suppose further than $\bE(Y_{ij})=0$ for all $i,j$. If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$. Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix. Then, we have:
+    $$
+    \lim \sup_{n\to\infty} \frac{1}{n}\mathbb{E}\operatorname{Tr} (\mathbf{X}_{n}^{k}) \leq 4^{k}
+    $$ 
+\end{lemma}
+\begin{proof}
+    From proposition \ref{prop:matrix_moments_convergence}, we know that $\lim_{n\to\infty} \frac{1}{n}\mathbb{E}\operatorname{Tr}(\mathbf{X}_{n}^{k}) \leq C_{k}$ (odd and even cases of $k$). We further know that since the limit exists, $\lim \sup_{n\to\infty} \frac{1}{n}\mathbb{E}\operatorname{Tr}(\mathbf{X}_{n}^{k}) = \lim_{n\to\infty} \frac{1}{n}\mathbb{E}\operatorname{Tr}(\mathbf{X}_{n}^{k})$. Using lemma \ref{lem:Catalan_bound}, we have:
+     $$
+     \lim \sup_{n\to\infty }\mathbb{E}\frac{1}{n}\operatorname{Tr}(\mathbf{X}_{n}^{k}) \leq C_{k} \leq 4^{k}
+    $$ 
+    as required.
+\end{proof}
+
+\begin{lemma}[New bound for $\lim \sup_{n\to\infty} \mathbb{P}(\int_{|x| > b}|x|^{k} \mu \mathbf{x}_{n}(dx))$]
+    \label{lem:new_bound_for_lim_sup_p}
+    \uses{lem:bound_for_expectation_trace, lem:R-3-7}
+    \notready
+    let $k \in \mathbb{N}$ and  $\epsilon > 0$. then for any  $b > 4$, 
+     $$
+    \lim \sup_{n\to\infty} \mathbb{P}(\int_{|x| > b}|x|^{k} \mu \mathbf{x}_{n}(dx)) \leq \frac{1}{\epsilon}(\frac{4}{b})^{k}
+    $$ 
+\end{lemma}
+
+\begin{lemma}[Increasing Sequence $|x|^{k}$]
+    \label{lem:increasing_sequence_x_to_k}
+    \notready
+
+    for $x > b > 4 > 1 \in \mathbb{R}$, we have $k \mapsto |x|^{k}$ is increasing with $k$.
+\end{lemma}
+
+\begin{lemma}[Increasing Sequence $\mathbb{P}(\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n}(dx))$]
+    \label{lem:increasing_sequence_p_of_int_x_to_k}
+    \notready
+
+    for $x > b > 4 > 1 \in \mathbb{R}$, we have $k \mapsto \mathbb{P} (\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n} (dx))$ is increasing with $k$.
+\end{lemma}
+
+\begin{lemma}[Increasing Sequence $\lim \sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n}(dx))$]
+    \label{lem:increasing_sequence_lim_sup_p}
+    \notready
+
+    for $x > b > 4 > 1 \in \mathbb{R}$, we have $k \mapsto \lim\sup_{n\to\infty}\mathbb{P} (\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n} (dx))$ is increasing with $k$.
+\end{lemma}
+
+\begin{lemma}[Nonnegative Sequence $\lim \sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n}(dx))$]
+    \label{lem:nonnegative_sequence_lim_sup_p}
+    \notready
+
+    for $x > b > 4 > 1 \in \mathbb{R}$, we have $k \mapsto \lim\sup_{n\to\infty}\mathbb{P} (\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n} (dx)) \geq 0$ for all $k \in \mathbb{N}$. 
+\end{lemma}
+
+\begin{lemma}[Decreasing Sequence $\frac{1}{\epsilon}(\frac{4}{b})^{k}$]
+    \label{lem:decreasing_sequence_1_over_epsilon_4_over_b_to_k}
+    \notready
+
+    for $x > b > 4 > 1 \in \mathbb{R}$, we have $k \mapsto \frac{1}{\epsilon}(\frac{4}{b})^{k}$ is decreasing to $0$ as $k\to\infty$.
+\end{lemma}
+
+\begin{lemma}[Limit of Sequence $\lim \sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n}(dx))$]
+    \label{lem:limit_of_sequence_lim_sup_p}
+    \uses{lem:nonnegative_sequence_lim_sup_p, lem:decreasing_sequence_1_over_epsilon_4_over_b_to_k, lem:new_bound_for_lim_sup_p}
+    \notready
+
+    for $x > b > 4 > 1 \in \mathbb{R}$, the sequence $k \mapsto \lim\sup_{n\to\infty}\mathbb{P} (\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n} (dx))$ has:
+    $$
+    \lim_{k\to\infty} \lim\sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n}(dx)) = 0
+    $$ 
+\end{lemma}
+
+\begin{proof}
+    We know that for all $k \in \mathbb{N}$, $\lim\sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n}(dx)) \geq 0$ (lemma \ref{lem:nonnegative_sequence_lim_sup_p}). We also see that the sequence is bounded by $\frac{1}{\epsilon} (\frac{4}{b})^{k}$ (lemma \ref{lem:new_bound_for_lim_sup_p}), which is decreasing to $0$ as $k\to\infty$ (lemma \ref{lem:decreasing_sequence_1_over_epsilon_4_over_b_to_k}). Via squeeze theorem (where we use the zero sequence as another bound), we have:
+    $$
+    \lim_{k\to\infty} \lim\sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k}\mu \mathbf{x}_{n}(dx)) = 0
+    $$ 
+    as required.
+\end{proof}
+
+\begin{lemma}[All terms of Sequence are Zero conditions]
+    \label{lem:all_terms_zero_conditions}
+    \notready
+    for any sequence $(a_{k})_{k=1}^{\infty} \in \mathbb{R}$, if $a_{k}$ has:
+    \begin{enumerate}
+        \item for all $k \in \mathbb{N}$,  $a_{k} \geq 0$ (nonnegative sequence)
+        \item for all $k \in \mathbb{N}$, we have  $a_{k+1} \geq a_{k}$ (strictly increasing sequence)
+        \item $\lim_{k\to\infty} a_{k} = 0$
+
+        then for all $k \in \mathbb{N}$, we have $a_{k} = 0$
+    \end{enumerate}
+\end{lemma}
+
+\begin{lemma}[Lemma 4.7 from \cite{Kemp2013RMTNotes}]
+    \label{lem:convergence_to_zero_of_lim_sup_p}
+    \uses{lem:increasing_sequence_lim_sup_p, lem:all_terms_zero_conditions, lem:limit_of_sequence_lim_sup_p, lem:nonnegative_sequence_lim_sup_p}
+    \notready
+    let $k \in \mathbb{N}$ and  $\epsilon > 0$. Then for any  $b > 4$,
+    $$
+    \lim \sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k} \mu\mathbf{x}_{n}(dx)) = 0
+    $$
+\end{lemma}
+
+\begin{proof}
+    Consider sequence $(a_{k})_{k =1}^{\infty}$ defined as $a_{k} = \lim \sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k} \mu\mathbf{x}_{n}(dx))$. Then, we use the conditions from lemma \ref{lem:all_terms_zero_conditions}:
+    \begin{enumerate}
+        \item From lemma \ref{lem:nonnegative_sequence_lim_sup_p}, we know that $a_{k} \geq 0$ for all $k \in \mathbb{N}$, so the sequence is nonnegative.
+        \item From lemma \ref{lem:increasing_sequence_lim_sup_p}, we know that $a_{k+1} \geq a_{k}$ for all $k \in \mathbb{N}$, so the sequence is strictly increasing.
+        \item From lemma \ref{lem:limit_of_sequence_lim_sup_p}, we know that $\lim_{k\to\infty} a_{k} = 0$, so the sequence converges to zero.
+    \end{enumerate}
+    Therefore the sequence $a_{k} = \lim \sup_{n\to\infty}\mathbb{P}(\int_{|x| > b}|x|^{k} \mu\mathbf{x}_{n}(dx)) = 0$ for all $k \in \mathbb{N}$, as required.
+\end{proof}
+
+\begin{lemma}[Function from Weierstrass Approx Theorem]
+    \label{lem:function_weierstrass_approx}
+    \notready
+    Fix a bounded, continuous function $f \in C_{b}(\mathbb{R})$, fix $\epsilon > 0$, fix $b > 4$. Then, there exists a polynomial  $P_{\epsilon}$ such that:
+    $$
+    \sup_{|x| \leq b} |f(x) - P_{\epsilon}(x)| < \frac{\epsilon}{6}
+    $$ 
+\end{lemma}
+
+\begin{lemma}[Estimates from Triangle Inequality]
+    \label{lem:estimates_from_triangle_inequality}
+    \uses{lem:function_weierstrass_approx}
+    \notready
+    Let $f \in C_{b}(\mathbb{R})$, fix $\epsilon > 0$, and  $b > 4$, and let  $P_{\epsilon}$ be the polynomial from lemma \ref{lem:function_weierstrass_approx}. Then, we have:
+    $$
+    \left|\int f d\mu_{\mathbf{x}_{n}} - \int f d\sigma_{1}\right| \leq \left|\int f d\mu_{\mathbf{x}_{n}} - \int P_{\epsilon} d\mu_{\mathbf{x}_{n}}\right| + \left|\int P_{\epsilon} d\mu_{\mathbf{x}_{n}} - \int P_{\epsilon} d\sigma_{1}\right| + \left|\int P_{\epsilon} d\sigma_1 - \int f d\sigma_1\right|
+    $$ 
+\end{lemma}
