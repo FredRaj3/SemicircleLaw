@@ -232,11 +232,6 @@ section Transformations
 
 variable {μ : ℝ} {v : ℝ≥0}
 
-
-
-
-
-
 /-- The map of a semicircle distribution by addition of a constant is semicircular. -/
 lemma semicircleReal_map_add_const (y : ℝ) :
     (semicircleReal μ v).map (· + y) = semicircleReal (μ + y) v := by
@@ -304,6 +299,7 @@ lemma semicircleReal_map_const_mul (c : ℝ) :
 
   · apply Measure.ext
     intro s hs
+    rw [semicircleReal_of_var_ne_zero μ hv, semicircleReal_of_var_ne_zero c*μ hv]
 
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_mul_const (c : ℝ) :

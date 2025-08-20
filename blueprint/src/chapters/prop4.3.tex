@@ -1,0 +1,103 @@
+% \begin{lemma}
+%     \label{lem:first_term_int}
+%     \uses{}
+%     \[ \left|\int (f-P_\epsilon)\,d\mu_{\mathrm{X}_n}\right| \le \int_{|x|\le b} |f(x)-P_\epsilon(x)|\,\mu_{\mathrm{X}_n}(dx) + \int_{|x|>b} |f(x)-P_\epsilon(x)|\,\mu_{\mathrm{X}_n}(dx). \]
+%     \begin{proof}
+%        \begin{align*} \left|\int (f-P_\epsilon)\,d\mu_{\mathrm{X}_n}\right| & = \left| \int_{|x|\le b} (f(x)-P_\epsilon(x)) \mu_{\mathrm{X}_n}(dx) + \int_{|x|>b} (f(x)-P_\epsilon(x))\mu_{\mathrm{X}_n}(dx) \right|\\
+%         & \leq \left| \int_{|x|\le b} (f(x)-P_\epsilon(x)) \mu_{\mathrm{X}_n}(dx) \right| + \left|\int_{|x|>b} (f(x)-P_\epsilon(x))\mu_{\mathrm{X}_n}(dx) \right|\\
+%         & \leq \int_{|x|\le b} |f(x)-P_\epsilon(x)|\,\mu_{\mathrm{X}_n}(dx) + \int_{|x|>b} |f(x)-P_\epsilon(x)|\,\mu_{\mathrm{X}_n}(dx). 
+%        \end{align*}
+%     \end{proof}
+% \end{lemma}
+
+
+% \begin{lemma}
+%     \label{lem:first_term_expansion}
+%     \uses{lem:first_term_int}
+%     \notready
+%     \begin{align*} 
+%     \mathbb{P}\left(\left|\int f\,d\mu_{\mathrm{X}_n} - \int P_\epsilon\,d\mu_{\mx{X}_n}\right|>\e/3\right) & \le \P\left(\int |f-P_\epsilon|\1_{|x|\le b}\,d\mu_{\mathrm{X}_n}>\e/6\right) \\
+%      & + \mathbb{P}\left(\int |f-P_\epsilon|\1_{|x|> b}\,d\mu_{\mathrm{X}_n}>\e/6\right).
+%     \end{align*}
+%     \begin{proof}
+        
+%     \end{proof}
+% \end{lemma}
+
+
+
+
+
+\begin{lemma}
+    \label{lem:first_term_of_first_term_zero}
+    \uses{} %also uses |f - P| < \epsilon /6 on [-b, b]  and first term expansion
+    \notready
+    $  \limsup_{n\to\infty} \left(\P\left(\int |f-P_\epsilon|\1_{|x|\le b}\,d\mu_{\mathrm{X}_n}>\e/6\right) \right) = 0$
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:first_term_estimate}
+    \uses{lem:first_term_of_first_term_zero}
+    \notready
+    $\mathbb{P}\left(\left|\int f\,d\mu_{\mathrm{X}_n} - \int P_\epsilon\,d\mu_{\mx{X}_n}\right|>\e/3\right) \le \mathbb{P}\left(\int |f-P_\epsilon|\1_{|x|> b}\,d\mu_{\mathrm{X}_n}>\e/6\right)$
+\end{lemma}
+
+% \begin{lemma}
+%     \label{lem:last_term_estimate}
+%     \uses{} %\uses |f - P| <.....
+%     \notready
+%     $ \limsup_{n\to\infty} \left(\mathbb{P}\left(\int |f-P_\e|\1_{|x|> b}\,d\mu_{\mathrm{X}_n}>\e/6\right) \right) = 0$
+% \end{lemma}
+
+
+
+
+\begin{lemma}
+    \label{lem:reestimate}
+    \uses{lem:first_term_estimate}     %also requires last term being zero, requires the lem for the three terms....
+    $\begin{align*} \mathbb{P}\left( \left|\int f\,d\mu_{\mathrm{X}_n} - \int f\,d\sigma_1\right|>\epsilon\right) &\le \mathbb{P}\left(\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{\mathrm{X}_n}>\epsilon/6\right) \\ 
+     &+ \mathbb{P}\left(\left|\int P_\epsilon\,d\mu_{\mathrm{X}_n} - \int P_\epsilon\,d\sigma_1\right| >\epsilon/3\right).
+     \end{align*}$
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:second_term_estimate}
+    \uses{} %probably needs the prop 4.1 we proved, polynomial as test function thus converges
+    \notready
+    $ \limsup_{n \to \infty} \left(\mathbb{P}\left(\left|\int P_\epsilon\,d\mu_{\mathrm{X}_n} - \int P_\epsilon\,d\sigma_1\right| >\epsilon/3\right) \right) = 0 $
+
+\end{lemma}
+
+
+
+\begin{lemma}
+    \label{lem:final_estimate}
+    \uses{lem:reestimate, lem:second_term_estimate}  %need the estimate for the third term being zero,also linking it to the original inequality
+    $\mathbb{P}\left( \left|\int f\,d\mu_{\mathrm{X}_n} - \int f\,d\sigma_1\right|>\epsilon\right) \leq \mathbb{P}\left(\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{\mathrm{X}_n}>\epsilon/6\right)$
+\end{lemma}
+
+
+
+\begin{lemma}  
+    \label{lem:polynomial_ineq}
+    \uses{}
+    $ \mathbb{P}\left(\int |f-P_\epsilon| \mathbb{1}_{|x|\ge b}\,d\mu_{\mathrm{X}_n} > \epsilon/6\right) \le \mathbb{P}\left(\int c|x|^k\mathbb{1}_{|x|\ge b}\,\mu_{\mathrm{X}_n}(dx) > \epsilon/6\right) $
+
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:fP_bound}
+    \uses{}
+    $\limsup_{n \to \infty}\mathbb{P}\left(\int c|x|^k\mathbb{1}_{|x|\ge b}\,\mu_{\mathrm{X}_n}(dx) > \epsilon/6\right) = 0 $
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:fP_zero}
+    \uses{lem:fP_bound}
+    \notready
+    $\limsup_{n \to \infty}  \mathbb{P}\left(\int |f-P_\epsilon| \mathbb{1}_{|x|\ge b}\,d\mu_{\mathrm{X}_n} > \epsilon/6\right) = 0$
+\end{lemma}
