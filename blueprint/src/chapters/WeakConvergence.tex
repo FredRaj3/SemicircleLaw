@@ -269,17 +269,15 @@
   \label{lem:f_probability_inequality}
   \uses{lem:f_pigeonhole, lem:estimates_from_triangle_inequality} 
   \notready
-  \[
-    \bP\left( \left|\int f\,d\mu_{X_n} - \int f\,d\sigma_1\right|>\epsilon\right) \le \bP\left(\left|\int f\,d\mu_{X_n} - \int P_\epsilon\,d\mu_{X_n}\right|>\epsilon/3\right)
+  $\bP\left( \left|\int f\,d\mu_{X_n} - \int f\,d\sigma_1\right|>\epsilon\right) \le \bP\left(\left|\int f\,d\mu_{X_n} - \int P_\epsilon\,d\mu_{X_n}\right|>\epsilon/3\right)
     + \bP\left(\left|\int P_\epsilon\,d\mu_{X_n} - \int P_\epsilon\,d\sigma_1\right| >\epsilon/3\right) 
-    + \bP\left(\left|\int P_\epsilon\,d\sigma_1 - \int f\,d\sigma_1\right|>\epsilon/3\right)
-  \]
+    + \bP\left(\left|\int P_\epsilon\,d\sigma_1 - \int f\,d\sigma_1\right|>\epsilon/3\right)$
 \end{lemma}
 
 \begin{proof}
   \notready
-  Triangle equality: use MeasureTheory.lintegral_edist_triangle. 
-  (Not 100\% sure if this is needed)
+  Triangle equality: use MeasureTheory.lintegral\_edist\_triangle. 
+  (Not sure if this is needed)
 \end{proof}
 
 
@@ -292,7 +290,7 @@
 
 \begin{proof}
   \notready
-  By construction, $|P_\e-f|<\e/6$ on $[-b,b]$, which includes the support $[-2,2]$ of $\sigma_1$.
+  By construction, $|P_\epsilon-f|<\epsilon/6$ on $[-b,b]$, which includes the support $[-2,2]$ of $\sigma_1$.
 \end{proof}
 
 \begin{lemma}
@@ -339,4 +337,94 @@
 \end{proof}
 
 %------- Kiran's part ends
+
+
+%--------Haoyan's part-----------------------
+
+\begin{lemma}
+    \label{lem:first_term_of_first_term_zero}
+    \uses{lem:f_p_epsilon_probability_inequality} %also uses |f - P| < \epsilon /6 on [-b, b]  and first term expansion
+    \notready
+    $  \limsup_{n\to\infty} \left(\mathbb{P}\left(\int |f-P_\epsilon|\mathbb{1}_{|x|\le b}\,d\mu_{\mathrm{X}_n}>\epsilon/6\right) \right) = 0$
+\end{lemma}
+
+
+% \begin{lemma}
+%     \label{lem:first_term_estimate}
+%     \uses{lem:first_term_of_first_term_zero}
+%     \notready
+%     $\mathbb{P}\left(\left|\int f\,d\mu_{\mathrm{X}_n} - \int P_\epsilon\,d\mu_{\mathrm{X}_n}\right|>\epsilon/3\right) \le \mathbb{P}\left(\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{\mathrm{X}_n}>\epsilon/6\right)$
+% \end{lemma}
+
+% \begin{lemma}
+%     \label{lem:last_term_estimate}
+%     \uses{} %\uses |f - P| <.....
+%     \notready
+%     $ \limsup_{n\to\infty} \left(\mathbb{P}\left(\int |f-P_\e|\1_{|x|> b}\,d\mu_{\mathrm{X}_n}>\e/6\right) \right) = 0$
+% \end{lemma}
+
+
+\begin{lemma}
+    \label{lem:reestimate}
+    \uses{lem:first_term_of_first_term_zero, lem:p_epsilon_minus_f_d_sigma_eq_zero, lem:f_probability_inequality}     %also requires last term being zero, requires the lem for the three terms....
+    \notready
+     \begin{align*} \mathbb{P}\left( \left|\int f\,d\mu_{\mathrm{X}_n} - \int f\,d\sigma_1\right|>\epsilon\right) &\le \mathbb{P}\left(\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{\mathrm{X}_n}>\epsilon/6\right) \\ 
+     &+ \mathbb{P}\left(\left|\int P_\epsilon\,d\mu_{\mathrm{X}_n} - \int P_\epsilon\,d\sigma_1\right| >\epsilon/3\right).
+     \end{align*}
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:second_term_estimate}
+    \uses{prop:matrix_moments_convergence} %probably needs the prop 4.1 we proved, polynomial as test function thus converges
+    \notready
+    $ \limsup_{n \to \infty} \left(\mathbb{P}\left(\left|\int P_\epsilon\,d\mu_{\mathrm{X}_n} - \int P_\epsilon\,d\sigma_1\right| >\epsilon/3\right) \right) = 0 $
+\end{lemma}
+
+
+
+\begin{lemma}
+    \label{lem:final_estimate}
+    \uses{lem:reestimate, lem:second_term_estimate, lem:f_probability_inequality}  %need the estimate for the third term being zero,also linking it to the original inequality
+    \notready
+    $\mathbb{P}\left( \left|\int f\,d\mu_{\mathrm{X}_n} - \int f\,d\sigma_1\right|>\epsilon\right) \leq \mathbb{P}\left(\int |f-P_\epsilon|\mathbb{1}_{|x|> b}\,d\mu_{\mathrm{X}_n}>\epsilon/6\right)$
+\end{lemma}
+
+
+
+\begin{lemma}  
+    \label{lem:polynomial_ineq}
+    \uses{}
+    \notready
+    $ \mathbb{P}\left(\int |f-P_\epsilon| \mathbb{1}_{|x|\ge b}\,d\mu_{\mathrm{X}_n} > \epsilon/6\right) \le \mathbb{P}\left(\int c|x|^k\mathbb{1}_{|x|\ge b}\,\mu_{\mathrm{X}_n}(dx) > \epsilon/6\right) $
+    \begin{proof}
+    Let $k =$deg$P_\epsilon$, and since $f$ is bounded, $|f(x) - P_{\epsilon}(x)| \leq \|f\|_{\infty} + |P_\epsilon(x)|$. Also note it is on interval $|x| > b$, which completes the proof.
+    \end{proof}
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:fP_bound}
+    \uses{lem:convergence_to_zero_of_lim_sup_p, lem:polynomial_ineq}   %need the one for lemma 4.7
+    \notready
+    $\limsup_{n \to \infty}\mathbb{P}\left(\int c|x|^k\mathbb{1}_{|x|\ge b}\,\mu_{\mathrm{X}_n}(dx) > \epsilon/6\right) = 0 $
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:fP_zero}
+    \uses{lem:fP_bound}
+    \notready
+    $\limsup_{n \to \infty}  \mathbb{P}\left(\int |f-P_\epsilon| \mathbb{1}_{|x|\ge b}\,d\mu_{\mathrm{X}_n} > \epsilon/6\right) = 0$
+\end{lemma}
+
+
+
+\begin{proposition}
+  \label{prop:Wigner_Semicircle_Law } %prop 2.3
+  \uses{lem:fP_zero, lem:final_estimate }
+  \notready
+  Let $\mathrm{X}_n=n^{-1/2}\mathrm{Y}_n$ be a sequence of Wigner matrices, with entries satisfying $\mathbb{E}(Y_{ij})=0$ for all $i,j$ and $\mathbb{E}(Y_{12}^2)=t$.  Then the empirical law of eigenvalues $\mu_{\mathrm{X}_n}$ converges in probability to $\sigma_t$ as $n\to\infty$.  Precisely: for any $f\in C_b(\mathbb{R})$ (continuous bounded functions) and each $\epsilon>0$,
+  $$ \lim_{n\to\infty} \mathbb{P}\left(\left|\int f\,d\mu_{\mathrm{X}_n} - \int f\,d\sigma_t\right|>\epsilon\right)=0. $$
+\end{proposition}
 
