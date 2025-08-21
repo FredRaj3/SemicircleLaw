@@ -1,4 +1,5 @@
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
+import Mathlib.LinearAlgebra.Matrix.Trace
 
 /-!
 
@@ -161,7 +162,7 @@ def support {u v : V} : G.LoopWalk u v → List V
 /-- The `darts` of a walk is the list of steps it takes, represented as pairs of vertices. -/
 def darts {u v : V} : G.LoopWalk u v → List (V × V)
   | nil => []
-  | cons _ p => (u, v) :: p.darts
+  | @cons _ _ u v' _ h p => (u, v') :: p.darts
   | loop p => (u, u) :: p.darts
 
 #check Dart
@@ -169,10 +170,15 @@ def darts {u v : V} : G.LoopWalk u v → List (V × V)
 are adjacent, which isn't true for a vertex and itself. The definition above seems to work,
 but we should double check it at some point.-/
 
+
+/-- The edge associated to the dart. -/
+def dartEdge (d : V × V) : Sym2 V :=
+  Sym2.mk d
+
 /- The `edges` of a walk is the list of edges it visits in order.
-This is defined to be the list of edges underlying `SimpleGraph.LoopWalk.darts`.
---def edges {u v : V} (p : G.LoopWalk u v) : List (Sym2 V) := p.darts.map Dart.edge
--/
+This is defined to be the list of edges underlying `SimpleGraph.LoopWalk.darts`.-/
+def edges {u v : V} (p : G.LoopWalk u v) : List (Sym2 V) := p.darts.map dartEdge
+
 
 /-- Given a graph homomorphism, map walks to walks. -/
 protected def map (f : G →g G') {u v : V} : G.LoopWalk u v → G'.LoopWalk (f u) (f v)
@@ -186,6 +192,26 @@ def loop_count {u v : V} : G.LoopWalk u v → ℕ
   | nil => 0
   | cons _ q => q.loop_count
   | loop q => q.loop_count.succ
+
+
+abbrev ClosedLoopWalk (G : SimpleGraph V) := Σ u : V, G.LoopWalk u u
+
+/-- A walk is closed if its start and end vertices are the same. -/
+@[simp]
+def IsClosed {u v : V} (_ : G.LoopWalk u v) : Prop := u = v
+
+#print ClosedLoopWalk
+
+
+
+/-
+Lemma: For k ∈ ℕ, k ≥ 2, and X an n × n matrix, we have
+Trace(X^k) = ∑_{Loopwalks w on the complete graph on n vertices satisfying IsClosed w,
+and length w = k } X_{i_1 i_2}...X_{i_k i_1},
+where (i_1, i_2), (i_2, i_3), ... (i_k, i_1) are the darts of the loopwalk.
+In other words, the trace of the kth power of a matrix can be written as a sum over closed LoopWalks
+on the complete graph on n vertices with length equal to k.
+-/
 
 
 /- Below is an example of how these definitions can be used on the complete graph.
@@ -217,6 +243,7 @@ def myWalk : G_comp.LoopWalk 1 2 :=
     (completeGraph_adj 1 3 (by decide))
     (LoopWalk.cons (completeGraph_adj 3 2 (by decide)) LoopWalk.nil)
 
+#check IsClosed myWalk
 
 /- The walk above, but reversed -/
 def myWalkReverse : G_comp.LoopWalk 2 1 :=
@@ -231,6 +258,8 @@ lemma reverse_eq : myWalkReverse = reverse myWalk := by
 /- A LoopWalk that starts at vertex 1 and does one loop at vertex 1-/
 def oneLoopWalk : G_comp.LoopWalk 1 1 :=
   LoopWalk.loop LoopWalk.nil
+
+
 
 /-  In the above LoopWalk Lean infers that the loop should be at vertex 1, however we can
 define it for arbitrary vertices as below  -/
@@ -248,6 +277,11 @@ def complicatedWalk : G_comp.LoopWalk 1 5 :=
     (completeGraph_adj 1 3 (by decide))
     (LoopWalk.cons (completeGraph_adj 3 5 (by decide)) LoopWalk.nil))))
 
+#eval length complicatedWalk
+#eval loop_count complicatedWalk
+#eval support complicatedWalk
+#eval darts complicatedWalk
+
 def moreComplicatedWalk : G_comp.LoopWalk 1 5 :=
   LoopWalk.cons
   ((completeGraph_adj 1 4 (by decide)))
@@ -259,10 +293,16 @@ def moreComplicatedWalk : G_comp.LoopWalk 1 5 :=
     (completeGraph_adj 1 3 (by decide))
     (LoopWalk.cons (completeGraph_adj 3 5 (by decide)) LoopWalk.nil)))))
 
+#eval loop_count moreComplicatedWalk
+#eval darts moreComplicatedWalk
+#eval edges moreComplicatedWalk
+
+
 #eval length myWalk
 #eval loop_count myWalk
 #eval support myWalk
 #eval darts myWalk
+#eval edges myWalk
 
 #eval support myWalkReverse
 #eval support (reverse myWalk)
@@ -270,12 +310,9 @@ def moreComplicatedWalk : G_comp.LoopWalk 1 5 :=
 #eval support oneLoopWalk
 #eval darts oneLoopWalk
 
-#eval length complicatedWalk
-#eval loop_count complicatedWalk
-#eval support complicatedWalk
 
-#eval loop_count moreComplicatedWalk
-#eval darts moreComplicatedWalk
+
+
 
 #eval support (reverse complicatedWalk)
 
