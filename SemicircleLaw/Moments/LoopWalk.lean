@@ -1,5 +1,7 @@
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.Data.Real.Basic
+
 
 /-!
 
@@ -165,6 +167,23 @@ def darts {u v : V} : G.LoopWalk u v → List (V × V)
   | @cons _ _ u v' _ h p => (u, v') :: p.darts
   | loop p => (u, u) :: p.darts
 
+/- Note on the change in darts definition: previously, the cons part of the definition was
+| cons u v _ p => (u, v) :: p.darts,
+where the hypothesis p was G.LoopWalk u v, and the inferred hypothesis _ was G.adj u v', for some
+implicit vertex v'. Thus when I appended (u,v), it was just appending the starting and ending
+endpoint of the previous LoopWalk to the list of darts.
+
+In order to fix this, I needed to make the vertex v' explicit and then append it, which you
+can do with the @-pattern which allows you to explicitly name all of the parameters. Now, the two
+hypothesis are h : G.Adj u v' and p : G.LoopWalk v' v. Now we are adding (u, v') to the list of
+darts.
+
+Hovering over cons in the definition of the LoopWalk inductive type, we see
+{V : Type u} {G : SimpleGraph V} {u v w : V} (h : G.Adj u v) (p : G.LoopWalk v w) as the parameters.
+Thus the first two _ are the graph parameters V and G which are left implicit, u and v' are made
+explicit, and the last _ left implicit for the ending vertex of the walk.
+-/
+
 #check Dart
 /- We may need to change how Darts are defined, since it might require that the two vertices
 are adjacent, which isn't true for a vertex and itself. The definition above seems to work,
@@ -213,6 +232,26 @@ In other words, the trace of the kth power of a matrix can be written as a sum o
 on the complete graph on n vertices with length equal to k.
 -/
 
+
+/-- The product of matrix entries along a loop walk's darts. -/
+def dartProduct {n : ℕ} {α : Type*} [Semiring α] (X : Matrix (Fin n) (Fin n) α)
+    {u : Fin n} (w : LoopWalk (completeGraph (Fin n)) u u) : α :=
+  w.darts.foldr (fun d acc => X d.1 d.2 * acc) 1
+
+-- /-- The sum of dart products over all closed walks of length k on the complete graph of n vertices.
+-- This sum is finite because there are finitely many such walks of a given length. -/
+-- noncomputable def sumClosedWalkProducts {α : Type*} [Semiring α] (n k : ℕ)
+--     (X : Matrix (Fin n) (Fin n) α) : α :=
+--   ∑ u : Fin n, ∑ (w : {w : LoopWalk (completeGraph (Fin n)) u u // w.length = k}),
+--     dartProduct X w.val
+
+-- /-- For a natural number k ≥ 2 and an n × n matrix X, the trace of X^k equals the sum over
+-- all closed loop walks of length k on the complete graph of n vertices, where each walk
+-- contributes the product of matrix entries corresponding to its darts. -/
+-- theorem trace_pow_eq_sum_over_walks {n k : ℕ} {α : Type*} [Semiring α]
+--     (hk : k ≥ 2) (X : Matrix (Fin n) (Fin n) α) :
+--   Matrix.trace (X ^ k) = sumClosedWalkProducts n k X := by
+--   sorry
 
 /- Below is an example of how these definitions can be used on the complete graph.
 You can (and should, to make sure I didn't mess up the definition) play around
@@ -297,6 +336,16 @@ def moreComplicatedWalk : G_comp.LoopWalk 1 5 :=
 #eval darts moreComplicatedWalk
 #eval edges moreComplicatedWalk
 
+/- A closed complicated LoopWalk: 1 → 4 → 1 → 1 → 3 → 1 (loop at the repeated 1's)-/
+def closedComplicatedWalk : G_comp.LoopWalk 0 0 :=
+  LoopWalk.cons
+  ((completeGraph_adj 0 4 (by decide)))
+  (LoopWalk.cons
+  ((completeGraph_adj 4 1 (by decide)))
+  (LoopWalk.loop
+  (LoopWalk.cons
+    (completeGraph_adj 1 3 (by decide))
+    (LoopWalk.cons (completeGraph_adj 3 0 (by decide)) LoopWalk.nil))))
 
 #eval length myWalk
 #eval loop_count myWalk
@@ -309,12 +358,9 @@ def moreComplicatedWalk : G_comp.LoopWalk 1 5 :=
 
 #eval support oneLoopWalk
 #eval darts oneLoopWalk
-
-
-
-
-
 #eval support (reverse complicatedWalk)
+
+
 
 def subtract_one : (Fin 6) → (Fin 6) :=
   fun x ↦ (x - 1)
@@ -344,6 +390,42 @@ def subtract_one_hom : G_comp →g G_comp where
 #eval! length ((LoopWalk.map G_comp subtract_one_hom) myWalk)
 
 
+/-I'm using ℚ as the type of the entries here so that I can check things with #eval. ℚ and ℕ are
+computable, but if I used ℝ things would be messy (see #eval myMatrix_3), as the reals are
+defined as equivalence classes of Cauchy sequences of rationals. -/
+def myMatrix_1 : Matrix (Fin 2) (Fin 2) ℚ :=
+  !![1, 2; 3, 4]
+
+def myMatrix_2 : Matrix (Fin 2) (Fin 2) ℚ :=
+  !![2, 5; 3, 1]
+
+def myMatrix_3 : Matrix (Fin 2) (Fin 2) ℝ :=
+  !![1, 2; 3, 4]
+
+#check myMatrix_1
+#eval myMatrix_1 + myMatrix_2
+
+#check myMatrix_3
+#eval myMatrix_3
+
+/-Define a 6 by 6 matrix-/
+def testMatrix : Matrix (Fin 6) (Fin 6) ℚ :=
+ !![1, 2, 3, 4, 5, 6;
+ 8, 7, 2, 9, 0, 1;
+ -1, 4, 3, 10, 3, 1;
+ 4, 0, 0, 1, 2, 3;
+ 9, 8, 7, 6, 4, 3;
+ 1, 2, 3, 4, 5, 6]
+
+#eval dartProduct testMatrix oneLoopWalk
+
+#eval darts closedComplicatedWalk
+
+/-Matrix indexing starts from 0 here. Takes the product of the
+(0, 4), (4, 1), (1, 1), (1, 3), and (3, 0) entries of testMatrix. These are 5, 8, 7, 9, 4. The
+product is 10080.
+ -/
+#eval dartProduct testMatrix closedComplicatedWalk
 
 /-
 Results we will need:
