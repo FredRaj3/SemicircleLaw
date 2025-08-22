@@ -1,6 +1,9 @@
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Real.Basic
+import Batteries.Data.Rat.Basic
+import Mathlib.Algebra.Ring.Defs
+import Hammer
 
 
 /-!
@@ -127,6 +130,19 @@ def length {u v : V} : G.LoopWalk u v → ℕ
   | cons _ q => q.length.succ
   | loop q => q.length.succ
 
+
+--   /-- There are finitely many walks of a given length on a finite graph. -/
+-- instance fintypeWalksOfLength {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj] (k : ℕ) :
+--     Fintype {p : G.ClosedLoopWalk // p.2.length = k} := by
+--   -- This is provable by induction on k, but is non-trivial.
+--   -- For now, we can mark it as an axiom to proceed.
+--   -- A full proof would likely involve constructing the set of walks recursively.
+--   classical
+--   apply Fintype.ofEquiv (Σ (u : V), {p : G.LoopWalk u u // p.length = k})
+--   exact Equiv.sigmaCongrRight fun u => Equiv.subtypeEquivRight (fun p => by simp)
+
+
+
 /-- The concatenation of two compatible walks. -/
 @[trans]
 def append {u v w : V} : G.LoopWalk u v → G.LoopWalk v w → G.LoopWalk u w
@@ -223,6 +239,7 @@ def IsClosed {u v : V} (_ : G.LoopWalk u v) : Prop := u = v
 
 
 
+
 /-
 Lemma: For k ∈ ℕ, k ≥ 2, and X an n × n matrix, we have
 Trace(X^k) = ∑_{Loopwalks w on the complete graph on n vertices satisfying IsClosed w,
@@ -238,20 +255,28 @@ def dartProduct {n : ℕ} {α : Type*} [Semiring α] (X : Matrix (Fin n) (Fin n)
     {u : Fin n} (w : LoopWalk (completeGraph (Fin n)) u u) : α :=
   w.darts.foldr (fun d acc => X d.1 d.2 * acc) 1
 
--- /-- The sum of dart products over all closed walks of length k on the complete graph of n vertices.
--- This sum is finite because there are finitely many such walks of a given length. -/
--- noncomputable def sumClosedWalkProducts {α : Type*} [Semiring α] (n k : ℕ)
---     (X : Matrix (Fin n) (Fin n) α) : α :=
---   ∑ u : Fin n, ∑ (w : {w : LoopWalk (completeGraph (Fin n)) u u // w.length = k}),
---     dartProduct X w.val
 
--- /-- For a natural number k ≥ 2 and an n × n matrix X, the trace of X^k equals the sum over
--- all closed loop walks of length k on the complete graph of n vertices, where each walk
--- contributes the product of matrix entries corresponding to its darts. -/
--- theorem trace_pow_eq_sum_over_walks {n k : ℕ} {α : Type*} [Semiring α]
---     (hk : k ≥ 2) (X : Matrix (Fin n) (Fin n) α) :
---   Matrix.trace (X ^ k) = sumClosedWalkProducts n k X := by
---   sorry
+/-- There are finitely many walks of a given length on a finite graph. -/
+instance fintypeWalksOfLength {n : ℕ } {G : SimpleGraph (Fin n)} {u : Fin n} [DecidableRel G.Adj]
+(k : ℕ) : Fintype {w : G.LoopWalk u u // w.length = k} := by
+  apply?
+  sorry
+
+
+/-- The sum of dart products over all closed walks of length k on the complete graph of n vertices.
+This sum is finite because there are finitely many such walks of a given length. -/
+def sumClosedWalkProducts {α : Type*} [Semiring α] (n k : ℕ)
+    (X : Matrix (Fin n) (Fin n) α) : α :=
+  ∑ u : Fin n, ∑ (w : {w : LoopWalk (completeGraph (Fin n)) u u // w.length = k}),
+    dartProduct X w.val
+
+/-- For a natural number k ≥ 2 and an n × n matrix X, the trace of X^k equals the sum over
+all closed loop walks of length k on the complete graph of n vertices, where each walk
+contributes the product of matrix entries corresponding to its darts. -/
+theorem trace_pow_eq_sum_over_walks {n k : ℕ} {α : Type*} [Semiring α]
+    (hk : k ≥ 2) (X : Matrix (Fin n) (Fin n) α) :
+  Matrix.trace (X ^ k) = sumClosedWalkProducts n k X := by
+  sorry
 
 /- Below is an example of how these definitions can be used on the complete graph.
 You can (and should, to make sure I didn't mess up the definition) play around
@@ -426,6 +451,10 @@ def testMatrix : Matrix (Fin 6) (Fin 6) ℚ :=
 product is 10080.
  -/
 #eval dartProduct testMatrix closedComplicatedWalk
+
+
+/-The folllowing eval should give the pro-/
+--#eval sumClosedWalkProducts 6 2 testMatrix
 
 /-
 Results we will need:
