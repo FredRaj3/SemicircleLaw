@@ -131,18 +131,6 @@ def length {u v : V} : G.LoopWalk u v → ℕ
   | loop q => q.length.succ
 
 
---   /-- There are finitely many walks of a given length on a finite graph. -/
--- instance fintypeWalksOfLength {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj] (k : ℕ) :
---     Fintype {p : G.ClosedLoopWalk // p.2.length = k} := by
---   -- This is provable by induction on k, but is non-trivial.
---   -- For now, we can mark it as an axiom to proceed.
---   -- A full proof would likely involve constructing the set of walks recursively.
---   classical
---   apply Fintype.ofEquiv (Σ (u : V), {p : G.LoopWalk u u // p.length = k})
---   exact Equiv.sigmaCongrRight fun u => Equiv.subtypeEquivRight (fun p => by simp)
-
-
-
 /-- The concatenation of two compatible walks. -/
 @[trans]
 def append {u v w : V} : G.LoopWalk u v → G.LoopWalk v w → G.LoopWalk u w
@@ -189,8 +177,8 @@ where the hypothesis p was G.LoopWalk u v, and the inferred hypothesis _ was G.a
 implicit vertex v'. Thus when I appended (u,v), it was just appending the starting and ending
 endpoint of the previous LoopWalk to the list of darts.
 
-In order to fix this, I needed to make the vertex v' explicit and then append it, which you
-can do with the @-pattern which allows you to explicitly name all of the parameters. Now, the two
+In order to fix this, I needed to make the vertex v' explicit and then append it which you
+can do with the @-pattern (which allows you to explicitly name all of the parameters). Now, the two
 hypothesis are h : G.Adj u v' and p : G.LoopWalk v' v. Now we are adding (u, v') to the list of
 darts.
 
@@ -201,9 +189,6 @@ explicit, and the last _ left implicit for the ending vertex of the walk.
 -/
 
 #check Dart
-/- We may need to change how Darts are defined, since it might require that the two vertices
-are adjacent, which isn't true for a vertex and itself. The definition above seems to work,
-but we should double check it at some point.-/
 
 
 /-- The edge associated to the dart. -/
@@ -256,25 +241,27 @@ def dartProduct {n : ℕ} {α : Type*} [Semiring α] (X : Matrix (Fin n) (Fin n)
   w.darts.foldr (fun d acc => X d.1 d.2 * acc) 1
 
 
-/-- There are finitely many walks of a given length on a finite graph. -/
-instance fintypeWalksOfLength {n : ℕ } {G : SimpleGraph (Fin n)} {u : Fin n} [DecidableRel G.Adj]
-(k : ℕ) : Fintype {w : G.LoopWalk u u // w.length = k} := by
-  apply?
+/-- There are finitely many LoopWalks of a given length k on a finite graph. -/
+instance fintypeWalksOfFiniteLength {n : ℕ } {G : SimpleGraph (Fin n)} {u : Fin n}
+[DecidableRel G.Adj] (k : ℕ) : Fintype {w : G.LoopWalk u u // w.length = k} := by
+  induction k with
+  | zero => sorry
+  | succ k ih =>
   sorry
 
 
-/-- The sum of dart products over all closed walks of length k on the complete graph of n vertices.
+/-- The sum of dart products over all closed walks of length k on the complete graph on n vertices.
 This sum is finite because there are finitely many such walks of a given length. -/
-def sumClosedWalkProducts {α : Type*} [Semiring α] (n k : ℕ)
+def sumClosedWalkProducts {α : Type*} [Ring α] (n k : ℕ)
     (X : Matrix (Fin n) (Fin n) α) : α :=
   ∑ u : Fin n, ∑ (w : {w : LoopWalk (completeGraph (Fin n)) u u // w.length = k}),
     dartProduct X w.val
 
-/-- For a natural number k ≥ 2 and an n × n matrix X, the trace of X^k equals the sum over
+/-- For a natural number k ≥ 1 and an n × n matrix X, the trace of X^k equals the sum over
 all closed loop walks of length k on the complete graph of n vertices, where each walk
 contributes the product of matrix entries corresponding to its darts. -/
-theorem trace_pow_eq_sum_over_walks {n k : ℕ} {α : Type*} [Semiring α]
-    (hk : k ≥ 2) (X : Matrix (Fin n) (Fin n) α) :
+theorem trace_pow_eq_sum_over_walks {n k : ℕ} {α : Type*} [Ring α]
+    (hk : k ≥ 1) (X : Matrix (Fin n) (Fin n) α) :
   Matrix.trace (X ^ k) = sumClosedWalkProducts n k X := by
   sorry
 
