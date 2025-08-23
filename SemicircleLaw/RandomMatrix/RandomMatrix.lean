@@ -45,7 +45,6 @@ What I would like to do in this file:
   the space of m × n matrices over α.
 2.  Define a random matrix ensemble as a map (m : ℕ) → (n : ℕ) → `Ω` → {m × n random matrices}
 3.  Using the above definitions, I would like to be able to:
-  1. Access the (i, j)-th entry of the random matrix
   2. State and prove a lemma stating that the (i,j)-th entry is a random variable `Ω` → `α`
   3. Access the (m, n)-th matrix in a random matrix ensemble.
   4. Prove that the (m, n)-th matrix in an ensemble is a random matrix, i.e. a measurable map
@@ -87,7 +86,9 @@ lemma measurable_entry {m n : ℕ} (X : Ω → Matrix (Fin m) (Fin n) α) (hX : 
 
 
 /-Now I define a random matrix ensemble as a map ℕ → ℕ → {measurable maps from Ω to
-Matrix (Fin m) (Fin n) α}, where m and n are the two inputs from ℕ -/
+Matrix (Fin m) (Fin n) α}, where m and n are the two inputs from ℕ.
+
+Section still needs work. -/
 
 /- I tried to make this not take in `Ω` and `α` as parameters, but I was getting some typeclass
 errors. Not sure if this is the right way to do this.-/
@@ -118,9 +119,7 @@ structure. However this is not the convention in mathlib for random variables so
 /-- An `m × n` random matrix is a measurable function from a `ProbabilitySpace Ω`
 to the space of `m × n` matrices, bundled with its measurability proof. -/
 structure RandomMatrix (Ω α : Type*) [MeasurableSpace Ω] [MeasurableSpace α] (m n : ℕ) where
-  /-- The measurable function from the probability space. -/
   toFun : Ω → Matrix (Fin m) (Fin n) α
-  /-- The proof that `toFun` is measurable. -/
   measurable' : Measurable toFun
 
 /-- An ensemble of random matrices, defined as a sequence of `RandomMatrix` structures
