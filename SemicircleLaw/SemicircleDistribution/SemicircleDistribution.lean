@@ -1,3 +1,4 @@
+/-Default imports-/
 import Mathlib.MeasureTheory.Group.Convolution
 import Mathlib.Probability.Moments.MGFAnalytic
 import Mathlib.Probability.Independence.Basic
@@ -7,6 +8,20 @@ import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Combinatorics.Enumerative.Catalan
 import Hammer
 
+/-Richard's imports-/
+import Mathlib.MeasureTheory.Function.LocallyIntegrable
+import Mathlib.MeasureTheory.Integral.IntegrableOn
+import Mathlib.Data.Real.Basic
+import Mathlib.Data.Set.Basic
+import Mathlib.Topology.MetricSpace.Basic
+import Mathlib.Topology.MetricSpace.Bounded
+import Mathlib.Topology.ContinuousMap.Basic
+import Mathlib.Topology.ContinuousMap.Bounded.Basic
+import Mathlib.Tactic.Continuity
+import Mathlib.Topology.Basic
+import Aesop
+
+/-Option settings-/
 
 /-!
 # Semicircle Distributions over ℝ
@@ -39,9 +54,13 @@ open scoped ENNReal NNReal Real Complex
 
 open MeasureTheory
 
+/-Opened by Richard-/
+open Set
+
 namespace ProbabilityTheory
 
 section SemicirclePDF
+
 
 /-- Probability density function of the semicircle distribution with mean `μ` and variance `v`.
 Note that the squared root of a negative number is defined to be zero.  -/
@@ -64,10 +83,18 @@ lemma semicirclePDFReal_nonneg (μ : ℝ) (v : ℝ≥0) (x : ℝ) : 0 ≤ semici
   rw [semicirclePDFReal]
   positivity
 
+/-- The semicircle pdf is continuous. -/
+lemma Cont_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) : Continuous (semicirclePDFReal μ v) := by
+    rw [semicirclePDFReal_def]
+    set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+    have h : Continuous f := by continuity
+    exact h
+
 /-- The semicircle pdf is measurable. -/
 @[fun_prop]
-lemma measurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDFReal μ v) :=
-  sorry
+lemma measurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDFReal μ v) := by
+  have h : Continuous (semicirclePDFReal μ v) := by apply Cont_semicirclePDFReal
+  apply Continuous.borel_measurable h
 
 /-- The semicircle pdf is strongly measurable. -/
 @[fun_prop]
@@ -75,14 +102,102 @@ lemma stronglyMeasurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     StronglyMeasurable (semicirclePDFReal μ v) :=
   (measurable_semicirclePDFReal μ v).stronglyMeasurable
 
+/-- The semicircle pdf is integrable. -/
 @[fun_prop]
 lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     Integrable (semicirclePDFReal μ v) := by
-  sorry
+  rw [semicirclePDFReal_def]
+  set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+  have h1 : Continuous f := by apply Cont_semicirclePDFReal
+  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
+  have h2 : IsCompact I := by simpa [hI] using isCompact_Icc
+  have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
+  have h4 : Function.support f ⊆ I := by
+    intro x hx
+    by_contra hxI
+    have h6 : f x = 0 := by
+      have h7 : 4 * v - (x - μ) ^ 2 ≤ 0 := by
+        dsimp [I,Icc] at hxI
+        by_contra hxIc
+        push_neg at hxIc
+        have hxIc_1 : (x - μ)^2 < 4 * v := by exact lt_add_neg_iff_lt.mp hxIc
+        have hxIc_2 : |x - μ| < 2 * √v := by
+          set A := x - μ
+          have hxIc_21 : (2 * √v)^2 = 4 * v := by
+            calc
+            (2 * √v)^2 = 2^2 * (√v)^2 := by exact mul_pow 2 (√↑v) 2
+                     _ = 4 * (√v)^2 := by norm_num
+                     _ = 4 * v := by norm_num
+          rw [← hxIc_21] at hxIc_1
+          set B := 2 * √v
+          have : 0 ≤ B := by positivity
+          apply abs_lt_of_sq_lt_sq; exact hxIc_1; exact this
+        have hxIc_3 : -(x - μ) < 2 * √v := by
+          set A := x - μ with hA
+          calc
+            -A ≤ |A| := by exact neg_le_abs A
+             _ < 2 * √v := hxIc_2
+        have hxIc_31 : - x + μ < 2 * √v := by
+          set A := x - μ
+          calc
+            -x + μ = -(x - μ) := by ring
+                 _ = -A := by exact rfl
+                 _ ≤ |A| := by exact neg_le_abs A
+                 _ < 2 * √v := hxIc_2
+        have hxIc_32 : μ < x + 2 * √v := by exact lt_add_of_neg_add_lt hxIc_31
+        have hxIc_33 : μ - 2 * √v < x := by
+          set B := 2 * √v
+          exact sub_right_lt_of_lt_add hxIc_32
+        have hxIc_4 : x - μ < 2 * √v := by exact lt_of_abs_lt hxIc_2
+        have hxIc_41 : x < μ + 2 * √v := by exact lt_add_of_tsub_lt_left hxIc_4
+        apply (not_and_or).mp at hxI
+        have C1 : x ≤ μ + 2 * √v := by exact le_of_lt hxIc_41
+        have C2 : μ - 2 * √v ≤ x := by exact le_of_lt hxIc_33
+        have C3 : μ - 2 * √v ≤ x ∧ x ≤ μ + 2 * √v := by exact ⟨C2, C1⟩
+        set Co1 := μ - 2 * √v ≤ x
+        set Co2 := x ≤ μ + 2 * √v
+        have C : (¬Co1 ∨ ¬Co2) ↔ ¬(Co1 ∧ Co2) := by exact Iff.symm Decidable.not_and_iff_or_not
+        rw [C] at hxI; absurd C3; exact hxI
+      have h8 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h7
+      simp [f,h8]
+    have h9 : x ∉ Function.support f := by simpa [Function.support] using h6
+    exact h9 hx
+  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
+
+  /-have h5 : x ∈ Iᶜ := by simpa using hxI-/
+
+
+  /-have h4 : Function.support f ⊆ I := by
+    have h5 : Function.support f = Ioo (μ - 2 * √v) (μ + 2 * √v) := by sorry
+    have h6 : Ioo (μ - 2 * √v) (μ + 2 * √v) ⊆ I := by
+      rw [hI]; intro x; simp; sorry
+    simpa [h5] using h6
+  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3-/
+
+  /-intro x hx
+    by_contra hxI
+    have h6 : f x = 0 := by
+      have h7 : 4 * v - (x - μ) ^ 2 ≤ 0 := by sorry
+      have h8 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h7
+      simp [f,h8]
+    have h9 : x ∉ Function.support f := by simpa [Function.support] using h6
+    exact h9 hx-/
+
+  /-apply IntegrableOn.integrable_of_ae_notMem_eq_zero h3
+  have h5 : ∀ (x : ℝ), x ∉ I → f x = 0 := by sorry-/
+
+  /-have h4 : IntegrableOn f Iᶜ := by
+    have h5 : IntegrableOn
+  have h : IntegrableOn f (I ∪ Iᶜ) := IntegrableOn.union h3 h4
+  have h' : I ∪ Iᶜ = Set.univ := Set.union_compl_self I
+  rw [h'] at h
+  rw [← integrableOn_univ]; exact h-/
 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
     ∫⁻ x, ENNReal.ofReal (semicirclePDFReal μ v x) = 1 := by
+  rw [semicirclePDFReal_def]
+  simp
   sorry
 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
@@ -101,7 +216,53 @@ lemma semicirclePDFReal_add {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
 
 lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c⁻¹ * x) = |c| * semicirclePDFReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) x := by
-  sorry
+  rw [semicirclePDFReal, semicirclePDFReal]; simp
+  have h1 : √(4 * v - (c⁻¹ * x - μ)^2) = √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) := by
+    have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by
+      have h111 : c⁻¹ * x - μ = c⁻¹ * x - 1 * μ := by linarith
+      have h112 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
+      have h113 : c⁻¹ * x - 1 * μ = c⁻¹ * x - (c⁻¹ * c) * μ := by rw [h112]
+      have h114 : c⁻¹ * x - (c⁻¹ * c) * μ = c⁻¹ * (x - c * μ) := by ring
+      rw [h111,h113]; exact h114
+    have h12 : (c⁻¹ * x - μ)^2 = (c⁻¹)^2 * (x - c * μ)^2 := by rw [h11]; ring
+    rw [h12]
+  have h2 : √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) = |c⁻¹| * √(4 * (c^2 * v) - (x - c * μ)^2) := by
+    have h21 : 4 * v = (c⁻¹ * c)^2 * (4 * v) := by
+      have h211 : (c⁻¹ * c)^2 = 1 := by
+        have h2111 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
+        rw [h2111]; ring
+      rw [h211]; ring
+    have h22 : (c⁻¹ * c)^2 * (4 * v) - (c⁻¹)^2 * (x - c * μ)^2 = (c⁻¹)^2 * (4 * (c^2 * v)) - (c⁻¹)^2 * (x - c * μ)^2 := by ring
+    rw [h21,h22]
+    set A := 4 * (c^2 * v)
+    set B := (x - c * μ)^2
+    have h23 : √((c⁻¹)^2 * A - (c⁻¹)^2 * B) = √((c⁻¹)^2 * (A - B)) := by ring_nf
+    have h24 : √((c⁻¹)^2 * (A - B)) = √(|c⁻¹|^2 * (A - B)) := by
+      have h241 : (c⁻¹)^2 = |c⁻¹|^2 := by exact Eq.symm (sq_abs c⁻¹)
+      rw [h241]
+    rw [h23,h24]
+    set C := |c⁻¹|
+    set D := A - B
+    rw [Real.sqrt_mul,Real.sqrt_sq]; exact abs_nonneg c⁻¹; exact sq_nonneg C
+  rw [h1,h2]
+  set E := √(4 * (c ^ 2 * v) - (x - c * μ) ^ 2)
+  have h3 : |c⁻¹| = |c|⁻¹ := by exact abs_inv c
+  rw [h3]
+  have h4 : |c|⁻¹ = |c| * (|c|⁻¹)^2 := by
+    have h41 : |c|⁻¹ = (|c| * |c|⁻¹) * |c|⁻¹ := by
+      have h411 :|c| * |c|⁻¹ = 1 := by
+        refine mul_inv_cancel₀ ?_; exact abs_ne_zero.mpr hc
+      rw [h411]; ring
+    calc
+      |c|⁻¹ = (|c| * |c|⁻¹) * |c|⁻¹ := by apply h41
+          _ = |c| * (|c|⁻¹ * |c|⁻¹) := by ring
+          _ = |c| * (|c|⁻¹)^2 := by ring
+  rw [h4]
+  have h5 : (|c|⁻¹)^2 = (c^2)⁻¹ := by
+    have h51 : (|c|⁻¹)^2 = (|c|^2)⁻¹ := by rw [inv_pow]
+    have h52 : |c|^2 = c^2 := by exact sq_abs c
+    rw [h51, h52]
+  rw [h5]; ring
 
 lemma semicirclePDFReal_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c * x)
@@ -125,7 +286,8 @@ lemma toReal_semicirclePDF {μ : ℝ} {v : ℝ≥0} (x : ℝ) :
   rw [semicirclePDF, ENNReal.toReal_ofReal (semicirclePDFReal_nonneg μ v x)]
 
 lemma semicirclePDF_nonneg (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) (x : ℝ) : 0 ≤ semicirclePDF μ v x := by
-  sorry
+  rw [semicirclePDF]; positivity
+
 
 lemma semicirclePDF_lt_top {μ : ℝ} {v : ℝ≥0} {x : ℝ} : semicirclePDF μ v x < ∞ := by
 simp [semicirclePDF]
@@ -133,12 +295,92 @@ simp [semicirclePDF]
 lemma semicirclePDF_ne_top {μ : ℝ} {v : ℝ≥0} {x : ℝ} : semicirclePDF μ v x ≠ ∞ := by
 simp [semicirclePDF]
 
-/-- The support of the semicircle pdf with mean μ and variance v is [μ - √ v, μ + √ v]
+/-- The support of the semicircle pdf with mean μ and variance v is [μ - 2√ v, μ + 2√ v]
 Need to set the interval correctly in the statement of the lemma-/
 @[simp]
 lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
-    Function.support (semicirclePDF μ v) = Set.univ := by
-  sorry
+    Function.support (semicirclePDF μ v) = Ioo (μ - 2 * √v) (μ + 2 * √v) := by
+  dsimp [Function.support,semicirclePDF]; ext x; simp; constructor
+  · --first goal
+    dsimp [semicirclePDF]; intro h1; rw [semicirclePDFReal_def] at h1; dsimp at h1
+    constructor
+    · --first subgoal
+      by_contra h21; push_neg at h21
+      have h22 : x - μ ≤ -(2 * √v) := by
+        set B := 2 * √v
+        exact tsub_le_iff_left.mpr h21
+      have h23 : 2 * √v ≤ -(x - μ) := by
+        set B := 2 * √v
+        exact le_neg_of_le_neg h22
+      have h24 : 4 * v ≤ (x - μ)^2 := by
+        set B := 2 * √v with hB
+        have h241 : 4 * v = B^2 := by
+          rw [hB]; ring_nf; rw [Real.sq_sqrt]; positivity
+        rw [h241]; refine sq_le_sq.mpr ?_
+        have h242 : 0 ≤ B := by positivity
+        have h243 : 0 ≤ -(x - μ) := by exact Preorder.le_trans 0 B (-(x - μ)) h242 h23
+        /- Apply? helped complete this part.-/
+        calc
+          |B| = B := by simp [abs_of_nonneg h242]
+           _  ≤ -(x - μ) := h23
+        have h244 : -(x - μ) ≤ |x - μ| := by
+          set A := x - μ with xA
+          exact neg_le_abs A
+        exact h244
+      have h25 : 4 * v - (x - μ)^2 ≤ 0 := by exact sub_nonpos.mpr h24
+      have h26 : √(4 * v - (x - μ)^2) = 0 := by exact Real.sqrt_eq_zero'.mpr h25
+      have h27 : 1 / (2 * π * v) *  √(4 * v - (x - μ)^2) = 0 := by
+        exact mul_eq_zero_of_right (1 / (2 * π * ↑v)) h26
+      simp_all only [ne_eq, one_div, mul_inv_rev, mul_zero, lt_self_iff_false]
+      /- Hammer worked for completing the contradiction. -/
+    · --second subgoal
+      by_contra h31; push_neg at h31
+      have h32 : 2 * √v ≤ x - μ := by
+        set B := 2 * √v
+        exact le_tsub_of_add_le_left h31
+      have h33 : 4 * v ≤ (x - μ)^2 := by
+        set B := 2 * √v with hB
+        have h241 : 4 * v = B^2 := by
+          rw [hB]; ring_nf; rw [Real.sq_sqrt]; positivity
+        rw [h241]; refine (sq_le_sq₀ ?_ ?_).mpr h32
+        have h242 : 0 ≤ B := by positivity
+        exact h242
+        set A := x - μ with xA
+        have h242 : 0 ≤ B := by positivity
+        exact Preorder.le_trans 0 B A h242 h32
+        /- Apply? helped complete this part.-/
+      have h34 : 4 * v - (x - μ)^2 ≤ 0 := by exact sub_nonpos.mpr h33
+      have h36 : √(4 * v - (x - μ)^2) = 0 := by exact Real.sqrt_eq_zero'.mpr h34
+      have h37 : 1 / (2 * π * v) *  √(4 * v - (x - μ)^2) = 0 := by
+        exact mul_eq_zero_of_right (1 / (2 * π * ↑v)) h36
+      simp_all only [ne_eq, one_div, mul_inv_rev, mul_zero, lt_self_iff_false]
+      /- Hammer worked for completing the contradiction. -/
+  · --second goal
+    dsimp [semicirclePDF]; intro h2; rw [semicirclePDFReal_def]; dsimp
+    rcases h2 with ⟨h2_left,h2_right⟩
+    have h3 : (v : ℝ) ≠ 0 := (NNReal.coe_ne_zero).mpr hv
+    have h4 : 0 ≤ v := by positivity
+    have h10 : 0 ≤ (v : ℝ) := by positivity
+    have h11 : |x - μ| < 2 * √(v : ℝ) := by
+      set B := 2 * √(v : ℝ)
+      have h : μ - x < B := by exact sub_lt_comm.mp h2_left
+      /- Apply? worked for proving h. -/
+      have h' : x - μ < B := by exact sub_left_lt_of_lt_add h2_right
+      /- Apply? worked for proving h'. -/
+      exact abs_sub_lt_iff.mpr ⟨h', h⟩
+    have h12 : 0 < 4 * (v : ℝ) - (x - μ)^2 := by
+      apply sub_pos.mpr
+      have h13 : 0 ≤ 2 * √(v : ℝ) := by positivity
+      have h14 : |x - μ| < |2 * √(v : ℝ)| := by simpa [abs_of_nonneg h13]
+      have h15 : (x - μ)^2 < (2 * √(v : ℝ))^2 := sq_lt_sq.mpr h14
+      have h16 : 0 < (2 * √(v : ℝ))^2 - (x - μ)^2 := sub_pos.mpr h15
+      have h17 : 0 < 4 * (v : ℝ) - (x - μ)^2 := by
+        have h18 : (2 * √(v : ℝ))^2 = 4 * (v : ℝ) := by
+          have h19 : (2 * √(v : ℝ))^2 = 4 * (√(v : ℝ))^2 := by ring
+          rw [h19, Real.sq_sqrt h10]
+        simpa [h18] using h16
+      linarith
+    exact mul_pos (one_div_pos.mpr (by positivity)) (Real.sqrt_pos.mpr h12)
 
 @[measurability, fun_prop]
 lemma measurable_semicirclePDF (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDF μ v) :=
@@ -333,8 +575,26 @@ lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     = 0 :=
   sorry
 
+
 end Moments
 
+section Scribbles
+
+def f (_ : ℝ) : ℝ := 1
+
+def g (x : ℝ) : ℝ := x
+
+def h (x : ℝ) : ℝ := x^2 - 1
+
+lemma g_cont : Continuous g := by
+  unfold g
+  continuity
+
+lemma h_cont : Continuous h := by
+  unfold h
+  continuity
+
+end Scribbles
 
 end SemicircleDistribution
 

@@ -169,7 +169,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{definition}
 
 \begin{lemma}[Expectation of Matrix Multi Index]
-    \label{lem:prod_expectation_matrix_multi_index}
+    \label{lem:expectation_matrix_multi_index}
     \notready
     \uses{def:matrix_multi_index, def:graph_edge_count, def:graph_self_edges, def:graph_connecting_edges}
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, we have the following:
@@ -184,7 +184,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \begin{lemma}[Trace of Expectation of Matrix]
     \label{lem:trace_expectation_of_matrix}
     \notready
-    \uses{lem:prod_expectation_matrix_multi_index, lem:matrix_powers_trace}
+    \uses{lem:expectation_matrix_multi_index, lem:matrix_powers_trace, lem:graph_walk_count_equivalence}
     Let $\mathbf{Y}_{n}$ be an $n \times n$ symmetric matrix with independent entries, where $\{Y_{ij}\}_{1\le i\le j}$ are independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, for any $k$-index $\mathbf{i} \in [n]^k$, we have:
     $$
     \bE(\Tr(\mathbf{Y}_{n}^{k})) = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} \bE(Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}) = \sum_{\mathbf{i} \in [n]^{k}} \bE(Y_{i})
@@ -217,7 +217,7 @@ as required.
 \end{proof}
 
 \begin{definition}[Product of Expectation of Matrix Multi Index]
-    \label{def:expectation_matrix_multi_index}
+    \label{def:prod_expectation_matrix_multi_index}
     \notready
     \uses{def:matrix_multi_index, def:graph_edge_count, def:graph_self_edges, def:graph_connecting_edges, def:graph_multi_index, def:graph_path}
     Let $\mathbf{i} \in [n]^{k}$ be a $k$-index, $\mathbf{i} = (i_1, i_2, \ldots, i_{k})$. Let $Y$ be a symmetric matrix and let $\{Y_{ij}\}_{1\le i\le j}$ be independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. We define $\Pi(G_{\mathbf{i}}), w_{\mathbf{i}}$ as follows:
@@ -376,6 +376,7 @@ as required.
   \] 
   Observe that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \}$ is a singleton and only if $\{ \varphi(i_{\lambda_l}),\varphi(i_{\lambda_{l+1}}) \}$ is a singleton.
   The fact that $\{ i_{\lambda_l},i_{\lambda_{l+1}} \} = \{ i_{\lambda_\mu},i_{\lambda_{\mu+1}} \}$ if and only if $\{ \varphi(i_{\lambda_l}),\varphi(i_{\lambda_{l+1}}) \} = \{ \varphi(i_{\lambda_\mu}),\varphi(i_{\lambda_{\mu+1}}) \}$ completes the proof.
+
 \end{proof}
 %---------%
 %---------%
@@ -519,7 +520,7 @@ as required.
 %---------%
 \begin{lemma}[$\Pi (G,w) = 0$ : R-1-15 : lem:Pi.prod\_eq\_zero\_if\_w\_le\_two]
   \label{lem:Pi.prod_eq_zero_if_w_le_two}
-  \uses{def:g_k,def:expectation_matrix_multi_index,def:length_of_w_i,def:g_k_j}
+  \uses{def:g_k,def:prod_expectation_matrix_multi_index,def:length_of_w_i,def:g_k_j}
   Given an ordered pair $(G,w) \in \mathcal{G}_k$, suppose there exists an edge $e \in E$ in which it is traversed only once in the walk $w$. Then
   \[
   \Pi (G,w) = 0.
@@ -553,6 +554,7 @@ as required.
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) 
   = \sum_{(G,w) \in \mathcal{G}_{k, w \geq 2}} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G| + 1)}{n^{k/2+1}}.
   \]
+
 \end{lemma}
 \begin{proof}
   This follows from applying the result of Lemma \ref{lem:Pi.prod_eq_zero_if_w_le_two} to Lemma \ref{lem:equation_4.5_3}.
@@ -561,7 +563,7 @@ as required.
 %---------%
 \begin{lemma}[$\#E \leq k/2$ : R-1-17 : lem:edge\_set\_order\_leq\_k\_over\_two]
   \label{lem:edge_set_order_leq_k_over_two}
-  \uses{def:g_k_ge_2}
+  \uses{def:g_k_ge_2, lem:abs_w_i_eq_k}
   Given an ordered pair $(G,w) \in \mathcal{G}_{k,w \geq 2}$, we must have $\# E \leq k/2$.
 \end{lemma}
 \begin{proof}
@@ -608,7 +610,7 @@ as required.
 
 
 \begin{lemma}
-  \label{lemma:vertex_bound}
+  \label{lem:vertex_bound}
   \notready
   \uses{prop:vertex_edge_inequality, lem:edge_set_order_leq_k_over_two}
   For any graph $G = (V, E)$ appearing in the sum in Equation 4.8, $|G| \le k/2 + 1$.
@@ -622,7 +624,7 @@ as required.
 
 
 \begin{lemma}
-  \label{lemma:asc_factorial_product}
+  \label{lem:asc_factorial_product}
   \notready
   $n(n-1)\cdots (n-|G|+1) \le n^{|G|}$.
 
@@ -636,11 +638,12 @@ as required.
 
 
 \begin{lemma}
-  \label{lemma:bounded_map}
+  \label{lem:bounded_map}
   \notready
-  \uses{lemma:asc_factorial_product, lemma:vertex_bound, lem:equation_4.8}
+  \uses{lem:asc_factorial_product, lem:vertex_bound, lem:equation_4.8}
   The sequence $n\mapsto \frac1n\bE\Tr(X_n^k)$ is bounded.
 \end{lemma}
+
 
 \begin{proof}
   \notready
@@ -648,9 +651,9 @@ as required.
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:odd_vertex_bound}
+  \label{lem:odd_vertex_bound}
   \notready
-  \uses{lemma:vertex_bound}
+  \uses{lem:vertex_bound}
   Suppose $k$ odd. Then, $|G| \le \frac{k}{2} + \frac{1}{2}$.
 \end{lemma}
 
@@ -660,9 +663,9 @@ as required.
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:odd_ratio_bound}
+  \label{lem:odd_ratio_bound}
   \notready
-  \uses{lemma:odd_vertex_bound, lemma:asc_factorial_product}
+  \uses{lem:odd_vertex_bound, lem:asc_factorial_product}
   Suppose $k$ odd. Then, $\frac{n(n-1)\cdots(n-|G|+1)}{n^{k/2+1}} \le \frac{1}{\sqrt{n}}$.
 \end{lemma}
 
@@ -677,7 +680,7 @@ as required.
 \begin{proposition}
   \label{prop:odd_case}
   \notready
-  \uses{lemma:odd_ratio_bound, lem:equation_4.8}
+  \uses{lem:odd_ratio_bound, lem:equation_4.8}
   Suppose $k$ odd. Then, $\lim_{n\to\infty} \frac{1}{n}\bE\Tr(X_n^k) = 0$.
 \end{proposition}
 
@@ -687,7 +690,7 @@ as required.
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:edge_bound_large_w}
+  \label{lem:edge_bound_large_w}
   \notready
   %\uses{}
   If $k$ is even and there exists $e$ such that $w(e) \ge 3$, then $\#E \le \frac{k-1}{2}$.
@@ -715,7 +718,7 @@ as required.
 \begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
   \label{prop:g_bound_large_w}
   \notready
-  \uses{prop:vertex_edge_inequality, prop:vertex_edge_tree_equality, lemma:edge_bound_large_w}
+  \uses{prop:vertex_edge_inequality, prop:vertex_edge_tree_equality, lem:edge_bound_large_w}
   Let $(G,w)\in\mathcal{G}_k$ with $w\ge 2$, and suppose $k$ is even. If there exists an edge $e$ in $G$ with $w(e)\ge 3$, then $|G|\le k/2$.
 \end{proposition}
 
@@ -736,7 +739,7 @@ as required.
 
 
 \begin{lemma}
-  \label{lemma:graph_set_finite}
+  \label{lem:graph_set_finite}
   \notready
   \uses{def:g_k}
   $|G_k|$ is finite.
@@ -749,9 +752,9 @@ as required.
 
 
 \begin{lemma}
-  \label{lemma:special_g_tree}
+  \label{lem:special_g_tree}
   \notready
-  \uses{def:special_set_g, lemma:special_g_edge_count, prop:vertex_edge_tree_equality}
+  \uses{def:special_set_g, lem:special_g_edge_count, prop:vertex_edge_tree_equality}
   Elements of $G_k^{k/2+1}$ are trees.
 \end{lemma}
 
@@ -761,9 +764,9 @@ as required.
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:special_g_edge_count}
+  \label{lem:special_g_edge_count}
   \notready
-  \uses{def:special_set_g}
+  \uses{def:special_set_g, prop:g_bound_large_w}
   Elements of $G_k^{k/2+1}$ have $|E| = k/2$.
 \end{lemma}
 
@@ -774,9 +777,9 @@ as required.
 
 \iffalse
 \begin{lemma}
-  \label{lemma:special_g_vertex_count}
+  \label{lem:special_g_vertex_count}
   \notready
-  \uses{def:special_set_g, lemma:special_g_edge_count, lemma:special_set_g, prop:vertex_edge_tree_equality}
+  \uses{def:special_set_g, lem:special_g_edge_count, lem:special_set_g, prop:vertex_edge_tree_equality}
   Elements of $G_k^{k/2+1}$ have $|V| = k/2 + 1$.
 \end{lemma}
 
@@ -791,7 +794,7 @@ as required.
 \begin{proposition}
   \label{prop:g_difference_bound}
   \notready
-  \uses{lemma:graph_set_finite, def:special_set_g, lemma:asc_factorial_product}
+  \uses{lem:graph_set_finite, def:special_set_g, lem:asc_factorial_product}
   $|\sum_{\mathcal{G}_{k}, w \ge 2} - \sum_{\mathcal{G}_k^{k/2+1}}| \le |\mathcal{G}_k|/n$.
 \end{proposition}
 
@@ -816,9 +819,9 @@ as required.
 \end{proof}
 
 \begin{proposition}
-  \label{lemma:fraction_limit_one}
+  \label{lem:fraction_limit_one}
   \notready
-  \uses{lemma:asc_factorial_product} %uses some lower bound stuff? might need to do more
+  \uses{lem:asc_factorial_product} %uses some lower bound stuff? might need to do more
   $\lim_{n\to\infty}\frac{n^{k/2}}{n(n-1)\cdots(n-k/2+1)} = 1$.
 \end{proposition}
 
@@ -832,7 +835,7 @@ as required.
 \begin{proposition}
   \label{prop:trace_ev_limit_equals_sum}
   \notready
-  \uses{def:special_set_g, prop:g_difference_bound, lemma:fraction_limit_one}
+  \uses{def:special_set_g, lem:fraction_limit_one, prop:trace_ev_special_g, lem:bounded_map}
   $\lim_{n\to\infty}\bE\Tr(X_n^k) = \sum_{(G,w)\in\mathcal{G}^{k/2+1}_k} \Pi(G,w)$
 \end{proposition}
 
@@ -843,9 +846,9 @@ as required.
 
 
 \begin{lemma}
-  \label{lemma:prod_expansion}
+  \label{lem:prod_expansion}
   \notready
-  \uses{def:special_set_g, def:expectation_matrix_multi_index}
+  \uses{def:special_set_g, def:prod_expectation_matrix_multi_index}
   $\Pi(G,w) = \prod_{e_c\in E^c} \bE(Y_{12}^{w(e_c)})$
 \end{lemma}
 
@@ -855,7 +858,7 @@ as required.
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:w_2_case}
+  \label{lem:w_2_case}
   \notready
   \uses{def:special_set_g, prop:g_bound_self_edge}
   $\prod_{e_c\in E^c} \bE(Y_{12}^{w(e_c)}) = \prod_{e_c\in E^c} \bE(Y_{12}^2)$
@@ -867,7 +870,7 @@ as required.
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:def_t_rewrite}
+  \label{lem:def_t_rewrite}
   \notready
   \uses{def:special_set_g} %also def of t
   $\bE(Y_{12}^2) = t^{\#E}$
@@ -879,9 +882,9 @@ as required.
 \end{proof}
 
 \begin{lemma}
-  \label{lemma:e_equals_k_over_two}
+  \label{lem:e_equals_k_over_two}
   \notready
-  \uses{lemma:special_g_edge_count}
+  \uses{lea:special_g_edge_count}
   $t^{\#E} = t^{k/2}$
 \end{lemma}
 
@@ -895,8 +898,8 @@ as required.
 \begin{proposition}%[Equation 4.10 in \cite{Kemp2013RMTNotes}]
   \label{prop:product_g_w_to_exponential}
   \notready
-  \uses{lemma:prod_expansion, lemma:w_2_case, lemma:def_t_rewrite, lemma:e_equals_k_over_two}
-  %\uses{%%lemma:special_g_tree, %lemma:special_g_edge_count, prop:vertex_edge_tree_equality, prop:g_bound_self_edge, prop:g_bound_large_w, %def:expectation_matrix_multi_index} %uses: prop:matrix_moments_convergence for defn of t (but can replace)
+  \uses{lem:prod_expansion, lem:w_2_case, lem:def_t_rewrite, lem:e_equals_k_over_two}
+  %\uses{%%lem:special_g_tree, %lem:special_g_edge_count, prop:vertex_edge_tree_equality, prop:g_bound_self_edge, prop:g_bound_large_w, %def:expectation_matrix_multi_index} %uses: prop:matrix_moments_convergence for defn of t (but can replace)
   $\Pi(G,w) = t^{k/2}$.
 \end{proposition}
 
@@ -928,6 +931,7 @@ as required.
 \end{proof}
 
 % end of kiran's part
+
 
 %Haoyan part
 
@@ -1115,8 +1119,635 @@ as required.
 
 \section{Convergence in Probability}
 
+%---Paul's Part for Proposition 4.5 (Start)---% 
+%---------%
+%---------%
+
+\begin{lemma}[Variance Trace Expansion]
+    \label{lem:variance_expansion}
+    \uses{lem:trace_expectation_of_matrix}
+    \notready
+    Let $\mathbf{Y}_{n}$ be an $n \times n$ symmetric matrix with independent entries, where $\{Y_{ij}\}_{1\le i\le j}$ are independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed, and let $\mathbf{X}_{n} = n^{-1 / 2}\mathbf{Y}_{n}$ be the corresponding Wigner matrix. Then:
+    $$
+    \operatorname{Var}\left(\frac{1}{n}\Tr(\mathbf{X}_{n}^{k})\right) = \frac{1}{n^{k+2}} \sum_{\mathbf{i}, \mathbf{j} \in [n]^{k}} [\bE(Y_{\mathbf{i}} Y_{\mathbf{j}}) - \bE(Y_{\mathbf{i}})\bE(Y_{\mathbf{j}})]
+    $$ 
+\end{lemma}
+
+\begin{proof}
+    \notready
+    Expanding the variance by definition, we get:
+    $$
+    \operatorname{Var}\left(\frac{1}{n}\Tr(\mathbf{X}_{n}^{k})\right) = \bE[\frac{1}{n} \cdot \frac{1}{n^{\frac{k}{2}}} \Tr(\mathbf{Y}_{n}^{k})]^2 - (\bE[\frac{1}{n}\cdot \frac{1}{n^{\frac{k}{2}}} \Tr(\mathbf{Y})_{n}^{k}])^2
+    $$ 
+    use the linearity of expectation to factor out $\frac{1}{n^{k+2}}$ from both expectations:
+    $$
+    \bE[\frac{1}{n} \cdot \frac{1}{n^{\frac{k}{2}}} \Tr(\mathbf{Y}_{n}^{k})]^2 - (\bE[\frac{1}{n}\cdot \frac{1}{n^{\frac{k}{2}}} \Tr(\mathbf{Y})_{n}^{k}])^2 = \frac{1}{n^{k+2}} \{\bE[\operatorname{Tr}(\mathbf{Y}_{n}^{k})]^2 - (\bE \operatorname{Tr}(\mathbf{Y}_{n}^{k}))^2\}
+    $$ 
+    using \ref{lem:trace_expectation_of_matrix}, we can expand and square:
+\end{proof}
+
+
+\begin{definition}[Graph Union]
+    \label{def:graph_union}
+    \notready
+    \uses{def:graph_multi_index}
+    Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$, and Graphs $G_{\mathbf{i}}, G_{\mathbf{j}}$, we define the graph union $G_{\mathbf{i} \# \mathbf{j}}$ as follows:
+    $$
+    G_{\mathbf{i} \# \mathbf{j}}  = G_{\mathbf{i}} \cup G_{\mathbf{j}} = (V_{\mathbf{i}} \cup V_{\mathbf{j}}, E_{\mathbf{i}} \cup E_{\mathbf{j}})
+    $$
+\end{definition}
+
+
+\begin{definition}[Ordered Triple]
+    \label{def:ordered_triple}
+    \notready
+    \uses{def:graph_union, def:graph_path}
+    Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$, we define the ordered triple $(G_{\mathbf{i} \# \mathbf{j}}, w_{\mathbf{i}}, w_{\mathbf{j}})$ as follows:
+    \begin{itemize}
+        \item $G_{\mathbf{i} \# \mathbf{j}}$ is the graph union of the graphs defined by $\mathbf{i}$ and $\mathbf{j}$ from definition \ref{def:graph_union}
+        \item $w_{\mathbf{i}}$ is the closed walk defined by $\mathbf{i}$ from definition \ref{def:graph_path}
+        \item $w_{\mathbf{i}}$ is the closed walk defined by $\mathbf{j}$ from definition \ref{def:graph_path}
+    \end{itemize}
+\end{definition}
+
+%---------%
+%---------%
+%---Paul's Part for Proposition 4.5 (End)---% 
+
+
+
+%---Richard's Part for Proposition 4.5 (Start)---% 
+%---------%
+%---------%
+\begin{definition}[R-2-1 : def:common\_val\_prod\_of]
+  \notready
+  \label{def:common_val_prod_of}
+  \uses{def:matrix_multi_index,def:ordered_triple} 
+  Given an ordered triple $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ generated by two $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, we define
+  \[
+  \pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = \mathbb{E}(Y_\mathbf{i} Y_\mathbf{j}) - \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j}).
+  \]
+\end{definition}
+%---------%
+%---------%
+\begin{definition}[R-2-2 : def:graph\_walk\_triple\_set]
+  \notready
+  \label{def:graph_walk_triple_set}
+  \uses{} % n/a
+  We define $\mathcal{G}_{k,k}$ to be the set of connected graphs $G$ with $\leq 2k$ vertices, 
+  together with two paths each of length $k$ whose union covers $G$.
+\end{definition}
+%---------%
+%---------%
+\begin{definition}[R-2-3-1 : def:index\_pair]
+  \notready
+  \label{def:index_pair}
+  \uses{def:g_k_j,def:graph_walk_triple_set} 
+  Given $(G,w,w') \in \mathcal{G}_{k,k}$, we say $(\mathbf{i},\mathbf{j})$ is an ordered pair of $k$-indexes generated by $(G,w,w')$ 
+  if $\mathbf{i}$ and $\mathbf{j}$ are, repsectively, $k$-indexes generated by $w$ and $w'$ as in Definition \ref{def:g_k_j}.
+\end{definition}
+%---------%
+%---------%
+\begin{definition}[R-2-3-2 : def:index\_pair\_rel]
+  \notready
+  \label{def:index_pair_rel}
+  \uses{} % n/a
+  Let $\mathbf{i}_\lambda$ and $\mathbf{j}_\lambda$ be $k$-indexes for each $\lambda=1,2$. We say $(\mathbf{i}_1,\mathbf{j}_1) = (\mathbf{i}_2,\mathbf{j}_2)$ if and only if there exists a bijection $\varphi_1$ from the set of entries $\mathbf{i}_1$ onto the set of entries $\mathbf{i}_2$, 
+  and a bijection $\varphi_2$ from the set of entries $\mathbf{j}_1$ onto the set of entries $\mathbf{j}_2$ such that
+  \begin{equation}
+  \begin{split}
+    \mathbf{i}_1 = (i_1,...,i_k) & \,\, \Longleftrightarrow \,\, \mathbf{i}_2 = \bigl( \varphi_1(i_1),\varphi_1(i_2),...,\varphi_1(i_k) \bigl)
+  \end{split}
+  \end{equation}
+  and
+  \begin{equation}
+  \begin{split}
+    \phantom{.}\mathbf{j}_1 = (j_1,...,j_k) & \,\, \Longleftrightarrow \,\, \mathbf{j}_2 = \bigl( \varphi_2(j_1),\varphi_2(j_2),...,\varphi_2(j_k) \bigl).
+  \end{split}
+  \end{equation}
+\end{definition}
+%---------%
+%---------%
+\begin{definition}[R-2-3-3 : def:graph\_walk\_triple\_rel]
+  \notready
+  \label{def:graph_walk_triple_rel}
+  \uses{def:graph_walk_triple_set,def:ordered_triple,def:index_pair,def:index_pair_rel}
+  Let $(G_{\mathbf{i} \# \mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ be an ordered triple generated by two $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, and let $(G,w,w') \in \mathcal{G}_{k,k}$.
+  We say $(G_{\mathbf{i} \# \mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')$ if and only $(\mathbf{i},\mathbf{j}) = (\mathbf{i}^*,\mathbf{j}^*)$,
+  where $(\mathbf{i}^*,\mathbf{j}^*)$ is an ordered pair of $k$-indexes generated by $(G,w,w')$.
+\end{definition}
+%---------%
+%---------%
+\begin{lemma}[R-2-3-4 : lem:common\_val\_eq\_of\_index\_pair\_rel]
+  \notready
+  \label{lem:common_val_eq_of_index_pair_rel}
+  \uses{def:index_pair_rel,def:matrix_multi_index,lem:eq_equiv_eq_expect}
+  Let $\mathbf{i}_\lambda$ and $\mathbf{j}_\lambda$ be $k$-indexes for each $\lambda=1,2$ such that $(\mathbf{i}_1,\mathbf{j}_1) = (\mathbf{i}_2,\mathbf{j}_2)$.
+  Then $\bE (Y_{\mathbf{i}_1}Y_{\mathbf{j}_1}) = \bE (Y_{\mathbf{i}_1}Y_{\mathbf{j}_2})$.
+\end{lemma}
+\begin{proof}
+  This follows a similar reasoning as in Lemma \ref{lem:eq_equiv_eq_expect}.
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-3-5 : lem:common\_val\_prod\_of\_eq\_of\_graph\_walk\_triple\_rel]
+  \notready
+  \label{lem:common_val_prod_eq_of_graph_walk_triple_rel}
+  \uses{def:common_val_prod_of,def:ordered_triple,def:graph_walk_triple_rel,lem:eq_equiv_eq_expect,lem:common_val_eq_of_index_pair_rel}  
+  Let $(G_{\mathbf{i}_1 \# \mathbf{j}_1},w_{\mathbf{i}_1},w_{\mathbf{j}_1})$ and $(G_{\mathbf{i}_2 \# \mathbf{j}_2},w_{\mathbf{i}_2},w_{\mathbf{j}_2})$ be ordered triples generated by their respective ordered pair of $k$-indexes, and $(G,w,w') \in \mathcal{G}_{k,k}$,
+  If $(G_{\mathbf{i}_1 \# \mathbf{j}_1},w_{\mathbf{i}_1},w_{\mathbf{j}_2}) = (G,w,w')$ and $(G_{\mathbf{i}_1 \# \mathbf{j}_2},w_{\mathbf{i}_2},w_{\mathbf{j}_2}) = (G,w,w')$, then
+%  If the ordered triples $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ and $(G_{\mathbf{i}^*\#\mathbf{j}^*},w_{\mathbf{i}^*},w_{\mathbf{j}^*})$ are same up to relabeling, then
+  \[
+  \pi(G_{\mathbf{i}_1\#\mathbf{j}_1},w_{\mathbf{i}_1},w_{\mathbf{j}_1}) = \pi(G_{\mathbf{i}_2 \# \mathbf{j}_2},w_{\mathbf{i}_2},w_{\mathbf{j}_2}).
+  \]
+\end{lemma}
+\begin{proof}
+This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-4 : lem:sum\_eq\_sum\_over\_classes]
+  \notready
+  \label{lem:sum_eq_sum_over_classes}
+  \uses{lem:variance_expansion,def:graph_walk_triple_rel}
+  \[
+  \text{Var} \biggl(\frac{1}{n} \Tr (\mathbf{X}_n^k) \biggl) 
+  = \frac{1}{n^{k+2}} \sum_{(G,w,w') \in \mathcal{G}_{k,k}} \sum_{\substack{\mathbf{i},\mathbf{j} \in [n]^k \\ (G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')}} [\mathbb{E}(Y_\mathbf{i} Y_\mathbf{j}) - \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j})].
+  \]
+\end{lemma}
+\begin{proof}
+  This follows from `partitioning' the summation appearing in Lemma \ref{lem:variance_expansion} using the equivalence relation defined in Definition \ref{def:graph_walk_triple_rel}.
+% Given an ordered triple $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ generated by two $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, and $(G,w,w') \in \mathcal{G}_{k,k}$, 
+%  only one of $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')$ or $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \neq (G,w,w')$ holds. 
+%  Hence, the partition of the summation is well-defined.
+\end{proof}
+%---------%
+%---------%
+\begin{definition}[R-2-5-1 : def:common\_val\_prod]
+  \notready
+  \label{def:common_val_prod}
+  \uses{def:matrix_multi_index,def:graph_walk_triple_set,def:index_pair}
+  Given $(G,w,w')$, let $(\mathbf{i},\mathbf{j})$ be an ordered pair of $k$-indexes generated by $w$ and $w'$. 
+  We define
+  \[
+  \pi(G,w,w') = \mathbb{E}(Y_\mathbf{i} Y_\mathbf{j}) - \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j}).
+  \]
+\end{definition}
+%---------%
+%---------%
+\begin{lemma}[R-2-5-2 : lem:inner\_sum\_eq\_common\_val\_prod\_mul\_card]
+  \notready
+  \label{lem:inner_sum_eq_common_val_prod_mul_card}
+  \uses{lem:sum_eq_sum_over_classes,def:common_val_prod,lem:common_val_prod_eq_of_graph_walk_triple_rel}
+  \[
+  \text{Var} \biggl(\frac{1}{n} \Tr (\mathbf{X}_n^k) \biggl) 
+  = \frac{1}{n^{k+2}} \sum_{(G,w,w') \in \mathcal{G}_{k,k}} \pi(G,w,w')
+\cdot \# \bigl\{ (\mathbf{i},\mathbf{j}) \in [n]^{2k} : (G_{\mathbf{i} \# \mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w') \bigl\}.
+  \]
+\end{lemma}
+\begin{proof}
+  This follows from re-indexing the sum of Lemma \ref{lem:sum_eq_sum_over_classes} using Lemma \ref{lem:common_val_prod_eq_of_graph_walk_triple_rel}.
+\end{proof}
+%---------%
+%---------%
+\begin{definition}[R-2-6-1 : def:def:graph\_walk\_triple\_single\_edges]
+  \notready
+  \label{def:graph_walk_triple_single_edges}
+  \uses{def:graph_union}
+  Given a graph $G_{\mathbf{i} \# \mathbf{j}}$, let $E^s_{\mathbf{i} \# \mathbf{j}}$ denote the set of self-edges.
+\end{definition}
+%---------%
+%---------%
+\begin{definition}[R-2-6-2 : def:graph\_walk\_triple\_connected\_edges]
+  \notready
+  \label{def:graph_walk_triple_connected_edges} 
+  \uses{def:graph_union}
+  Given a graph $G_{\mathbf{i} \# \mathbf{j}}$, let $E^c_{\mathbf{i} \# \mathbf{j}}$ denote the set of connecting edges.
+\end{definition}
+%---------%
+%---------%
+\begin{definition}[R-2-7 : def:edgeCountPair]
+  \notready
+  \label{def:edgeCountPair}
+  \uses{def:ordered_triple}
+  Given a graph $G_{\mathbf{i} \# \mathbf{j}}$, 
+  let $w_{\mathbf{i} \# \mathbf{j}}(e)$ denote the number of times the edge $e$ is traversed by either of the two paths $w_\mathbf{i}$ and $w_\mathbf{j}$.
+\end{definition}
+%---------%
+%---------%
+\begin{lemma}[R-2-8 : lem:expect\_mul\_eq\_prod\_expect\_edgewise\_of\_indep]
+  \notready
+  \label{lem:expect_mul_eq_prod_expect_edgewise_of_indep}
+  \uses{def:edgeCountPair,lem:expectation_matrix_multi_index,def:graph_walk_triple_single_edges,def:graph_walk_triple_connected_edges}
+  \[
+  \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) 
+  = \prod_{e_s \in E^s_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i} \# \mathbf{j}}(e_c)}).
+  \]
+\end{lemma}
+\begin{proof}
+  This follows from Lemma \ref{lem:expectation_matrix_multi_index} and the independency of random variables.
+\end{proof}
+%---------%
+%---------%
+%\begin{lemma}[R-2-9 : lem:expect\_mul\_eq\_prod\_expect\_edgewise\_mul\_prod\_expect\_edgewise]
+  \notready
+  \label{lem:expect_mul_eq_prod_expect_edgewise_mul_prod_expect_edgewise}
+  \uses{lem:expectation_matrix_multi_index}
+  \[
+  \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j}) 
+  = \prod_{e_s \in E^s_{\mathbf{i}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i}}(e_c)})
+  \cdot \prod_{e_s \in E^s_{\mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{j}}(e_c)}).
+  \]
+%\end{lemma}
+%\begin{proof}
+%  This directly follows from Lemma \ref{lem:expectation_matrix_multi_index}.
+%\end{proof}
+%---------%
+%---------%
+%\egin{lemma}[R-2-10 : (Name unchanged since it might be merged)]
+% \notready
+% \label{lem:R-2-10}
+% \uses{lem:expect_mul_eq_prod_expect_edgewise_of_indep,lem:expect_mul_eq_prod_expect_edgewise_mul_prod_expect_edgewise}
+% \[
+% \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) -  \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j}) 
+% = \prod_{e_s \in E^s_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i} \# \mathbf{j}}(e_c)})
+% -  \prod_{e_s \in E^s_{\mathbf{i}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i}}(e_c)})
+% \cdot \prod_{e_s \in E^s_{\mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{j}}(e_c)}).
+% \]
+%\end{lemma}
+% begin{proof
+% This follows from substituting the expressions derived in Lemma \ref{lem:expect_mul_eq_prod_expect_edgewise_of_indep} and Lemma \ref{lem:expect_mul_eq_prod_expect_edgewise_mul_prod_expect_edgewise}.
+%\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-11 : lem:sum\_count\_edge\_pair\_eq\_length\_add\_length]
+  \notready
+  \label{lem:sum_count_edge_pair_eq_length_add_length} 
+  \uses{def:edgeCountPair,def:graph_union,def:graph_multi_index,def:graph_edge_count}
+  \[
+  \sum_{e \in E_{\mathbf{i} \# \mathbf{j}}} w_{\mathbf{i} \# \mathbf{j}}(e) 
+  = 2k 
+  = \sum_{e \in E_\mathbf{i}} w_{\mathbf{i}}(e) + \sum_{e \in E_\mathbf{j}} w_{\mathbf{j}}(e).
+  \]
+\end{lemma}
+\begin{proof}
+  By construction of the paths $w_\mathbf{i}$ and $w_\mathbf{j}$,
+  \[
+  \sum_{e \in E_\mathbf{i}} w_{\mathbf{i}}(e) = k = \sum_{e \in E_\mathbf{j}} w_{\mathbf{j}}(e).
+  \]
+  By definition of the counting function $w_{\mathbf{i} \# \mathbf{j}}(\cdot)$,
+  \[
+  \sum_{e \in E_{\mathbf{i} \# \mathbf{j}}} w_{\mathbf{i} \# \mathbf{j}}(e)  
+  = \sum_{e \in E_\mathbf{i}} w_{\mathbf{i}}(e) + \sum_{e \in E_\mathbf{j}} w_{\mathbf{j}}(e)
+  = 2k.
+  \]
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-12.1 : lem:expect\_pow\_edge\_count\_pair\_le] 
+  \notready
+  \label{lem:expect_pow_edge_count_pair_le} 
+  \uses{def:ordered_triple,def:edgeCountPair,lem:sum_count_edge_pair_eq_length_add_length}
+  For any $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, there exists $\lambda \in \mathbb{N}$ such that
+  \[
+  \mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j} (e)}}) \leq r_\lambda
+  \]
+  for every $e \in E_{\mathbf{i} \# \mathbf{j}}$.
+\end{lemma}
+\begin{proof}
+  Let $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ be the ordered triple generated by the two $k$-indexes $\mathbf{i}$ and $\mathbf{j}$. 
+  By construction, there are finite number of edges $e \in E_{\mathbf{i} \# \mathbf{j}}$.
+  Moreover, there are finite number of integer values the counting function $w_{\mathbf{i} \# \mathbf{j}}(\cdot)$ can take over $E_{\mathbf{i} \# \mathbf{j}}$.
+  This implies we can choose the maximum element of the set
+  \[
+  \mathscr{E} := \{ \mathbb{E} (Y_{11}^\lambda) : \lambda = w_{\mathbf{i} \# \mathbf{j}}(e) \text{ for some } e \in E_{\mathbf{i} \# \mathbf{j}} \},
+  \]
+  and therefore $\lambda \in \mathbb{N}$ so that $\mathbb{E}(Y_{11}^\lambda) = \max \mathscr{E}$.
+  Using the fact that $\mathbb{E}(Z) \leq \mathbb{E}(|Z|)$ for any random variable $Z$,
+  \[
+  \mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j} (e)}}) \leq \max\{ \mathbb{E}(|Y_{11}^\lambda|), \mathbb{E}(|Y_{12}^\lambda|) \} = r_\lambda.
+  \]
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-12.2 : lem:expect\_pow\_edge\_count\_pair\_le\_off] 
+  \notready
+  \label{lem:expect_pow_edge_count_pair_le_off}
+  \uses{def:ordered_triple,def:edgeCountPair,lem:sum_count_edge_pair_eq_length_add_length}
+  For any $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, there exists $\lambda \in \mathbb{N}$ such that
+  \[
+  \mathbb{E} (Y_{12}^{w_{\mathbf{i} \# \mathbf{j} (e)}}) \leq r_\lambda
+  \]
+  for every $e \in E_{\mathbf{i} \# \mathbf{j}}$.
+\end{lemma}
+\begin{proof}
+  This follows an identical reasoning as in Lemma \ref{lem:expect_pow_edge_count_pair_le}.
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-13 : lem:expect\_mul\_le\_const]
+  \notready
+  \label{lem:expect_mul_le_const}
+  \uses{lem:expect_mul_eq_prod_expect_edgewise_of_indep,lem:expect_pow_edge_count_pair_le,lem:expect_pow_edge_count_pair_le_off}
+  For any $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, there exists $M_1 \in \mathbb{R}$ such that
+  \[
+  \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) \leq M_1.
+  \]
+\end{lemma}
+\begin{proof}
+  By Lemma \ref{lem:expect_mul_eq_prod_expect_edgewise_of_indep}, we have
+  \[
+  \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) 
+  = \prod_{e_s \in E^s_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i} \# \mathbf{j}}(e_c)}).
+  \]
+  By Lemma \ref{lem:expect_pow_edge_count_pair_le}, there exists $\lambda_1 \in \mathbb{N}$ so that $\mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j} (e)}}) \leq r_n$ for every $e \in E_{\mathbf{i} \# \mathbf{j}}$. 
+  On the other hand, by Lemma \ref{lem:expect_pow_edge_count_pair_le_off}, there exists $\lambda_2 \in \mathbb{N}$ so that $\mathbb{E} (Y_{12}^{w_{\mathbf{i} \# \mathbf{j} (e)}}) \leq r_m$ for every $e \in E_{\mathbf{i} \# \mathbf{j}}$. 
+  Then
+  \[ \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) 
+  = \prod_{e_s \in E^s_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i} \# \mathbf{j}}(e_c)})
+  \leq 2k \cdot \max\{r_{\lambda_1},r_{\lambda_2}\}.
+  \]
+  Setting $M_1 := 2k \cdot \max\{r_{\lambda_1},r_{\lambda_2}\}$ satisfies the problem.
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-14 : lem:expect\_pow\_edge\_count\_le]
+  \notready
+  \label{lem:expect_pow_edge_count_le} 
+  \uses{def:graph_edge_count,lem:abs_w_i_eq_k} 
+  For any $k$-index $\mathbf{i}$, there exists $\lambda \in \mathbb{N}$ such that
+  \[
+  \mathbb{E} (Y_{11}^{w_{\mathbf{i}}(e)}) \leq r_\lambda.
+  \]
+  for every $e \in E_{\mathbf{i} \# \mathbf{j}}$.
+\end{lemma}
+\begin{proof}
+  This follows a similar reasoning as in Lemma \ref{lem:expect_pow_edge_count_pair_le} with the counting function $w_\mathbf{i}(\cdot)$.
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-15 : lem:expect\_pow\_edge\_count\_le\_off]
+  \notready
+  \label{lem:expect_pow_edge_count_le_off} 
+  \uses{def:graph_edge_count,lem:abs_w_i_eq_k}
+  For any $k$-index $\mathbf{i}$, there exists $\lambda \in \mathbb{N}$ such that
+  \[
+  \mathbb{E} (Y_{12}^{w_{\mathbf{i}}(e)}) \leq r_\lambda.
+  \]
+  for every $e \in E_\mathbf{i}$.
+\end{lemma}
+\begin{proof}
+  This follows a similar reasoning as in Lemma \ref{lem:expect_pow_edge_count_pair_le} with the counting function $w_\mathbf{i}(\cdot)$.
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-16 : lem:expect\_le\_const]
+  \notready
+  \label{lem:expect_le_const} 
+  \uses{lem:expectation_matrix_multi_index,lem:expect_pow_edge_count_le,lem:expect_pow_edge_count_le_off}
+  For any $k$-indexes $\mathbf{i}$, there exists $M_2 \in \mathbb{R}$ such that
+  \[
+  \mathbb{E} (Y_\mathbf{i}) \leq M_2.
+  \]
+\end{lemma}
+\begin{proof}
+  This follows an identical reasoning as in Lemma \ref{lem:expect_pow_edge_count_pair_le}.
+\end{proof}
+%---------%
+%---------%
+\begin{lemma}[R-2-17 : lem:abs\_expect\_mul\_sub\_mul\_expect\_le]
+  \notready
+  \label{lem:abs_expect_mul_sub_mul_expect_le}
+  \uses{lem:expect_mul_le_const,lem:expect_le_const}
+  For any $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, there exists $M_{2k} \in \mathbb{R}_{\geq 0}$ such that
+  \[
+  | \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) -  \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j}) |
+  \leq 2 M_{2k}.
+  \] 
+\end{lemma}
+\begin{proof}
+  Combining the result of Lemma \ref{lem:expect_mul_le_const} and Lemma \ref{lem:expect_le_const} gives
+  \[
+  | \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) -  \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j}) |
+  \leq | \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) | + | \mathbb{E}(Y_\mathbf{i})| | \mathbb{E}(Y_\mathbf{j}) |
+  \leq M_1 + M_2^{(\mathbf{i})} \cdot M_2^{(\mathbf{j})},
+  \]
+  where $M_2^{(\mathbf{i})}$ and $M_2^{(\mathbf{j})}$ are the upper bounds acquired by Lemma \ref{lem:expect_le_const} with repsect to $\mathbf{i}$ and $\mathbf{j}$, repsectively. 
+  Setting $M_{2k} := \max\{ M_1, M_2^{(\mathbf{i})} \cdot M_2^{(\mathbf{j})} \}$ satisfies the problem.
+\end{proof}
+%---------%
+%---------%
+%---Richard's Part for Proposition 4.5 (End)---% 
+
+
+
+
+%---Kiran's Part for Proposition 4.5 (Start)---% 
+%---------%
+%---------%
+
+\begin{definition}[R-2-2 : def:graph\_walk\_triple\_set]
+  \notready
+  \label{def:graph_walk_triple_set_w_ge_two}
+  \uses{def:graph_walk_triple_set} % n/a
+  $(G,w,w')\in \mathcal{G}_{k,k,w+w'\ge 2}$ if $(G,w,w') \in \mathcal{G}_{k,k}$ and $w + w' \ge 2$.
+\end{definition}
+
+
+\begin{proposition}
+  \label{prop:var_trace_as_sum}
+  \notready
+  \uses{lem:inner_sum_eq_common_val_prod_mul_card}
+  \[ \Var\left( \frac1n\Tr(X_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{\#\left\{(i,{j})\in [n]^{2k}\colon (G_{i\#j},w_{i},w_{j}) = (G,w,w')\right\}}{n^{k+2}}. \]
+\end{proposition}
+
+\begin{proof}
+  \notready
+  By construction, every edge in the joined graph $G_{{i}\#{j}}$ is traversed at least once by the union of the two paths $w_{i}$ and $w_{j}$.  Suppose that $e$ is an edge that is traversed only {\em once}.  This means that $w_{{i}\#{j}}(e) = 1$, and so it follows that the two values $w_{i}(e),w_{j}(e)$ are $\{0,1\}$.  Hence, the above expansion and the fact that $\bE(Y_{11})=\bE(Y_{12})=0$ show that $\pi(G_{{i}\#{j}},w_{i},w_{j}) = 0$ in this case.
+\end{proof}
+
+\begin{proposition}
+  \label{lem:g_w_w_count}
+  \notready
+  \uses{def:index_pair_rel, def:graph_walk_triple_set_w_ge_two, def:graph_walk_triple_rel}
+  For $(G, w, w') \in \mathcal{G}_{k,k,w+w'\ge 2}$, $\#\left\{(i,{j})\in [n]^{2k}\colon (G_{i\#j},w_{i},w_{j}) = (G,w,w')\right\} = n(n-1)\cdots (n-|G|+1)$.
+\end{proposition}
+
+\begin{proof}
+  \notready
+  The enumeration of the number of $2k$-tuples yielding a certain graph with two walks is the same as in the previous proposition: the structure $(G,w,w')$ specifies the $2k$-tuple precisely once we select the $|G|$ distinct indices for the vertices.  So, as before, this ratio becomes \[ \frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
+\end{proof}
+
+
+\begin{lemma}
+  \label{lem:simplified_var_trace_as_sum}
+  \uses{prop:var_trace_as_sum, lem:g_w_w_count}
+  \notready
+  \[ \Var\left( \frac1n\Tr({X}_n^k)\right) = \sum_{(G,w,w')\in \mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot\frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Follows directly.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:g_k_k_edge_count_maximum}
+  \uses{def:graph_walk_triple_set_w_ge_two}
+  \notready
+
+  In the set $\mathcal{G}_{k,k,w+w'\ge 2}$, edge count is at most $k$.
+\end{lemma}
+
+\begin{proof}
+  \notready
+  Now, we have the condition $w+w'\ge 2$, meaning every edge is traversed at least twice.  Since there are $k$ steps in each of the two paths, this means there are at most $k$ edges.
+\end{proof}
+
+\begin{proposition}
+  \label{prop:var_upper_bound}
+  \uses{prop:vertex_edge_inequality, lem:simplified_var_trace_as_sum, lem:abs_expect_mul_sub_mul_expect_le, lem:g_k_k_edge_count_maximum, def:common_val_prod}
+  \notready
+  \[ \Var\left( \frac1n\Tr({X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2} \pi(G,w,w')\cdot \frac{n^{k+1}}{n^{k+2}} \le \frac1n\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
+\end{proposition}
+
+\begin{proof}
+  \notready
+  Appealing again to \ref{prop:vertex_edge_inequality}, it follows that $|G|\le k+1$.  Hence, $n(n-1)\cdots(n-|G|+1) \le n^{|G|} \le n^{k+1}$
+\end{proof}
+
+\begin{theorem}
+  \label{thm:wigner_law_matrix_moments}
+  \uses{prop:var_upper_bound}
+  \notready
+  Theorem 2.4. (Unsure if it goes in this doc.)
+\end{theorem}
+
+\begin{proof}
+  \notready
+  The (potentially enormous) number $B_k=2M_{2k}\cdot\#\mathcal{G}_{k,k}$ is independent of $n$, and so we have already proved that the variance is $=O_k(1/n)$.
+\end{proof}
+
+
+%---------%
+%---------%
+%---Kiran's Part for Proposition 4.5 (End)---% 
+
+
+
+
+%---Haoyan's Part for Proposition 4.5 (Start)---% 
+%---------%
+%---------%
+
+\begin{lemma}
+    \label{lem:exactly_k_edges}
+    \uses{prop:vertex_edge_inequality}  
+    \notready
+    $G \in \mathcal{G}_{k, k}$. If $|G| = k + 1$, then $G$ has exactly $k$ edges.
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:G_is_tree}
+    \uses{prop:vertex_edge_tree_equality}
+    \notready
+    $G \in \mathcal{G}_{k, k}$. If $|G| = k + 1$, then $G \in \mathcal{G}_{k, k}$ is a tree.
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:subgraph_of_tree}
+    \uses{lem:G_is_tree, def:graph_union, lem:special_g_tree}
+    \notready
+    $G_{\mathbf{i} \# \mathbf{j}}$ is a tree, then its subgraph $G_{\mathbf{i}}$ and $G_{\mathbf{j}}$ are also trees.
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:traverse_exactly_twice}
+    \notready
+    \uses{lem:exactly_k_edges}     % also depends on  total length of walk i, j is exactly 2k
+    $(G, w, w') \in \mathcal{G}_{k, k}$. If $|G| = k + 1$, then for a common edge $e$ between the two walks, $w(e) + w'(e) =2$. In other words, every edge is traversed exactly twice.
+    \begin{proof}
+        Assume for contradiction there is one edge $l$ such that $w(l) + w'(l) > 2$, then $\sum_{e \in G} w(e) + w'(e) > 2k$.
+    \end{proof}
+\end{lemma}
+
+
+%maybe require the statement that they are closed walks
+\begin{lemma}
+    \label{lem:i_j_traverse_once}
+    \notready
+    \uses{lem:traverse_exactly_twice, lem:subgraph_of_tree}
+     $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$, then for a common edge it is impossible that $w(e) = w'(e) = 1$.
+     \begin{proof}
+       Each walk is a closed walk, which implies their edge needs to be traversed in even number.
+     \end{proof}
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:one_walk_traverse_twice}
+    \notready
+    \uses{lem:i_j_traverse_once}
+     $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$, then it can only be the case that $w(e) = 2, w'(e) = 0$, or $w(e) = 0, w'(e) = 2$ .
+     \begin{proof}
+      As a common edge, it is impossible that $w'$ does not traverse it.
+     \end{proof}
+\end{lemma}
+
+
+
+\begin{lemma}
+    \label{lem:no_shared_edges}
+    \uses{lem:one_walk_traverse_twice}
+    $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$. Then two walks have no shared edges $e$ which they have traversed.
+\end{lemma}
+
+
+\begin{lemma}
+    \label{lem:disjoint_edge_set}
+    \notready
+    \uses{lem:no_shared_edges}
+    The only graph walks $(G,w,w')\in \mathcal{G}_{k,k}$ with $|G|=k+1$ must have the edge sets covered by $w$ and $w'$ distinct.  
+    In other words, if $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')$, then the edge sets do not intersect: 
+    $\{\{i_1,i_2\},\ldots,\{i_k,i_1\}\}\cap\{\{j_1,j_2\},\ldots,\{j_k,j_1\}\}=\emptyset$. 
+\end{lemma}
+
+
+
+%depends on the definition of \mathcal{G}_{k,k} and \pi(G, w, w'    %R-2-5-1)
+\begin{lemma}
+    \label{lem:G_leq_k}
+    \notready
+    \uses{lem:disjoint_edge_set, def:common_val_prod}  
+    For any $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \in \mathcal{G}_{k,k}$, with $k + 1$ vertices, $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})  = 0$ 
+    \begin{proof}
+     $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = \mathbb{E}(X_{\mathbf{i}}X_{\mathbf{j}}) - \mathbb{E}(X_{\mathbf{i}})\mathbb{E}(X_{\mathbf{j}})  = 0$
+    \end{proof}
+\end{lemma}
+
+
+%depends on the previous inequality showing variance bounded by O(1/n)
+% this is the only statement from my part being depended by the Prop 4.5
+\begin{lemma}
+    \label{lem:elimination_kp1}
+    \notready
+    \uses{lem:G_leq_k, prop:var_upper_bound}
+
+    \[ \Var\left( \frac1n\Tr(\mathbf{X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2, |G| \leq k} \pi(G,w,w')\cdot \frac{n^{k}}{n^{k+2}} \le \frac{1}{n^2}\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
+\end{lemma}
+
+%---------%
+%---------%
+%---Haoyan's Part for Proposition 4.5 (End)---% 
+
+
+
 \begin{proposition}[Proposition 4.2 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence_probability}
+  \uses{lem:elimination_kp1}
   \notready
   Let $\{Y_{ij}\}_{1 \leq i \leq j}$ be independent random variables, with $\{Y_{ii}\}_{i\geq 1}$ identically distributed and $\{Y_{ij}\}_{1 \leq i < j}$ identically distributed. Suppose that $r_k = \max\{\bE(|Y_{11}|^k),\bE(|Y_{12}|^k)\} < \infty$ for each $k\in\bN$. Suppose further than $\bE(Y_{ij})=0$ for all $i,j$. If $i>j$, define $Y_{ij} \equiv Y_{ji}$, and let $\mathbf{Y}_n$ be the $n\times n$ matrix with $[\mathbf{Y}_n]_{ij} = Y_{ij}$ for $1\le i,j\le n$. Let $\mathbf{X}_n = n^{-1/2}\mathbf{Y}_n$ be the corresponding Wigner matrix. Then
   $$

@@ -5,7 +5,6 @@ import Batteries.Data.Rat.Basic
 import Mathlib.Algebra.Ring.Defs
 import Hammer
 
-
 /-!
 
 # LoopWalk
@@ -224,7 +223,6 @@ def IsClosed {u v : V} (_ : G.LoopWalk u v) : Prop := u = v
 
 
 
-
 /-
 Lemma: For k ∈ ℕ, k ≥ 2, and X an n × n matrix, we have
 Trace(X^k) = ∑_{Loopwalks w on the complete graph on n vertices satisfying IsClosed w,
@@ -296,6 +294,7 @@ def myWalk : G_comp.LoopWalk 1 2 :=
 
 #check IsClosed myWalk
 
+
 /- The walk above, but reversed -/
 def myWalkReverse : G_comp.LoopWalk 2 1 :=
   LoopWalk.cons
@@ -309,8 +308,6 @@ lemma reverse_eq : myWalkReverse = reverse myWalk := by
 /- A LoopWalk that starts at vertex 1 and does one loop at vertex 1-/
 def oneLoopWalk : G_comp.LoopWalk 1 1 :=
   LoopWalk.loop LoopWalk.nil
-
-
 
 /-  In the above LoopWalk Lean infers that the loop should be at vertex 1, however we can
 define it for arbitrary vertices as below  -/
@@ -328,10 +325,12 @@ def complicatedWalk : G_comp.LoopWalk 1 5 :=
     (completeGraph_adj 1 3 (by decide))
     (LoopWalk.cons (completeGraph_adj 3 5 (by decide)) LoopWalk.nil))))
 
+
 #eval length complicatedWalk
 #eval loop_count complicatedWalk
 #eval support complicatedWalk
 #eval darts complicatedWalk
+
 
 def moreComplicatedWalk : G_comp.LoopWalk 1 5 :=
   LoopWalk.cons
@@ -365,13 +364,13 @@ def closedComplicatedWalk : G_comp.LoopWalk 0 0 :=
 #eval darts myWalk
 #eval edges myWalk
 
+
 #eval support myWalkReverse
 #eval support (reverse myWalk)
 
 #eval support oneLoopWalk
 #eval darts oneLoopWalk
 #eval support (reverse complicatedWalk)
-
 
 
 def subtract_one : (Fin 6) → (Fin 6) :=
@@ -442,6 +441,7 @@ product is 10080.
 
 /-The folllowing eval should give the pro-/
 --#eval sumClosedWalkProducts 6 2 testMatrix
+
 
 /-
 Results we will need:
