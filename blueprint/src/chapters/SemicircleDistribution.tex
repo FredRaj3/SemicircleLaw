@@ -227,7 +227,7 @@ x & \text{if } x \ge 0, \\
   $$ 
   Then we define the function $ g : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \to [0,\infty] \subseteq \overline{\mathbb{R}}_{\ge 0}$ by:
     $$
-    \bar{sc} (\mu,v,x) := h(sc(\mu,v,x)),
+    \bar{sc} (\mu,v,x) := h(sc(\mu,v,x)).
     $$
 \end{definition}
 
@@ -372,7 +372,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 
 \begin{definition}
-  \label{def:semicircle_distribution}
+  \label{def:semicircleReal}
   \uses{def:semicirclePDF}
   \leanok
   The semicircle distribution with mean $\mu$ and variance $v$, denoted $\sigma(\mu, v)$, is the Dirac delta at μ if v = 0; otherwise, it's the measure with density with respect to the Lebesgue measure given by the semicircle pdf.
@@ -380,7 +380,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 \begin{lemma}
   \label{lem:semicircleReal_of_var_ne_zero}
-  \uses{def:semicircle_distribution}
+  \uses{def:semicircleReal}
   \leanok
   If $v \neq 0$, then the definition the semicircle distribution is defined as the measure with density with respect to the Lebesgue measure given by the semicircle pdf.
 \end{lemma}
@@ -392,7 +392,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 \begin{lemma}
   \label{lem:semicircleReal_zero_var}
-  \uses{def:semicircle_distribution}
+  \uses{def:semicircleReal}
   \leanok
   If the variance is 0, then the semicircle distribution is exactly the Dirac measure at $\mu$.
 \end{lemma}
