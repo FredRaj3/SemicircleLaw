@@ -61,6 +61,8 @@ namespace ProbabilityTheory
 
 section SemicirclePDF
 
+#check IdentDistrib
+
 
 /-- Probability density function of the semicircle distribution with mean `μ` and variance `v`.
 Note that the squared root of a negative number is defined to be zero.  -/
@@ -600,6 +602,96 @@ lemma h_cont : Continuous h := by
   continuity
 
 end Scribbles
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+section Demo
+
+lemma support_semicirclePDF_inc (μ : ℝ) (v : ℝ≥0) :
+Function.support (semicirclePDFReal μ v) ⊆ Icc (μ - 2 * √v) (μ + 2 * √v) := by
+  set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
+  intro x hx
+  by_contra hxI
+  have h5 : f x = 0 := by
+    have h6 : 4 * v - (x - μ) ^ 2 ≤ 0 := by
+      dsimp [I,Icc] at hxI
+      by_contra hxIc
+      push_neg at hxIc
+      have hxIc_1 : (x - μ)^2 < 4 * v := by exact lt_add_neg_iff_lt.mp hxIc
+      have hxIc_2 : |x - μ| < 2 * √v := by
+        set A := x - μ
+        have hxIc_21 : (2 * √v)^2 = 4 * v := by
+          calc
+            (2 * √v)^2 = 2^2 * (√v)^2 := by exact mul_pow 2 (√↑v) 2
+                     _ = 4 * (√v)^2 := by norm_num
+                     _ = 4 * v := by norm_num
+        rw [← hxIc_21] at hxIc_1
+        set B := 2 * √v
+        have : 0 ≤ B := by positivity
+        apply abs_lt_of_sq_lt_sq; exact hxIc_1; exact this
+      have hxIc_3 : -(x - μ) < 2 * √v := by
+        set A := x - μ with hA
+        calc
+          -A ≤ |A| := by exact neg_le_abs A
+            _ < 2 * √v := hxIc_2
+      have hxIc_31 : - x + μ < 2 * √v := by
+        set A := x - μ
+        calc
+          -x + μ = -(x - μ) := by ring
+               _ = -A := by exact rfl
+               _ ≤ |A| := by exact neg_le_abs A
+               _ < 2 * √v := hxIc_2
+      have hxIc_32 : μ < x + 2 * √v := by exact lt_add_of_neg_add_lt hxIc_31
+      have hxIc_33 : μ - 2 * √v < x := by
+        set B := 2 * √v
+        exact sub_right_lt_of_lt_add hxIc_32
+      have hxIc_4 : x - μ < 2 * √v := by exact lt_of_abs_lt hxIc_2
+      have hxIc_41 : x < μ + 2 * √v := by exact lt_add_of_tsub_lt_left hxIc_4
+      apply (not_and_or).mp at hxI
+      have C1 : x ≤ μ + 2 * √v := by exact le_of_lt hxIc_41
+      have C2 : μ - 2 * √v ≤ x := by exact le_of_lt hxIc_33
+      have C3 : μ - 2 * √v ≤ x ∧ x ≤ μ + 2 * √v := by exact ⟨C2, C1⟩
+      set Co1 := μ - 2 * √v ≤ x
+      set Co2 := x ≤ μ + 2 * √v
+      have C : (¬Co1 ∨ ¬Co2) ↔ ¬(Co1 ∧ Co2) := by exact Iff.symm Decidable.not_and_iff_or_not
+      rw [C] at hxI; absurd C3; exact hxI
+    have h7 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h6
+    simp [f,h7]
+  have h8 : x ∉ Function.support f := by simpa [Function.support] using h5
+  exact h8 hx
+
+@[fun_prop]
+lemma integrable_semicirclePDFReal' (μ : ℝ) (v : ℝ≥0) :
+    Integrable (semicirclePDFReal μ v) := by
+  rw [semicirclePDFReal_def]
+  set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+  have h1 : Continuous f := by apply Cont_semicirclePDFReal
+  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
+  have h2 : IsCompact I := by simpa [hI] using isCompact_Icc
+  have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
+  have h4 : Function.support f ⊆ I := by
+    dsimp [f,I]
+    apply support_semicirclePDF_inc
+  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
+
+end Demo
 
 end SemicircleDistribution
 
