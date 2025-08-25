@@ -453,7 +453,51 @@ variable {μ : ℝ} {v : ℝ≥0}
 /-- The map of a semicircle distribution by addition of a constant is semicircular. -/
 lemma semicircleReal_map_add_const (y : ℝ) :
     (semicircleReal μ v).map (· + y) = semicircleReal (μ + y) v := by
-  sorry
+  by_cases hv : v = 0
+  · rw [hv, semicircleReal_zero_var, semicircleReal_zero_var]
+    rw [Measure.map_dirac (measurable_id'.add_const y)]
+
+  · apply Measure.ext
+    intro s hs
+    rw [semicircleReal_of_var_ne_zero μ hv, semicircleReal_of_var_ne_zero (μ + y) hv]
+    --convert LHS and RHS to density
+    rw [Measure.map_apply (measurable_add_const y) hs]
+    rw [withDensity_apply' _]
+    rw [withDensity_apply' _]
+
+    --change of variables
+    have h_change : ∫⁻ (a : ℝ) in (fun x ↦ x + y) ⁻¹' s, semicirclePDF μ v a =
+                         ∫⁻ (u : ℝ) in s, semicirclePDF μ v (u - y) := by
+
+      have h_meas : Measurable (fun x ↦ x + y) := measurable_add_const y
+
+      have h1 : ∫⁻ (a : ℝ) in (fun x ↦ x + y) ⁻¹' s, semicirclePDF μ v a
+      = ∫⁻ (a : ℝ) in (fun x ↦ x + y) ⁻¹' s, semicirclePDF μ v ((a + y) - y) := by
+        apply lintegral_congr_ae
+        filter_upwards [] with a
+        ring_nf
+
+      have h_comp : Measurable (fun u ↦ semicirclePDF μ v (u - y)) :=
+              (measurable_semicirclePDF μ v).comp (measurable_sub_const y)
+      rw [h1]
+
+      -- this is the key lemma which helps us convert LHS
+      rw [<- setLIntegral_map hs h_comp]
+      rw [map_add_right_eq_self volume y]
+      simp [h_meas]
+
+    rw[h_change]
+
+    apply lintegral_congr_ae
+    filter_upwards [] with x
+
+    -- the original semicirclePDFReal needs to be modified
+    have semicirclePDFReal_sub_ENNReal {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
+             ENNReal.ofReal (semicirclePDFReal μ v (x - y)) =
+             ENNReal.ofReal (semicirclePDFReal (μ + y) v x) := by
+      rw [semicirclePDFReal_sub x y]
+
+    exact semicirclePDFReal_sub_ENNReal x y
 
 
 /-- The map of a semicircle distribution by addition of a constant is semicircular. -/
