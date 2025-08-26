@@ -678,38 +678,40 @@ Function.support (semicirclePDFReal μ v) ⊆ Icc (μ - 2 * √v) (μ + 2 * √v
   exact h8 hx
 
 
-/- The semicircle pdf is integrable. -/
+/- The semicircle pdf with fixed mean and variance is integrable.
+   The notation  -/
 @[fun_prop]
 lemma integrable_semicirclePDFReal' (μ : ℝ) (v : ℝ≥0) :
     Integrable (semicirclePDFReal μ v) := by
-  /- Rewrite explicit equational form of the semicircle pdf with fixed μ and v. -/
+  /- Rewrite explicit equational form of the semicircle pdf with fixed mean and variance. -/
   rw [semicirclePDFReal_def]
 
   /- For notational convenience, we set f to denote the semicircle pdf. -/
   set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
 
   /- Claim 1: The semicircle pdf f is continuous. -/
-  have h1 : Continuous f := by apply Cont_semicirclePDFReal
+  have h1 : Continuous f := by sorry
 
   /- Define the closed interval I := [μ - 2√{v},μ + 2√v]. -/
   set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
 
   /- Claim 2: The closed interval I is compact. -/
-  have h2 : IsCompact I := by simpa [hI] using isCompact_Icc
+  have h2 : IsCompact I := by sorry
 
-  /- The semicircle pdf f is integrable on the interval I. -/
-  have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
+  /- The semicircle pdf f is integrable on the interval I since:
+     (a) f is continuous on I <-- h1
+     (b) I is a compact subset of ℝ <-- h2
+     (c) ℝ is a Hausdorff topological space <-- Lean handles this.
+     (d) the Lebesgue measure is locally finite on I <-- Lean handles this. -/
+  have h3 : IntegrableOn f I := by sorry
 
   /- The support of the semicircle pdf f is contained in the closed interval I. -/
-  have h4 : Function.support f ⊆ I := by
-    dsimp [f,I]
-    apply support_semicirclePDF_inc
+  have h4 : Function.support f ⊆ I := by sorry
 
   /- We are using (the modus ponens/right implication of) the lemma:
      For a function g whose support is contained in a set s,
      the function g is integrable on s iff f is integrable on the whole space. -/
-  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
-
+  sorry
 
 end Demo
 
