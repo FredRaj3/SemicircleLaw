@@ -679,7 +679,7 @@ Function.support (semicirclePDFReal μ v) ⊆ Icc (μ - 2 * √v) (μ + 2 * √v
 
 
 /- The semicircle pdf with fixed mean and variance is integrable.
-   The notation  -/
+   Here, the notation ℙ actually denotes the Lebesgue measure. -/
 @[fun_prop]
 lemma integrable_semicirclePDFReal' (μ : ℝ) (v : ℝ≥0) :
     Integrable (semicirclePDFReal μ v) := by
