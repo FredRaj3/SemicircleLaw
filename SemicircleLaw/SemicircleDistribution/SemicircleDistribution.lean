@@ -164,8 +164,8 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     exact h9 hx
   exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
 
-  /-have h5 : x ∈ Iᶜ := by simpa using hxI-/
 
+/-Alternative Approaches to integrable_semicirclePDFReal-/
 
   /-have h4 : Function.support f ⊆ I := by
     have h5 : Function.support f = Ioo (μ - 2 * √v) (μ + 2 * √v) := by sorry
@@ -193,6 +193,7 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
   rw [h'] at h
   rw [← integrableOn_univ]; exact h-/
 
+
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
     ∫⁻ x, ENNReal.ofReal (semicirclePDFReal μ v x) = 1 := by
@@ -217,15 +218,15 @@ lemma semicirclePDFReal_add {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
 lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c⁻¹ * x) = |c| * semicirclePDFReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) x := by
   rw [semicirclePDFReal, semicirclePDFReal]; simp
-  have h1 : √(4 * v - (c⁻¹ * x - μ)^2) = √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) := by
-    have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by
+  have h1 : √(4 * v - (c⁻¹ * x - μ)^2) = √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) := by grind
+    /- have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by
       have h111 : c⁻¹ * x - μ = c⁻¹ * x - 1 * μ := by linarith
       have h112 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
       have h113 : c⁻¹ * x - 1 * μ = c⁻¹ * x - (c⁻¹ * c) * μ := by rw [h112]
       have h114 : c⁻¹ * x - (c⁻¹ * c) * μ = c⁻¹ * (x - c * μ) := by ring
       rw [h111,h113]; exact h114
     have h12 : (c⁻¹ * x - μ)^2 = (c⁻¹)^2 * (x - c * μ)^2 := by rw [h11]; ring
-    rw [h12]
+    rw [h12]-/
   have h2 : √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) = |c⁻¹| * √(4 * (c^2 * v) - (x - c * μ)^2) := by
     have h21 : 4 * v = (c⁻¹ * c)^2 * (4 * v) := by
       have h211 : (c⁻¹ * c)^2 = 1 := by
