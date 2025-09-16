@@ -69,20 +69,23 @@ variable {Ω : Type*} [MeasurableSpace Ω] {rmtx : Ω → Matrix (Fin m) (Fin n)
 
 
 /-- Any natural number power of a random square matrix is also a random matrix. -/
-lemma measurable_pow {n : ℕ} (X : Ω → Matrix (Fin n) (Fin n) α) (hX : Measurable X)
+@[fun_prop]
+lemma matrix_measurable_pow {n : ℕ} (X : Ω → Matrix (Fin n) (Fin n) α) (hX : Measurable X)
     (k : ℕ) : Measurable (fun ω ↦ (X ω) ^ k) := by
   sorry
 
 /-- The trace of a random square matrix is a random variable. -/
+@[fun_prop]
 lemma measurable_trace {n : ℕ} (X : Ω → Matrix (Fin n) (Fin n) α) (hX : Measurable X) :
   Measurable (fun ω ↦ (X ω).trace) := by
+  unfold Matrix.trace
   sorry
 
 /-- For any i ≤ m and j ≤ n, The (i, j)-th entry of an m × n random matrix is a random variable.-/
 lemma measurable_entry {m n : ℕ} (X : Ω → Matrix (Fin m) (Fin n) α) (hX : Measurable X) :
 ∀ (i : Fin m) (j : Fin n), Measurable (fun ω ↦ X ω i j) := by
   intros i j
-  sorry
+  fun_prop
 
 
 /-Now I define a random matrix ensemble as a map ℕ → ℕ → {measurable maps from Ω to
