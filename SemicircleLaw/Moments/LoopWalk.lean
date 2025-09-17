@@ -16,7 +16,7 @@ import Hammer
   `SimpleGraph.LoopWalk.nil'`, `SimpleGraph.LoopWalk.cons'`, `SimpleGraph.LoopWalk.loop`)
 
 * `SimpleGraph.LoopWalk.map` for the induced map on walks,
-  given an (injective) graph homomorphism.
+  given a graph homomorphism.
 
 ## Tags
 walks, moment method
