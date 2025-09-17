@@ -10,6 +10,8 @@ import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
 import Mathlib.Probability.HasLaw
 import SemicircleLaw.RandomMatrix.RandomMatrix
 import Mathlib.Combinatorics.Enumerative.Catalan
+import Mathlib.Topology.Filter
+import Mathlib.Order.Filter.Defs
 
 import Hammer
 
@@ -30,7 +32,7 @@ We define real Wigner random matrices and random matrix ensembles.
 
 open scoped ENNReal NNReal Real Complex
 
-open MeasureTheory ProbabilityTheory
+open MeasureTheory ProbabilityTheory Filter Topology
 
 variable {n : ℕ}
 variable (μ ν : Measure ℝ) [IsProbabilityMeasure μ] [IsProbabilityMeasure ν]
@@ -88,6 +90,7 @@ instance instIsProbabilityMeasure (n : ℕ) : IsProbabilityMeasure (WignerMeasur
 /-- The function that takes an element of WignerSpace (a map (Fin n)⊕(OffDiagIndex n) → ℝ)
 to the corresponding function (Fin n) → (Fin n) → ℝ that respects the symmetric structure of Wigner
 matrices.-/
+@[grind, simp]
 def wignerMatrixEntryFunction (ω : WignerSpace n) : (Fin n) → (Fin n) → ℝ :=
   fun i j =>
     if h_eq : i = j then
@@ -102,12 +105,24 @@ def wignerMatrixEntryFunction (ω : WignerSpace n) : (Fin n) → (Fin n) → ℝ
       ω (Sum.inr ⟨(j, i),h_gt⟩)
 
 
+lemma wignerMatrixEntryFunctionSymmetric (ω : WignerSpace n) {i : Fin n} {j : Fin n} :
+  wignerMatrixEntryFunction ω i j = wignerMatrixEntryFunction ω j i := by
+  rw[wignerMatrixEntryFunction, wignerMatrixEntryFunction]
+
+  sorry
+
 def wignerMatrixMap' (ω : WignerSpace n) : Matrix (Fin n) (Fin n) ℝ :=
   Matrix.of (wignerMatrixEntryFunction ω)
 
 /-- A wigner matrix is defined as a matrix valued random variable.-/
+noncomputable
 def wignerMatrixMap (n : ℕ) : (WignerSpace n) → Matrix (Fin n) (Fin n) ℝ :=
-  fun (ω : WignerSpace n) ↦ wignerMatrixMap' ω
+  fun (ω : WignerSpace n) ↦ (wignerMatrixMap' ω)
+
+/-- A wigner matrix is defined as a matrix valued random variable, rescaled by 1/√n.-/
+noncomputable
+def wignerMatrixMapScaled (n : ℕ) : (WignerSpace n) → Matrix (Fin n) (Fin n) ℝ :=
+  fun (ω : WignerSpace n) ↦ (1 / Real.sqrt (n : ℝ)) • (wignerMatrixMap' ω)
 
 /--For any `(n : ℕ)` the map `wignerMatrixMap` is measurable from `WignerSpace n` to
   `Matrix (Fin n) (Fin n) ℝ`-/
@@ -152,6 +167,11 @@ lemma offDiagonalEntryMeasurable (n : ℕ) (i j : Fin n) :
   apply measurable_entry
   apply wignerMatrixMapMeasurable
 
+lemma wignerMatrixSymmetric (n : ℕ) ( i j : Fin n) {ω : WignerSpace n} :
+  wignerMatrixMap n ω i j = wignerMatrixMap n ω j i := by
+  sorry
+
+
 /--The diagonal entries of a Wigner Matrix have law ν -/
 lemma diagonalHasLaw (n : ℕ) (i : Fin n) :
     HasLaw (fun ω ↦ (wignerMatrixMap n ω) i i) ν (WignerMeasure μ ν n) := by
@@ -179,6 +199,7 @@ variable {ω : WignerSpace n}
 variable {k : ℕ}
 #check ((wignerMatrixMap n ω)^k).trace
 
+noncomputable
 def wignerMatrixTracePower (n : ℕ) (k : ℕ) : (WignerSpace n) → ℝ :=
   fun ω ↦ ((wignerMatrixMap n ω)^k).trace
 
@@ -194,8 +215,12 @@ theorem wignerMatrixMomentOddExpectation (n : ℕ) (k : ℕ) (hk : Odd k) :
   (WignerMeasure μ ν n)[wignerMatrixTracePower n k] = 0 := by
   sorry
 
-/--The expectation of the trace of the kth power of a Wigner matrix is equal to the k/2 Catalan
-number when k is even.-/
-theorem wignerMatrixMomentEvenExpectation (n : ℕ) (k : ℕ) (hk : Even k) (hk' : k > 0) :
-  (WignerMeasure μ ν n)[wignerMatrixTracePower n k] = (catalan (k/2) : ℝ) := by
+/--The sequence of expectations of the trace of the kth power of an n × n Wigner matrix.-/
+noncomputable
+def wignerMatrixTracePowerSequence (k : ℕ) : ℕ → ℝ :=
+  fun n ↦ (WignerMeasure μ ν n)[wignerMatrixTracePower n k]
+
+
+theorem wignerMatrixMomentEvenExpectationLimit (k : ℕ) (hk : Even k) :
+  Tendsto (wignerMatrixTracePowerSequence μ ν k) atTop (𝓝 (catalan (k/2) : ℝ)) := by
   sorry
