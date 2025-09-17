@@ -94,7 +94,7 @@ def wignerMatrixEntryFunction (ω : WignerSpace n) : (Fin n) → (Fin n) → ℝ
       ω (Sum.inl i)
     else if h_lt : i < j then
       ω (Sum.inr ⟨(i, j), h_lt⟩)
-    else -- In this case, `j < i` must hold
+    else
       have h_gt : j < i := by
          apply lt_of_le_of_ne
          apply le_of_not_gt h_lt
@@ -167,6 +167,8 @@ lemma offDiagonalHasLaw (n : ℕ) {i j : Fin n} (h : i ≠ j) :
     HasLaw (fun ω ↦ (wignerMatrixMap n ω) i j) μ (WignerMeasure μ ν n) := by
   sorry
 
+/-- The map that sends a Wigner Matrix to its kth power is measurable.-/
+@[fun_prop]
 lemma wignerMatrixPowMeasurable (n : ℕ) (k : ℕ) :
     Measurable (fun ω ↦ ((wignerMatrixMap n ω)^k)) := by
   apply matrix_measurable_pow
@@ -180,16 +182,20 @@ variable {k : ℕ}
 def wignerMatrixTracePower (n : ℕ) (k : ℕ) : (WignerSpace n) → ℝ :=
   fun ω ↦ ((wignerMatrixMap n ω)^k).trace
 
+/-- The map that sends a Wigner Matrix to the trace of its kth power is measurable.-/
 @[fun_prop]
 lemma wignerMatrixTracePowerMeasurable (n : ℕ) (k : ℕ) :
     Measurable (wignerMatrixTracePower n k) := by
   apply measurable_trace
   apply wignerMatrixPowMeasurable
 
+/--The expectation of the trace of the kth power of a Wigner matrix is equal to 0 when k is odd.-/
 theorem wignerMatrixMomentOddExpectation (n : ℕ) (k : ℕ) (hk : Odd k) :
   (WignerMeasure μ ν n)[wignerMatrixTracePower n k] = 0 := by
   sorry
 
-theorem wignerMatrixMomentEvenExpectation (n : ℕ) (k : ℕ) (hk : Even k) :
+/--The expectation of the trace of the kth power of a Wigner matrix is equal to the k/2 Catalan
+number when k is even.-/
+theorem wignerMatrixMomentEvenExpectation (n : ℕ) (k : ℕ) (hk : Even k) (hk' : k > 0) :
   (WignerMeasure μ ν n)[wignerMatrixTracePower n k] = (catalan (k/2) : ℝ) := by
   sorry
