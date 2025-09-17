@@ -6,6 +6,7 @@ import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Combinatorics.Enumerative.Catalan
 import Mathlib.LinearAlgebra.Matrix.Trace
+import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 
 import Hammer
 
@@ -29,7 +30,7 @@ open scoped ENNReal NNReal Real Complex
 open MeasureTheory ProbabilityTheory
 
 variable {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [PolishSpace α] [BorelSpace α]
-  [Ring α]
+  [Ring α] [IsTopologicalRing α]
 variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} [IsProbabilityMeasure P]
 variable {m n : ℕ }
 
@@ -67,6 +68,22 @@ We do not construct an extra structure or type for random matrices.-/
 variable {Ω : Type*} [MeasurableSpace Ω] {rmtx : Ω → Matrix (Fin m) (Fin n) α}
   (hrmtx : Measurable rmtx)
 
+/--A map from `Ω` to `Matrix (Fin m) (Fin n) α` is measurable if the corresponding map for each
+entry is measurable.-/
+@[fun_prop]
+lemma measurable_matrix_map (m n : ℕ ) (X : Ω → Matrix (Fin m) (Fin n) α)
+    (hmeas_entry : ∀ (i : Fin m) (j : Fin n), Measurable (fun ω ↦ X ω i j)) : Measurable X := by
+  rw[measurable_pi_iff]
+  intro i
+  rw[measurable_pi_iff]
+  intro j
+  apply hmeas_entry
+
+/-- For any i ≤ m and j ≤ n, The (i, j)-th entry of an m × n random matrix is a random variable.-/
+lemma measurable_entry {m n : ℕ} (X : Ω → Matrix (Fin m) (Fin n) α) (hX : Measurable X) :
+∀ (i : Fin m) (j : Fin n), Measurable (fun ω ↦ X ω i j) := by
+  intros i j
+  fun_prop
 
 /-- Any natural number power of a random square matrix is also a random matrix. -/
 @[fun_prop]
@@ -79,13 +96,14 @@ lemma matrix_measurable_pow {n : ℕ} (X : Ω → Matrix (Fin n) (Fin n) α) (hX
 lemma measurable_trace {n : ℕ} (X : Ω → Matrix (Fin n) (Fin n) α) (hX : Measurable X) :
   Measurable (fun ω ↦ (X ω).trace) := by
   unfold Matrix.trace
-  sorry
+  unfold Matrix.diag
+  apply Finset.measurable_sum
+  intro i
+  simp
+  apply measurable_entry
+  apply hX
 
-/-- For any i ≤ m and j ≤ n, The (i, j)-th entry of an m × n random matrix is a random variable.-/
-lemma measurable_entry {m n : ℕ} (X : Ω → Matrix (Fin m) (Fin n) α) (hX : Measurable X) :
-∀ (i : Fin m) (j : Fin n), Measurable (fun ω ↦ X ω i j) := by
-  intros i j
-  fun_prop
+
 
 
 /-Now I define a random matrix ensemble as a map ℕ → ℕ → {measurable maps from Ω to
