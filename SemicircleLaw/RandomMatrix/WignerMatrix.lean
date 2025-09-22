@@ -55,7 +55,7 @@ instance : Fintype (OffDiagIndex n) := by
 /-- The index set for the independent random variables of a Wigner matrix.
 This is the disjoint union of indices for the diagonal (`Fin n`) and the
 off diagonal (`OffDiagIndex n`) entries. -/
-def Index (n : ℕ) := (Fin n) ⊕ (OffDiagIndex n)
+def Index (n : ℕ) := { p : Fin n × Fin n // p.1 ≤ p.2 }
 
 instance : Fintype (Index n) := by
   rw[Index]
@@ -70,9 +70,10 @@ instance (n : ℕ) : MeasurableSpace (WignerSpace n) := by
 
 /-- The measure distribution for a Wigner matrix. It assigns the measure `ν` to diagonal
 entries and `μ` to off-diagonal entries. -/
-def wignerMeasureDist (n : ℕ) : Index n → Measure ℝ
-  | Sum.inl _ => ν -- Diagonal entries get measure ν
-  | Sum.inr _ => μ -- Off diagonal entries get measure μ
+def wignerMeasureDist (n : ℕ) : Index n → Measure ℝ :=
+  fun (p : Index n) =>
+    if p.val.1 = p.val.2 then ν
+    else μ
 
 
 /-- The probability measure on the sample space `WignerSpace n`, which makes the
@@ -94,15 +95,15 @@ matrices.-/
 def wignerMatrixEntryFunction (ω : WignerSpace n) : (Fin n) → (Fin n) → ℝ :=
   fun i j =>
     if h_eq : i = j then
-      ω (Sum.inl i)
+      ω (⟨(i, i), le_refl i⟩)
     else if h_lt : i < j then
-      ω (Sum.inr ⟨(i, j), h_lt⟩)
+      ω (⟨(i, j), le_of_lt h_lt⟩)
     else
       have h_gt : j < i := by
          apply lt_of_le_of_ne
          apply le_of_not_gt h_lt
          grind
-      ω (Sum.inr ⟨(j, i),h_gt⟩)
+      ω (⟨(j, i), le_of_lt h_gt⟩)
 
 
 lemma wignerMatrixEntryFunctionSymmetric (ω : WignerSpace n) {i : Fin n} {j : Fin n} :
@@ -169,6 +170,9 @@ lemma offDiagonalEntryMeasurable (n : ℕ) (i j : Fin n) :
 
 lemma wignerMatrixSymmetric (n : ℕ) ( i j : Fin n) {ω : WignerSpace n} :
   wignerMatrixMap n ω i j = wignerMatrixMap n ω j i := by
+  rw[wignerMatrixMap]
+  rw[wignerMatrixMap']
+  simp
   sorry
 
 
