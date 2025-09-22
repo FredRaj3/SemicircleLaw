@@ -131,10 +131,23 @@ def wignerMatrixMapScaled (n : ℕ) : (WignerSpace n) → Matrix (Fin n) (Fin n)
 lemma wignerMatrixMapMeasurable (n : ℕ) : Measurable (wignerMatrixMap n) := by
   sorry
 
+
+/--For any `(n : ℕ)` the map `wignerMatrixMapScaled` is measurable from `WignerSpace n` to
+  `Matrix (Fin n) (Fin n) ℝ`-/
+@[fun_prop]
+lemma wignerMatrixMapScaledMeasurable (n : ℕ) : Measurable (wignerMatrixMapScaled n) := by
+  sorry
+
 /--For any `(n : ℕ)` the map `wignerMatrixMap` is `AEMeasurable` from `WignerSpace n` to
   `Matrix (Fin n) (Fin n) ℝ`-/
 @[fun_prop]
 lemma wignerMatrixMapAEMeasurable (n : ℕ) : AEMeasurable (wignerMatrixMap n) := by
+  fun_prop
+
+/--For any `(n : ℕ)` the map `wignerMatrixMap` is `AEMeasurable` from `WignerSpace n` to
+  `Matrix (Fin n) (Fin n) ℝ`-/
+@[fun_prop]
+lemma wignerMatrixMapScaledAEMeasurable (n : ℕ) : AEMeasurable (wignerMatrixMapScaled n) := by
   fun_prop
 
 
@@ -179,6 +192,7 @@ lemma wignerMatrixSymmetric (n : ℕ) ( i j : Fin n) {ω : WignerSpace n} :
 /--The diagonal entries of a Wigner Matrix have law ν -/
 lemma diagonalHasLaw (n : ℕ) (i : Fin n) :
     HasLaw (fun ω ↦ (wignerMatrixMap n ω) i i) ν (WignerMeasure μ ν n) := by
+
   sorry
 
 /--The upper diagonal entries of a Wigner Matrix have law μ -/
@@ -198,6 +212,11 @@ lemma wignerMatrixPowMeasurable (n : ℕ) (k : ℕ) :
   apply matrix_measurable_pow
   apply wignerMatrixMapMeasurable
 
+@[fun_prop]
+lemma wignerMatrixScaledPowMeasurable (n : ℕ) (k : ℕ) :
+    Measurable (fun ω ↦ ((wignerMatrixMapScaled n ω)^k)) := by
+  apply matrix_measurable_pow
+  apply wignerMatrixMapScaledMeasurable
 
 variable {ω : WignerSpace n}
 variable {k : ℕ}
@@ -207,12 +226,23 @@ noncomputable
 def wignerMatrixTracePower (n : ℕ) (k : ℕ) : (WignerSpace n) → ℝ :=
   fun ω ↦ ((wignerMatrixMap n ω)^k).trace
 
+noncomputable
+def wignerMatrixScaledTracePower (n : ℕ) (k : ℕ) : (WignerSpace n) → ℝ :=
+  fun ω ↦ ((wignerMatrixMapScaled n ω)^k).trace
+
 /-- The map that sends a Wigner Matrix to the trace of its kth power is measurable.-/
 @[fun_prop]
 lemma wignerMatrixTracePowerMeasurable (n : ℕ) (k : ℕ) :
     Measurable (wignerMatrixTracePower n k) := by
   apply measurable_trace
   apply wignerMatrixPowMeasurable
+
+  /-- The map that sends a Wigner Matrix to the trace of its kth power is measurable.-/
+@[fun_prop]
+lemma wignerMatrixScaledTracePowerMeasurable (n : ℕ) (k : ℕ) :
+    Measurable (wignerMatrixScaledTracePower n k) := by
+  apply measurable_trace
+  apply wignerMatrixScaledPowMeasurable
 
 /--The expectation of the trace of the kth power of a Wigner matrix is equal to 0 when k is odd.-/
 theorem wignerMatrixMomentOddExpectation (n : ℕ) (k : ℕ) (hk : Odd k) :
@@ -224,7 +254,12 @@ noncomputable
 def wignerMatrixTracePowerSequence (k : ℕ) : ℕ → ℝ :=
   fun n ↦ (WignerMeasure μ ν n)[wignerMatrixTracePower n k]
 
+/--The sequence of expectations of the trace of the kth power of an n × n Wigner matrix.-/
+noncomputable
+def wignerMatrixScaledTracePowerSequence (k : ℕ) : ℕ → ℝ :=
+  fun n ↦ (WignerMeasure μ ν n)[wignerMatrixScaledTracePower n k]
+
 
 theorem wignerMatrixMomentEvenExpectationLimit (k : ℕ) (hk : Even k) :
-  Tendsto (wignerMatrixTracePowerSequence μ ν k) atTop (𝓝 (catalan (k/2) : ℝ)) := by
+  Tendsto (wignerMatrixScaledTracePowerSequence μ ν k) atTop (𝓝 (catalan (k/2) : ℝ)) := by
   sorry
