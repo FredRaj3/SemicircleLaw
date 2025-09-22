@@ -5,4 +5,3 @@ import SemicircleLaw.SemicircleDistribution.SemicircleDistribution
 import SemicircleLaw.Moments.LoopWalk
 import SemicircleLaw.RandomMatrix.RandomMatrix
 import SemicircleLaw.RandomMatrix.WignerMatrix
-
