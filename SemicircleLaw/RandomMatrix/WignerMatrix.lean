@@ -259,7 +259,23 @@ noncomputable
 def wignerMatrixScaledTracePowerSequence (k : ℕ) : ℕ → ℝ :=
   fun n ↦ (1 / (n : ℝ)) •(WignerMeasure μ ν n)[wignerMatrixScaledTracePower n k]
 
-
+/--For any even k, the expectation of the scaled trace of the kth power of a Wigner matrix tends
+to `catalan (k/2)`.-/
 theorem wignerMatrixMomentEvenExpectationLimit (k : ℕ) (hk : Even k) :
   Tendsto (wignerMatrixScaledTracePowerSequence μ ν k) atTop (𝓝 (catalan (k/2) : ℝ)) := by
   sorry
+
+/--For a fixed k, the ℝ-valued sequence of scaled variance of traces of the kth power of a Wigner
+matrix.-/
+noncomputable
+def wignerMatrixScaledTracePowerSeqVar (k : ℕ) : ℕ → ℝ :=
+  fun n ↦ (1 / (n : ℝ)) • variance (wignerMatrixScaledTracePower n k) (WignerMeasure μ ν n)
+
+/--For any k, the variance of the scaled trace of the kth power of a Wigner matrix tends to 0.-/
+theorem wignerMatrixMomentsVarianceLimit (k : ℕ) :
+  Tendsto (wignerMatrixScaledTracePowerSeqVar μ ν k) atTop (𝓝 (0 : ℝ)) := by
+  sorry
+
+/-NOTE: We will need a separate statement that actually gives the rate of convergence. I'm not sure
+what the best way to do this yet is, but I will add it later. This should be enough for now to prove
+the semiricle law for matrix moments though.-/
