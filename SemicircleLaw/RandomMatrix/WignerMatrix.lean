@@ -257,7 +257,7 @@ def wignerMatrixTracePowerSequence (k : ℕ) : ℕ → ℝ :=
 /--The sequence of expectations of the trace of the kth power of an n × n Wigner matrix.-/
 noncomputable
 def wignerMatrixScaledTracePowerSequence (k : ℕ) : ℕ → ℝ :=
-  fun n ↦ (WignerMeasure μ ν n)[wignerMatrixScaledTracePower n k]
+  fun n ↦ (1 / (n : ℝ)) •(WignerMeasure μ ν n)[wignerMatrixScaledTracePower n k]
 
 
 theorem wignerMatrixMomentEvenExpectationLimit (k : ℕ) (hk : Even k) :
