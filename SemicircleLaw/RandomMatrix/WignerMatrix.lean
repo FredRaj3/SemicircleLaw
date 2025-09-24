@@ -257,7 +257,7 @@ def wignerMatrixTracePowerSequence (k : ℕ) : ℕ → ℝ :=
 /--The sequence of expectations of the trace of the kth power of an n × n Wigner matrix.-/
 noncomputable
 def wignerMatrixScaledTracePowerSequence (k : ℕ) : ℕ → ℝ :=
-  fun n ↦ (1 / (n : ℝ)) •(WignerMeasure μ ν n)[wignerMatrixScaledTracePower n k]
+  fun n ↦ (WignerMeasure μ ν n)[(1 / (n : ℝ)) • wignerMatrixScaledTracePower n k]
 
 /--For any even k, the expectation of the scaled trace of the kth power of a Wigner matrix tends
 to `catalan (k/2)`.-/
@@ -269,7 +269,7 @@ theorem wignerMatrixMomentEvenExpectationLimit (k : ℕ) (hk : Even k) :
 matrix.-/
 noncomputable
 def wignerMatrixScaledTracePowerSeqVar (k : ℕ) : ℕ → ℝ :=
-  fun n ↦ (1 / (n : ℝ)) • variance (wignerMatrixScaledTracePower n k) (WignerMeasure μ ν n)
+  fun n ↦ variance ((1/ (n: ℝ)) • wignerMatrixScaledTracePower n k) (WignerMeasure μ ν n)
 
 /--For any k, the variance of the scaled trace of the kth power of a Wigner matrix tends to 0.-/
 theorem wignerMatrixMomentsVarianceLimit (k : ℕ) :
