@@ -30,6 +30,9 @@
     \frac{1}{2πv} \sqrt{(4v - (x - μ)^2)_+}.
   \]
 \end{lemma}
+\begin{proof}
+\leanok
+\end{proof}
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_zero_var}
@@ -43,6 +46,7 @@
 %    \]
 \end{lemma}
 \begin{proof}
+    \leanok
     By Definition \ref{def:semicirclePDFReal}, the square root of a nonpositive number is defined to be zero.
     Hence, the pdf with a zero variance must be the function that is identically zero.
 \end{proof}
@@ -55,6 +59,7 @@
     The pdf of the semicircle distribution is always nonnegative.
 \end{lemma}
 \begin{proof}
+  \leanok
    By Definition \ref{def:semicirclePDFReal}, the square root of a nonpositive number is defined to be zero.
    Furthermore, the variance is always assumed to be nonnegative.
    Therefore, since the fractional term and the square root term are always nonnegative,
@@ -63,13 +68,14 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:measurable_semicirclePDFReal}
+    \leanok
     \lean{ProbabilityTheory.measurable_semicirclePDFReal}
     \uses{}
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$
     of the semicircle distribution with mean $\mu$ and variance $v$ is measurable.
 \end{lemma}
 \begin{proof}
-% sorry
+  \leanok
 \end{proof}
 %---------%
 %---------%
@@ -81,23 +87,26 @@
     of the semicircle distribution with mean $\mu$ and variance $v$ is strongly measurable.
 \end{lemma}
 \begin{proof}
+  \leanok
     By Lemma \ref{lem:measurable_semicirclePDFReal}, we know the pdf $\mathrm{sc}$ with fixed mean $\mu$ and variance $v$ is measurable.
     Since $\mathbb{R}$ is equipped with a second countable topology, the fact that $\mathrm{sc}$ with fixed mean $\mu$ and variance $v$ implies $\mathrm{sc}$ is strongly measurable.
 \end{proof}
 %---------%
 %---------%
 \begin{lemma}\label{lem:integrable_semicirclePDFReal}
+    \leanok
     \lean{ProbabilityTheory.integrable_semicirclePDFReal}
     \uses{def:semicirclePDFReal}
     Given a mean $\mu \in \mathbb{R}$ and a variance $v \in \mathbb{R}_{\geq 0}$, the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$
     of the semicircle distribution with mean $\mu$ and variance $v$ is integrable.
 \end{lemma}
 \begin{proof}
-% sorry
+  \leanok
 \end{proof}
 %---------%
 %---------%
 \begin{lemma}\label{lem:lintegral_semicirclePDFReal_eq_one}
+    \leanok
     \lean{ProbabilityTheory.lintegral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the lower Lebesgue integral of the p.d.f. $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$
@@ -109,6 +118,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:integral_semicirclePDFReal_eq_one}
+    \leanok
     \lean{ProbabilityTheory.integral_semicirclePDFReal_eq_one}
     \uses{def:semicirclePDFReal}
     Given a mean $\mu \in \mathbb{R}$ and a nonzero variance $v \in \mathbb{R}_{> 0}$, the integral of the pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$
@@ -131,6 +141,7 @@
     for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$.
 \end{lemma}
 \begin{proof}
+  \leanok
    Expanding Definition \ref{def:semicirclePDFReal} gives
    \[
    \mathrm{sc}(\mu,v,x-y)
@@ -153,6 +164,7 @@
     for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, and $x,y \in \mathbb{R}$.
 \end{lemma}
 \begin{proof}
+  \leanok
    Expanding Definition \ref{def:semicirclePDFReal} gives
    \[
    \mathrm{sc}(\mu,v,x+y)
@@ -164,6 +176,7 @@
 %---------%
 %---------%
 \begin{lemma}\label{lem:semicirclePDFReal_inv_mul}
+    \leanok
     \lean{ProbabilityTheory.semicirclePDFReal_inv_mul}
     \uses{def:semicirclePDFReal}
     For any pdf $\mathrm{sc} : \mathbb{R} \rightarrow \mathbb{R}$
@@ -174,7 +187,7 @@
     for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$.
 \end{lemma}
 \begin{proof}
-% sorry
+  \leanok
 \end{proof}
 %---------%
 %---------%
@@ -190,6 +203,7 @@
     for any $\mu \in \mathbb{R}$, $v \in \mathbb{R}_{\geq 0}$, $x \in \mathbb{R}$, and nonzero $c \in \mathbb{R}$.
 \end{lemma}
 \begin{proof}
+  \leanok
    Expanding Definition \ref{def:semicirclePDFReal} gives
    \[
    \mathrm{sc}(\mu,v,c x)
@@ -238,6 +252,10 @@ x & \text{if } x \ge 0, \\
     \bar{sc}(\mu,v) = \left( x \mapsto h(sc(\mu,v,x)) \right).
   $$
 \end{lemma}
+\begin{proof}
+  \leanok
+\end{proof}
+
 
 \begin{lemma}
   \leanok
@@ -250,6 +268,7 @@ x & \text{if } x \ge 0, \\
  $$
 \end{lemma}
 \begin{proof}
+    \leanok
     This follows immediately from the definition of $\bar{sc}$ as $h(sc(\mu,0,x))$, and the fact that $sc(\mu,0,x) = 0$ from Lemma \ref{lem:semicirclePDFReal_zero_var}.
 \end{proof}
 
@@ -265,6 +284,7 @@ Then the real value recovered from the extended semicircle PDF satisfies:
 \]
 \end{lemma}
 \begin{proof}
+  \leanok
 Since $sc(\mu, v, x) \ge 0$, we have $h(sc(\mu, v, x)) = sc(\mu, v, x)$, and thus
 \[
     \bar{sc}(\mu, v, x) = h(sc(\mu, v, x)) = sc(\mu, v, x).
@@ -287,6 +307,7 @@ as desired.
   \]
 \end{lemma}
 \begin{proof}
+    \leanok
     This is immediate from the definition of $\bar{sc}$ as $h(sc(\mu,v,x))$ and the nonnegativity of $sc$ (Lemma~\ref{lem:semicirclePDFReal_nonneg}).
 \end{proof}
 
@@ -301,6 +322,7 @@ as desired.
     $$
 \end{lemma}
 \begin{proof}
+  \leanok
 Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\mu,v,x)) < \infty$.
 \end{proof}
 
@@ -314,6 +336,9 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
     \bar{sc}(\mu,v,x) \ne \infty.
   \]
 \end{lemma}
+\begin{proof}
+  \leanok
+\end{proof}
 
 \begin{lemma}
   \leanok
@@ -327,7 +352,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \]
 \end{lemma}
 \begin{proof}
-    sorry
+    \leanok
 \end{proof}
 
 \begin{lemma}
@@ -338,6 +363,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   The function \( x \mapsto \bar{sc}(\mu,v,x) \) is measurable for all \( \mu \in \mathbb{R} \), \( v \in \mathbb{R}_{\ge 0} \).
 \end{lemma}
 \begin{proof}
+  \leanok
   Since $h$ is measurable, and $h$ is a measurable map \( \mathbb{R}_{\ge 0} \to \overline{\mathbb{R}}_{\ge 0} \), their composition is measurable.
 \end{proof}
 
@@ -352,6 +378,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   This follows from the equality:
   \[
   \int_{\mathbb{R}} h(sc(\mu,v,x)) \, dx = h( \left( \int_{\mathbb{R}} sc(\mu,v,x) \, dx \right) = h(1) = 1
@@ -499,10 +526,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \lean{ProbabilityTheory.semicircleReal_map_add_const}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto x + y$ is again a semicircular measure $\sigma(\mu + y, v)$.
-  \begin{proof}
-    %sorry
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 
 \begin{lemma}
@@ -512,10 +540,12 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_map_add_const}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto y + x$ is again a semicircular measure $\sigma(\mu + y, v)$.
-  \begin{proof}
-    Obvious from commutativity between $x + y$ and $y + x$.
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+  Obvious from commutativity between $x + y$ and $y + x$.
+\end{proof}
 
 
 \begin{lemma}
@@ -525,10 +555,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:integral_semicircleReal_eq_integral_smul, lem:semicirclePDFReal_mul}
     Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto c * x$ is again a semicircular measure $\sigma(c\mu, c^2v)$.
-  \begin{proof}
-     %sorry
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+
+\end{proof}
 
 
 
@@ -539,11 +570,12 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_map_const_mul}
    Given semicircular measure $\sigma$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto x * c$ is again a semicircular measure $\sigma(c\mu, c^2v)$.
-  \begin{proof}
-    Use commutativity between $Xc$ and $cX$.
-  \end{proof}
 \end{lemma}
 
+\begin{proof}
+  \leanok
+  Use commutativity between $Xc$ and $cX$.
+\end{proof}
 
 
 \begin{lemma}
@@ -553,10 +585,12 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_map_const_mul}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto -x$ is again a semicircular measure $\sigma(- \mu, v)$.
-  \begin{proof}
-     Special case of the multiplication by constant map with constant being $-1$.
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+  Special case of the multiplication by constant map with constant being $-1$.
+\end{proof}
 
 
 
@@ -567,10 +601,12 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_map_add_const, lem:semicircleReal_map_neg}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto x - y$ is again a semicircular measure $\sigma( \mu - y, v)$.
-  \begin{proof}
-   Use the map by addition of constant and substitute constant for its $-1$ multiple.
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+  Use the map by addition of constant and substitute constant for its $-1$ multiple.
+\end{proof}
 
 
 \begin{lemma}
@@ -580,10 +616,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_map_neg, lem:semicircleReal_map_const_add}
    Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto y - x$ is again a semicircular measure $\sigma(y - \mu, v)$.
-  \begin{proof}
-
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 
 \begin{lemma}
@@ -593,9 +630,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_map_add_const}
   Given a real random variable $X \sim \sigma(\mu, v)$
   then for a constant $y \in \mathbb{R}$, $X + y \sim \sigma(\mu + y, v)$
-  \begin{proof}
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 
 \begin{lemma}
@@ -605,10 +644,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_add_const}
   Given a real random variable $X \sim \sigma(\mu, v)$
   then for a constant $y \in \mathbb{R}$, $y + X \sim \sigma(\mu + y, v)$
-  \begin{proof}
-
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 
 \begin{lemma}
@@ -618,10 +658,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_map_const_mul}
   Given a real random variable $X \sim \sigma(\mu, v)$,
   then for a constant $c \in \mathbb{R}$, $cX \sim \sigma(c\mu , c^2v)$
-  \begin{proof}
-
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 
 \begin{lemma}
@@ -631,10 +672,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_const_mul}
    Given a real random variable $X \sim \sigma(\mu, v)$,
   then for a constant $c \in \mathbb{R}$, $Xc \sim \sigma(c \mu  , c^2v)$
-  \begin{proof}
-
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+  \leanok
+\end{proof}
 
 %end Transformation
 
@@ -648,10 +690,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \leanok
   If $X \sim \sigma(\mu, v)$, then its expectation $$\mathbb{E}[X] = \int x d \sigma(\mu, v) = \mu$$
-  \begin{proof}
-   %sorry
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+
+\end{proof}
 
 %similar to above
 \begin{lemma}
@@ -660,10 +703,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \leanok
   If $X \sim \sigma(\mu, v)$, then its variance $Var(X) = v$
-  \begin{proof}
-   %sorry
-  \end{proof}
 \end{lemma}
+
+\begin{proof}
+
+\end{proof}
 
 
 \begin{lemma}
@@ -675,6 +719,10 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   its variance parameter $v$
 \end{lemma}
 
+\begin{proof}
+  \leanok
+\end{proof}
+
 
 \begin{lemma}
   \label{lem:memLp_id_semicircleReal'}
@@ -685,19 +733,24 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   all finite $p$
 \end{lemma}
 
+\begin{proof}
+
+\end{proof}
+
 
 % probably need to reformulate the recursive definition of Catalan number into the closed form for the integration to be equal.
 %or maybe simply use mathlib........
 \begin{lemma}
   \label{lem:centralMoment_two_mul_semicircleReal}
-  \lean{ProbabilityTheory.centralMoment_fun_two_mul_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_two_mul_semicircleReal}
   \uses{def:Catalan_number, lem:integral_id_semicircleReal, lem:variance_fun_id_semicircleReal, lem:variance_id_semicircleReal, lem:semicircleReal_add_const, lem:semicircleReal_const_add,lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \leanok
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
-   \begin{proof}
-    %sorry
-   \end{proof}
 \end{lemma}
+
+\begin{proof}
+
+\end{proof}
 
 
 \begin{lemma}
@@ -706,10 +759,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:centralMoment_two_mul_semicircleReal}
   \leanok
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
-   \begin{proof}
-    %sorry
-   \end{proof}
 \end{lemma}
+
+\begin{proof}
+
+\end{proof}
 
 
 \begin{lemma}
@@ -718,10 +772,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add}
   \leanok
   $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
-  \begin{proof}
-    %sorry
-   \end{proof}
 \end{lemma}
+
+\begin{proof}
+
+\end{proof}
 
 
 \begin{lemma}
@@ -730,10 +785,11 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \uses{lem:centralMoment_odd_semicircleReal}
   \leanok
    $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
-   \begin{proof}
-    %sorry
-   \end{proof}
 \end{lemma}
+
+\begin{proof}
+
+\end{proof}
 
 %Moments end
 
