@@ -213,7 +213,7 @@
 \begin{definition}
   \label{def:semicirclePDF}
   \leanok
-  \lean{ProbabilityTheory.ProbabilityTheory.semicirclePDF}
+  \lean{ProbabilityTheory.semicirclePDF}
   \uses{def:semicirclePDFReal}
   Let $f : \mathbb{R} \times \mathbb{R}_{\geq 0} \times \mathbb{R} \to \mathbb{R}$ denote the real-valued semicircle density defined in Definition \ref{def:semicirclePDFReal}. Define the function $h: \mathbb{R} \to \mathbb{R} \cup \{\infty\} $ as follows:
   $$
@@ -496,7 +496,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
   \label{lem:semicircleReal_map_add_const}
   \uses{lem:integral_semicircleReal_eq_integral_smul, lem:semicirclePDFReal_add}    %convert the statement into integral and use semicirclereal pdf...
   \leanok
-  \lean{semicircleReal_map_add_const}
+  \lean{ProbabilityTheory.semicircleReal_map_add_const}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto x + y$ is again a semicircular measure $\sigma(\mu + y, v)$.
   \begin{proof}
@@ -508,7 +508,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_map_const_add}
   \leanok
-  \lean{semicircleReal_map_const_add}
+  \lean{ProbabilityTheory.semicircleReal_map_const_add}
   \uses{lem:semicircleReal_map_add_const}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto y + x$ is again a semicircular measure $\sigma(\mu + y, v)$.
@@ -521,7 +521,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_map_const_mul}
   \leanok
-  \lean{semicircleReal_map_const_mul}
+  \lean{ProbabilityTheory.semicircleReal_map_const_mul}
   \uses{lem:integral_semicircleReal_eq_integral_smul, lem:semicirclePDFReal_mul}
     Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto c * x$ is again a semicircular measure $\sigma(c\mu, c^2v)$.
@@ -535,7 +535,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_map_mul_const}
   \leanok
-  \lean{semicircleReal_map_mul_const}
+  \lean{ProbabilityTheory.semicircleReal_map_mul_const}
   \uses{lem:semicircleReal_map_const_mul}
    Given semicircular measure $\sigma$ with mean $\mu$ and variance $v$, then for any constant $c \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto x * c$ is again a semicircular measure $\sigma(c\mu, c^2v)$.
@@ -549,7 +549,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_map_neg}
   \leanok
-  \lean{semicircleReal_map_neg}
+  \lean{ProbabilityTheory.semicircleReal_map_neg}
   \uses{lem:semicircleReal_map_const_mul}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto -x$ is again a semicircular measure $\sigma(- \mu, v)$.
@@ -563,7 +563,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_map_sub_const}
   \leanok
-  \lean{semicircleReal_map_sub_const}
+  \lean{ProbabilityTheory.semicircleReal_map_sub_const}
   \uses{lem:semicircleReal_map_add_const, lem:semicircleReal_map_neg}
   Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto x - y$ is again a semicircular measure $\sigma( \mu - y, v)$.
@@ -576,7 +576,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_map_const_sub}
   \leanok
-  \lean{semicircleReal_map_const_sub}
+  \lean{ProbabilityTheory.semicircleReal_map_const_sub}
   \uses{lem:semicircleReal_map_neg, lem:semicircleReal_map_const_add}
    Given semicircular measure $\sigma(\mu, v)$ with mean $\mu$ and variance $v$, then for any constant $y \in \mathbb{R}$, the pushforward
   of $\sigma(\mu, v)$ under the map $x \mapsto y - x$ is again a semicircular measure $\sigma(y - \mu, v)$.
@@ -589,7 +589,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_add_const}
   \leanok
-  \lean{semicircleReal_add_const}
+  \lean{ProbabilityTheory.semicircleReal_add_const}
   \uses{lem:semicircleReal_map_add_const}
   Given a real random variable $X \sim \sigma(\mu, v)$
   then for a constant $y \in \mathbb{R}$, $X + y \sim \sigma(\mu + y, v)$
@@ -601,7 +601,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_const_add}
   \leanok
-  \lean{semicircleReal_const_add}
+  \lean{ProbabilityTheory.semicircleReal_const_add}
   \uses{lem:semicircleReal_add_const}
   Given a real random variable $X \sim \sigma(\mu, v)$
   then for a constant $y \in \mathbb{R}$, $y + X \sim \sigma(\mu + y, v)$
@@ -614,7 +614,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_const_mul}
   \leanok
-  \lean{semicircleReal_const_mul}
+  \lean{ProbabilityTheory.semicircleReal_const_mul}
   \uses{lem:semicircleReal_map_const_mul}
   Given a real random variable $X \sim \sigma(\mu, v)$,
   then for a constant $c \in \mathbb{R}$, $cX \sim \sigma(c\mu , c^2v)$
@@ -627,7 +627,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 \begin{lemma}
   \label{lem:semicircleReal_mul_const}
   \leanok
-  \lean{semicircleReal_mul_const}
+  \lean{ProbabilityTheory.semicircleReal_mul_const}
   \uses{lem:semicircleReal_const_mul}
    Given a real random variable $X \sim \sigma(\mu, v)$,
   then for a constant $c \in \mathbb{R}$, $Xc \sim \sigma(c \mu  , c^2v)$
@@ -644,7 +644,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 %convert the random variable into standard semicircle distribution which has 0 mean
 \begin{lemma}
   \label{lem:integral_id_semicircleReal}
-  \lean{integral_id_semicircleReal}
+  \lean{ProbabilityTheory.integral_id_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \leanok
   If $X \sim \sigma(\mu, v)$, then its expectation $$\mathbb{E}[X] = \int x d \sigma(\mu, v) = \mu$$
@@ -656,7 +656,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 %similar to above
 \begin{lemma}
   \label{lem:variance_fun_id_semicircleReal}
-  \lean{variance_fun_id_semicircleReal}
+  \lean{ProbabilityTheory.variance_fun_id_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add, lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \leanok
   If $X \sim \sigma(\mu, v)$, then its variance $Var(X) = v$
@@ -668,7 +668,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 \begin{lemma}
   \label{lem:variance_id_semicircleReal}
-  \lean{variance_id_semicircleReal}
+  \lean{ProbabilityTheory.variance_id_semicircleReal}
   \uses{lem:variance_fun_id_semicircleReal}
   \leanok
   The variance of a real semicircle distribution with parameter $(\mu, v)$ is
@@ -678,7 +678,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 \begin{lemma}
   \label{lem:memLp_id_semicircleReal'}
-  \lean{memLp_id_semicircleReal}
+  \lean{ProbabilityTheory.memLp_id_semicircleReal}
   \leanok
   \uses{lem:variance_id_semicircleReal}
   All the moments of a real semicircle distribution are finite. That is, the identity is in $L_p$ for
@@ -690,7 +690,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 %or maybe simply use mathlib........
 \begin{lemma}
   \label{lem:centralMoment_two_mul_semicircleReal}
-  \lean{centralMoment_fun_two_mul_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_fun_two_mul_semicircleReal}
   \uses{def:Catalan_number, lem:integral_id_semicircleReal, lem:variance_fun_id_semicircleReal, lem:variance_id_semicircleReal, lem:semicircleReal_add_const, lem:semicircleReal_const_add,lem:semicircleReal_const_mul, lem:semicircleReal_mul_const}
   \leanok
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
@@ -702,7 +702,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 \begin{lemma}
   \label{lem:centralMoment_fun_two_mul_semicircleReal}
-  \lean{centralMoment_fun_two_mul_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_fun_two_mul_semicircleReal}
   \uses{lem:centralMoment_two_mul_semicircleReal}
   \leanok
    $\mathbb{E}[(X  - \mu)^{2n}] = v^n C_n $
@@ -714,7 +714,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 \begin{lemma}
   \label{lem:centralMoment_odd_semicircleReal}
-  \lean{centralMoment_odd_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_odd_semicircleReal}
   \uses{lem:semicircleReal_add_const, lem:semicircleReal_const_add}
   \leanok
   $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
@@ -726,7 +726,7 @@ Since $sc(\mu,v,x) \in \mathbb{R}_{\ge 0}$, we have $\bar{sc}(\mu,v,x) = h(sc(\m
 
 \begin{lemma}
   \label{lem:centralMoment_fun_odd_semicircleReal}
-  \lean{centralMoment_fun_odd_semicircleReal}
+  \lean{ProbabilityTheory.centralMoment_fun_odd_semicircleReal}
   \uses{lem:centralMoment_odd_semicircleReal}
   \leanok
    $\mathbb{E}[(X  - \mu)^{2n + 1}] = 0 $
