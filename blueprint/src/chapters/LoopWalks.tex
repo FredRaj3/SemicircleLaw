@@ -49,7 +49,6 @@ LoopWalk we mean closed LoopWalk below.
 \end{proposition}
 
 \begin{proof}
-  \notready
   $\#V\le \#E+1$: proof by induction on $\#V$. Base case $\#V = 1$ is obvious.
   For each additional vertex, the number of edges must increase by at least one for the graph to remain connected.
 \end{proof}
@@ -232,74 +231,66 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
 
 \begin{lemma}
   \label{lem:vertex_bound}
-  \notready
   \uses{prop:vertex_edge_inequality, lem:edge_set_order_leq_k_over_two}
   Let $w \in \mathcal{G}_k$ be such that $w(e) \geq 2$ for all $e \in E_w$. Then $|V_w| \le k/2 + 1$.
 \end{lemma}
 
 \begin{proof}
-  \notready
   Follows directly from earlier lemmas (replacing $\#E$ with $k/2$).
 \end{proof}
 
 
 \begin{lemma}
   \label{lem:odd_vertex_bound}
-  \notready
   \uses{lem:vertex_bound}
+  Let $w \in \mathcal{G}_k$ be such that $w(e) \geq 2$ for all $e \in E_w$.
   Suppose $k$ odd. Then, $|V_w| \le \frac{k}{2} + \frac{1}{2}$.
 \end{lemma}
 
 \begin{proof}
-  \notready
   %prove
 \end{proof}
 
 
 \begin{lemma}
   \label{lem:edge_bound_large_w}
-  \notready
   %\uses{}
   If $k$ is even and there exists $e$ such that $w(e) \ge 3$, then $|E_w| \le \frac{k-1}{2}$.
 \end{lemma}
 
 \begin{proof}
-  \notready
   %proof
 \end{proof}
 
 
 \begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
   \label{prop:g_bound_self_edge}
-  \notready
   \uses{prop:vertex_edge_inequality, prop:vertex_edge_inequality, lem:edge_set_order_leq_k_over_two, def:g_k}
   Let $w\in\mathcal{G}_k$ with $w\ge 2$, and suppose $k$ is even. If there exists a self-edge $e$,
   then $|V_w|\le k/2$.
 \end{proposition}
 
 \begin{proof}
-  \notready
-  Since the graph $G = (V,E)$ contains a loop, it is not a tree; it follows from Exercise \ref{ex V < E+1} that $\#V < \#E+1$.  But $w\ge 2$ implies that $\#E\le k/2$, and so $\#V < k/2+1$, and so $|V_w| = \#V \le k/2$.
+  Since the graph $G = (V,E)$ contains a loop, it is not a tree; it follows from
+  Exercise \ref{ex V < E+1} that $\#V < \#E+1$.  But $w\ge 2$ implies that $\#E\le k/2$, and so
+  $\#V < k/2+1$, and so $|V_w| = \#V \le k/2$.
 \end{proof}
 
 
 \begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
   \label{prop:g_bound_large_w}
-  \notready
   \uses{prop:vertex_edge_inequality, prop:vertex_edge_tree_equality, lem:edge_bound_large_w}
-  Let $w \in\mathcal{G}_k$ with $w\ge 2$, and suppose $k$ is even. If there exists an edge $e$ in
-  $G$ with $w(e)\ge 3$, then $|V_w|\le k/2$.
+  Let $w \in\mathcal{G}_k$ with $w\ge 2$, and suppose $k$ is even. If there exists an edge $e$
+  with $w(e)\ge 3$, then $|V_w|\le k/2$.
 \end{proposition}
 
 \begin{proof}
-  \notready
   The sum of $w$ over all edges $E$ in $G$ is $k$.  Hence, the sum of $w$ over $E\setminus\{e\}$ is $\le k-3$.  Since $w\ge 2$, this means that the number of edges excepting $e$ is $\le (k-3)/2$; hence, $\#E \le (k-3)/2+1 = (k-1)/2$.  By the result of a previous lemma, this means that $\#V \le (k-1)/2+1 = (k+1)/2$.  Since $k$ is even, it follows that $|V_w|=\#V \le k/2$.
 \end{proof}
 
 
 \begin{definition}
   \label{def:special_set_g}
-  \notready
   \uses{def:g_k}
   Let $\mathcal{G}^{k/2+1}_k$ to be the set of $w\in\mathcal{G}_k$ where $|V_w|=k/2+1$,
   contains no self-edges, and the walk $w$ crosses every edge exactly $2$ times.
@@ -308,52 +299,44 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
 
 \begin{lemma}
   \label{lem:graph_set_finite}
-  \notready
   \uses{def:g_k}
   $|\mathcal{G}_k|$ is finite.
 \end{lemma}
 
 \begin{proof}
-  \notready
   Follows from definition.
 \end{proof}
 
 
 \begin{lemma}
   \label{lem:special_g_tree}
-  \notready
   \uses{def:special_set_g, lem:special_g_edge_count, prop:vertex_edge_tree_equality}
   Elements of $\mathcal{G}_k^{k/2+1}$ are trees.
 \end{lemma}
 
 \begin{proof}
-  \notready
   %proof
 \end{proof}
 
 
 \begin{lemma}
   \label{lem:special_g_edge_count}
-  \notready
   \uses{def:special_set_g, prop:g_bound_large_w}
   Elements of $\mathcal{G}_k^{k/2+1}$ have $|E_w| = k/2$.
 \end{lemma}
 
 \begin{proof}
-  \notready
   %proof
 \end{proof}
 
 
 \begin{lemma}
   \label{lem:special_g_vertex_count}
-  \notready
   \uses{def:special_set_g, lem:special_g_edge_count, prop:vertex_edge_tree_equality}
   Elements of $\mathcal{G}_k^{k/2+1}$ have $|V_w| = k/2 + 1$.
 \end{lemma}
 
 \begin{proof}
-  \notready
   Follows directly from dependency graph.
 \end{proof}
 
@@ -382,7 +365,7 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
   \notready
   \label{lem:graph_Dyck_correspondence}
   \uses{def:Dyck_paths, def:graph_to_Dyck_map}
-  $\phi(w) = \mathbf{d}(w) \subseteq \mathcal{D}_k$, where $\mathcal{D}_k$ denotes the set of Dyck path of order $k$.
+  $\phi(w) = \mathbf{d}(w) \in \mathcal{D}_k$, where $\mathcal{D}_k$ denotes the set of Dyck path of order $k$.
 \end{lemma}
 
 \begin{proof}
