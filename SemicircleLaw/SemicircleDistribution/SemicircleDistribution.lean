@@ -218,15 +218,15 @@ lemma semicirclePDFReal_add {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
 lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c⁻¹ * x) = |c| * semicirclePDFReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) x := by
   rw [semicirclePDFReal, semicirclePDFReal]; simp
-  have h1 : √(4 * v - (c⁻¹ * x - μ)^2) = √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) := by grind
-    /- have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by
-      have h111 : c⁻¹ * x - μ = c⁻¹ * x - 1 * μ := by linarith
-      have h112 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
-      have h113 : c⁻¹ * x - 1 * μ = c⁻¹ * x - (c⁻¹ * c) * μ := by rw [h112]
-      have h114 : c⁻¹ * x - (c⁻¹ * c) * μ = c⁻¹ * (x - c * μ) := by ring
-      rw [h111,h113]; exact h114
-    have h12 : (c⁻¹ * x - μ)^2 = (c⁻¹)^2 * (x - c * μ)^2 := by rw [h11]; ring
-    rw [h12]-/
+  have h1 : √(4 * v - (c⁻¹ * x - μ)^2) = √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) := by
+      have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by
+        have h111 : c⁻¹ * x - μ = c⁻¹ * x - 1 * μ := by linarith
+        have h112 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
+        have h113 : c⁻¹ * x - 1 * μ = c⁻¹ * x - (c⁻¹ * c) * μ := by rw [h112]
+        have h114 : c⁻¹ * x - (c⁻¹ * c) * μ = c⁻¹ * (x - c * μ) := by ring
+        rw [h111,h113]; exact h114
+      have h12 : (c⁻¹ * x - μ)^2 = (c⁻¹)^2 * (x - c * μ)^2 := by rw [h11]; ring
+      rw [h12]
   have h2 : √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) = |c⁻¹| * √(4 * (c^2 * v) - (x - c * μ)^2) := by
     have h21 : 4 * v = (c⁻¹ * c)^2 * (4 * v) := by
       have h211 : (c⁻¹ * c)^2 = 1 := by
