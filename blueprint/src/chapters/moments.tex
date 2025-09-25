@@ -1,7 +1,7 @@
 \chapter{Convergence of Matrix Moments}
+
 \section{Convergence in Expectation}
 
-%%%% MATRIX LEMMAS %%%%
 
 \begin{lemma}[Matrix Powers Entries]
     \label{lem:matrix_powers_entries}
@@ -13,31 +13,32 @@
 \end{lemma}
 
 \begin{proof}
-We proceed by induction on $k$.
+  We proceed by induction on $k$.
 
-Our base case is $k=1$, then:
-$$
-Y_n^1 = Y_n \quad \Rightarrow \quad [Y_n^1]_{ij} = Y_{ij},
-$$
-which matches the formula since the summation over zero indices just gives the term $Y_{ij}$.
+  Our base case is $k=1$, then:
+  $$
+  Y_n^1 = Y_n \quad \Rightarrow \quad [Y_n^1]_{ij} = Y_{ij},
+  $$
+  which matches the formula since the summation over zero indices just gives the term $Y_{ij}$.
 
-Our inductive step is to assume that the formula holds for some $k \ge 1$, i.e.,
-$$
-\left[Y_n^k\right]_{ij} = \sum_{1 \le i_2, \dots, i_k \le n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_k j}.
-$$
+  Our inductive step is to assume that the formula holds for some $k \ge 1$, i.e.,
+  $$
+  \left[Y_n^k\right]_{ij} = \sum_{1 \le i_2, \dots, i_k \le n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_k j}.
+  $$
 
-We must show that it holds for $k + 1$. Note that:
-\begin{align*}
-\left[Y_n^{k+1}\right]_{ij}
-&= \sum_{\ell = 1}^n \left[Y_n^k\right]_{i\ell} Y_{\ell j} \\
-&= \sum_{\ell = 1}^n \left( \sum_{1 \le i_2, \dots, i_k \le n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_k \ell} \right) Y_{\ell j} \\
-&= \sum_{1 \le i_2, \dots, i_k, i_{k+1} \le n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_k i_{k+1}} Y_{i_{k+1} j}.
-\end{align*}
+  We must show that it holds for $k + 1$. Note that:
+  \begin{align*}
+  \left[Y_n^{k+1}\right]_{ij}
+  &= \sum_{\ell = 1}^n \left[Y_n^k\right]_{i\ell} Y_{\ell j} \\
+  &= \sum_{\ell = 1}^n \left( \sum_{1 \le i_2, \dots, i_k \le n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_k \ell} \right) Y_{\ell j} \\
+  &= \sum_{1 \le i_2, \dots, i_k, i_{k+1} \le n} Y_{i i_2} Y_{i_2 i_3} \cdots Y_{i_k i_{k+1}} Y_{i_{k+1} j}.
+  \end{align*}
 
-Thus, the formula holds for $k + 1$.
+  Thus, the formula holds for $k + 1$.
 
-By induction, the result holds for all $k \ge 1$.
+  By induction, the result holds for all $k \ge 1$.
 \end{proof}
+
 
 \begin{lemma}[Matrix Powers Trace]
     \label{lem:matrix_powers_trace}
@@ -49,13 +50,14 @@ By induction, the result holds for all $k \ge 1$.
 \end{lemma}
 
 \begin{proof}
-We can use the result from Lemma \ref{lem:matrix_powers_entries} to compute the trace of $Y^k$:
-\begin{align*}
-&\Tr[Y^{k}] = \sum_{i=1}^{n} (Y^{k})_{ii} = \sum_{i=1}^{n} (\sum_{1\leq i_{2}, \ldots i_{k} \leq n} Y_{i i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k} i}) \\
-&= \sum_{1\leq i_{1}, i_{2}, \ldots, i_{k} \leq n} Y_{i_{1} i_{2}} Y_{i_{2} i_{3}} \ldots Y_{i_{k} i_{1}}.
+  We can use the result from Lemma \ref{lem:matrix_powers_entries} to compute the trace of $Y^k$:
+  \begin{align*}
+  &\Tr[Y^{k}] = \sum_{i=1}^{n} (Y^{k})_{ii} = \sum_{i=1}^{n} (\sum_{1\leq i_{2}, \ldots i_{k} \leq n} Y_{i i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k} i}) \\
+  &= \sum_{1\leq i_{1}, i_{2}, \ldots, i_{k} \leq n} Y_{i_{1} i_{2}} Y_{i_{2} i_{3}} \ldots Y_{i_{k} i_{1}}.
 \end{align*}
 
 \end{proof}
+
 
 \begin{definition}[Matrix Multi Index]
     \label{def:matrix_multi_index}
@@ -65,6 +67,7 @@ We can use the result from Lemma \ref{lem:matrix_powers_entries} to compute the 
     Y_{\mathbf{i}} = Y_{i_{1}i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k}i_{1}}
     $$
 \end{definition}
+
 
 \begin{lemma}[Matrix Multi Index and Graph Equivalence]
     \label{lem:multi_index_graph_equivalence}
@@ -88,6 +91,7 @@ We can use the result from Lemma \ref{lem:matrix_powers_entries} to compute the 
     as required.
 \end{proof}
 
+
 \begin{lemma}[Graph Walk and Graph Count Equivalence]
     \label{lem:graph_walk_count_equivalence}
     \uses{def:graph_walk_multi_index, def:graph_edge_count, def:matrix_multi_index, lem:multi_index_graph_equivalence}
@@ -99,19 +103,19 @@ We can use the result from Lemma \ref{lem:matrix_powers_entries} to compute the 
 \end{lemma}
 
 \begin{proof}
-Using lemma \ref{lem:multi_index_graph_equivalence}, we already have that $Y_{\mathbf{i}} = \prod_{w \in w_{\mathbf{i}}} Y_{w}$. We consider the following cases for each $(i, j)$:\\\\
-\textbf{$(i, j) \notin w_{\mathbf{i}}$}: In this case, the entry $Y_{ij}^{w_{\mathbf{i}}(\{i, j\})} = 1$, making no contribution to the product. \\\\
-\textbf{$(i, j) \in w_{\mathbf{i}}$}: In this case, the entry $Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}$ is equal to the number of times the unordered edge $\{i, j\}$ appears in the path $w_{\mathbf{i}}$. \\\\
-These two cover all possibilities, so putting them together we obtain
-$$
-Y_{\mathbf i}
-      \;=\;
-      \prod_{1\le i\le j\le n}
-          Y_{ij}^{\,w_{\mathbf i}(\{i,j\})}.
-$$
-Indeed, if $(i,j)\notin w_{\mathbf i}$ then $w_{\mathbf i}(\{i,j\})=0$ and the corresponding factor contributes $Y_{ij}^{0}=1$, and if $(i,j)\in w_{\mathbf i}$ (hence also $(j,i)$ if $j<i$), the exponent $w_{\mathbf i}(\{i,j\})$ counts exactly how many times the unordered edge $\{i,j\}$ appears in the walk, so the factor is $Y_{ij}^{\,w_{\mathbf i}(\{i,j\})}$.
+  Using lemma \ref{lem:multi_index_graph_equivalence}, we already have that $Y_{\mathbf{i}} = \prod_{w \in w_{\mathbf{i}}} Y_{w}$. We consider the following cases for each $(i, j)$:\\\\
+  \textbf{$(i, j) \notin w_{\mathbf{i}}$}: In this case, the entry $Y_{ij}^{w_{\mathbf{i}}(\{i, j\})} = 1$, making no contribution to the product. \\\\
+  \textbf{$(i, j) \in w_{\mathbf{i}}$}: In this case, the entry $Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}$ is equal to the number of times the unordered edge $\{i, j\}$ appears in the path $w_{\mathbf{i}}$. \\\\
+  These two cover all possibilities, so putting them together we obtain
+  $$
+  Y_{\mathbf i}
+        \;=\;
+        \prod_{1\le i\le j\le n}
+            Y_{ij}^{\,w_{\mathbf i}(\{i,j\})}.
+  $$
+  Indeed, if $(i,j)\notin w_{\mathbf i}$ then $w_{\mathbf i}(\{i,j\})=0$ and the corresponding factor contributes $Y_{ij}^{0}=1$, and if $(i,j)\in w_{\mathbf i}$ (hence also $(j,i)$ if $j<i$), the exponent $w_{\mathbf i}(\{i,j\})$ counts exactly how many times the unordered edge $\{i,j\}$ appears in the walk, so the factor is $Y_{ij}^{\,w_{\mathbf i}(\{i,j\})}$.
 
-Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one of these two cases and the product lists each edge exactly once.
+  Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one of these two cases and the product lists each edge exactly once.
 \end{proof}
 
 \begin{lemma}[Expectation of Matrix Multi Index]
@@ -169,17 +173,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
     $$
 \end{definition}
 
-%%%% END -- PAUL'S PART
-%%%%
-%%%%
-%%%%
 
-
-%---Richard's Part for Proposition 4.1 (Updated) (Start)---%
-%---------%
-%---------%
-%---------%
-%---------%
 %\begin{definition}[Edge Counting Function $w_\mathbf{i}(\cdot)$ : R-1-*]
   % Paul's section might already have this definition.
 %  \label{def:edge_counting_function_w}
@@ -187,25 +181,15 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   % We use the definition of the walk $w_\mathbf{i}$ and also the definition of the edge set $E_\mathbf{i}$ of the graph $G_\mathbf{i}$.
 %  Given a graph $G_\mathbf{i} = (V_\mathbf{i},E_\mathbf{i})$ and a path $w_\mathbf{i}$ generated by some $k$-index $\mathbf{i}$, we let $w_\mathbf{i}(e)$ denote the number of times the edge $e \in E_\mathbf{i}$ is traversed by the path $w_\mathbf{i}$.
 %\end{definition}
-%---------%
-%---------%
 
-%---------%
-%---------%
 % Motivated by these conditions, we define $\mathcal{G}_k$:
-%---------%
-%---------%
 \begin{definition}[Length $|w|$ : R-1-3 : def:length\_of\_w]
   \label{def:length_of_w}
   \uses{}
   % We use the definition of an arbitrary path $w$.
   Given any graph $G=(V,E)$ and a walk $w$ on $G$, we let $|w|$ denote the length of $w$.
 \end{definition}
-%---------%
-%---------%
 
-%---------%
-%---------%
 % We can count the set of $k$-indexes in Equation \ref{* *}:
 % For any $(G,w) \in \mathcal{G}_k$, an index with that corresponding graph $G$ and walk $w$ is completely determined by assigning which distinct values of $[n]$ appear at the vertices of $G$:
 %---------%
@@ -280,6 +264,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   suppose $w_{\mathbf{i}} \sim w_{\mathbf{j}}$ under \ref{def:graph_walk_equiv}.
   Then $\bE (Y_\mathbf{i}) = \bE (Y_{\mathbf{j}})$.
 \end{lemma}
+
 \begin{proof}
   Let $\varphi$ be the permutation that maps $w_\mathbf{i}$ to $w_{\mathbf{j}}$ in the equivalence
   relation. Given $Y_\mathbf{i} = Y_{i_1 i_2}Y_{i_2 i_3} \cdots Y_{i_{k-1} i_k}Y_{i_k i_1}$, we have
@@ -336,11 +321,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   = \sum_{w \in \mathcal{G}_k} \sum_{\substack{\mathbf{i} \in [n]^k \\ w_\mathbf{i} = w}} \bE (Y_\mathbf{i}).
   \]
 \end{lemma}
+
 \begin{proof}
   This follows from `partitioning' the summation appearing in Lemma \ref{lem:trace_expectation_of_matrix} using the equivalence relation defined in Definition \ref{def:g_k_equiv}.
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{definition}[$\Pi (G,w)$: R-1-11 : def:Pi.G.w]
   \label{def:Pi.G.w}
   \uses{def:g_k,def:g_k_j}
@@ -349,8 +335,8 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \Pi (G,w) = \mathbb{E}(Y_\mathbf{j}).
   \]
 \end{definition}
-%---------%
-%---------%
+
+
 \begin{lemma}[Re-indexing the sum with counting argument : R-1-12 : lem:equation\_4.5\_2]
   \label{lem:equation_4.5_2}
   \uses{lem:equation_4.5_1,lem:eq_equiv_eq_expect,lem:lem_4.3,def:Pi.G.w}
@@ -358,11 +344,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \bE \Tr (\mathbf{Y}_\mathbf{i}^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \# \{ \mathbf{i} \in [n]^k : (G_\mathbf{i},w_\mathbf{i}) = (G,w) \}.
   \]
 \end{lemma}
+
 \begin{proof}
   This follows from re-indexing the sum of Lemma \ref{lem:equation_4.5_1} by using Lemma \ref{lem:eq_equiv_eq_expect} and Lemma \ref{lem:lem_4.3}.
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{lemma}[Re-introducing the renormalization factor : R-1-13 : lem:equation\_4.5\_3]
   \label{lem:equation_4.5_3}
   \uses{lem:equation_4.5_2}
@@ -370,6 +357,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{(G,w) \in \mathcal{G}_k} \Pi (G,w) \cdot \frac{n (n-1) \cdots (n - |G_w| + 1)}{n^{k/2+1}}.
   \]
 \end{lemma}
+
 \begin{proof}
   Combining with the renormalization factor $n^{-1}$ of Proposition \ref{???} gives
   \[
@@ -424,6 +412,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \Pi (G,w) = 0.
   \]
 \end{lemma}
+
 \begin{proof}
   Let $(G,w) \in \mathcal{G}_k$ and let $\mathbf{j}$ be the $k$-index generated by $(G,w)$. Suppose there exists an edge $e \in E_\mathbf{j}$ such that $w_\mathbf{j}(e) = 1$.
   This means, in Lemma \ref{lem:expectation_matrix_multi_index}, a singleton term $\bE (Y_{ij}^{w_\mathbf{j}(e)}) = \bE (Y_{ij})$ appears.
@@ -454,6 +443,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \]
 
 \end{lemma}
+
 \begin{proof}
   This follows from applying the result of Lemma \ref{lem:Pi.prod_eq_zero_if_w_le_two} to Lemma \ref{lem:equation_4.5_3}.
 \end{proof}
@@ -463,19 +453,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 %---------%
 % This lemma might be merged with the following one(s).
 % If using the equivalence definition of $\mathcal{G}_k$, it might be more convenient to introduce the Axiom of Choice to ease the notation on $(G,w)$.
-%---------%
-%---Richard's Part for Proposition 4.1 (Updated) (End)---%
-
-
-
-
-
-
-
-% kiran's part below
-
-
-
 
 
 \begin{lemma}
@@ -491,7 +468,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{proof}
 
 
-
 \begin{lemma}
   \label{lem:bounded_map}
   \notready
@@ -499,14 +475,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   The sequence $n\mapsto \frac1n\bE\Tr(X_n^k)$ is bounded.
 \end{lemma}
 
-
 \begin{proof}
   \notready
   The only part that depends on $n$ is the big fraction. Since we only care about $w \ge 2$, $|G_w| \le k/2 + 1$.
   Use the fact that the product $n(n-1)\cdots (n-|G|+1)$ is asymptotically equal to $n^{|G|}$ to
   conclude that the fraction is bounded and doesn't explode.
 \end{proof}
-
 
 
 \begin{lemma}
@@ -522,8 +496,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{proof}
 
 
-
-
 \begin{proposition}
   \label{prop:odd_case}
   \notready
@@ -535,6 +507,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \notready
   Since $|G_w|\le \#E+1 \le k/2+1$ and $|G_w|$ is an integer, it follows that $|G_w|\le (k-1)/2+1 = k/2 + 1/2$.  Hence, in this case, all the terms in the (finite $n$-independent) sum in Equation 4.8 are $O(n^{-1/2})$
 \end{proof}
+
 
 \begin{proposition}
   \label{prop:g_difference_bound}
@@ -549,7 +522,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{proof}
 
 
-
 \begin{proposition}%[Equation 4.9 in \cite{Kemp2013RMTNotes}]
   \label{prop:trace_ev_special_g}
   \notready
@@ -562,6 +534,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \notready
   If $|G_w| < k/2 + 1$, then there is at least one more $n$ in the denominator than the numerator.
 \end{proof}
+
 
 \begin{proposition}
   \label{lem:fraction_limit_one}
@@ -602,6 +575,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   Follows directly.
 \end{proof}
 
+
 \begin{lemma}
   \label{lem:w_2_case}
   \notready
@@ -613,6 +587,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \notready
   Follows directly.
 \end{proof}
+
 
 \begin{lemma}
   \label{lem:def_t_rewrite}
@@ -626,6 +601,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   Follows directly.
 \end{proof}
 
+
 \begin{lemma}
   \label{lem:e_equals_k_over_two}
   \notready
@@ -637,7 +613,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \notready
   Follows directly.
 \end{proof}
-
 
 
 \begin{proposition}%[Equation 4.10 in \cite{Kemp2013RMTNotes}]
@@ -661,8 +636,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{proof}
 
 
-
-
 \begin{proposition}%[Proposition 4.11 in \cite{Kemp2013RMTNotes}]
   \label{prop:trace_ev_limit_equals_t_special_g}
   \notready
@@ -675,12 +648,8 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   Follows directly from 4.7.5 and 4.8.
 \end{proof}
 
-% end of kiran's part
-
 
 %% BIG PROPOSITION
-%
-
 \begin{proposition}[Proposition 4.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:matrix_moments_convergence}
   \notready
@@ -700,13 +669,8 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{proof}
 
 
-
-
 \section{Convergence in Probability}
 
-%---Paul's Part for Proposition 4.5 (Start)---%
-%---------%
-%---------%
 
 \begin{lemma}[Variance Trace Expansion]
     \label{lem:variance_expansion}
@@ -732,15 +696,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{proof}
 
 
-%---------%
-%---------%
-%---Paul's Part for Proposition 4.5 (End)---%
-
-
-
-%---Richard's Part for Proposition 4.5 (Start)---%
-%---------%
-%---------%
 \begin{definition}[R-2-1 : def:common\_val\_prod\_of]
   \notready
   \label{def:common_val_prod_of}
@@ -750,11 +705,8 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = \mathbb{E}(Y_\mathbf{i} Y_\mathbf{j}) - \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j}).
   \]
 \end{definition}
-%---------%
-%---------%
 
-%---------%
-%---------%
+
 \begin{lemma}[R-2-3-4 : lem:common\_val\_eq\_of\_index\_pair\_rel]
   \notready
   \label{lem:common_val_eq_of_index_pair_rel}
@@ -762,14 +714,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   Let $\mathbf{i}_\lambda$ and $\mathbf{j}_\lambda$ be $k$-indexes for each $\lambda=1,2$ such that $(\mathbf{i}_1,\mathbf{j}_1) = (\mathbf{i}_2,\mathbf{j}_2)$.
   Then $\bE (Y_{\mathbf{i}_1}Y_{\mathbf{j}_1}) = \bE (Y_{\mathbf{i}_1}Y_{\mathbf{j}_2})$.
 \end{lemma}
+
 \begin{proof}
   This follows a similar reasoning as in Lemma \ref{lem:eq_equiv_eq_expect}.
 \end{proof}
-%---------%
-%---------%
 
-%---------%
-%---------%
+
 \begin{lemma}[R-2-4 : lem:sum\_eq\_sum\_over\_classes]
   \notready
   \label{lem:sum_eq_sum_over_classes}
@@ -779,14 +729,15 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   = \frac{1}{n^{k+2}} \sum_{(G,w,w') \in \mathcal{G}_{k,k}} \sum_{\substack{\mathbf{i},\mathbf{j} \in [n]^k \\ (G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')}} [\mathbb{E}(Y_\mathbf{i} Y_\mathbf{j}) - \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j})].
   \]
 \end{lemma}
+
 \begin{proof}
   This follows from `partitioning' the summation appearing in Lemma \ref{lem:variance_expansion} using the equivalence relation defined in Definition \ref{def:graph_walk_triple_rel}.
 % Given an ordered triple $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ generated by two $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, and $(G,w,w') \in \mathcal{G}_{k,k}$,
 %  only one of $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')$ or $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \neq (G,w,w')$ holds.
 %  Hence, the partition of the summation is well-defined.
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{definition}[R-2-5-1 : def:common\_val\_prod]
   \notready
   \label{def:common_val_prod}
@@ -797,8 +748,8 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \pi(G,w,w') = \mathbb{E}(Y_\mathbf{i} Y_\mathbf{j}) - \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j}).
   \]
 \end{definition}
-%---------%
-%---------%
+
+
 \begin{lemma}[R-2-5-2 : lem:inner\_sum\_eq\_common\_val\_prod\_mul\_card]
   \notready
   \label{lem:inner_sum_eq_common_val_prod_mul_card}
@@ -809,14 +760,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \cdot \# \bigl\{ (\mathbf{i},\mathbf{j}) \in [n]^{2k} : (G_{\mathbf{i} \# \mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w') \bigl\}.
   \]
 \end{lemma}
+
 \begin{proof}
   This follows from re-indexing the sum of Lemma \ref{lem:sum_eq_sum_over_classes} using Lemma \ref{lem:common_val_prod_eq_of_graph_walk_triple_rel}.
 \end{proof}
-%---------%
-%---------%
 
-%---------%
-%---------%
+
 \begin{lemma}[R-2-8 : lem:expect\_mul\_eq\_prod\_expect\_edgewise\_of\_indep]
   \notready
   \label{lem:expect_mul_eq_prod_expect_edgewise_of_indep}
@@ -826,24 +775,25 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   = \prod_{e_s \in E^s_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i} \# \mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i} \# \mathbf{j}}(e_c)}).
   \]
 \end{lemma}
+
 \begin{proof}
   This follows from Lemma \ref{lem:expectation_matrix_multi_index} and the independency of random variables.
 \end{proof}
 %---------%
 %---------%
-%\begin{lemma}[R-2-9 : lem:expect\_mul\_eq\_prod\_expect\_edgewise\_mul\_prod\_expect\_edgewise]
-  \notready
-  \label{lem:expect_mul_eq_prod_expect_edgewise_mul_prod_expect_edgewise}
-  \uses{lem:expectation_matrix_multi_index}
-  \[
-  \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j})
-  = \prod_{e_s \in E^s_{\mathbf{i}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i}}(e_c)})
-  \cdot \prod_{e_s \in E^s_{\mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{j}}(e_c)}).
-  \]
-%\end{lemma}
-%\begin{proof}
-%  This directly follows from Lemma \ref{lem:expectation_matrix_multi_index}.
-%\end{proof}
+% \begin{lemma}[R-2-9 : lem:expect\_mul\_eq\_prod\_expect\_edgewise\_mul\_prod\_expect\_edgewise]
+%   \notready
+%   \label{lem:expect_mul_eq_prod_expect_edgewise_mul_prod_expect_edgewise}
+%   \uses{lem:expectation_matrix_multi_index}
+%   \[
+%   \mathbb{E}(Y_\mathbf{i}) \mathbb{E}(Y_\mathbf{j})
+%   = \prod_{e_s \in E^s_{\mathbf{i}}} \mathbb{E} (Y_{11}^{w_{\mathbf{i}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{i}}} \mathbb{E} (Y_{12}^{w_{\mathbf{i}}(e_c)})
+%   \cdot \prod_{e_s \in E^s_{\mathbf{j}}} \mathbb{E} (Y_{11}^{w_{\mathbf{j}}(e_s)}) \cdot \prod_{e_c \in E^c_{\mathbf{j}}} \mathbb{E} (Y_{12}^{w_{\mathbf{j}}(e_c)}).
+%   \]
+% \end{lemma}
+% \begin{proof}
+% %  This directly follows from Lemma \ref{lem:expectation_matrix_multi_index}.
+% \end{proof}
 %---------%
 %---------%
 %\egin{lemma}[R-2-10 : (Name unchanged since it might be merged)]
@@ -875,6 +825,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \]
   for every $e \in E_{\mathbf{i} \# \mathbf{j}}$.
 \end{lemma}
+
 \begin{proof}
   Let $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ be the ordered triple generated by the two $k$-indexes $\mathbf{i}$ and $\mathbf{j}$.
   By construction, there are finite number of edges $e \in E_{\mathbf{i} \# \mathbf{j}}$.
@@ -889,8 +840,8 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \mathbb{E} (Y_{11}^{w_{\mathbf{i} \# \mathbf{j} (e)}}) \leq \max\{ \mathbb{E}(|Y_{11}^\lambda|), \mathbb{E}(|Y_{12}^\lambda|) \} = r_\lambda.
   \]
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{lemma}[R-2-12.2 : lem:expect\_pow\_edge\_count\_pair\_le\_off]
   \notready
   \label{lem:expect_pow_edge_count_pair_le_off}
@@ -901,11 +852,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \]
   for every $e \in E_{\mathbf{i} \# \mathbf{j}}$.
 \end{lemma}
+
 \begin{proof}
   This follows an identical reasoning as in Lemma \ref{lem:expect_pow_edge_count_pair_le}.
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{lemma}[R-2-13 : lem:expect\_mul\_le\_const]
   \notready
   \label{lem:expect_mul_le_const}
@@ -915,6 +867,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \mathbb{E} (Y_\mathbf{i}Y_\mathbf{j}) \leq M_1.
   \]
 \end{lemma}
+
 \begin{proof}
   By Lemma \ref{lem:expect_mul_eq_prod_expect_edgewise_of_indep}, we have
   \[
@@ -930,8 +883,8 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \]
   Setting $M_1 := 2k \cdot \max\{r_{\lambda_1},r_{\lambda_2}\}$ satisfies the problem.
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{lemma}[R-2-14 : lem:expect\_pow\_edge\_count\_le]
   \notready
   \label{lem:expect_pow_edge_count_le}
@@ -942,11 +895,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \]
   for every $e \in E_{\mathbf{i} \# \mathbf{j}}$.
 \end{lemma}
+
 \begin{proof}
   This follows a similar reasoning as in Lemma \ref{lem:expect_pow_edge_count_pair_le} with the counting function $w_\mathbf{i}(\cdot)$.
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{lemma}[R-2-15 : lem:expect\_pow\_edge\_count\_le\_off]
   \notready
   \label{lem:expect_pow_edge_count_le_off}
@@ -957,11 +911,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \]
   for every $e \in E_\mathbf{i}$.
 \end{lemma}
+
 \begin{proof}
   This follows a similar reasoning as in Lemma \ref{lem:expect_pow_edge_count_pair_le} with the counting function $w_\mathbf{i}(\cdot)$.
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{lemma}[R-2-16 : lem:expect\_le\_const]
   \notready
   \label{lem:expect_le_const}
@@ -971,11 +926,12 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \mathbb{E} (Y_\mathbf{i}) \leq M_2.
   \]
 \end{lemma}
+
 \begin{proof}
   This follows an identical reasoning as in Lemma \ref{lem:expect_pow_edge_count_pair_le}.
 \end{proof}
-%---------%
-%---------%
+
+
 \begin{lemma}[R-2-17 : lem:abs\_expect\_mul\_sub\_mul\_expect\_le]
   \notready
   \label{lem:abs_expect_mul_sub_mul_expect_le}
@@ -986,6 +942,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   \leq 2 M_{2k}.
   \]
 \end{lemma}
+
 \begin{proof}
   Combining the result of Lemma \ref{lem:expect_mul_le_const} and Lemma \ref{lem:expect_le_const} gives
   \[
@@ -996,16 +953,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   where $M_2^{(\mathbf{i})}$ and $M_2^{(\mathbf{j})}$ are the upper bounds acquired by Lemma \ref{lem:expect_le_const} with repsect to $\mathbf{i}$ and $\mathbf{j}$, repsectively.
   Setting $M_{2k} := \max\{ M_1, M_2^{(\mathbf{i})} \cdot M_2^{(\mathbf{j})} \}$ satisfies the problem.
 \end{proof}
-%---------%
-%---------%
-%---Richard's Part for Proposition 4.5 (End)---%
-
-
-
-
-%---Kiran's Part for Proposition 4.5 (Start)---%
-%---------%
-%---------%
 
 
 \begin{proposition}
@@ -1046,6 +993,7 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
   Appealing again to \ref{prop:vertex_edge_inequality}, it follows that $|G|\le k+1$.  Hence, $n(n-1)\cdots(n-|G|+1) \le n^{|G|} \le n^{k+1}$
 \end{proof}
 
+
 \begin{theorem}
   \label{thm:wigner_law_matrix_moments}
   \uses{prop:var_upper_bound}
@@ -1059,19 +1007,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 \end{proof}
 
 
-%---------%
-%---------%
-%---Kiran's Part for Proposition 4.5 (End)---%
-
-
-
-
-%---Haoyan's Part for Proposition 4.5 (Start)---%
-%---------%
-%---------%
-
-
-
 %depends on the previous inequality showing variance bounded by O(1/n)
 % this is the only statement from my part being depended by the Prop 4.5
 \begin{lemma}
@@ -1081,11 +1016,6 @@ Because every unordered pair $\{i,j\}$ with $1\le i\le j\le n$ is covered by one
 
     \[ \Var\left( \frac1n\Tr(\mathbf{X}_n^k)\right) \le \sum_{(G,w,w')\in\mathcal{G}_{k,k}\atop w+w'\ge 2, |G| \leq k} \pi(G,w,w')\cdot \frac{n^{k}}{n^{k+2}} \le \frac{1}{n^2}\cdot 2M_{2k}\cdot \#\mathcal{G}_{k,k}. \]
 \end{lemma}
-
-%---------%
-%---------%
-%---Haoyan's Part for Proposition 4.5 (End)---%
-
 
 
 \begin{proposition}[Proposition 4.5 in \cite{Kemp2013RMTNotes}]
