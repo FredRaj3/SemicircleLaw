@@ -3,6 +3,8 @@
 
 \begin{definition}
   \label{def:loop_walk}
+  \lean{SimpleGraph.LoopWalk}
+  \leanok
   Given a simple graph $G$, a LoopWalk is a walk on $G$ that is allowed to have consecutive visits
   to the same vertex (i.e. loops).
 \end{definition}
@@ -15,6 +17,7 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{definition}
   \label{def:graph_walk_multi_index}
+  \uses{def:loop_walk}
   Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. The path
   $w_{\mathbf{i}}$ is the closed LoopWalk on the complete graph $K_n$ given by
   $$
@@ -25,8 +28,9 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{definition}
   \label{def:graph_walk_edges}
+  \uses{def:loop_walk}
   Given a LoopWalk $w_\mathbf{i}=((i_1, i_2),(i_2, i_3), \ldots,(i_{k-1}, i_k),(i_k, i_1))$ on
-  $K_n$ induced by a multi-index $\mathbf{i}$, let
+  $K_n$ , let
   $E_\mathbf{i}= \{\{i_1, i_2\},\{i_2, i_3\}, \ldots,\{i_{k-1}, i_k\}, \{i_k, i_1\}\}$ be the set
   of edges traversed by $w_{\mathbf{i}}$ (this includes loops).
 \end{definition}
@@ -34,8 +38,9 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{definition}
   \label{def:graph_walk_vertices}
+  \uses{def:loop_walk}
   Given a LoopWalk $w_\mathbf{i}=((i_1, i_2),(i_2, i_3), \ldots,(i_{k-1}, i_k),(i_k, i_1))$ on
-  $K_n$ induced by a multi-index $\mathbf{i}$, let $V_\mathbf{i}= \{i_1, i_2, \dots, i_k\}$ be the set
+  $K_n$, let $V_\mathbf{i}= \{i_1, i_2, \dots, i_k\}$ be the set
   of vertices visited by $w_{\mathbf{i}}$.
 \end{definition}
 
@@ -43,14 +48,15 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{proposition}%[Exercise 4.3.1 in \cite{Kemp2013RMTNotes}]
   \label{prop:vertex_edge_inequality}
+  \uses{def:graph_walk_vertices, def:graph_walk_edges}
   %\uses{}
-  Let $w_{\mathbf{i}}$ be a LoopWalk induced by a multi-index $\mathbf{i}$. Then,
-  $\#V_{\mathbf{i}}\le \#E_{\mathbf{i}}+1$.
+  Let $w_{\mathbf{i}}$ be a LoopWalk. Then,
+  $|V_{\mathbf{i}}|\le |E_{\mathbf{i}}|+1$.
 \end{proposition}
 
 \begin{proof}
-  $\#V\le \#E+1$: proof by induction on $\#V$. Base case $\#V = 1$ is obvious.
-  For each additional vertex, the number of edges must increase by at least one for the graph to remain connected.
+  $|V|\le |E|+1$: proof by induction on $|V|$. Base case $|V| = 1$ is obvious.
+  For each additional vertex, the number of edges must increase by at least one.
 \end{proof}
 
 
@@ -66,7 +72,7 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{definition}[Self Edges]
     \label{def:graph_self_edges}
-    \uses{def:graph_walk_multi_index}
+    \uses{def:graph_walk_edges}
     Let $\mathbf{i} \in[n]^k$ be a $k$-index with walk $w_{\mathbf{i}}$ on $K_n$. Define the
     self-edges
     $E_{\mathbf{i}}^{s}$ as:
@@ -79,7 +85,7 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{definition}[Connecting Edges]
     \label{def:graph_connecting_edges}
-    \uses{def:graph_walk_multi_index}
+    \uses{def:graph_walk_edges}
     Let $\mathbf{i} \in[n]^k$ be a $k$-index with walk $w_{\mathbf{i}}$ on $K_n$. Define the
     connecting-edges $E_{\mathbf{i}}^{c}$ as:
     $$
@@ -99,8 +105,7 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{lemma}[$|w_\mathbf{i}| = k$ : R-1-2 : lem:abs\_w\_i\_eq\_k]
   \label{lem:abs_w_i_eq_k}
-  \uses{def:graph_walk_multi_index,def:length_of_w_i,def:graph_edge_count}
-  % We use the definition of the graph $G_\mathbf{i}$, "Length of $|w_\mathbf{i}", and "Edge Counting Function $w_\mathbf{i}(\cdot)$".
+  \uses{def:length_of_w_i,def:graph_edge_count}
   For any $k$-index $\mathbf{i}$, $|V_\mathbf{i}| \leq k$ and
   \[
   |w_\mathbf{i}| \equiv \sum_{e \in E_\mathbf{i}} w_\mathbf{i}(e) = k.
@@ -120,6 +125,7 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{definition}
   \label{def:graph_walk_equiv}
+  \uses{def:loop_walk}
   Given two LoopWalks $w_{\mathbf{j}} = ((j_1, j_2), \dots (j_{k-1}, j_k), (j_k, j_1))$ and
   $w_{\mathbf{i}}=((i_1, i_2), \dots (i_{k-1}, i_k), (i_k, i_1))$
    on $K_n$, we say that $w \sim v$ if there exists a permutation $\sigma \in S_n$ such that
@@ -137,15 +143,25 @@ LoopWalk we mean closed LoopWalk below.
 
 \begin{lemma}
   \label{lem:walk_vertex_card_equiv}
-  \uses{def:graph_walk_equiv, lem:graph_walk_equiv}
+  \uses{def:graph_walk_equiv}
   If $w_{\mathbf{i}} \sim w_{\mathbf{j}}$, then $|V_{\mathbf{i}}| = |V_{\mathbf{j}}|$.
 \end{lemma}
 
 
 \begin{lemma}
   \label{lem:walk_edge_card_equiv}
-  \uses{def:graph_walk_equiv, lem:graph_walk_equiv}
+  \uses{def:graph_walk_equiv}
   If $w_{\mathbf{i}} \sim w_{\mathbf{j}}$, then $|E_{\mathbf{i}}| = |E_{\mathbf{j}}|$.
+\end{lemma}
+
+
+\begin{lemma}
+  \label{lem:walk_edge_count_equiv}
+  \uses{def:graph_walk_equiv, def:graph_edge_count}
+  If $w_{\mathbf{i}} \sim w_{\mathbf{j}}$, then the set of edge counts for $w_{\mathbf{i}}$ is the
+  same as $w_{\mathbf{j}}$. In other words,
+  $\{w_{\mathbf{i}}(i_1, i_2) , \dots, w_{\mathbf{i}}(i_{k-1}, i_k)\} =
+  \{w_{\mathbf{j}}(j_1, j_2) , \dots, w_{\mathbf{j}}(j_{k-1}, j_k)\}$ as sets.
 \end{lemma}
 
 
@@ -156,32 +172,49 @@ LoopWalk we mean closed LoopWalk below.
   of walks of length $k$ on $K_n$.
 \end{definition}
 
+\begin{lemma}
+  \label{lem:graph_set_finite}
+  \uses{def:g_k}
+  $|\mathcal{G}_k|$ is finite.
+\end{lemma}
+
+\begin{proof}
+  Requires proof.
+\end{proof}
+
 
 We will denote the equivalence classes in $\mathcal{G}_k$ with $w$, and particular representatives
 of the equivalence classes will be denoted $w_{\mathbf{i}}$, where $\mathbf{i}$ is the multi-index
 that induces $w_\mathbf{i}$. We will use the notation that $w_{\mathbf{i}} = w$ to denote that
 $w_{\mathbf{i}}$ is an element of the equivalence class $w$. We will similarly write $|V_w|$ and
-$|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
+$|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class. We will also define
+the multiset $EC_w$, which contains the edge counts of every edge in $w$.
 
 
-\begin{definition}[$|V_w|$ : R-1-8 : def:abs.V\_w]
+\begin{definition}[$|V_w|$ : ef:abs.V\_w]
   \label{def:abs.V_w}
-  \uses{def:g_k, lem:walk_vertex_card_equiv}
+  \uses{def:g_k, lem:walk_vertex_card_equiv, def:graph_walk_vertices}
   Given a  $w \in \mathcal{G}_k$, we define $|V_w|$ to be $|V_{\mathbf{i}}|$, where $w_{\mathbf{i}}$
   is a LoopWalk in the equivalence class $w$.
 \end{definition}
 
-\begin{definition}[$|E_w|$ : R-1-8 : def:abs.E\_w]
+\begin{definition}[$|E_w|$ : def:abs.E\_w]
   \label{def:abs.E_w}
-  \uses{def:g_k, lem:walk_edge_card_equiv}
+  \uses{def:g_k, lem:walk_edge_card_equiv, def:graph_walk_edges}
   Given a  $w \in \mathcal{G}_k$, we define $|E_w|$ to be $|E_{\mathbf{i}}|$, where $w_{\mathbf{i}}$
   is a LoopWalk in the equivalence class $w$.
+\end{definition}
+
+\begin{definition}
+  \label{def:edge_count_w}
+  \uses{def:g_k, lem:walk_edge_count_equiv}
+  Given $w \in \mathcal{G}_k$, we define $EC_w$ to be the multiset of edge counts of $w$.
 \end{definition}
 
 
 \begin{lemma}[Lemma 4.3 in \cite{Kemp2013RMTNotes} : R-1-9 : lem:lem\_4.3]
   \label{lem:lem_4.3}
-  \uses{def:g_k,def:graph_walk_multi_index,def:g_k_equiv,lem:eq_equiv_eq_expect}
+  \uses{def:g_k,def:graph_walk_multi_index, def:graph_walk_equiv}
   Given $w \in \mathcal{G}_k$, we have
   \[
    |\{ \mathbf{i} \in [n]^k : w_\mathbf{i} = w \}| = n (n-1) \cdots (n - |V_w| + 1).
@@ -189,7 +222,7 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
 \end{lemma}
 
 \begin{proof}
-  By the way the equivalence relation is defined in Definition \ref{def:g_k},
+  By the way the equivalence relation is defined in Definition \ref{def:graph_walk_equiv},
   the fact that there are $n (n - 1) \cdots (n -|V_w| + 1)$ ways to assign $|V_w|$ distinct values
   from $[n]$ into the indices $i_1,...,i_{|V_w|}$ completes the proof.
 \end{proof}
@@ -197,14 +230,15 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
 
 \begin{definition}[$\mathcal{G}_{k, w \geq 2}$ : R-1-14 : def:g\_k\_ge\_2]
   \label{def:g_k_ge_2}
-  \uses{def:g_k,def:graph_walk_multi_index}
-  Let $\mathcal{G}_{k,w \geq 2}$ be a subset of $\mathcal{G}_k$ in which the walk $w$ traverses each edge at least twice.
+  \uses{def:g_k,def:edge_count_w}
+  Let $\mathcal{G}_{k,w \geq 2}$ be a subset of $\mathcal{G}_k$ in which the walk $w$ traverses
+  each edge at least twice, i.e. $EC_w$ contains only elements 2 or larger.
 \end{definition}
 
 
 \begin{lemma}[$\#E \leq k/2$ : R-1-17 : lem:edge\_set\_order\_leq\_k\_over\_two]
   \label{lem:edge_set_order_leq_k_over_two}
-  \uses{def:g_k_ge_2, lem:abs_w_i_eq_k}
+  \uses{def:g_k_ge_2, def:abs.E_w}
   Given a $w \in \mathcal{G}_{k,w \geq 2}$, we must have $|E_w| \leq k/2$.
 \end{lemma}
 
@@ -225,14 +259,17 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
   \notready
   $|G|=\#V=\#E+1$ if $G$ is a plane tree is already in Lean: SimpleGraph.IsTree.card\_edgeFinset.
 
-  $G$ is a plane tree if $|G|=\#V=\#E+1$: proof by induction on $\#V$. Base case $\#V = 1$ has no edges. Assume $\#V = \#E + 1$ for $\#V = k$. Now, consider a tree with $\#V = k+1$ nodes. Removing a leaf node leaves us with a tree with $\#V = k$ nodes. By IH, there are $k - 1$ edges. So including the leaf node gives us $k$ edges.
+  $G$ is a plane tree if $|G|=\#V=\#E+1$: proof by induction on $\#V$. Base case $\#V = 1$ has no edges.
+  Assume $\#V = \#E + 1$ for $\#V = k$. Now, consider a tree with $\#V = k+1$ nodes. Removing a leaf
+  node leaves us with a tree with $\#V = k$ nodes. By IH, there are $k - 1$ edges. So including the
+  leaf node gives us $k$ edges.
 \end{proof}
 
 
 \begin{lemma}
   \label{lem:vertex_bound}
-  \uses{prop:vertex_edge_inequality, lem:edge_set_order_leq_k_over_two}
-  Let $w \in \mathcal{G}_k$ be such that $w(e) \geq 2$ for all $e \in E_w$. Then $|V_w| \le k/2 + 1$.
+  \uses{prop:vertex_edge_inequality, lem:edge_set_order_leq_k_over_two, def:abs.V_w}
+  Let $w \in \mathcal{G}_{k,w \geq 2}$. Then $|V_w| \le k/2 + 1$.
 \end{lemma}
 
 \begin{proof}
@@ -243,7 +280,7 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
 \begin{lemma}
   \label{lem:odd_vertex_bound}
   \uses{lem:vertex_bound}
-  Let $w \in \mathcal{G}_k$ be such that $w(e) \geq 2$ for all $e \in E_w$.
+  Let $w \in \mathcal{G}_{k,w \geq 2}$.
   Suppose $k$ odd. Then, $|V_w| \le \frac{k}{2} + \frac{1}{2}$.
 \end{lemma}
 
@@ -254,8 +291,9 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
 
 \begin{lemma}
   \label{lem:edge_bound_large_w}
-  %\uses{}
-  If $k$ is even and there exists $e$ such that $w(e) \ge 3$, then $|E_w| \le \frac{k-1}{2}$.
+  \uses{def:abs.E_w}
+  If $w \in \mathcal{G}_{k,w \geq 2}$, $k$ is even, and there exists $e$ such that $w(e) \ge 3$,
+  then $|E_w| \le \frac{k-1}{2}$.
 \end{lemma}
 
 \begin{proof}
@@ -265,27 +303,28 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
 
 \begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
   \label{prop:g_bound_self_edge}
-  \uses{prop:vertex_edge_inequality, prop:vertex_edge_inequality, lem:edge_set_order_leq_k_over_two, def:g_k}
-  Let $w\in\mathcal{G}_k$ with $w\ge 2$, and suppose $k$ is even. If there exists a self-edge $e$,
+  \uses{prop:vertex_edge_inequality}
+  Let $w\in\mathcal{G}_{k,w \geq 2}$, and suppose $k$ is even. If there exists a loop in $w$,
   then $|V_w|\le k/2$.
 \end{proposition}
 
 \begin{proof}
-  Since the graph $G = (V,E)$ contains a loop, it is not a tree; it follows from
-  Exercise \ref{ex V < E+1} that $\#V < \#E+1$.  But $w\ge 2$ implies that $\#E\le k/2$, and so
-  $\#V < k/2+1$, and so $|V_w| = \#V \le k/2$.
+
 \end{proof}
 
 
 \begin{proposition}%[Proposition 4.4 in \cite{Kemp2013RMTNotes}]
   \label{prop:g_bound_large_w}
   \uses{prop:vertex_edge_inequality, prop:vertex_edge_tree_equality, lem:edge_bound_large_w}
-  Let $w \in\mathcal{G}_k$ with $w\ge 2$, and suppose $k$ is even. If there exists an edge $e$
-  with $w(e)\ge 3$, then $|V_w|\le k/2$.
+  Let $w \in\mathcal{G}_{k,w \geq 2}$, and suppose $k$ is even. If there exists $e\in EC_w$
+  with $e \ge 3$, then $|V_w|\le k/2$.
 \end{proposition}
 
 \begin{proof}
-  The sum of $w$ over all edges $E$ in $G$ is $k$.  Hence, the sum of $w$ over $E\setminus\{e\}$ is $\le k-3$.  Since $w\ge 2$, this means that the number of edges excepting $e$ is $\le (k-3)/2$; hence, $\#E \le (k-3)/2+1 = (k-1)/2$.  By the result of a previous lemma, this means that $\#V \le (k-1)/2+1 = (k+1)/2$.  Since $k$ is even, it follows that $|V_w|=\#V \le k/2$.
+  The sum of $w$ over all edges $E$ in $G$ is $k$.  Hence, the sum of $w$ over $E\setminus\{e\}$ is $\le k-3$.
+  Since $w\ge 2$, this means that the number of edges excepting $e$ is $\le (k-3)/2$; hence, $\#E \le (k-3)/2+1 = (k-1)/2$.
+  By the result of a previous lemma, this means that $\#V \le (k-1)/2+1 = (k+1)/2$.
+  Since $k$ is even, it follows that $|V_w|=\#V \le k/2$.
 \end{proof}
 
 
@@ -293,30 +332,9 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
   \label{def:special_set_g}
   \uses{def:g_k}
   Let $\mathcal{G}^{k/2+1}_k$ to be the set of $w\in\mathcal{G}_k$ where $|V_w|=k/2+1$,
-  contains no self-edges, and the walk $w$ crosses every edge exactly $2$ times.
+  contains no self-edges, and the walk $w$ crosses every edge exactly $2$ times, i.e.
+  $EC_w =\{2, \dots, 2\}$.
 \end{definition}
-
-
-\begin{lemma}
-  \label{lem:graph_set_finite}
-  \uses{def:g_k}
-  $|\mathcal{G}_k|$ is finite.
-\end{lemma}
-
-\begin{proof}
-  Follows from definition.
-\end{proof}
-
-
-\begin{lemma}
-  \label{lem:special_g_tree}
-  \uses{def:special_set_g, lem:special_g_edge_count, prop:vertex_edge_tree_equality}
-  Elements of $\mathcal{G}_k^{k/2+1}$ are trees.
-\end{lemma}
-
-\begin{proof}
-  %proof
-\end{proof}
 
 
 \begin{lemma}
@@ -332,12 +350,23 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
 
 \begin{lemma}
   \label{lem:special_g_vertex_count}
-  \uses{def:special_set_g, lem:special_g_edge_count, prop:vertex_edge_tree_equality}
+  \uses{def:special_set_g}
   Elements of $\mathcal{G}_k^{k/2+1}$ have $|V_w| = k/2 + 1$.
 \end{lemma}
 
 \begin{proof}
-  Follows directly from dependency graph.
+  By definition.
+\end{proof}
+
+
+\begin{lemma}
+  \label{lem:special_g_tree}
+  \uses{def:special_set_g, lem:special_g_edge_count, prop:vertex_edge_tree_equality}
+  Elements of $\mathcal{G}_k^{k/2+1}$ are trees.
+\end{lemma}
+
+\begin{proof}
+  %proof
 \end{proof}
 
 
@@ -498,7 +527,8 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
   \label{def:graph_union}
   \notready
   \uses{def:graph_walk_multi_index}
-  Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$, and Graphs $G_{\mathbf{i}}, G_{\mathbf{j}}$, we define the graph union $G_{\mathbf{i} \# \mathbf{j}}$ as follows:
+  Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$,
+  and Graphs $G_{\mathbf{i}}, G_{\mathbf{j}}$, we define the graph union $G_{\mathbf{i} \# \mathbf{j}}$ as follows:
   $$
   G_{\mathbf{i} \# \mathbf{j}}  = G_{\mathbf{i}} \cup G_{\mathbf{j}} = (V_{\mathbf{i}} \cup V_{\mathbf{j}}, E_{\mathbf{i}} \cup E_{\mathbf{j}})
   $$
@@ -509,7 +539,8 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
   \label{def:ordered_triple}
   \notready
   \uses{def:graph_union, def:graph_walk_multi_index}
-  Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$, we define the ordered triple $(G_{\mathbf{i} \# \mathbf{j}}, w_{\mathbf{i}}, w_{\mathbf{j}})$ as follows:
+  Given $k$-indices $\mathbf{i} = (i_1, i_2, \cdots , i_{k}), \mathbf{j} = (j_1, j_2, \cdots , j_{k}) \in [n]^{k}$,
+  we define the ordered triple $(G_{\mathbf{i} \# \mathbf{j}}, w_{\mathbf{i}}, w_{\mathbf{j}})$ as follows:
   \begin{itemize}
       \item $G_{\mathbf{i} \# \mathbf{j}}$ is the graph union of the graphs defined by $\mathbf{i}$ and $\mathbf{j}$ from definition \ref{def:graph_union}
       \item $w_{\mathbf{i}}$ is the closed walk defined by $\mathbf{i}$ from definition \ref{def:graph_walk_multi_index}
@@ -540,7 +571,9 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
   \notready
   \label{def:index_pair_rel}
   \uses{} % n/a
-  Let $\mathbf{i}_\lambda$ and $\mathbf{j}_\lambda$ be $k$-indexes for each $\lambda=1,2$. We say $(\mathbf{i}_1,\mathbf{j}_1) = (\mathbf{i}_2,\mathbf{j}_2)$ if and only if there exists a bijection $\varphi_1$ from the set of entries $\mathbf{i}_1$ onto the set of entries $\mathbf{i}_2$,
+  Let $\mathbf{i}_\lambda$ and $\mathbf{j}_\lambda$ be $k$-indexes for each $\lambda=1,2$.
+  We say $(\mathbf{i}_1,\mathbf{j}_1) = (\mathbf{i}_2,\mathbf{j}_2)$ if and only if there exists a
+  bijection $\varphi_1$ from the set of entries $\mathbf{i}_1$ onto the set of entries $\mathbf{i}_2$,
   and a bijection $\varphi_2$ from the set of entries $\mathbf{j}_1$ onto the set of entries $\mathbf{j}_2$ such that
   \begin{equation}
   \begin{split}
@@ -560,8 +593,10 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
   \notready
   \label{def:graph_walk_triple_rel}
   \uses{def:graph_walk_triple_set,def:ordered_triple,def:index_pair,def:index_pair_rel}
-  Let $(G_{\mathbf{i} \# \mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ be an ordered triple generated by two $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, and let $(G,w,w') \in \mathcal{G}_{k,k}$.
-  We say $(G_{\mathbf{i} \# \mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')$ if and only $(\mathbf{i},\mathbf{j}) = (\mathbf{i}^*,\mathbf{j}^*)$,
+  Let $(G_{\mathbf{i} \# \mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ be an ordered triple generated by
+  two $k$-indexes $\mathbf{i}$ and $\mathbf{j}$, and let $(G,w,w') \in \mathcal{G}_{k,k}$.
+  We say $(G_{\mathbf{i} \# \mathbf{j}},w_\mathbf{i},w_\mathbf{j}) = (G,w,w')$ if and only
+  $(\mathbf{i},\mathbf{j}) = (\mathbf{i}^*,\mathbf{j}^*)$,
   where $(\mathbf{i}^*,\mathbf{j}^*)$ is an ordered pair of $k$-indexes generated by $(G,w,w')$.
 \end{definition}
 
@@ -570,8 +605,11 @@ $|E_w|$ for the cardinality of the vertex and edge sets of an equivalence class.
   \notready
   \label{lem:common_val_prod_eq_of_graph_walk_triple_rel}
   \uses{def:common_val_prod_of,def:ordered_triple,def:graph_walk_triple_rel,lem:eq_equiv_eq_expect,lem:common_val_eq_of_index_pair_rel}
-  Let $(G_{\mathbf{i}_1 \# \mathbf{j}_1},w_{\mathbf{i}_1},w_{\mathbf{j}_1})$ and $(G_{\mathbf{i}_2 \# \mathbf{j}_2},w_{\mathbf{i}_2},w_{\mathbf{j}_2})$ be ordered triples generated by their respective ordered pair of $k$-indexes, and $(G,w,w') \in \mathcal{G}_{k,k}$,
-  If $(G_{\mathbf{i}_1 \# \mathbf{j}_1},w_{\mathbf{i}_1},w_{\mathbf{j}_2}) = (G,w,w')$ and $(G_{\mathbf{i}_1 \# \mathbf{j}_2},w_{\mathbf{i}_2},w_{\mathbf{j}_2}) = (G,w,w')$, then
+  Let $(G_{\mathbf{i}_1 \# \mathbf{j}_1},w_{\mathbf{i}_1},w_{\mathbf{j}_1})$ and
+  $(G_{\mathbf{i}_2 \# \mathbf{j}_2},w_{\mathbf{i}_2},w_{\mathbf{j}_2})$ be ordered triples
+  generated by their respective ordered pair of $k$-indexes, and $(G,w,w') \in \mathcal{G}_{k,k}$,
+  If $(G_{\mathbf{i}_1 \# \mathbf{j}_1},w_{\mathbf{i}_1},w_{\mathbf{j}_2}) = (G,w,w')$ and
+  $(G_{\mathbf{i}_1 \# \mathbf{j}_2},w_{\mathbf{i}_2},w_{\mathbf{j}_2}) = (G,w,w')$, then
 %  If the ordered triples $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})$ and $(G_{\mathbf{i}^*\#\mathbf{j}^*},w_{\mathbf{i}^*},w_{\mathbf{j}^*})$ are same up to relabeling, then
   \[
   \pi(G_{\mathbf{i}_1\#\mathbf{j}_1},w_{\mathbf{i}_1},w_{\mathbf{j}_1}) = \pi(G_{\mathbf{i}_2 \# \mathbf{j}_2},w_{\mathbf{i}_2},w_{\mathbf{j}_2}).
@@ -650,7 +688,9 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
 
 \begin{proof}
   \notready
-  The enumeration of the number of $2k$-tuples yielding a certain graph with two walks is the same as in the previous proposition: the structure $(G,w,w')$ specifies the $2k$-tuple precisely once we select the $|G|$ distinct indices for the vertices.  So, as before, this ratio becomes \[ \frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
+  The enumeration of the number of $2k$-tuples yielding a certain graph with two walks is the same
+  as in the previous proposition: the structure $(G,w,w')$ specifies the $2k$-tuple precisely once
+  we select the $|G|$ distinct indices for the vertices.  So, as before, this ratio becomes \[ \frac{n(n-1)\cdots (n-|G|+1)}{n^{k+2}}. \]
 \end{proof}
 
 
@@ -664,7 +704,8 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
 
 \begin{proof}
   \notready
-  Now, we have the condition $w+w'\ge 2$, meaning every edge is traversed at least twice.  Since there are $k$ steps in each of the two paths, this means there are at most $k$ edges.
+  Now, we have the condition $w+w'\ge 2$, meaning every edge is traversed at least twice.
+  Since there are $k$ steps in each of the two paths, this means there are at most $k$ edges.
 \end{proof}
 
 
@@ -696,7 +737,8 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
   \label{lem:traverse_exactly_twice}
   \notready
   \uses{lem:exactly_k_edges}     % also depends on  total length of walk i, j is exactly 2k
-  $(G, w, w') \in \mathcal{G}_{k, k}$. If $|G| = k + 1$, then for a common edge $e$ between the two walks, $w(e) + w'(e) =2$. In other words, every edge is traversed exactly twice.
+  $(G, w, w') \in \mathcal{G}_{k, k}$. If $|G| = k + 1$, then for a common edge $e$ between the two
+  walks, $w(e) + w'(e) =2$. In other words, every edge is traversed exactly twice.
 \end{lemma}
 
 \begin{proof}
@@ -721,7 +763,8 @@ This follows from Lemma \ref{lem:eq_equiv_eq_expect}.
   \label{lem:one_walk_traverse_twice}
   \notready
   \uses{lem:i_j_traverse_once}
-    $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$, then it can only be the case that $w(e) = 2, w'(e) = 0$, or $w(e) = 0, w'(e) = 2$ .
+    $(G, w, w') \in \mathcal{G}_{k, k}$ and $|G| = k + 1$, then it can only be the case that
+    $w(e) = 2, w'(e) = 0$, or $w(e) = 0, w'(e) = 2$ .
 \end{lemma}
 
 \begin{proof}
@@ -751,7 +794,8 @@ As a common edge, it is impossible that $w'$ does not traverse it.
   \label{lem:G_leq_k}
   \notready
   \uses{lem:disjoint_edge_set, def:common_val_prod}
-  For any $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \in \mathcal{G}_{k,k}$, with $k + 1$ vertices, $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})  = 0$
+  For any $(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j}) \in \mathcal{G}_{k,k}$, with
+  $k + 1$ vertices, $\pi(G_{\mathbf{i}\#\mathbf{j}},w_\mathbf{i},w_\mathbf{j})  = 0$
 \end{lemma}
 
 \begin{proof}
