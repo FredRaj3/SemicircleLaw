@@ -193,28 +193,28 @@ the multiset $EC_w$, which contains the edge counts of every edge in $w$.
 
 \begin{definition}[$|V_w|$ : ef:abs.V\_w]
   \label{def:abs.V_w}
-  \uses{def:g_k, lem:walk_vertex_card_equiv, def:graph_walk_vertices}
+  \uses{def:g_k,lem:walk_vertex_card_equiv,def:graph_walk_vertices}
   Given a  $w \in \mathcal{G}_k$, we define $|V_w|$ to be $|V_{\mathbf{i}}|$, where $w_{\mathbf{i}}$
   is a LoopWalk in the equivalence class $w$.
 \end{definition}
 
 \begin{definition}[$|E_w|$ : def:abs.E\_w]
   \label{def:abs.E_w}
-  \uses{def:g_k, lem:walk_edge_card_equiv, def:graph_walk_edges}
+  \uses{def:g_k,lem:walk_edge_card_equiv,def:graph_walk_edges}
   Given a  $w \in \mathcal{G}_k$, we define $|E_w|$ to be $|E_{\mathbf{i}}|$, where $w_{\mathbf{i}}$
   is a LoopWalk in the equivalence class $w$.
 \end{definition}
 
 \begin{definition}
   \label{def:edge_count_w}
-  \uses{def:g_k, lem:walk_edge_count_equiv}
+  \uses{def:g_k,lem:walk_edge_count_equiv}
   Given $w \in \mathcal{G}_k$, we define $EC_w$ to be the multiset of edge counts of $w$.
 \end{definition}
 
 
 \begin{lemma}[Lemma 4.3 in \cite{Kemp2013RMTNotes} : R-1-9 : lem:lem\_4.3]
   \label{lem:lem_4.3}
-  \uses{def:g_k,def:graph_walk_multi_index, def:graph_walk_equiv}
+  \uses{def:g_k,def:graph_walk_multi_index,def:graph_walk_equiv}
   Given $w \in \mathcal{G}_k$, we have
   \[
    |\{ \mathbf{i} \in [n]^k : w_\mathbf{i} = w \}| = n (n-1) \cdots (n - |V_w| + 1).
