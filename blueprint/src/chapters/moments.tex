@@ -41,12 +41,12 @@
 
 
 \begin{lemma}[Matrix Powers Trace]
-    \label{lem:matrix_powers_trace}
-    \uses{lem:matrix_powers_entries}
-    Let $Y$ be an $n\times n$ matrix and $k \in \mathbb{N}$. Then, the trace of $Y^{k}$ is given by:
-    $$
-    \Tr[Y^{k}] = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}.
-    $$
+  \label{lem:matrix_powers_trace}
+  \uses{lem:matrix_powers_entries}
+  Let $Y$ be an $n\times n$ matrix and $k \in \mathbb{N}$. Then, the trace of $Y^{k}$ is given by:
+  $$
+  \Tr[Y^{k}] = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}.
+  $$
 \end{lemma}
 
 \begin{proof}
@@ -71,8 +71,8 @@
 
 \begin{lemma}[Matrix Multi Index and Graph Equivalence]
     \label{lem:multi_index_graph_equivalence}
-    \uses{def:matrix_multi_index}
-    Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let
+    \uses{def:matrix_multi_index, def:graph_walk_multi_index}
+    Let $\mathbf{i} \in [n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$. Let
     $Y$ be a symmetric matrix. Then, we have the following:
      $$
      Y_{\mathbf{i}} = Y_{i_{1}i_{2}} Y_{i_{2}i_{3}} \ldots Y_{i_{k}i_{1}} = \prod_{w \in w_{\mathbf{i}}} Y_{w}
@@ -94,11 +94,11 @@
 
 \begin{lemma}[Graph Walk and Graph Count Equivalence]
     \label{lem:graph_walk_count_equivalence}
-    \uses{def:graph_edge_count, def:matrix_multi_index, lem:multi_index_graph_equivalence}
+    \uses{def:graph_edge_count, lem:multi_index_graph_equivalence}
     Let $\mathbf{i} \in[n]^k$ be a $k$-index, $\mathbf{i}=\left(i_1, i_2, \ldots, i_k\right)$.
     Let $Y$ be a symmetric matrix. Then, we have the following:
-     $$
-     Y_{\mathbf{i}} =  \prod_{1 \leq i \leq j \leq n} Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}.
+    $$
+    Y_{\mathbf{i}} =  \prod_{1 \leq i \leq j \leq n} Y_{ij}^{w_{\mathbf{i}}(\{i, j\})}.
     $$
 \end{lemma}
 
@@ -154,7 +154,7 @@
 
 \begin{lemma}[Trace of Expectation of Matrix]
     \label{lem:trace_expectation_of_matrix}
-    \uses{lem:expectation_matrix_multi_index, lem:matrix_powers_trace, lem:graph_walk_count_equivalence}
+    \uses{lem:expectation_matrix_multi_index, lem:matrix_powers_trace}
     Let $\mathbf{Y}_{n}$ be an $n \times n$ symmetric matrix with independent entries, where $\{Y_{ij}\}_{1\le i\le j}$ are independent random variables, with $\{Y_{ii}\}_{i\ge 1}$ identically distributed and $\{Y_{ij}\}_{1\le i<j}$ identically distributed. Then, for any $k$-index $\mathbf{i} \in [n]^k$, we have:
     $$
     \bE(\Tr(\mathbf{Y}_{n}^{k})) = \sum_{1 \leq i_1, i_2, \ldots, i_k \leq n} \bE(Y_{i_1 i_2} Y_{i_2 i_3} \cdots Y_{i_k i_1}) = \sum_{\mathbf{i} \in [n]^{k}} \bE(Y_{i})
@@ -168,7 +168,7 @@
 
 \begin{definition}[Product of Expectation of Matrix Multi Index]
     \label{def:prod_expectation_matrix_multi_index}
-    \uses{def:matrix_multi_index, def:graph_edge_count, def:graph_self_edges, def:graph_connecting_edges, def:graph_walk_multi_index}
+    \uses{lem:expectation_matrix_multi_index, def:graph_walk_multi_index}
     Let $\mathbf{i} \in [n]^{k}$ be a $k$-index, $\mathbf{i} = (i_1, i_2, \ldots, i_{k})$. We define
     $\Pi(w_{\mathbf{i}})$ as follows:
     $$
@@ -179,7 +179,7 @@
 
 \begin{lemma}[$\mathbf{i} \sim \mathbf{j} \Rightarrow \mathbb{E}(Y_\mathbf{i}) = \mathbb{E}(Y_\mathbf{j})$ : R-1-7 : lem:eq\_equiv\_eq\_expect]
   \label{lem:eq_equiv_eq_expect}
-  \uses{def:matrix_multi_index,lem:expectation_matrix_multi_index}
+  \uses{def:graph_walk_equiv,lem:expectation_matrix_multi_index}
   Given two $k$-indexes $\mathbf{i} = (i_1,...,i_k)$ and $\mathbf{j} = (j_1,...,j_k)$,
   suppose $w_{\mathbf{i}} \sim w_{\mathbf{j}}$ under \ref{def:graph_walk_equiv}.
   Then $\bE (Y_\mathbf{i}) = \bE (Y_{\mathbf{j}})$.
@@ -202,7 +202,7 @@
 
 \begin{lemma}[Partitioning into double summation : R-1-10 : lem:equation\_4.5\_1]
   \label{lem:equation_4.5_1}
-  \uses{def:g_k,def:g_k_equiv,lem:trace_expectation_of_matrix}
+  \uses{def:g_k,lem:trace_expectation_of_matrix}
   \[
   \bE \Tr (\mathbf{Y}_n^k)
   = \sum_{w \in \mathcal{G}_k} \sum_{\substack{\mathbf{i} \in [n]^k \\ w_\mathbf{i} = w}} \bE (Y_\mathbf{i}).
@@ -216,7 +216,7 @@
 
 \begin{definition}[$\Pi (G,w)$: R-1-11 : def:Pi.G.w]
   \label{def:Pi.G.w}
-  \uses{def:g_k,def:g_k_j}
+  \uses{def:g_k}
   Given $w \in \mathcal{G}_k$, let $w_{\mathbf{i}}$ be an element of its equivalence class. We define
   \[
   \Pi (w) = \mathbb{E}(Y_\mathbf{i}).
@@ -226,7 +226,7 @@
 
 \begin{lemma}[Re-indexing the sum with counting argument : R-1-12 : lem:equation\_4.5\_2]
   \label{lem:equation_4.5_2}
-  \uses{lem:equation_4.5_1,lem:eq_equiv_eq_expect,lem:lem_4.3,def:Pi.G.w}
+  \uses{lem:equation_4.5_1,lem:eq_equiv_eq_expect,def:Pi.G.w}
   \[
   \bE \Tr (\mathbf{Y}_n^k) = \sum_{w \in \mathcal{G}_k} \Pi (w) \cdot \# \{ \mathbf{i} \in [n]^k : w_\mathbf{i} = w \}.
   \]
@@ -239,7 +239,7 @@
 
 \begin{lemma}[Re-introducing the renormalization factor : R-1-13 : lem:equation\_4.5\_3]
   \label{lem:equation_4.5_3}
-  \uses{lem:equation_4.5_2}
+  \uses{lem:equation_4.5_2,lem:lem_4.3}
   \[
   \frac{1}{n} \bE \Tr (\mathbf{X}_n^k) = \sum_{w \in \mathcal{G}_k} \Pi (w) \cdot \frac{n (n-1) \cdots (n - |G_w| + 1)}{n^{k/2+1}}.
   \]
@@ -259,7 +259,7 @@
 
 \begin{lemma}[$\Pi (G,w) = 0$ : R-1-15 : lem:Pi.prod\_eq\_zero\_if\_w\_le\_two]
   \label{lem:Pi.prod_eq_zero_if_w_le_two}
-  \uses{def:g_k,def:prod_expectation_matrix_multi_index,def:length_of_w_i,def:g_k_j}
+  \uses{def:g_k,def:prod_expectation_matrix_multi_index,def:edge_count_w}
   Given $w \in \mathcal{G}_k$, suppose there exists an edge $e \in E$ in which it is traversed only
   once in the walk $w$, i.e $1 \in EC_w$. Then
   \[
@@ -291,12 +291,10 @@
 
 \begin{lemma}
   \label{lem:asc_factorial_product}
-  \notready
   $n(n-1)\cdots (n-|G|+1) \le n^{|G|}$.
 \end{lemma}
 
 \begin{proof}
-  \notready
   Use Nat.ascFactorial\_eq\_div. Or prove directly.
 \end{proof}
 
@@ -304,7 +302,7 @@
 \begin{lemma}
   \label{lem:bounded_map}
   \notready
-  \uses{lem:asc_factorial_product, lem:vertex_bound, lem:equation_4.8}
+  \uses{lem:asc_factorial_product,lem:vertex_bound,lem:equation_4.8}
   The sequence $n\mapsto \frac1n\bE\Tr(X_n^k)$ is bounded.
 \end{lemma}
 
@@ -319,7 +317,7 @@
 \begin{lemma}
   \label{lem:odd_ratio_bound}
   \notready
-  \uses{lem:odd_vertex_bound, lem:asc_factorial_product}
+  \uses{lem:odd_vertex_bound,lem:asc_factorial_product}
   Suppose $k$ odd. Then, $\frac{n(n-1)\cdots(n-|G_w|+1)}{n^{k/2+1}} \le \frac{1}{\sqrt{n}}$.
 \end{lemma}
 
@@ -332,7 +330,7 @@
 \begin{proposition}
   \label{prop:odd_case}
   \notready
-  \uses{lem:odd_ratio_bound, lem:equation_4.8}
+  \uses{lem:odd_ratio_bound,lem:equation_4.8}
   Suppose $k$ odd. Then, $\lim_{n\to\infty} \frac{1}{n}\bE\Tr(X_n^k) = 0$.
 \end{proposition}
 
@@ -345,8 +343,10 @@
 \begin{proposition}
   \label{prop:g_difference_bound}
   \notready
-  \uses{lem:graph_set_finite, def:special_set_g, lem:asc_factorial_product}
-  $|\sum_{\mathcal{G}_{k}, w \ge 2} - \sum_{\mathcal{G}_k^{k/2+1}}| \le |\mathcal{G}_k|/n$.
+  \uses{lem:graph_set_finite,def:special_set_g,lem:asc_factorial_product}
+  $|\sum_{\mathcal{G}_{k}, w \ge 2} \Pi (w) \cdot \frac{n (n-1) \cdots (n - |G_w| + 1)}{n^{k/2+1}}
+  - \sum_{\mathcal{G}_k^{k/2+1}}\Pi (w) \cdot \frac{n (n-1) \cdots (n - |G_w| + 1)}{n^{k/2+1}}|
+  \le |\mathcal{G}_k|/n$.
 \end{proposition}
 
 \begin{proof}
@@ -358,7 +358,7 @@
 \begin{proposition}%[Equation 4.9 in \cite{Kemp2013RMTNotes}]
   \label{prop:trace_ev_special_g}
   \notready
-  \uses{prop:g_difference_bound, lem:equation_4.8}
+  \uses{prop:g_difference_bound,lem:equation_4.8}
   $\frac1n\bE\Tr(X_n^k) = \sum_{w\in\mathcal{G}^{k/2+1}_k} \Pi(w) \cdot \frac{n(n-1)\cdots(n-|G_w|+1)}{n^{k/2+1}} + O_k(n^{-1})$
   %edit: remove big O notation
 \end{proposition}
@@ -386,7 +386,7 @@
 \begin{proposition}
   \label{prop:trace_ev_limit_equals_sum}
   \notready
-  \uses{def:special_set_g, lem:fraction_limit_one, prop:trace_ev_special_g, lem:bounded_map}
+  \uses{def:special_set_g,lem:fraction_limit_one,prop:trace_ev_special_g,lem:bounded_map}
   $\lim_{n\to\infty}\bE\Tr(X_n^k) = \sum_{w\in\mathcal{G}^{k/2+1}_k} \Pi(G,w)$
 \end{proposition}
 
