@@ -3,6 +3,7 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Real.Basic
 import Batteries.Data.Rat.Basic
 import Mathlib.Algebra.Ring.Defs
+import Mathlib.Data.Finset.Basic
 import Hammer
 
 /-!
@@ -23,7 +24,7 @@ walks, moment method
 
 -/
 
-open Function
+open Function List
 
 universe u v w
 
@@ -32,8 +33,10 @@ namespace SimpleGraph
 variable {V : Type u} {V' : Type v} {V'' : Type w}
 variable (G : SimpleGraph V) (G' : SimpleGraph V') (G'' : SimpleGraph V'')
 
-/-- A walk is a sequence of adjacent vertices.  For vertices `u v : V`,
-the type `walk u v` consists of all walks starting at `u` and ending at `v`.
+
+/-- A LoopWalk is a sequence of adjacent vertices, allowing for consecutive visits
+to the same vertex.  For vertices `u v : V`,the type `LoopWalk u v` consists of all
+LoopWalks starting at `u` and ending at `v`.
 
 We say that a walk *visits* the vertices it contains.  The set of vertices a
 walk visits is `SimpleGraph.LoopWalk.support`.
@@ -52,9 +55,17 @@ inductive LoopWalk : V → V → Type u
 
 #print LoopWalk
 
-/- A lot of the stuff in the next part of this file is basic tools for working with
+
+/-
+
+
+A lot of the stuff in the next part of this file is basic tools for working with
 LoopWalks, which were basically just copied from the corresponding files for Walks.
-The relevant stuff to us starts at the definition of `length`. -/
+The relevant stuff to us starts at the definition of `length`.
+
+
+-/
+
 
 attribute [refl] LoopWalk.nil
 
@@ -122,14 +133,6 @@ theorem cons_copy {u v w v' w'} (h : G.Adj u v) (p : G.LoopWalk v' w') (hv : v' 
   subst_vars
   rfl
 
-
-/-- The length of a walk is the number of edges/darts along it. -/
-def length {u v : V} : G.LoopWalk u v → ℕ
-  | nil => 0
-  | cons _ q => q.length.succ
-  | loop q => q.length.succ
-
-
 /-- The concatenation of two compatible walks. -/
 @[trans]
 def append {u v w : V} : G.LoopWalk u v → G.LoopWalk v w → G.LoopWalk u w
@@ -157,6 +160,21 @@ protected def reverseAux {u v w : V} : G.LoopWalk u v → G.LoopWalk u w → G.L
 def reverse {u v : V} (w : G.LoopWalk u v) : G.LoopWalk v u := w.reverseAux nil
 
 
+/-
+
+
+This section defines the basic counting operations done on LoopWalks.
+
+
+-/
+
+
+/-- The length of a walk is the number of edges/darts along it. -/
+def length {u v : V} : G.LoopWalk u v → ℕ
+  | nil => 0
+  | cons _ q => q.length.succ
+  | loop q => q.length.succ
+
 /-- The `support` of a walk is the list of vertices it visits in order. -/
 def support {u v : V} : G.LoopWalk u v → List V
   | nil => [u]
@@ -164,11 +182,20 @@ def support {u v : V} : G.LoopWalk u v → List V
   | loop p => u::p.support
 
 
+/--The `supportSet` of a LoopWalk is the set of vertices it visits.-/
+def supportSet {u v : V} [DecidableEq V] (p : G.LoopWalk u v) : Finset V :=
+  (support p).toFinset
+
 /-- The `darts` of a walk is the list of steps it takes, represented as pairs of vertices. -/
 def darts {u v : V} : G.LoopWalk u v → List (V × V)
   | nil => []
   | @cons _ _ u v' _ h p => (u, v') :: p.darts
   | loop p => (u, u) :: p.darts
+
+
+/--The `dartSet` of a LoopWalk is the set of edges it traverses, including loops.-/
+def dartSet {u v : V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (V × V) :=
+  (darts p).toFinset
 
 /- Note on the change in darts definition: previously, the cons part of the definition was
 | cons u v _ p => (u, v) :: p.darts,
@@ -187,9 +214,6 @@ Thus the first two _ are the graph parameters V and G which are left implicit, u
 explicit, and the last _ left implicit for the ending vertex of the walk.
 -/
 
-#check Dart
-
-
 /-- The edge associated to the dart. -/
 def dartEdge (d : V × V) : Sym2 V :=
   Sym2.mk d
@@ -198,13 +222,7 @@ def dartEdge (d : V × V) : Sym2 V :=
 This is defined to be the list of edges underlying `SimpleGraph.LoopWalk.darts`.-/
 def edges {u v : V} (p : G.LoopWalk u v) : List (Sym2 V) := p.darts.map dartEdge
 
-
-/-- Given a graph homomorphism, map walks to walks. -/
-protected def map (f : G →g G') {u v : V} : G.LoopWalk u v → G'.LoopWalk (f u) (f v)
-  | nil => nil
-  | cons h p => cons (f.map_adj h) (p.map f)
-  | loop p => loop (p.map f)
-
+def edgeSet {u v: V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (Sym2 V) := (edges p).toFinset
 
 /-- The loop_count of a walk is the number of loops along it. -/
 def loop_count {u v : V} : G.LoopWalk u v → ℕ
@@ -219,17 +237,94 @@ abbrev ClosedLoopWalk (G : SimpleGraph V) := Σ u : V, G.LoopWalk u u
 @[simp]
 def IsClosed {u v : V} (_ : G.LoopWalk u v) : Prop := u = v
 
-#print ClosedLoopWalk
-
 
 
 /-
-Lemma: For k ∈ ℕ, k ≥ 2, and X an n × n matrix, we have
-Trace(X^k) = ∑_{Loopwalks w on the complete graph on n vertices satisfying IsClosed w,
-and length w = k } X_{i_1 i_2}...X_{i_k i_1},
-where (i_1, i_2), (i_2, i_3), ... (i_k, i_1) are the darts of the loopwalk.
-In other words, the trace of the kth power of a matrix can be written as a sum over closed LoopWalks
-on the complete graph on n vertices with length equal to k.
+
+
+Section for maps of LoopWalks
+
+
+-/
+
+/-- Given a graph homomorphism, map walks to walks. -/
+protected def map (f : G →g G') {u v : V} : G.LoopWalk u v → G'.LoopWalk (f u) (f v)
+  | nil => nil
+  | cons h p => cons (f.map_adj h) (p.map f)
+  | loop p => loop (p.map f)
+
+
+section CompleteGraphMaps
+
+variable (n : ℕ)
+abbrev K := completeGraph (Fin n)
+variable (s : Equiv.Perm (Fin n))
+variable {u v w x: Fin n}
+
+
+def permMap (s : Equiv.Perm (Fin n)) : K n →g K n where
+  toFun:= s
+  map_rel':= by
+    intro u v h_adj
+    unfold K
+    rw [top_adj] at h_adj ⊢
+    rw[Function.Injective.ne_iff]
+    · apply h_adj
+    apply s.injective
+
+
+def permMap' (s : Equiv.Perm (Fin n)) : K n ≃g K n where
+  toEquiv:= s
+  map_rel_iff':=by
+    intros a b
+    unfold K
+    rw[top_adj, top_adj]
+    simp
+
+def permMapWalk (s : Equiv.Perm (Fin n)) (p : (K n).LoopWalk u v) : (K n).LoopWalk (s u) (s v):=
+  p.map (K n) (permMap' n s)
+
+
+-- lemma identityWalkMap (s : Equiv.Perm (Fin n)) (p : K.LoopWalk u v) (hs : s = Equiv.refl (Fin n))
+--     (he : ∀u: (Fin n), s u = u):
+--   p.map K (permMap' n K hk s) = p := by sorry
+
+
+def LoopWalkEquiv (p q : ClosedLoopWalk (K n)): Prop :=
+  ∃ (s : Equiv.Perm (Fin n)), ∃ (h_eq : s p.1 = q.1),
+    h_eq ▸ (permMapWalk n s p.2) = q.2
+
+
+def LoopWalkSetoid : Setoid (ClosedLoopWalk (K n)) where
+  r := LoopWalkEquiv n
+  iseqv := by
+    constructor
+    · intro x
+      let s := Equiv.refl (Fin n)
+      unfold LoopWalkEquiv
+      use s
+      have hs (y : Fin n):  s y = y := by
+        unfold s
+        simp
+      use hs x.1
+      sorry
+    · sorry
+    · sorry
+
+
+
+
+
+
+end CompleteGraphMaps
+
+
+/-
+
+
+Lemmas relating LoopWalks to matrices
+
+
 -/
 
 
@@ -262,6 +357,19 @@ theorem trace_pow_eq_sum_over_walks {n k : ℕ} {α : Type*} [Ring α]
     (hk : k ≥ 1) (X : Matrix (Fin n) (Fin n) α) :
   Matrix.trace (X ^ k) = sumClosedWalkProducts n k X := by
   sorry
+
+
+
+/-
+
+
+Section for testing definitions:
+
+
+-/
+
+
+
 
 /- Below is an example of how these definitions can be used on the complete graph.
 You can (and should, to make sure I didn't mess up the definition) play around
