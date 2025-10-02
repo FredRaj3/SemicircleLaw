@@ -30,8 +30,9 @@ universe u v w
 
 namespace SimpleGraph
 
-variable {V : Type u} {V' : Type v} {V'' : Type w}
+variable {V : Type u} {V' : Type v} {V'' : Type w} [DecidableEq V]
 variable (G : SimpleGraph V) (G' : SimpleGraph V') (G'' : SimpleGraph V'')
+
 
 
 /-- A LoopWalk is a sequence of adjacent vertices, allowing for consecutive visits
@@ -99,7 +100,8 @@ lemmas. While this is a simple wrapper around `Eq.rec`, it gives a canonical way
 
 The simp-normal form is for the `copy` to be pushed outward. That way calculations can
 occur within the "copy context." -/
-protected def copy {u v u' v'} (p : G.LoopWalk u v) (hu : u = u') (hv : v = v') : G.LoopWalk u' v' :=
+protected def copy {u v u' v'} (p : G.LoopWalk u v) (hu : u = u') (hv : v = v') :
+  G.LoopWalk u' v' :=
   hu ▸ hv ▸ p
 
 @[simp]
@@ -197,6 +199,24 @@ def darts {u v : V} : G.LoopWalk u v → List (V × V)
 def dartSet {u v : V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (V × V) :=
   (darts p).toFinset
 
+
+def connectingDarts {u v : V} : G.LoopWalk u v → List (V × V)
+  | nil => []
+  | @cons _ _ u v' _ h p => (u, v') :: p.connectingDarts
+  | loop p => p.connectingDarts
+
+def connectingDartsSet {u v : V} (p : G.LoopWalk u v) : Finset (V × V) :=
+  (connectingDarts p).toFinset
+
+def selfDarts {u v : V} : G.LoopWalk u v → List (V × V)
+  | nil => []
+  | @cons _ _ u v' _ h p => p.selfDarts
+  | loop p => (u, u) :: p.selfDarts
+
+def selfDartsSet {u v : V} (p : G.LoopWalk u v) : Finset (V × V) :=
+  (selfDarts p).toFinset
+
+
 /- Note on the change in darts definition: previously, the cons part of the definition was
 | cons u v _ p => (u, v) :: p.darts,
 where the hypothesis p was G.LoopWalk u v, and the inferred hypothesis _ was G.adj u v', for some
@@ -222,7 +242,26 @@ def dartEdge (d : V × V) : Sym2 V :=
 This is defined to be the list of edges underlying `SimpleGraph.LoopWalk.darts`.-/
 def edges {u v : V} (p : G.LoopWalk u v) : List (Sym2 V) := p.darts.map dartEdge
 
+def connectingEdges {u v : V} (p : G.LoopWalk u v) : List (Sym2 V) :=
+  p.connectingDarts.map dartEdge
+
+def selfEdges {u v : V} (p : G.LoopWalk u v) : List (Sym2 V) :=
+  p.selfDarts.map dartEdge
+
 def edgeSet {u v: V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (Sym2 V) := (edges p).toFinset
+
+def connectingEdgeSet {u v: V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (Sym2 V) :=
+  (connectingEdges p).toFinset
+
+def selfEdgeSet {u v: V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (Sym2 V) :=
+  (selfEdges p).toFinset
+
+
+#check countP
+
+/--Edge counting function.-/
+def edgeCount {u v : V} (p : G.LoopWalk u v) (e : Sym2 V) : ℕ := countP (· = e) p.edges
+
 
 /-- The loop_count of a walk is the number of loops along it. -/
 def loop_count {u v : V} : G.LoopWalk u v → ℕ
@@ -237,7 +276,28 @@ abbrev ClosedLoopWalk (G : SimpleGraph V) := Σ u : V, G.LoopWalk u u
 @[simp]
 def IsClosed {u v : V} (_ : G.LoopWalk u v) : Prop := u = v
 
+section LoopWalkCounting
 
+lemma vertex_edge_inequality {u v : V} (p : G.LoopWalk u v) :
+  (supportSet p).card ≤ (edgeSet p).card +1 := by
+  sorry
+
+end LoopWalkCounting
+
+
+section CompleteGraphMultiIndexWalks
+
+variable (n k : ℕ)
+abbrev K := completeGraph (Fin n)
+
+
+/-- Given a multi-index (i_0,i_1, ..., i_{k-1}), construct a LoopWalk with darts given by
+(i_0, i_1), (i_1, i_2), ... , (i_{k-2}, i__{k-1}), (i_{k-1}, i_0).-/
+def graphWalkMultiIndex {n k : ℕ} (hk : k > 0) (I : (Fin k) → Fin n):
+    ((K n).LoopWalk (I ⟨0, hk⟩) (I ⟨0, hk⟩)) := by sorry
+
+
+end CompleteGraphMultiIndexWalks
 
 /-
 
@@ -254,10 +314,10 @@ protected def map (f : G →g G') {u v : V} : G.LoopWalk u v → G'.LoopWalk (f 
   | loop p => loop (p.map f)
 
 
+
 section CompleteGraphMaps
 
 variable (n : ℕ)
-abbrev K := completeGraph (Fin n)
 variable (s : Equiv.Perm (Fin n))
 variable {u v w x: Fin n}
 
@@ -433,7 +493,8 @@ def complicatedWalk : G_comp.LoopWalk 1 5 :=
     (completeGraph_adj 1 3 (by decide))
     (LoopWalk.cons (completeGraph_adj 3 5 (by decide)) LoopWalk.nil))))
 
-
+#eval edgeCount complicatedWalk (Sym2.mk (1,4))
+#eval edgeCount complicatedWalk (Sym2.mk (1,1))
 #eval length complicatedWalk
 #eval loop_count complicatedWalk
 #eval support complicatedWalk
