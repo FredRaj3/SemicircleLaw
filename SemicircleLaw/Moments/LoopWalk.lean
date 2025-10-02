@@ -210,7 +210,7 @@ def connectingDartsSet {u v : V} (p : G.LoopWalk u v) : Finset (V × V) :=
 
 def selfDarts {u v : V} : G.LoopWalk u v → List (V × V)
   | nil => []
-  | @cons _ _ u v' _ h p => p.selfDarts
+  | @cons _ _ u _ _ h p => p.selfDarts
   | loop p => (u, u) :: p.selfDarts
 
 def selfDartsSet {u v : V} (p : G.LoopWalk u v) : Finset (V × V) :=
@@ -262,6 +262,9 @@ def selfEdgeSet {u v: V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (Sym2 V) 
 /--Edge counting function.-/
 def edgeCount {u v : V} (p : G.LoopWalk u v) (e : Sym2 V) : ℕ := countP (· = e) p.edges
 
+lemma abs_w_i_eq_k {u v : V} (p : G.LoopWalk u v) : ∑(e : edgeSet p),
+    edgeCount p e = p.length := by
+  sorry
 
 /-- The loop_count of a walk is the number of loops along it. -/
 def loop_count {u v : V} : G.LoopWalk u v → ℕ
@@ -371,8 +374,12 @@ def LoopWalkSetoid : Setoid (ClosedLoopWalk (K n)) where
     · sorry
     · sorry
 
+lemma walk_vertex_card_equiv {n : ℕ} (p q : ClosedLoopWalk (K n)) (heq : LoopWalkEquiv n p q) :
+  (supportSet p.2).card = (supportSet q.2).card := by sorry
 
 
+lemma walk_edge_card_equiv {n : ℕ} (p q : ClosedLoopWalk (K n)) (heq : LoopWalkEquiv n p q) :
+  (edgeSet p.2).card = (edgeSet q.2).card := by sorry
 
 
 
@@ -493,6 +500,8 @@ def complicatedWalk : G_comp.LoopWalk 1 5 :=
     (completeGraph_adj 1 3 (by decide))
     (LoopWalk.cons (completeGraph_adj 3 5 (by decide)) LoopWalk.nil))))
 
+#eval selfDarts complicatedWalk
+#eval connectingDarts complicatedWalk
 #eval edgeCount complicatedWalk (Sym2.mk (1,4))
 #eval edgeCount complicatedWalk (Sym2.mk (1,1))
 #eval length complicatedWalk
