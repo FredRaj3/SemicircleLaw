@@ -244,11 +244,6 @@ lemma wignerMatrixScaledTracePowerMeasurable (n : ℕ) (k : ℕ) :
   apply measurable_trace
   apply wignerMatrixScaledPowMeasurable
 
-/--The expectation of the trace of the kth power of a Wigner matrix is equal to 0 when k is odd.-/
-theorem wignerMatrixMomentOddExpectation (n : ℕ) (k : ℕ) (hk : Odd k) :
-  (WignerMeasure μ ν n)[wignerMatrixTracePower n k] = 0 := by
-  sorry
-
 /--The sequence of expectations of the trace of the kth power of an n × n Wigner matrix.-/
 noncomputable
 def wignerMatrixTracePowerSequence (k : ℕ) : ℕ → ℝ :=
@@ -258,6 +253,12 @@ def wignerMatrixTracePowerSequence (k : ℕ) : ℕ → ℝ :=
 noncomputable
 def wignerMatrixScaledTracePowerSequence (k : ℕ) : ℕ → ℝ :=
   fun n ↦ (WignerMeasure μ ν n)[(1 / (n : ℝ)) • wignerMatrixScaledTracePower n k]
+
+/--For any odd k, the expectation of the scaled trace of the kth power of a Wigner matrix tends
+to 0.-/
+theorem wignerMatrixMomentOddExpectation (n : ℕ) (k : ℕ) (hk : Odd k) :
+  Tendsto (wignerMatrixScaledTracePowerSequence μ ν k) atTop (𝓝 (0 : ℝ)) := by
+  sorry
 
 /--For any even k, the expectation of the scaled trace of the kth power of a Wigner matrix tends
 to `catalan (k/2)`.-/
