@@ -639,6 +639,8 @@ lemma h_cont : Continuous h := by
   unfold h
   continuity
 
+/- Test Commit -/
+
 end Scribbles
 
 end SemicircleDistribution
