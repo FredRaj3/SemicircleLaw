@@ -347,32 +347,112 @@ def permMap' (s : Equiv.Perm (Fin n)) : K n ≃g K n where
 def permMapWalk (s : Equiv.Perm (Fin n)) (p : (K n).LoopWalk u v) : (K n).LoopWalk (s u) (s v):=
   p.map (K n) (permMap' n s)
 
+@[simp]
+lemma permMapWalk_nil (s : Equiv.Perm (Fin n)) (u : Fin n) :
+  permMapWalk n s (LoopWalk.nil : (K n).LoopWalk u u) = LoopWalk.nil := rfl
 
--- lemma identityWalkMap (s : Equiv.Perm (Fin n)) (p : K.LoopWalk u v) (hs : s = Equiv.refl (Fin n))
---     (he : ∀u: (Fin n), s u = u):
---   p.map K (permMap' n K hk s) = p := by sorry
+@[simp]
+lemma permMapWalk_cons (s : Equiv.Perm (Fin n))
+  {u v w : Fin n} (h : (K n).Adj u v) (p : (K n).LoopWalk v w) :
+  permMapWalk n s (LoopWalk.cons h p)
+    = LoopWalk.cons ((permMap n s).map_adj h) (permMapWalk n s p) := rfl
 
+@[simp]
+lemma permMapWalk_loop (s : Equiv.Perm (Fin n))
+  {u v : Fin n} (p : (K n).LoopWalk u v) :
+  permMapWalk n s (LoopWalk.loop p) = LoopWalk.loop (permMapWalk n s p) := rfl
+
+@[simp]
+lemma permMapWalk_refl (p : (K n).LoopWalk u v) :
+  permMapWalk n (Equiv.refl (Fin n)) p = p := by
+  classical
+  induction p with
+  | nil =>
+    simp
+  | @cons u v w h p ih =>
+    have h_adj_eq : (permMap n (Equiv.refl (Fin n))).map_adj h = h := by
+      apply Subsingleton.elim
+    simpa [h_adj_eq, ih]
+  | @loop u v p ih =>
+    simpa [ih]
+
+@[simp]
+lemma permMapWalk_comp (t s : Equiv.Perm (Fin n))
+  (p : (K n).LoopWalk u v) :
+  permMapWalk n t (permMapWalk n s p) = permMapWalk n (t * s) p := by
+  classical
+  induction p with
+  | nil =>
+    simp
+  | @cons u v w h p ih =>
+    have h_adj_eq :
+        (permMap n t).map_adj ((permMap n s).map_adj h)
+        = (permMap n (t * s)).map_adj h := by
+      apply Subsingleton.elim
+    simp [ih]
+  | @loop u v p ih =>
+    simp [ih]
+
+@[simp]
+lemma perm_symm_mul_self (s : Equiv.Perm (Fin n)) :
+  s.symm * s = (Equiv.refl (Fin n)) := by
+  ext x
+  simp [Equiv.Perm.mul_def]
+
+@[simp]
+lemma perm_self_mul_symm (s : Equiv.Perm (Fin n)) :
+  s * s.symm = (Equiv.refl (Fin n)) := by
+  ext x
+  simp [Equiv.Perm.mul_def]
 
 def LoopWalkEquiv (p q : ClosedLoopWalk (K n)): Prop :=
+  ∃ (s : Equiv.Perm (Fin n)),
+    q = ⟨s p.1, permMapWalk n s p.2⟩
+
+def LoopWalkEquiv' (p q : ClosedLoopWalk (K n)): Prop :=
   ∃ (s : Equiv.Perm (Fin n)), ∃ (h_eq : s p.1 = q.1),
     h_eq ▸ (permMapWalk n s p.2) = q.2
 
+/-- The two definition are equal. -/
+example: LoopWalkEquiv = LoopWalkEquiv' := by
+ ext n w1 w2
+ exact ⟨fun ⟨eq,hlw1⟩ ↦ ⟨eq, by rw [hlw1]; simp⟩,
+   fun ⟨eq,hlw1',hlw2'⟩ ↦ ⟨eq,by ext <;> simp [hlw1']; rw [←hlw2']; simp⟩⟩
 
 def LoopWalkSetoid : Setoid (ClosedLoopWalk (K n)) where
   r := LoopWalkEquiv n
   iseqv := by
     constructor
     · intro x
-      let s := Equiv.refl (Fin n)
-      unfold LoopWalkEquiv
-      use s
-      have hs (y : Fin n):  s y = y := by
-        unfold s
-        simp
-      use hs x.1
+      classical
+      rcases x with ⟨ux, px⟩
+      refine ⟨Equiv.refl (Fin n), ?_⟩
+      ext
+      · simp
+      · simp [permMapWalk_refl]
+    · intro x y hxy
+      classical
+      rcases x with ⟨ux, px⟩
+      rcases y with ⟨uy, py⟩
+      rcases hxy with ⟨s, hy⟩
+      refine ⟨s.symm, ?_⟩
+      cases hy
+      simp [permMapWalk_comp, perm_symm_mul_self, permMapWalk_refl]
       sorry
-    · sorry
-    · sorry
+    · intro x y z hxy hyz
+      classical
+      rcases x with ⟨ux, px⟩
+      rcases y with ⟨uy, py⟩
+      rcases z with ⟨uz, pz⟩
+      rcases hxy with ⟨s1, hy⟩
+      rcases hyz with ⟨s2, hz⟩
+      refine ⟨s2 * s1, ?_⟩
+      cases hy
+      cases hz
+      ext
+      · simp [Equiv.Perm.mul_def]
+      · simp [permMapWalk_comp]
+
 
 lemma walk_vertex_card_equiv {n : ℕ} (p q : ClosedLoopWalk (K n)) (heq : LoopWalkEquiv n p q) :
   (supportSet p.2).card = (supportSet q.2).card := by sorry
