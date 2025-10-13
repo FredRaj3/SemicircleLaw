@@ -273,7 +273,33 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
           Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv,
           intervalIntegral.integral_const_mul, A, I, B]
     have c43 : ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
-    = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by sorry
+    = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by
+      have c431 : (2 * √v)⁻¹ * ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
+      = ∫ (x : ℝ) in (-1)..1, √(4 * v - 4 * v * x ^ 2) := by
+        set F := fun x ↦ √(4 * v - 4 * v * x ^ 2)
+        /- intervalIntegral.inv_mul_integral_comp_div_sub -/
+        set a := μ - 2 * √v
+        set b := μ + 2 * √v
+        set c := 2 * √v
+        set d := (2 * √v)⁻¹ * μ
+        set G := fun x ↦ √(4 * v - (x - μ) ^ 2)
+        have c4311 : 1 = b * c⁻¹ - d := by
+          simp [b,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+            NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
+            NNReal.coe_inv, NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀,
+            A, I, a, b, F, c, G]
+        have c4312 : -1 = a * c⁻¹ - d := by
+          simp [a,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+            NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
+            NNReal.coe_inv, neg_sub,
+            NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀, A, I, b, c, d, a, F, G]
+        have c4313 := intervalIntegral.inv_mul_integral_comp_div_sub
+          (a := a) (b := b) (f := G) (c := c) (d := d)
+        have c4314 : c⁻¹ * intervalIntegral G a b ℙ
+          = intervalIntegral (fun y ↦ G (c * (y + d))) (-1) 1 ℙ := by
+          sorry
+        sorry
+      sorry
     calc
       ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
       = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by exact c43
@@ -304,8 +330,8 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
             have c414 : x^2 ≤ |x|^2 := by
               simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
               NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self,
-              not_false_eq_true, NNReal.coe_inv, mem_Icc, abs_nonneg, sq_abs, sq_le_one_iff_abs_le_one,
-              le_refl, I, A] -/
+              not_false_eq_true, NNReal.coe_inv, mem_Icc, abs_nonneg, sq_abs,
+              sq_le_one_iff_abs_le_one, le_refl, I, A] -/
 
 lemma semicirclePDFReal_sub {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
     semicirclePDFReal μ v (x - y) = semicirclePDFReal (μ + y) v x := by
