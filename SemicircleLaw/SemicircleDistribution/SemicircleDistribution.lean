@@ -295,8 +295,16 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
             NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀, A, I, b, c, d, a, F, G]
         have c4313 := intervalIntegral.inv_mul_integral_comp_div_sub
           (a := a) (b := b) (f := G) (c := c) (d := d)
-        have c4314 : c⁻¹ * intervalIntegral G a b ℙ
-          = intervalIntegral (fun y ↦ G (c * (y + d))) (-1) 1 ℙ := by
+        have c4314 : c ≠ 0:= by grind
+        have c4315 : a / c - d = (-1 : ℝ) := by grind
+        have c4316 : b / c - d = (1 : ℝ) := by grind
+        have c4317 : c⁻¹ * ∫ x in a..b, G (x / c - d) = ∫ y in (-1 : ℝ)..1, G y := by
+          simpa [c4315, c4316] using c4313
+        have c4318 : 0 ≤ c := by simp [c]
+        have c4319 : a ≤ b := by grind
+        simp_all
+        have c4319A : integral (volume.restrict (Icc a b)) G = intervalIntegral G a b ℙ := by
+          have := intervalIntegral.integral_of_le (μ := volume) (f := G) c4319
           sorry
         sorry
       sorry
@@ -332,6 +340,10 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
               NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self,
               not_false_eq_true, NNReal.coe_inv, mem_Icc, abs_nonneg, sq_abs,
               sq_le_one_iff_abs_le_one, le_refl, I, A] -/
+
+  /- have c4314 : c⁻¹ * intervalIntegral G a b ℙ
+          = intervalIntegral (fun y ↦ G (c * (y + d))) (-1) 1 ℙ := by
+           -/
 
 lemma semicirclePDFReal_sub {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
     semicirclePDFReal μ v (x - y) = semicirclePDFReal (μ + y) v x := by
@@ -772,7 +784,18 @@ lemma h_cont : Continuous h := by
   unfold h
   continuity
 
-/- Test Commit -/
+example :
+    ∫ x in (0 : ℝ)..4, Real.sqrt (1 - (x / 2 - 1) ^ 2)
+      = 2 * ∫ y in (-1 : ℝ)..1, Real.sqrt (1 - y ^ 2) := by
+  have h :=
+    intervalIntegral.inv_mul_integral_comp_div_sub
+      (a := (0 : ℝ)) (b := 4)
+      (f := fun y => Real.sqrt (1 - y ^ 2))
+      (c := (2 : ℝ)) (d := (1 : ℝ))
+  have h' := congrArg (fun t => (2 : ℝ) * t) h
+  have hL : (0 : ℝ) / 2 - 1 = (-1 : ℝ) := by norm_num
+  have hU : (4 : ℝ) / 2 - 1 = (1 : ℝ) := by norm_num
+  simpa [one_div, hL, hU] using h'
 
 end Scribbles
 
