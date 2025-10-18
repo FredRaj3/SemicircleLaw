@@ -277,7 +277,6 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
       have c431 : (2 * √v)⁻¹ * ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
       = ∫ (x : ℝ) in (-1)..1, √(4 * v - 4 * v * x ^ 2) := by
         set F := fun x ↦ √(4 * v - 4 * v * x ^ 2)
-        /- intervalIntegral.inv_mul_integral_comp_div_sub -/
         set a := μ - 2 * √v
         set b := μ + 2 * √v
         set c := 2 * √v
