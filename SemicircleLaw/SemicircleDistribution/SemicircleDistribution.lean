@@ -273,40 +273,68 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
           Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv,
           intervalIntegral.integral_const_mul, A, I, B]
     have c43 : ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
-    = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by
-      have c431 : (2 * √v)⁻¹ * ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
-      = ∫ (x : ℝ) in (-1)..1, √(4 * v - 4 * v * x ^ 2) := by
-        set F := fun x ↦ √(4 * v - 4 * v * x ^ 2)
-        set a := μ - 2 * √v
-        set b := μ + 2 * √v
-        set c := 2 * √v
-        set d := (2 * √v)⁻¹ * μ
-        set G := fun x ↦ √(4 * v - (x - μ) ^ 2)
-        have c4311 : 1 = b * c⁻¹ - d := by
-          simp [b,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+      = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by
+      set a := μ - 2 * √v
+      set b := μ + 2 * √v
+      set c := 2 * √v
+      set d := c⁻¹ * μ
+      have c431 : (1 : ℝ) = b / c - d := by
+        simp [b,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
             NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
             NNReal.coe_inv, NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀,
-            A, I, a, b, F, c, G]
-        have c4312 : -1 = a * c⁻¹ - d := by
-          simp [a,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+            A, I, a, b, c]
+      have c432 : (-1 : ℝ) = a / c - d := by
+        simp [a,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
             NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
             NNReal.coe_inv, neg_sub,
-            NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀, A, I, b, c, d, a, F, G]
-        have c4313 := intervalIntegral.inv_mul_integral_comp_div_sub
-          (a := a) (b := b) (f := G) (c := c) (d := d)
-        have c4314 : c ≠ 0:= by grind
-        have c4315 : a / c - d = (-1 : ℝ) := by grind
-        have c4316 : b / c - d = (1 : ℝ) := by grind
-        have c4317 : c⁻¹ * ∫ x in a..b, G (x / c - d) = ∫ y in (-1 : ℝ)..1, G y := by
-          simpa [c4315, c4316] using c4313
-        have c4318 : 0 ≤ c := by simp [c]
-        have c4319 : a ≤ b := by grind
-        simp_all
-        have c4319A : integral (volume.restrict (Icc a b)) G = intervalIntegral G a b ℙ := by
-          have := intervalIntegral.integral_of_le (μ := volume) (f := G) c4319
-          sorry
+            NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀, A, I, b, c, d, a]
+      rw [c432, c431]
+      set f := fun y ↦ √(4 * v - 4 * v * y ^ 2)
+      have c433 :=
+      intervalIntegral.inv_mul_integral_comp_div_sub (a := a) (b := b) (c := c) (d := d) (f := f)
+      dsimp [a,b,c,d,f] at c433
+      dsimp [a,b,c,d,f]
+      have c434 : ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v,
+      √(4 * ↑v - 4 * ↑v * (x / (2 * √↑v) - (2 * √↑v)⁻¹ * μ) ^ 2)
+      = (2 * √↑v) * ∫ (x : ℝ) in (μ - 2 * √↑v) / (2 * √↑v) - (2 * √↑v)⁻¹ * μ
+      ..(μ + 2 * √↑v) / (2 * √↑v) - (2 * √↑v)⁻¹ * μ,
+      √(4 * ↑v - 4 * ↑v * x ^ 2) := by
+        grind
+      have c435 : μ - 2 * √v ≤ μ + 2 * √v := by
+        have c4351 : -2 * √v ≤ 2 * √v := by
+          simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+          NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
+          NNReal.coe_inv, neg_sub, neg_mul, neg_le_self_iff, Nat.ofNat_pos,
+          mul_nonneg_iff_of_pos_left, Real.sqrt_nonneg, A, I, b, c, d, a, f]
+        set X := -2 * √v
+        set Y := 2 * √v
+        grind
+      have c436 : ∫ (x : ℝ) in Icc (μ - 2 * √↑v) (μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
+      = ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2) := by
         sorry
-      sorry
+      rw [c436]
+      have c437 : (fun x ↦ √(4 * v - (x - μ) ^ 2))
+      = (fun x ↦ √(4 * v - 4 * ↑v * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2)) := by
+        funext x
+        have c437A : (x - μ) ^ 2 = ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2 := by
+          set X := 4 * v
+          have c437A1 : 4 * ↑v * ↑X⁻¹ * (x - μ) ^ 2 = X * X⁻¹ * (x - μ) ^ 2 := by
+            simp [X]
+          rw [c437A1]
+          have c437A2 : X * X⁻¹ * (x - μ) ^ 2 = (x - μ) ^ 2 := by
+            have c437A21 : X * X⁻¹ = 1 := by sorry
+            sorry
+          sorry
+        have c437B : (4 * v)⁻¹ * (x - μ) ^ 2 = ((2 * √v)⁻¹ * (x - μ)) ^ 2 := by sorry
+        calc
+          √(4 * v - (x - μ) ^ 2)
+        _ = √(4 * v - ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2) := by grind
+        _ = √(4 * v - (4 * v) * ((4 * v)⁻¹ * (x - μ) ^ 2)) := by grind
+        _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * (x - μ)) ^ 2) := by rw [c437B]
+        _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * x - (2 * √v)⁻¹ * μ) ^ 2) := by grind
+        _ = √(4 * v - (4 * v) * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2) := by grind
+      rw [c437]
+      exact c434
     calc
       ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
       = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by exact c43
@@ -408,6 +436,50 @@ lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0
       |c|⁻¹ = (|c| * |c|⁻¹) * |c|⁻¹ := by apply h41
           _ = |c| * (|c|⁻¹ * |c|⁻¹) := by ring
           _ = |c| * (|c|⁻¹)^2 := by ring -/
+
+/- have c43 : ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
+    = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by
+      have c431 : (2 * √v)⁻¹ * ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
+      = ∫ (x : ℝ) in (-1)..1, √(4 * v - 4 * v * x ^ 2) := by
+        set F := fun x ↦ √(4 * v - 4 * v * x ^ 2)
+        set a := μ - 2 * √v
+        set b := μ + 2 * √v
+        set c := 2 * √v
+        set d := (2 * √v)⁻¹ * μ
+        set G := fun x ↦ √(4 * v - (x - μ) ^ 2)
+        have c4311 : 1 = b * c⁻¹ - d := by
+          simp [b,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+            NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
+            NNReal.coe_inv, NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀,
+            A, I, a, b, F, c, G]
+        have c4312 : -1 = a * c⁻¹ - d := by
+          simp [a,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+            NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
+            NNReal.coe_inv, neg_sub,
+            NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀, A, I, b, c, d, a, F, G]
+        have c4313 := intervalIntegral.inv_mul_integral_comp_div_sub
+          (a := a) (b := b) (f := G) (c := c) (d := d)
+        have c4314 : c ≠ 0:= by grind
+        have c4315 : a / c - d = (-1 : ℝ) := by grind
+        have c4316 : b / c - d = (1 : ℝ) := by grind
+        have c4317 : c⁻¹ * ∫ x in a..b, G (x / c - d) = ∫ y in (-1 : ℝ)..1, G y := by
+          simpa [c4315, c4316] using c4313
+        have c4318 : 0 ≤ c := by simp [c]
+        have c4319 : a ≤ b := by grind
+        /- have c4319A : integral (volume.restrict (Icc a b)) G = intervalIntegral G a b ℙ := by
+          have := intervalIntegral.integral_of_le (μ := volume) (f := G) c4319 -/
+        have c4319A : c⁻¹ * (∫ x, G x ∂ (volume.restrict (Set.Icc a b))) = c⁻¹ * (∫ x in a..b, G x) := by
+          have h' : ∫ x, G x ∂ (volume.restrict (Set.Icc a b)) = ∫ x in a..b, G x := by
+            simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero, Real.pi_ne_zero,
+              OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv, neg_sub, NNReal.zero_le_coe,
+              Real.sqrt_eq_zero, sub_left_inj, Nat.ofNat_pos, mul_nonneg_iff_of_pos_left, Real.sqrt_nonneg,
+              tsub_le_iff_right, A, I, b, c, d, a, F, G]
+            sorry
+          sorry
+        simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero, Real.pi_ne_zero,
+          OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv, neg_sub, NNReal.zero_le_coe,
+          Real.sqrt_eq_zero, sub_left_inj, Nat.ofNat_pos, mul_nonneg_iff_of_pos_left, Real.sqrt_nonneg,
+          tsub_le_iff_right, mul_eq_mul_left_iff, or_false, A, I, b, c, d, a, F, G]-/
 
 lemma semicirclePDFReal_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c * x)
