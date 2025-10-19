@@ -59,8 +59,9 @@ open Set
 
 namespace ProbabilityTheory
 
-section SemicirclePDF
 
+section SemicirclePDF
+set_option maxHeartbeats 10000000
 
 /-- Probability density function of the semicircle distribution with mean `μ` and variance `v`.
 Note that the squared root of a negative number is defined to be zero.  -/
@@ -311,7 +312,89 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
         grind
       have c436 : ∫ (x : ℝ) in Icc (μ - 2 * √↑v) (μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
       = ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2) := by
-        sorry
+        have c436A :  ∫ (x : ℝ) in Icc (μ - 2 * √↑v) (μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
+        = ∫ (x : ℝ), √(4 * ↑v - (x - μ) ^ 2) := by
+          apply setIntegral_eq_integral_of_ae_compl_eq_zero
+          apply ae_of_all
+          intro a ha
+          dsimp [Icc] at ha
+          push_neg at ha
+          have c436A1 : 0 ≤ v := by positivity
+          have c436A2 : 2 * √v ≤ |a - μ| := by
+            by_cases c436A21 : a < μ - 2 * √v
+            have : 2 * √v ≤ μ - a := by linarith
+            have c436A22 : 0 ≤ μ - a := by linarith
+            have : 2 * √v ≤ |μ - a| := by simpa [abs_of_nonneg c436A22] using this
+            simpa [abs_sub_comm] using this
+            have c436A23 : μ - 2 * √v ≤ a := le_of_not_gt c436A21
+            have c436A24 : μ + 2 * √v < a := ha c436A23
+            have : 2 * √v ≤ a - μ := by linarith
+            have c436A24 : 0 ≤ a - μ := by linarith
+            simpa [abs_of_nonneg c436A24] using this
+          have c436A3 : (2 * √v) ^ 2 ≤ |a - μ| ^ 2 := by
+            have : |2 * √v| ≤ |a - μ| := by
+              have c436A31 : 0 ≤ 2 * √v := by
+                have := Real.sqrt_nonneg v; nlinarith
+              simpa [abs_of_nonneg c436A31] using c436A2
+            set X := 2 * √v
+            set Y := |a - μ|
+            apply sq_le_sq.mpr
+            have c436AY : Y = |Y| := by
+              simp [Y]
+            rw [c436AY] at this; exact this
+          have c436A32 : (√v)^2 = v := by simpa using sq_sqrt c436A1
+          have c436A33 : 4 * v ≤ (a - μ) ^ 2 := by
+            have c436A331 : (2 * √v) ^ 2 = 4 * v := by grind
+            have c436A332 : |a - μ| ^ 2 = (a - μ) ^ 2 := by
+              set X := a - μ
+              exact sq_abs X
+            rw [← c436A331, ← c436A332]
+            exact c436A3
+          have hnonpos : 4 * v - (a - μ) ^ 2 ≤ 0 := by linarith
+          simpa using Real.sqrt_eq_zero_of_nonpos hnonpos
+        have c436B : ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
+        = ∫ (x : ℝ), √(4 * ↑v - (x - μ) ^ 2) := by
+          set a := μ - 2 * √↑v
+          set b := μ + 2 * √↑v
+          set S := Set.Ioc a b
+          have c436B1 : ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
+          = ∫ (x : ℝ) in S, √(4 * ↑v - (x - μ) ^ 2) := by
+            have hle : a ≤ b := by linarith [Real.sqrt_nonneg (↑v : ℝ)]
+            sorry
+          rw [c436B1]
+          apply setIntegral_eq_integral_of_ae_compl_eq_zero
+          apply ae_of_all
+          intro z hz
+          simp [S, a, b] at hz
+          have c436A1 : 0 ≤ v := by positivity
+          have c436A2 : 2 * √v < |z - μ| := by
+            sorry
+          have c436B2 : 4 * ↑v - (z - μ) ^ 2 < 0 := by
+            have c436B21 : 4 * v < (z - μ) ^ 2 := by
+              have c436B211 : 4 * v = (2 * √v) ^ 2 := by
+                have c436B2111 : (2 * √v) ^ 2 = 2 ^ 2 * √v ^ 2 := by
+                  set A := √v
+                  grind
+                rw [c436B2111]
+                have c436B2112 : √↑v ^ 2 = v := by exact Real.sq_sqrt c436A1
+                rw [c436B2112]
+                ring_nf
+              have c436B212 : |z - μ| ^ 2 = (z - μ) ^ 2 := by
+                set A := z - μ
+                exact sq_abs A
+              rw [← c436B212]
+              set A := 2 * √↑v
+              set B := |z - μ|
+              rw [c436B211]
+              have hA : A ≥ 0 := by positivity
+              have hB : 0 ≤ B := le_trans hA (le_of_lt c436A2)
+              have habs : |A| < |B| := by
+                simpa [abs_of_nonneg hA, abs_of_nonneg hB] using c436A2
+              simpa [pow_two] using (sq_lt_sq.mpr habs)
+            grind
+          have c436B3 : 4 * ↑v - (z - μ) ^ 2 ≤ 0 := by grind
+          exact Real.sqrt_eq_zero_of_nonpos c436B3
+        rw [c436A, c436B]
       rw [c436]
       have c437 : (fun x ↦ √(4 * v - (x - μ) ^ 2))
       = (fun x ↦ √(4 * v - 4 * ↑v * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2)) := by
@@ -322,14 +405,37 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
             simp [X]
           rw [c437A1]
           have c437A2 : X * X⁻¹ * (x - μ) ^ 2 = (x - μ) ^ 2 := by
-            have c437A21 : X * X⁻¹ = 1 := by sorry
-            sorry
-          sorry
-        have c437B : (4 * v)⁻¹ * (x - μ) ^ 2 = ((2 * √v)⁻¹ * (x - μ)) ^ 2 := by sorry
+            have c437A21 : ↑X * ↑X⁻¹ = 1 := by
+              refine CommGroupWithZero.mul_inv_cancel X ?_
+              simp [X]; push_neg; exact hv
+            have c437A22 : X * X⁻¹ * (x - μ) ^ 2 = 1 * (x - μ) ^ 2 := by
+              set Z := (x - μ) ^ 2
+              set Y := ↑X⁻¹
+              have h₁ : (↑X : ℝ) * (↑Y : ℝ) = 1 := by
+                simpa using congrArg (fun t : ℝ≥0 ↦ (t : ℝ)) c437A21
+              exact congrArg (fun t : ℝ ↦ t * Z) h₁
+            rw [c437A22]; grind
+          rw [c437A2]
+        have c437B : (4 * v)⁻¹ * (x - μ) ^ 2 = ((2 * √v)⁻¹ * (x - μ)) ^ 2 := by
+          set A := (2 * √v)⁻¹
+          set B := (x - μ)
+          have c437B1 : (A * B) ^ 2 = A ^ 2 * B ^ 2 := by grind
+          rw [c437B1]
+          have c437B2 : A ^ 2 = (4 * v)⁻¹ := by
+            simp [A]
+            set C := (√↑v)⁻¹
+            have c437B21 : (C * 2⁻¹) ^ 2 = C^2 * (2⁻¹) ^ 2 := by grind
+            rw [c437B21]
+            simp [C]
+            grind
+          rw [c437B2]
         calc
           √(4 * v - (x - μ) ^ 2)
         _ = √(4 * v - ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2) := by grind
-        _ = √(4 * v - (4 * v) * ((4 * v)⁻¹ * (x - μ) ^ 2)) := by grind
+        _ = √(4 * v - (4 * v) * ((4 * v)⁻¹ * (x - μ) ^ 2)) := by
+          have c5 : ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2 = (4 * v) * ((4 * v)⁻¹ * (x - μ) ^ 2) := by
+            rw [mul_assoc]
+          rw [c5]
         _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * (x - μ)) ^ 2) := by rw [c437B]
         _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * x - (2 * √v)⁻¹ * μ) ^ 2) := by grind
         _ = √(4 * v - (4 * v) * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2) := by grind
