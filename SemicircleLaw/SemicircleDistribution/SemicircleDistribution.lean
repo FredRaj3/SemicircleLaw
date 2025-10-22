@@ -59,9 +59,7 @@ open Set
 
 namespace ProbabilityTheory
 
-
 section SemicirclePDF
-set_option maxHeartbeats 10000000
 
 /-- Probability density function of the semicircle distribution with mean `μ` and variance `v`.
 Note that the squared root of a negative number is defined to be zero.  -/
@@ -77,7 +75,6 @@ lemma semicirclePDFReal_def (μ : ℝ) (v : ℝ≥0) :
 lemma semicirclePDFReal_zero_var (m : ℝ) : semicirclePDFReal m 0 = 0 := by
   ext x
   simp [semicirclePDFReal]
-
 
 /-- The semicircle pdf is nonnegative. -/
 lemma semicirclePDFReal_nonneg (μ : ℝ) (v : ℝ≥0) (x : ℝ) : 0 ≤ semicirclePDFReal μ v x := by
@@ -151,14 +148,6 @@ Function.support (semicirclePDFReal μ v) ⊆ Icc (μ - 2 * √v) (μ + 2 * √v
   have h8 : x ∉ Function.support f := by simpa [Function.support] using h5
   exact h8 hx
 
-/- set A := x - μ
-        calc
-          -x + μ = -(x - μ) := by ring
-               _ = -A := by exact rfl
-               _ ≤ |A| := by exact neg_le_abs A
-               _ < 2 * √v := hxIc_2-/
-
-
 /-- The semicircle pdf is integrable. -/
 @[fun_prop]
 lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
@@ -171,7 +160,6 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
   have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
   have h4 : Function.support f ⊆ I := by apply support_semicirclePDF_inc
   exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
-
 
 /-Alternative Approaches to integrable_semicirclePDFReal-/
 
@@ -201,46 +189,7 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
   rw [h'] at h
   rw [← integrableOn_univ]; exact h-/
 
-lemma test
-    (f : ℝ → ℝ)
-    (h0 : 0 ≤ᵐ[ℙ] f) (hmeas : AEStronglyMeasurable f) :
-    ∫ x, f x ∂ ℙ = ENNReal.toReal (∫⁻ x, ENNReal.ofReal (f x) ∂ ℙ) := by
-  simpa using integral_eq_lintegral_of_nonneg_ae h0 hmeas
-
-
-lemma test2 {A : ℝ≥0∞}
-  (h : ENNReal.toReal A = (1 : ℝ)) : A = (1 : ℝ≥0∞) := by
-  have hne : A ≠ ∞ := by
-    intro htop
-    have : ENNReal.toReal A = (0 : ℝ) := by simp [htop]
-    grind
-  have := ENNReal.ofReal_toReal hne
-  calc
-    A = ENNReal.ofReal (ENNReal.toReal A) := by simpa using this.symm
-    _ = 1 := by simp [h]
-
-/-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
-lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
-    ∫⁻ x, ENNReal.ofReal (semicirclePDFReal μ v x) = 1 := by
-  rw [semicirclePDFReal_def]
-  set f := fun x ↦ (↑v)⁻¹ * (π⁻¹ * 2⁻¹) * √(4 * ↑v - (x - μ) ^ 2) with hf
-  have c0 : f = semicirclePDFReal μ v := by rw [semicirclePDFReal_def]; grind
-  have c1 := semicirclePDFReal_nonneg
-  have c2 := measurable_semicirclePDFReal
-  have c3 := stronglyMeasurable_semicirclePDFReal
-  have c3A : AEStronglyMeasurable (semicirclePDFReal μ v) := by sorry
-  have c4 := test
-  have c5 :  0 ≤ᶠ[ae ℙ] (semicirclePDFReal μ v) := by
-    rw [semicirclePDFReal_def]
-    sorry
-  have c7 : ∫ (x : ℝ), (semicirclePDFReal μ v x)
-    = (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x)).toReal := by sorry
-  have c8 : 1 = (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x)).toReal := by sorry
-  have c9 : (1 : ℝ≥0∞) = ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) := by sorry
-  have c10 : ∫⁻ (x : ℝ), ENNReal.ofReal ((fun x ↦ 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2)) x)
-    = ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) := by sorry
-  rw [c10, ← c9]
-
+set_option maxHeartbeats 1000000 in
 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) :
@@ -525,6 +474,42 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
   /- have c4314 : c⁻¹ * intervalIntegral G a b ℙ
           = intervalIntegral (fun y ↦ G (c * (y + d))) (-1) 1 ℙ := by
            -/
+
+lemma test
+    (f : ℝ → ℝ)
+    (h0 : 0 ≤ᵐ[ℙ] f) (hmeas : AEStronglyMeasurable f) :
+    ∫ x, f x ∂ ℙ = ENNReal.toReal (∫⁻ x, ENNReal.ofReal (f x) ∂ ℙ) := by
+  simpa using integral_eq_lintegral_of_nonneg_ae h0 hmeas
+
+lemma test2 {A : ℝ≥0∞}
+  (h : ENNReal.toReal A = (1 : ℝ)) : A = (1 : ℝ≥0∞) := by
+  exact (ENNReal.toReal_eq_one_iff A).mp h
+
+/-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
+lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
+    ∫⁻ x, ENNReal.ofReal (semicirclePDFReal μ v x) = 1 := by
+  rw [semicirclePDFReal_def]
+  set f := fun x ↦ 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2) with hf
+  have c1 := semicirclePDFReal_nonneg
+  have c3 := stronglyMeasurable_semicirclePDFReal
+  have c4 : AEStronglyMeasurable (semicirclePDFReal μ v) := by
+    apply StronglyMeasurable.aestronglyMeasurable; apply c3
+  have c5 := test
+  have c6 :  0 ≤ᶠ[ae ℙ] (semicirclePDFReal μ v) := by
+    apply ae_of_all; simp; apply c1
+  have c7 : ∫ (x : ℝ), (semicirclePDFReal μ v x)
+    = (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x)).toReal := by
+    apply c5; exact c6; exact c4
+  have c8 : 1 = (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x)).toReal := by
+    have c81 :  ∫ (x : ℝ), (semicirclePDFReal μ v x) = 1 := by
+      apply integral_semicirclePDFReal_eq_one; exact h
+    rw [← c81]; apply c7
+  have c9 : ENNReal.toReal (1 : ℝ≥0∞) = (1 : ℝ) := by exact rfl
+  have c10 : (1 : ℝ≥0∞) = ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) := by
+    rw [← c9] at c8; exact Eq.symm (test2 (id (Eq.symm c8)))
+  have c11 : ∫⁻ (x : ℝ), ENNReal.ofReal ((fun x ↦ 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2)) x)
+    = ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) := by rw [← semicirclePDFReal_def]
+  rw [c11, ← c10]
 
 lemma semicirclePDFReal_sub {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
     semicirclePDFReal μ v (x - y) = semicirclePDFReal (μ + y) v x := by
