@@ -936,21 +936,25 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     set A := ∫ (x : ℝ) in 0..π, Real.cos x ^ (n + 2)
     set B := ∫ (x : ℝ) in 0..π, Real.cos x ^ n
     have c2 : A = (n + 1) * B - (n + 1) * A := by
-      dsimp [A,B]; apply c1
+      dsimp [A, B]; apply c1
     have c3 : ((n + 2) : ℝ) * A = ((n + 1) : ℝ) * B := by grind
     set C := ((n + 2) : ℝ)
     set D := ((n + 1) : ℝ)
     have c4 : A = D / C * B := by
-      have c41 : C⁻¹ * (C * A) = C⁻¹ * (D * B) := by sorry
-      have c42 : (C⁻¹ * C) * A = (C⁻¹ * D) * B := by sorry
-      have c43 : C⁻¹ * C = 1 := by hammer
+      have c41 : C⁻¹ * (C * A) = C⁻¹ * (D * B) := by
+        exact congrArg (HMul.hMul C⁻¹) c3
+      have c42 : (C⁻¹ * C) * A = (C⁻¹ * D) * B := by
+        rw [mul_assoc, mul_assoc]; exact c41
+      have c43 : C⁻¹ * C = 1 := by
+        dsimp [C]; refine inv_mul_cancel₀ ?_; positivity
       rw [c43] at c42
       simp at c42
       have c44 : (C⁻¹ * D) * B = D / C * B := by grind
       rw [← c44]; exact c42
-    dsimp [A,B] at c4
+    dsimp [A, B] at c4
     have c5 : ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * (n + 1))
       = (2 * n + 1) / (2 * n + 2) * ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) := by
+      dsimp [C,D] at c4
       sorry
     have c6 : π * ∏ k ∈ Finset.range (n + 1), ((2 * k + 1) : ℝ) / (2 * (k + 1))
       = (2 * n + 1) / (2 * n + 2)
