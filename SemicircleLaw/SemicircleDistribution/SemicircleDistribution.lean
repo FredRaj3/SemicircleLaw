@@ -343,7 +343,8 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
           = ∫ (x : ℝ) in S, √(4 * ↑v - (x - μ) ^ 2) := by
             have hle : a ≤ b := by linarith [Real.sqrt_nonneg (↑v : ℝ)]
             simpa [a, b, S, sub_eq_add_neg]
-            using (intervalIntegral.integral_of_le (a := a) (b := b) (f := fun x ↦ √(4 * ↑v - (x - μ) ^ 2))) hle
+            using (intervalIntegral.integral_of_le
+            (a := a) (b := b) (f := fun x ↦ √(4 * ↑v - (x - μ) ^ 2))) hle
           rw [c436B1]
           apply setIntegral_eq_integral_of_ae_compl_eq_zero
           apply ae_of_all
@@ -821,6 +822,7 @@ lemma semicircleReal_map_const_add (y : ℝ) :
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_const_mul (c : ℝ) :
     (semicircleReal μ v).map (c * ·) = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
+  rw [semicircleReal]
   sorry
 
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
@@ -916,6 +918,49 @@ lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     = v ^ n * catalan n := by
   sorry
 
+#check integral_sin_pow_even
+#check integral_sin_pow
+#check integral_cos_pow
+#check integral_cos_pow_aux
+
+lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
+    = π * ∏ k ∈ Finset.range n, ((2 * k + 1) : ℝ) / (2 * (k + 1)) := by
+  induction n
+  case zero =>
+    dsimp
+    have c0 : ∫ (x : ℝ) in 0..π, Real.cos x ^ 0 = π := by simp
+    simp
+  case succ n ih =>
+    have c1 := integral_cos_pow_aux (a := 0) (b := π)
+    simp at c1
+    set A := ∫ (x : ℝ) in 0..π, Real.cos x ^ (n + 2)
+    set B := ∫ (x : ℝ) in 0..π, Real.cos x ^ n
+    have c2 : A = (n + 1) * B - (n + 1) * A := by
+      dsimp [A,B]; apply c1
+    have c3 : ((n + 2) : ℝ) * A = ((n + 1) : ℝ) * B := by grind
+    set C := ((n + 2) : ℝ)
+    set D := ((n + 1) : ℝ)
+    have c4 : A = D / C * B := by
+      have c41 : C⁻¹ * (C * A) = C⁻¹ * (D * B) := by sorry
+      have c42 : (C⁻¹ * C) * A = (C⁻¹ * D) * B := by sorry
+      have c43 : C⁻¹ * C = 1 := by hammer
+      rw [c43] at c42
+      simp at c42
+      have c44 : (C⁻¹ * D) * B = D / C * B := by grind
+      rw [← c44]; exact c42
+    dsimp [A,B] at c4
+    have c5 : ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * (n + 1))
+      = (2 * n + 1) / (2 * n + 2) * ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) := by
+      sorry
+    have c6 : π * ∏ k ∈ Finset.range (n + 1), ((2 * k + 1) : ℝ) / (2 * (k + 1))
+      = (2 * n + 1) / (2 * n + 2)
+      * π * ∏ k ∈ Finset.range n, ((2 * k + 1) : ℝ) / (2 * (k + 1)) := by
+      simp
+      sorry
+    rw [c5, c6, ih]
+    grind
+
+
 lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v) = v ^ n * catalan n := by
   sorry
@@ -925,6 +970,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
 lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment id ((2 * n) + 1) (semicircleReal μ v)
     = 0 := by
+  dsimp [centralMoment, semicircleReal, semicirclePDF]
   sorry
 
 lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
