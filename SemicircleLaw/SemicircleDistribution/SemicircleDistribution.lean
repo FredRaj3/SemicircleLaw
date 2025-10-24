@@ -923,6 +923,15 @@ lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
 #check integral_cos_pow
 #check integral_cos_pow_aux
 
+lemma test3 (m : ℕ) :
+  ∫ (x : ℝ) in 0..π, Real.cos x ^ (m + 2) =
+  (Real.cos π ^ (m + 1) * Real.sin π - Real.cos 0 ^ (m + 1) * Real.sin 0 +
+    (m + 1) * ∫ (x : ℝ) in 0..π, Real.cos x ^ m) -
+  (m + 1) * ∫ (x : ℝ) in 0..π, Real.cos x ^ (m + 2) := by
+  apply integral_cos_pow_aux (a := 0) (b := π)
+
+noncomputable def w (k : ℕ) : ℝ := ((2 : ℝ) * (k : ℝ) + 1) / ((2 : ℝ) * ((k : ℝ) + 1))
+
 lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     = π * ∏ k ∈ Finset.range n, ((2 * k + 1) : ℝ) / (2 * (k + 1)) := by
   induction n
@@ -931,15 +940,20 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     have c0 : ∫ (x : ℝ) in 0..π, Real.cos x ^ 0 = π := by simp
     simp
   case succ n ih =>
-    have c1 := integral_cos_pow_aux (a := 0) (b := π)
+    have c1 := test3
     simp at c1
-    set A := ∫ (x : ℝ) in 0..π, Real.cos x ^ (n + 2)
-    set B := ∫ (x : ℝ) in 0..π, Real.cos x ^ n
-    have c2 : A = (n + 1) * B - (n + 1) * A := by
-      dsimp [A, B]; apply c1
-    have c3 : ((n + 2) : ℝ) * A = ((n + 1) : ℝ) * B := by grind
-    set C := ((n + 2) : ℝ)
-    set D := ((n + 1) : ℝ)
+    set A := ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2)
+    set B := ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n)
+    have c2 : A = (2 * n + 1) * B - (2 * n + 1) * A := by
+      dsimp [A, B]
+      have c21:= c1 (2 * n)
+      have c22 : ((2 * n) : ℝ) = (2 : ℝ) * (n : ℝ) := by grind
+      simpa [c22, Nat.cast_mul, Nat.cast_add, Nat.cast_ofNat,
+         two_mul, add_comm, add_left_comm, add_assoc,
+         mul_comm, mul_left_comm, mul_assoc] using c21
+    have c3 : ((2 * n + 2) : ℝ) * A = ((2 * n + 1) : ℝ) * B := by grind
+    set C := ((2 * n + 2) : ℝ)
+    set D := ((2 * n + 1) : ℝ)
     have c4 : A = D / C * B := by
       have c41 : C⁻¹ * (C * A) = C⁻¹ * (D * B) := by
         exact congrArg (HMul.hMul C⁻¹) c3
@@ -954,14 +968,20 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     dsimp [A, B] at c4
     have c5 : ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * (n + 1))
       = (2 * n + 1) / (2 * n + 2) * ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) := by
-      dsimp [C,D] at c4
-      sorry
-    have c6 : π * ∏ k ∈ Finset.range (n + 1), ((2 * k + 1) : ℝ) / (2 * (k + 1))
-      = (2 * n + 1) / (2 * n + 2)
-      * π * ∏ k ∈ Finset.range n, ((2 * k + 1) : ℝ) / (2 * (k + 1)) := by
-      simp
-      sorry
-    rw [c5, c6, ih]
+      dsimp [C,D] at c4; exact c4
+    have c6 :π * ∏ k ∈ Finset.range (n + 1), w k
+    = (2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2) * π * ∏ k ∈ Finset.range n, w k := by
+      have := Finset.prod_range_succ (f := fun k ↦ w k) n
+      calc
+        π * ∏ k ∈ Finset.range (n + 1), w k
+        = π * ((∏ k ∈ Finset.range n, w k) * w n) := by grind
+      _ = π * (∏ k ∈ Finset.range n, w k) * w n := by ring_nf
+      _ = ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2))
+            * (π * ∏ k ∈ Finset.range n, w k) := by
+              rw [mul_comm]; dsimp [w]; grind
+      _ = (2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)
+            * π * ∏ k ∈ Finset.range n, w k := by ring_nf
+    rw [c5]; dsimp [B] at ih; rw [ih]; dsimp [w] at c6; rw [c6]
     grind
 
 
