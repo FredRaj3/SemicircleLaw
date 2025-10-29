@@ -12,6 +12,8 @@ import SemicircleLaw.RandomMatrix.RandomMatrix
 import Mathlib.Combinatorics.Enumerative.Catalan
 import Mathlib.Topology.Filter
 import Mathlib.Order.Filter.Defs
+import Mathlib.LinearAlgebra.Matrix.Symmetric
+import Mathlib.Data.Sym.Sym2
 
 import Hammer
 
@@ -39,27 +41,134 @@ variable (μ ν : Measure ℝ) [IsProbabilityMeasure μ] [IsProbabilityMeasure �
   (hμ_moments : ∀ (k : ℕ), Integrable (fun x ↦ x^k) μ)
   (hν_moments : ∀ (k : ℕ), Integrable (fun x ↦ x^k) ν)
   (hμ_mean : integral μ id = 0) (hν_mean : integral ν id = 0)
-  (hμ_var : integral μ (fun x ↦ x^2) = 1) (hν_var : integral ν (fun x ↦ x^2) = 1)
+  (hμ_var : integral μ (fun x ↦ x^2) = 1)
+variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω} (X : Ω → Matrix (Fin n) (Fin n) ℝ)
+
 
 instance : MeasurableSpace (Matrix (Fin n) (Fin n) ℝ ) := by
    unfold Matrix; infer_instance
 
-/-- The index set for the strictly upper-triangular entries of an `n x n` matrix. -/
-def OffDiagIndex (n : ℕ) := { p : Fin n × Fin n // p.1 < p.2 }
+@[ext]
+structure isWignerMatrix
+    (k : ℕ) (μ ν : Measure ℝ) (X : Ω → Matrix (Fin k) (Fin k) ℝ) (P : Measure Ω) where
+  meas : Measurable X
+  diag_dist : ∀ i : (Fin k), HasLaw (fun ω ↦ X ω i i) ν P
+  off_diag_dist : ∀ i j : (Fin k), i > j → HasLaw (fun ω ↦ X ω i j) μ P
+  symm : ∀ i j : (Fin k), ∀ ω : Ω, X ω i j = X ω j i
+  indep : iIndepFun (fun (x : {p : Fin k × Fin k // p.1 ≤ p.2}) ↦ fun ω ↦ X ω x.val.1 x.val.2) P
 
-instance : Fintype (OffDiagIndex n) := by
-  rw[OffDiagIndex]
-  infer_instance
+#check isWignerMatrix
 
+@[simp]
+lemma is_measurable_Wigner (Y : isWignerMatrix n μ ν X P) : Measurable X := by
+  exact Y.meas
 
-/-- The index set for the independent random variables of a Wigner matrix.
-This is the disjoint union of indices for the diagonal (`Fin n`) and the
-off diagonal (`OffDiagIndex n`) entries. -/
+/-- The index set for the independent random variables of a Wigner matrix. -/
 def Index (n : ℕ) := { p : Fin n × Fin n // p.1 ≤ p.2 }
 
 instance : Fintype (Index n) := by
   rw[Index]
   infer_instance
+
+@[simp]
+lemma off_diagonal_law (Y : isWignerMatrix n μ ν X P) (i j : Fin n) (hij : i ≠ j) :
+  HasLaw (fun ω ↦ X ω i j) μ P:= by
+  -- Since $i \neq j$, we have either $i < j$ or $j < i$. We can handle these cases separately using the off_diag_dist and the symmetry of the Wigner matrix.
+  by_cases h : j < i;
+  · -- Since $j < i$, we can apply the off_diag_dist condition directly.
+    apply Y.off_diag_dist i j h
+    all_goals unreachable!;
+  · -- Since $i < j$, we can apply the off_diag_dist hypothesis with $i$ and $j$ swapped.
+    have h_swap : HasLaw (fun ω ↦ X ω j i) μ P := by
+      cases lt_or_gt_of_ne hij <;> aesop
+      generalize_proofs at *;
+      have := Y.off_diag_dist j i h_1; aesop;
+    generalize_proofs at *;
+    -- Since $X$ is symmetric, we have $X i j = X j i$.
+    have h_symm : ∀ ω, X ω i j = X ω j i := by
+      -- By the symmetry of the Wigner matrix, we have $X i j = X j i$ for all $i$ and $j$.
+      intros ω; exact Y.symm i j ω
+    generalize_proofs at *;
+    aesop;
+
+@[simp]
+lemma diagonal_law (Y : isWignerMatrix n μ ν X P) (i : Fin n) : HasLaw (fun ω ↦ X ω i i) ν P:= by
+   apply Y.diag_dist i
+
+@[simp]
+lemma symmetric (Y : isWignerMatrix n μ ν X P) : ∀ (ω : Ω), (X ω).IsSymm := by
+  intro ω
+  apply Matrix.IsSymm.ext
+  intros i j
+  apply Y.symm
+
+@[simp]
+lemma indep_entries (Y : isWignerMatrix n μ ν X P) (i j k l : Fin n) (hdiff : Sym2.mk (i,j) ≠ Sym2.mk (k,l)) :
+    IndepFun (fun ω ↦ X ω i j) (fun ω ↦ X ω k l) P := by
+  -- Define the projections from the Wigner matrix to its entries.
+  let proj : {p : Fin n × Fin n // p.1 ≤ p.2} → Ω → ℝ := fun p ↦ (fun ω ↦ X ω p.val.1 p.val.2);
+  -- By definition of Y.indep, the projections proj are independent.
+  have h_indep : iIndepFun (fun (p : {p : Fin n × Fin n // p.1 ≤ p.2}) ↦ proj p) P := by
+    -- Apply the hypothesis that the projections are independent.
+    apply Y.indep;
+  -- By definition of proj, we have that (fun ω => X ω i j) = proj ⟨(i, j), by sorry⟩ and (fun ω => X ω k l) = proj ⟨(k, l), by sorry⟩.
+  have h_eq_proj : (fun ω => X ω i j) = proj ⟨(min i j, max i j), by
+    exact min_le_max⟩ ∧ (fun ω => X ω k l) = proj ⟨(min k l, max k l), by
+    exact min_le_max⟩ := by
+    simp +zetaDelta at *;
+    generalize_proofs at *;
+    cases le_total i j <;> cases le_total k l <;> simp +decide [ * ];
+    · exact funext fun ω => Y.symm k l ω ▸ rfl;
+    · exact funext fun ω => by simpa [ eq_comm ] using Y.symm j i ω;
+    · exact ⟨ funext fun ω => Y.symm _ _ _, funext fun ω => Y.symm _ _ _ ⟩
+  generalize_proofs at *;
+  rw [ h_eq_proj.1, h_eq_proj.2 ];
+  apply_rules [ ProbabilityTheory.iIndepFun.indepFun ];
+  cases le_total i j <;> cases le_total k l <;> aesop
+
+
+variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
+  {β : Index n → Ω → ℝ} (hX: ∀ i : Index n, Measurable (β i))
+  (hInd : iIndepFun (β : (i : Index n) →  Ω → ℝ) P)
+
+lemma indep_check (hInd : iIndepFun (β : (i : Index n) →  Ω → ℝ) P) (i j : Index n) (hij : i ≠ j):
+    IndepFun (β i) (β j) P := by
+  apply iIndepFun.indepFun hInd hij
+
+/-
+
+What I would like to do:
+
+For each n, have a probability space Ω n with some measure P.
+On Ω n under P, we have n(n+1)/2 independent random variables. n of them have law
+μ, and n(n-1)/2 of them have law ν. I would then like to include them into
+a matrix such that the strict upper triangular entries are those random variables
+with law μ, the diagonal random variables have law ν, and the lower trianglular
+ entries are such that the matrix is symmetric.
+
+I would like to have the following lemmas. If X : Ω n → Matrix (Fin n) (Fin n) is
+the matrix constructed above,
+
+lemma has_law_diag (i j : Fin n) (hij : i = j): HasLaw (fun ω ↦ X ω i j) ν P
+
+lemma has_law_off_diag (i j : Fin n) (hij : i ≠ j) : HasLaw (fun ω ↦ X ω i j) μ P
+
+lemma symmetric_entries (i j : Fin n) (ω : Ω): X ω i j = X ω j i
+
+lemma ident_distrib_diag (i j k l: Fin n) (hij : i = j) (hkl : k = l) :
+    IdentDistrib (fun ω ↦ X ω i j) (fun ω ↦ X ω k l) P P
+
+lemma ident_distrib_off_diag (i j k l: Fin n) (hij : i ≠ j) (hkl : k ≠ l) :
+    IdentDistrib (fun ω ↦ X ω i j) (fun ω ↦ X ω k l) P P
+
+lemma indep_entries ... :
+    iIndepFun ...
+
+lemma indep_entries_pair ... :
+    IndepFun ...
+
+
+-/
 
 
 /-- The sample space for an `n x n` Wigner matrix. It is the product of ℝ over Index n. -/
@@ -88,7 +197,7 @@ instance instIsProbabilityMeasure (n : ℕ) : IsProbabilityMeasure (WignerMeasur
   --apply MeasureTheory.Measure.pi.instIsProbabilityMeasure
   sorry
 
-/-- The function that takes an element of WignerSpace (a map (Fin n)⊕(OffDiagIndex n) → ℝ)
+/-- The function that takes an element of WignerSpace (a map Index n → ℝ)
 to the corresponding function (Fin n) → (Fin n) → ℝ that respects the symmetric structure of Wigner
 matrices.-/
 @[grind, simp]
