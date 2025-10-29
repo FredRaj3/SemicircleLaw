@@ -127,14 +127,6 @@ lemma indep_entries (Y : isWignerMatrix n μ ν X P) (i j k l : Fin n) (hdiff : 
   cases le_total i j <;> cases le_total k l <;> aesop
 
 
-variable {Ω : Type*} [MeasurableSpace Ω] {P : Measure Ω}
-  {β : Index n → Ω → ℝ} (hX: ∀ i : Index n, Measurable (β i))
-  (hInd : iIndepFun (β : (i : Index n) →  Ω → ℝ) P)
-
-lemma indep_check (hInd : iIndepFun (β : (i : Index n) →  Ω → ℝ) P) (i j : Index n) (hij : i ≠ j):
-    IndepFun (β i) (β j) P := by
-  apply iIndepFun.indepFun hInd hij
-
 /-
 
 What I would like to do:
