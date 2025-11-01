@@ -984,11 +984,44 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     rw [c5]; dsimp [B] at ih; rw [ih]; dsimp [w] at c6; rw [c6]
     grind
 
+#check catalan
+
+lemma catalan_eq_recur (n : ℕ) : catalan n
+  =  ∏ k ∈ Finset.range n, ((2 * k + 1) : ℝ) / (2 * (k + 1)) := by
+  have c0 := catalan_eq_centralBinom_div n
+  rw [c0]; dsimp [Nat.centralBinom]
+  induction n
+  case zero =>
+    simp
+  case succ m ih =>
+    sorry
+
+lemma catalan_test (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan n) := by
+  have c0A := catalan_eq_centralBinom_div (n + 1)
+  have c0B := catalan_eq_centralBinom_div (n + 2)
+  have c0C := catalan_eq_centralBinom_div (n)
+  have c1 : (n + 2) * (catalan (n + 1)) = (n + 1).centralBinom := by
+    exact succ_mul_catalan_eq_centralBinom (n + 1)
+  induction n
+  case zero => simp
+  case succ n ih =>
+    have c2 := Nat.succ_mul_centralBinom_succ (n + 1)
+    ring_nf
+    set A := (2 + n).centralBinom
+    set B := (1 + n).centralBinom
+    have c3 : catalan (n + 2) = catalan (2 + n) := by grind
+    have c4 : catalan (n + 1) = catalan (1 + n) := by grind
+    ring_nf at c0A
+    rw [c0A]
+    rw [← c4]
+    rw [c0C]
+    ring_nf
+    sorry
+
 
 lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v) = v ^ n * catalan n := by
   sorry
-
 
 /- Temporary separation -/
 lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
@@ -1001,7 +1034,6 @@ lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) ((2 * n) + 1) (semicircleReal μ v)
     = 0 := by
   sorry
-
 
 end Moments
 
@@ -1040,6 +1072,7 @@ example {Ω : Type*} [MeasureSpace Ω]
     ∫ x, f x ∂ ℙ = ENNReal.toReal (∫⁻ x, ENNReal.ofReal (f x) ∂ ℙ) := by
   simpa using integral_eq_lintegral_of_nonneg_ae h0 hmeas
 
+test commit
 
 end Scribbles
 
