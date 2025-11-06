@@ -172,6 +172,7 @@ This section defines the basic counting operations done on LoopWalks.
 
 
 /-- The length of a walk is the number of edges/darts along it. -/
+@[simp, grind]
 def length {u v : V} : G.LoopWalk u v → ℕ
   | nil => 0
   | cons _ q => q.length.succ
@@ -189,6 +190,7 @@ def supportSet {u v : V} [DecidableEq V] (p : G.LoopWalk u v) : Finset V :=
   (support p).toFinset
 
 /-- The `darts` of a walk is the list of steps it takes, represented as pairs of vertices. -/
+@[simp, grind]
 def darts {u v : V} : G.LoopWalk u v → List (V × V)
   | nil => []
   | @cons _ _ u v' _ h p => (u, v') :: p.darts
@@ -240,6 +242,7 @@ def dartEdge (d : V × V) : Sym2 V :=
 
 /- The `edges` of a walk is the list of edges it visits in order.
 This is defined to be the list of edges underlying `SimpleGraph.LoopWalk.darts`.-/
+@[simp]
 def edges {u v : V} (p : G.LoopWalk u v) : List (Sym2 V) := p.darts.map dartEdge
 
 def connectingEdges {u v : V} (p : G.LoopWalk u v) : List (Sym2 V) :=
@@ -256,6 +259,13 @@ def connectingEdgeSet {u v: V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (Sy
 def selfEdgeSet {u v: V} [DecidableEq V] (p : G.LoopWalk u v) : Finset (Sym2 V) :=
   (selfEdges p).toFinset
 
+lemma dart_length_eq_walk_length {u v : V} (p : G.LoopWalk u v) : p.darts.length = p.length:= by
+  induction' p with u v w h p ih
+  all_goals simp [darts, length] at *
+  · expose_names
+    exact p_ih
+  · expose_names
+    exact p_ih
 
 #check countP
 
@@ -264,7 +274,23 @@ def edgeCount {u v : V} (p : G.LoopWalk u v) (e : Sym2 V) : ℕ := countP (· = 
 
 lemma abs_w_i_eq_k {u v : V} (p : G.LoopWalk u v) : ∑(e : edgeSet p),
     edgeCount p e = p.length := by
-  sorry
+  have h_sum_edges : ∑ e ∈ p.edgeSet, p.edgeCount e = p.length := by
+    have h_edge_count : ∀ e ∈ p.edgeSet, p.edgeCount e = List.count e p.edges := by
+      aesop
+    have h_sum_edges : ∀ (l : List (Sym2 V)), ∑ e ∈ l.toFinset, List.count e l = l.length := by
+      intros l
+      apply List.sum_toFinset_count_eq_length;
+    convert h_sum_edges p.edges using 1;
+    have h_length_eq : ∀ (p : G.LoopWalk u v), p.length = p.edges.length := by
+      intros p
+      induction' p with u v w h p ih
+      all_goals simp [edges] at *
+      · expose_names
+        rw [dart_length_eq_walk_length ih]
+      · expose_names
+        rw [dart_length_eq_walk_length p_1]
+    apply h_length_eq;
+  rw [ ← h_sum_edges, Finset.sum_coe_sort ]
 
 /-- The loop_count of a walk is the number of loops along it. -/
 def loop_count {u v : V} : G.LoopWalk u v → ℕ
