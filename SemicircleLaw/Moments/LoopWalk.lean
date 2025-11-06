@@ -437,8 +437,12 @@ def LoopWalkSetoid : Setoid (ClosedLoopWalk (K n)) where
       rcases hxy with ⟨s, hy⟩
       refine ⟨s.symm, ?_⟩
       cases hy
-      simp [permMapWalk_comp, perm_symm_mul_self, permMapWalk_refl]
-      sorry
+      simp [permMapWalk_comp]
+      have h_id : s.symm * s = Equiv.refl (Fin n) := by
+        apply Equiv.Perm.ext; intro x; simp;
+      have h_id : SimpleGraph.LoopWalk.permMapWalk n (Equiv.refl (Fin n)) px = px := by
+        exact permMapWalk_refl n px
+      grind
     · intro x y z hxy hyz
       classical
       rcases x with ⟨ux, px⟩
