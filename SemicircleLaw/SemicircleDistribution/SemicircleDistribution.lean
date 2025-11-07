@@ -508,6 +508,7 @@ lemma semicircleReal_map_const_add (y : ℝ) :
   exact semicircleReal_map_add_const y
 
 
+
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_const_mul (c : ℝ) :
     (semicircleReal μ v).map (c * ·) = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
