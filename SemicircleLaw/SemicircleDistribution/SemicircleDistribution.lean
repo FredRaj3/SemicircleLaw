@@ -669,10 +669,46 @@ section Moments
 
 variable {μ : ℝ} {v : ℝ≥0}
 
+
 /-- The mean of a real semicircle distribution `semicircleReal μ v` is its mean parameter `μ`. -/
 @[simp]
 lemma integral_id_semicircleReal : ∫ x, x ∂semicircleReal μ v = μ := by
-  sorry
+    by_cases hv : v = 0
+    · simp [hv]
+    rw [integral_semicircleReal_eq_integral_smul hv]
+
+    have : (fun x => semicirclePDFReal μ v x • x) =
+         (fun x => semicirclePDFReal μ v x * (x - μ + μ)) := by
+        ext x
+        simp [smul_eq_mul]
+    rw [this]
+
+    have : (fun x => semicirclePDFReal μ v x * (x - μ + μ)) =
+         (fun x => semicirclePDFReal μ v x * (x - μ) + semicirclePDFReal μ v x * μ) := by
+         ext x
+         ring_nf
+    rw [this]
+    rw [integral_add]
+    -- rotate_left
+
+    have h_symm : ∫ (a : ℝ), semicirclePDFReal μ v a * (a - μ) = 0 := by
+       sorry
+
+
+    rw [h_symm, zero_add]
+
+
+    have : (fun a => semicirclePDFReal μ v a * μ) = (fun a => μ * semicirclePDFReal μ v a) := by
+       ext a; ring
+    rw [this]
+    rw [integral_const_mul]
+    rw [integral_semicirclePDFReal_eq_one μ hv]
+    ring_nf
+
+    --· apply integrable_semicirclePDFReal μ v
+
+   -- integrable_semicirclePDFReal
+
 
 /-- The variance of a real semicircle distribution `semicircleReal μ v` is
 its variance parameter `v`. -/
