@@ -558,8 +558,28 @@ def LoopWalkSetoid : Setoid (ClosedLoopWalk (K n)) where
 
 
 lemma walk_vertex_card_equiv {n : ℕ} (p q : ClosedLoopWalk (K n)) (heq : LoopWalkEquiv n p q) :
-  (supportSet p.2).card = (supportSet q.2).card := by sorry
-
+  (supportSet p.2).card = (supportSet q.2).card := by
+    obtain ⟨ s, hs ⟩ := heq;
+    rw [hs];
+    -- Since these two sets are equal, their cardinalities are equal.
+    have h_card_eq : (p.snd.supportSet).image s = (SimpleGraph.LoopWalk.permMapWalk n s p.snd).supportSet := by
+      -- By definition of `permMapWalk`, the support of the permuted walk is the image of the support of the original walk under `s`.
+      have h_support_eq : (SimpleGraph.LoopWalk.permMapWalk n s p.snd).support = List.map (⇑s) p.snd.support := by
+        have h_support_eq : ∀ (u v : Fin n) (p : (K n).LoopWalk u v), (SimpleGraph.LoopWalk.permMapWalk n s p).support = List.map (⇑s) p.support := by
+          intros u v p
+          induction' p with u v w h p ih
+          · rfl;
+          · -- By definition of `permMapWalk`, the support of the permuted walk is the image of the support of the original walk under `s`. We can prove this by induction on the walk. For the cons case, we have:
+            have h_support_eq_cons : (SimpleGraph.LoopWalk.permMapWalk n s (SimpleGraph.LoopWalk.cons p ih)).support = s v :: (SimpleGraph.LoopWalk.permMapWalk n s ih).support := by
+              exact?
+            (generalize_proofs at *; aesop;);
+          · -- By definition of `support`, the support of a loop walk is the same as the support of the underlying walk.
+            have h_support_loop : ∀ (u v : Fin n) (p : (K n).LoopWalk u v), (SimpleGraph.LoopWalk.loop p).support = u :: p.support := by
+              aesop
+            aesop
+        exact h_support_eq _ _ _
+      unfold SimpleGraph.LoopWalk.supportSet; aesop;
+    rw [ ← h_card_eq, Finset.card_image_of_injective _ s.injective ]
 
 lemma walk_edge_card_equiv {n : ℕ} (p q : ClosedLoopWalk (K n)) (heq : LoopWalkEquiv n p q) :
   (edgeSet p.2).card = (edgeSet q.2).card := by sorry
