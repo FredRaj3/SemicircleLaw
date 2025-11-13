@@ -1,3 +1,4 @@
+import Mathlib
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Real.Basic
@@ -309,7 +310,79 @@ section LoopWalkCounting
 
 lemma vertex_edge_inequality {u v : V} (p : G.LoopWalk u v) :
   (supportSet p).card ≤ (edgeSet p).card +1 := by
-  sorry
+  -- By induction on the length of the walk, we can show that the cardinality of the support set is at most the cardinality of the edge set plus one.
+  induction' p with u v p ih;
+  · -- The support set of the nil walk is {u}, and the edge set is empty.
+    simp [SimpleGraph.LoopWalk.supportSet, SimpleGraph.LoopWalk.edgeSet];
+    simp [SimpleGraph.LoopWalk.support, SimpleGraph.LoopWalk.edges];
+  · -- By the induction hypothesis, we know that the cardinality of the support set of `p` is less than or equal to the cardinality of the edge set of `p` plus one.
+    have h_ind : (SimpleGraph.LoopWalk.cons ‹_› ‹_›).supportSet.card ≤ (SimpleGraph.LoopWalk.cons ‹_› ‹_›).edgeSet.card + 1 := by
+      have h_support : (SimpleGraph.LoopWalk.cons ‹_› ‹_›).supportSet = {v} ∪ (‹_› : G.LoopWalk p ih).supportSet := by
+        -- The support set of the cons walk is the union of {v} and the support set of the rest of the walk.
+        simp [SimpleGraph.LoopWalk.supportSet];
+        ext; simp [SimpleGraph.LoopWalk.support]
+      have h_edge : (SimpleGraph.LoopWalk.cons ‹_› ‹_›).edgeSet = {(Sym2.mk (v, p))} ∪ (‹_› : G.LoopWalk p ih).edgeSet := by
+        simp [SimpleGraph.LoopWalk.edgeSet, SimpleGraph.LoopWalk.edges];
+        rw [ SimpleGraph.LoopWalk.darts.eq_def ] ; aesop;
+      -- By the induction hypothesis, we know that the cardinality of the support set of the rest of the walk is less than or equal to the cardinality of its edge set plus one.
+      have h_ind : (‹_› : G.LoopWalk p ih).supportSet.card ≤ (‹_› : G.LoopWalk p ih).edgeSet.card + 1 := by
+        assumption;
+      by_cases hv : v ∈ (‹_› : G.LoopWalk p ih).supportSet <;> aesop;
+      · -- Since $v \in p_1.supportSet$, we have $|{v} ∪ p_1.supportSet| = |p_1.supportSet|$.
+        have h_card_union : ({v} ∪ p_1.supportSet).card = p_1.supportSet.card := by
+          rw [ Finset.union_eq_right.mpr ( Finset.singleton_subset_iff.mpr hv ) ];
+        simp [h_card_union.symm]
+        exact h_card_union.symm ▸ le_trans h_ind ( add_le_add_right ( Finset.card_mono <| by aesop_cat ) _ );
+      · -- Since $s(v, p)$ is a new element not in $p_1.edgeSet$, adding it to the edge set increases the cardinality by 1.
+        have h_card_union : ({s(v, p)} ∪ p_1.edgeSet).card = p_1.edgeSet.card + 1 := by
+          rw [ Finset.union_comm, Finset.card_union_of_disjoint ] ; aesop;
+          simp +decide [ Finset.disjoint_singleton_right ];
+          intro H; have := Finset.mem_union_left ( { s(v, p) } ) H;
+          -- If $s(v, p)$ is in $p_1.edges$, then there must be a dart $(v, p)$ in $p_1.darts$, which would mean that $v$ is in the support of $p_1$.
+          have H' : s(v, p) ∈ p_1.edges := by
+            simp_all +decide [SimpleGraph.LoopWalk.edgeSet]
+          have h_dart : ∃ d ∈ p_1.darts, d = (v, p) := by
+            unfold SimpleGraph.LoopWalk.edges at H'; aesop;
+            -- Since the edges are unordered, if (w, w_1) is in p_1.darts and its edge is s(v, p), then (w, w_1) must be either (v, p) or (p, v).
+            have h_dart_cases : (w, w_1) = (v, p) ∨ (w, w_1) = (p, v) := by
+              unfold SimpleGraph.LoopWalk.dartEdge at right; aesop;
+            aesop;
+            -- Since the support of p_1 is the list of vertices it visits, and (w, w_1) is in the darts, w_1 must be in the support.
+            have h_support : w_1 ∈ p_1.support := by
+              sorry
+            exact False.elim <| hv <| List.mem_toFinset.mpr h_support;
+          obtain ⟨ d, hd₁, rfl ⟩ := h_dart; exact hv ( by
+            have h_support : ∀ {u v : V} (p : G.LoopWalk u v), ∀ d ∈ p.darts, d.1 ∈ p.support := by
+              -- We can prove this by induction on the walk.
+              intro u v p d hd
+              induction' p with u v p ih generalizing d;
+              · cases hd;
+              · cases hd <;> aesop;
+                · exact List.mem_cons_self;
+                · exact List.mem_cons_of_mem _ ( p_ih _ _ a );
+              · cases hd ; aesop;
+                · exact mem_of_mem_head? rfl;
+                · (expose_names; exact mem_of_mem_tail (p_ih d h_1));
+            exact List.mem_toFinset.mpr ( h_support _ _ hd₁ ) ) ;
+        sorry
+    exact h_ind;
+  · -- The support set of the loop walk is the same as the support set of the underlying walk.
+    have h_support_eq : (LoopWalk.loop ‹_›).supportSet = ‹G.LoopWalk _ _›.supportSet := by
+      -- The support set of the loop walk is the same as the support set of the underlying walk because adding a loop does not introduce any new vertices.
+      simp [LoopWalk.supportSet];
+      -- By definition of support, the starting vertex u is included in the support of the walk p.
+      induction' ‹G.LoopWalk _ _› with u v p ih <;> simp [LoopWalk.support] at *;
+    -- Since the support set of the loop walk is the same as the support set of the underlying walk, we can apply the induction hypothesis directly.
+    rw [h_support_eq];
+    refine' le_trans ‹_› _;
+    unfold SimpleGraph.LoopWalk.edgeSet; aesop;
+    -- Since the loop walk's edges are a superset of the underlying walk's edges, their cardinality is at least as large.
+    have h_edges_superset : p.edges.toFinset ⊆ (p.loop.edges).toFinset := by
+      -- Since the edges of the loop walk are the edges of the underlying walk plus the loop edge, any edge in the underlying walk's edges is also in the loop walk's edges.
+      intros e he
+      simp [SimpleGraph.LoopWalk.edges] at he ⊢
+      aesop;
+    simp [Finset.card_le_card]
 
 end LoopWalkCounting
 
