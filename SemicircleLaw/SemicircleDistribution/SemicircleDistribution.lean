@@ -904,8 +904,16 @@ lemma variance_id_semicircleReal : Var[id; semicircleReal μ v] = v :=
 
 /-- All the moments of a real semicircle distribution are finite. That is, the identity is in Lp for
 all finite `p`. -/
-lemma memLp_id_semicircleReal (p : ℝ≥0) : MemLp id p (semicircleReal μ v) :=
-  sorry
+lemma memLp_id_semicircleReal (p : ℝ≥0) : MemLp id p (semicircleReal μ v) := by
+  refine memLp_of_mem_interior_integrableExpSet ?_ p
+  have c0 : integrableExpSet id (semicircleReal μ v) = Set.univ := by
+    ext t; simp [integrableExpSet]
+    have c01 : Integrable (fun (x : ℝ) ↦ Real.exp (t * x)) (semicircleReal μ v) := by
+      set S := Icc (μ - 2 * √v) (μ + 2 * √v)
+      have c011 : ∀ x, x ∈ S → |Real.exp (t * x)| ≤ Real.exp (|t| * (|μ| + 2 * √v)) := by sorry
+      sorry
+    simp [c01]
+  simp [c0]
 
 /-- All the moments of a real semicircle distribution are finite. That is, the identity is in Lp for
 all finite `p`. -/
@@ -918,13 +926,102 @@ lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     = v ^ n * catalan n := by
   sorry
 
+/- Proof step 1 -/
+/- The proof should be shortened with the calc tactic. -/
 
+lemma change_of_variable_1 (t : ℝ) (ht : 0 < t) (k : ℕ) :
+  1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+  = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := by
+  have c0 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+    = 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
+    have c01 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2 * t / t) := by grind
+    have c02 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2 * t / t)
+      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t) := by grind
+    have c03 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t)
+      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t) := by
+      have c031 : ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t)
+        = ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t) := by
+        apply intervalIntegral.integral_congr
+        intro x hx
+        dsimp
+        sorry
+      rw [c031]
+    have c04 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t)
+      = 1 / (2 * π * t) * √t * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
+      set f := fun (y : ℝ) ↦ y ^ k * √(4 - y ^ 2 / t)
+      set g := fun (y : ℝ) ↦ y ^ k * (√(4 - y ^ 2 / t) * √t)
+      have c041 : ∀ (y : ℝ), √t * f y = g y := by grind
+      set F := fun (y : ℝ) ↦ √t * f y
+      have c042 : F = g := by grind
+      rw [← c042]
+      dsimp [F]
+      have c043 := intervalIntegral.integral_const_mul
+        (a := -2 * √t) (b := 2 * √t) (f := f) (r := √t) (μ := ℙ)
+      rw [c043]
+      grind
+    have c05 : 1 / (2 * π * t) * √t * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
+      = 1 / (2 * π * √t) * ∫ (y : ℝ) in -2 * √t..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
+      set A := ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
+      have c051 : 1 / (2 * π * √t) = 1 / (2 * π * t) * √t := by
+        set B := 1 / 2 * π
+        have c0511 : 1 / √t = 1 / t * √t := by
+          have c05111 := Real.sqrt_div_self (x := t)
+          grind
+        have c0512 : B * 1 / √t = B * (1 / t * √t) := by grind
+        grind
+      rw [c051]
+    rw [c01, c02, c03, c04, c05]
+  have c1 : 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
+    = 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t := by
+    set f := fun (y : ℝ) ↦ y ^ k * √(4 - y ^ 2 / t)
+    have c11 := intervalIntegral.inv_mul_integral_comp_div_sub
+      (a := -2 * √t) (b := 2 * √t) (c := √t) (d := 0) (f := f)
+    sorry
+  have c2 : 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t
+    = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := by
+    have c21 : ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t
+      = ∫ (x : ℝ) in (-2)..2, (t ^ (k / 2) * √t) * (x ^ k * √(4 - x ^ 2)) := by grind
+    rw [c21]
+    set f := fun (x : ℝ) ↦ x ^ k * √(4 - x ^ 2) with hf
+    set A := t ^ (k / 2) * √t
+    have c22 := intervalIntegral.integral_const_mul
+      (a := -2) (b := 2) (f := f) (r := A) (μ := ℙ)
+    set B := 1 / (2 * π * √t)
+    have c23 : B * ∫ (x : ℝ) in -2..2, A * f x = B * A * ∫ (x : ℝ) in -2..2, f x := by grind
+    rw [c23]
+    have c24 : B * A = t ^ (k / 2) / (2 * π) := by
+      dsimp [A, B]
+      sorry
+    rw [c24]
+  calc
+    1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+    = 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := c0
+  _ = 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t := c1
+  _ = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := c2
 
+/- set f := fun (x : ℝ) ↦ x ^ k * √((4 - x ^ 2 / t) * t)
+        set g := fun (x : ℝ) ↦ x ^ k * (√(4 - x ^ 2 / t) * √t)
+        have c0311 : ∀ (x : ℝ), f x = g x := by  -/
 
-#check integral_sin_pow_even
-#check integral_sin_pow
-#check integral_cos_pow
-#check integral_cos_pow_aux
+/- Proof step 2 -/
+
+lemma change_of_variable_2 (k : ℕ) : ∫ (x : ℝ) in (-2)..2, x ^ (2 * k) / (2 * π) * √(4 - x ^ 2)
+  = -2 ^ (2 * k + 1) / π *
+  (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) - ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k + 2)) := by
+  calc
+    ∫ (x : ℝ) in (-2)..2, x ^ (2 * k) / (2 * π) * √(4 - x ^ 2)
+      = ∫ (x : ℝ) in 0..π, (2 * Real.cos (x)) ^ (2 * k) / (2 * π)
+        * √(4 - (2 * Real.cos x) ^ 2) * (-2 * Real.sin x) := by sorry
+    _ = -2 ^ (2 * k + 1) / π *
+        ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) * (Real.sin x) ^ 2 := by sorry
+    _ = -2 ^ (2 * k + 1) / π * ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k)
+        * (1 - (Real.cos x) ^ 2):= by sorry /- Real.sin_sq -/
+    _ = -2 ^ (2 * k + 1) / π *
+        (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) -
+        ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k + 2)):= by sorry
+
+/- Proof step 3 -/
 
 lemma test3 (m : ℕ) :
   ∫ (x : ℝ) in 0..π, Real.cos x ^ (m + 2) =
@@ -987,9 +1084,14 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     rw [c5]; dsimp [B] at ih; rw [ih]; dsimp [w] at c6; rw [c6]
     grind
 
-#check catalan
+/- #check integral_sin_pow_even
+#check integral_sin_pow
+#check integral_cos_pow
+#check integral_cos_pow_aux -/
 
-lemma catalan_eq_recur (n : ℕ) : catalan n
+/- Proof step 4 -/
+
+/- lemma catalan_eq_recur (n : ℕ) : catalan n
   =  ∏ k ∈ Finset.range n, ((2 * k + 1) : ℝ) / (2 * (k + 1)) := by
   have c0 := catalan_eq_centralBinom_div n
   rw [c0]; dsimp [Nat.centralBinom]
@@ -997,9 +1099,9 @@ lemma catalan_eq_recur (n : ℕ) : catalan n
   case zero =>
     simp
   case succ m ih =>
-    sorry
+    sorry -/
 
-lemma catalan_test (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan n) := by
+/- lemma catalan_test (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan n) := by
   have c0A := catalan_eq_centralBinom_div (n + 1)
   have c0B := catalan_eq_centralBinom_div (n + 2)
   have c0C := catalan_eq_centralBinom_div (n)
@@ -1019,12 +1121,103 @@ lemma catalan_test (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan
     rw [← c4]
     rw [c0C]
     ring_nf
-    sorry
+    sorry -/
+
+noncomputable
+def P := fun (n : ℕ) ↦ ∏ i ∈ Finset.range n, ↑((2 * i + 1) / (2 * (i + 1)))
+
+example (A : ℝ) (n : ℕ) :
+  Real.pi * A
+    - Real.pi * ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2) * A)
+    = Real.pi * (1 / (2 * (n : ℝ) + 2)) * A := by
+  have hden : (2 * (n : ℝ) + 2) ≠ 0 := by
+    have : (0 : ℝ) < 2 * (n : ℝ) + 2 := by
+      have hn : (0 : ℝ) ≤ (n : ℝ) := by
+        exact_mod_cast (Nat.zero_le n)
+      linarith
+    exact ne_of_gt this
+  field_simp [hden]
+  ring
+
+/- Below the proof code is generated. -/
+
+lemma test4 (n : ℕ) : (π * ∏ i ∈ Finset.range n, ((2 * i + 1) / (2 * (i + 1))) -
+  π * ∏ i ∈ Finset.range (n + 1), ((2 * i + 1) / (2 * (i + 1))))
+  = π * 1 / (2 * n + 2) * ∏ i ∈ Finset.range n, ((2 * i + 1) / (2 * (i + 1))) := by
+  have hden : (2 * (n : ℝ) + 2) ≠ 0 := by
+    have : (0 : ℝ) < 2 * (n : ℝ) + 2 := by
+      have hn : (0 : ℝ) ≤ (n : ℝ) := by
+        exact_mod_cast (Nat.zero_le n)
+      linarith
+    exact ne_of_gt this
+  set A : ℝ :=
+    ∏ i ∈ Finset.range n, ((2 * (i : ℝ) + 1) / (2 * ((i + 1 : ℕ) : ℝ))) with hA
+  have hprod : ∏ i ∈ Finset.range (n + 1), ((2 * (i : ℝ) + 1) / (2 * ((i + 1 : ℕ) : ℝ)))
+  = ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) * A := by
+    have h := Finset.prod_range_succ (n := n) (f := fun (i : ℕ) ↦
+    ((2 * (i : ℝ) + 1) / (2 * ((i + 1 : ℕ) : ℝ))))
+    have h' := h
+    have h'' : (2 * ((n + 1 : ℕ) : ℝ)) = 2 * (n : ℝ) + 2 := by sorry
+    have : ∏ i ∈ Finset.range (n + 1), ((2 * (i : ℝ) + 1) / (2 * ((i + 1 : ℕ) : ℝ)))
+    = A * ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) := by sorry
+    simpa [mul_comm] using this
+  have hmain : Real.pi * A - Real.pi * (((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) * A)
+  = Real.pi * 1 / (2 * (n : ℝ) + 2) * A := by
+    field_simp [hden]
+    ring
+  sorry
 
 
 lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v) = v ^ n * catalan n := by
-  sorry
+  dsimp [centralMoment]; simp
+  /- Dividing the cases when v = 0 and v > 0 for the measure -/
+  by_cases
+  h1 : v = 0
+  rw [semicircleReal]; subst h1; simp; cases n <;> simp [catalan_zero]
+  have h2 : v > 0 := by
+    push_neg at h1
+    simp_all only [ne_eq, gt_iff_lt]
+    apply lt_of_le_of_ne'
+    · simp_all only [zero_le]
+    · simp_all only [ne_eq, not_false_eq_true]
+  /- Change of variable 1 -/
+  have c0 : ∫ (x : ℝ), (x - μ) ^ (2 * n) ∂semicircleReal μ v
+    = 1 / (2 * π * v) * ∫ (x : ℝ) in (-2 * √v)..(2 * √v), x ^ (2 * n) * √(4 * v - x ^ 2) := by sorry
+  /- Change of variable 2 -/
+  have c1 : 1 / (2 * π * v) * ∫ (x : ℝ) in (-2 * √v)..2 * √v, x ^ (2 * n) * √(4 * v - x ^ 2)
+    = v ^ (n / 2) * 1 / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ (2 * n) * √(4 - x ^ 2) := by sorry
+  have c2 : v ^ (n / 2) * 1 / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ (2 * n) * √(4 - x ^ 2)
+    = v ^ n * 2 ^ (2 * n + 1) / π *
+    (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * n)
+    - ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * n + 2)) := by sorry
+  rw [c0, c1, c2]
+  have c3 := integral_cos_pow_even n
+  have c4 := integral_cos_pow_even (n + 1)
+  /- Product form substitution to setup the recurrence relation derivation -/
+  have c5 : v ^ n * 2 ^ (2 * n + 1) / π *
+    (∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2))
+    = v ^ n * 2 ^ (2 * n + 1) / π *
+    (π * ∏ k ∈ Finset.range n, (2 * ↑k + 1) / (2 * (k + 1))
+    - π * ∏ k ∈ Finset.range (n + 1), (2 * ↑k + 1) / (2 * (k + 1))) := by sorry
+  rw [c5]; simp [catalan_eq_centralBinom_div, Nat.centralBinom]
+  set A := 2 ^ (2 * n + 1) / π *
+    (π * ∏ i ∈ Finset.range n, ↑((2 * i + 1) / (2 * (i + 1))) -
+      π * ∏ i ∈ Finset.range (n + 1), ↑((2 * i + 1) / (2 * (i + 1))))
+  set B := ↑((2 * n).choose n / (n + 1)) with hB
+  have c6 : A = B := by
+    dsimp [B]
+    have c61 : n ≤ 2 * n := by grind
+    have c62 : (2 * n).choose n
+      = (2 * n).factorial / (n.factorial * (2 * n - n).factorial)
+      := Nat.choose_eq_factorial_div_factorial (n := 2 * n) (k := n) c61
+    rw [c62]; dsimp [A]
+    have c63 : (π * ∏ i ∈ Finset.range n, ↑((2 * i + 1) / (2 * (i + 1))) -
+    π * ∏ i ∈ Finset.range (n + 1), ↑((2 * i + 1) / (2 * (i + 1))))
+    = π * 1 / (2 * n + 2) := by sorry
+    sorry
+  have c7 : v ^ n * A = v ^ n * B := by grind
+  dsimp [A,B] at c7; dsimp [B]; grind
 
 /- Temporary separation -/
 lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
