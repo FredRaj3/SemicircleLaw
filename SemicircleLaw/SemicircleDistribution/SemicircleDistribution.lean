@@ -1167,10 +1167,10 @@ lemma test4 (n : ℕ) : (π * ∏ i ∈ Finset.range n, ((2 * i + 1) / (2 * (i +
     ring
   sorry
 
-
 lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v) = v ^ n * catalan n := by
   dsimp [centralMoment]; simp
+
   /- Dividing the cases when v = 0 and v > 0 for the measure -/
   by_cases
   h1 : v = 0
@@ -1181,10 +1181,35 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     apply lt_of_le_of_ne'
     · simp_all only [zero_le]
     · simp_all only [ne_eq, not_false_eq_true]
-  /- Change of variable 1 -/
+
+  /- Change of variable 1 (centering / translation invariance) -/
   have c0 : ∫ (x : ℝ), (x - μ) ^ (2 * n) ∂semicircleReal μ v
-    = 1 / (2 * π * v) * ∫ (x : ℝ) in (-2 * √v)..(2 * √v), x ^ (2 * n) * √(4 * v - x ^ 2) := by sorry
-  /- Change of variable 2 -/
+    = 1 / (2 * π * v) * ∫ (x : ℝ) in (-2 * √v)..(2 * √v), x ^ (2 * n) * √(4 * v - x ^ 2) := by
+    rw [semicircleReal]; push_neg at h1; simp [h1]
+    set g := fun (x : ℝ) ↦ (x - μ) ^ (2 * n) with hg
+    set f := fun (x : ℝ) ↦ (semicirclePDF μ v x) with hf
+    have c00 : AEMeasurable f := by sorry
+    have c01 : ∀ᵐ (x : ℝ) ∂ℙ, f x < ∞ := by sorry
+    have c02 := integral_withDensity_eq_integral_toReal_smul₀ (μ := ℙ) (f := f) c00 c01 g
+    dsimp [f, g] at c02; dsimp [g]; rw [c02]
+    set F := fun (x : ℝ) ↦ (semicirclePDF μ v x).toReal
+    have c03 : F = semicirclePDFReal μ v := by
+      simp_all only [ne_eq, gt_iff_lt, toReal_semicirclePDF, g, f, F]
+    have c04 : ∫ (x : ℝ), (semicirclePDF μ v x).toReal * (x - μ) ^ (2 * n)
+    = ∫ (x : ℝ), (F x) * (x - μ) ^ (2 * n) := by grind
+    rw[c04, c03]; dsimp [semicirclePDFReal]
+    have c04 : ∫ (x : ℝ), 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+    = ∫ (x : ℝ), 1 / (2 * π * v) * √(4 * v - x ^ 2) * x ^ (2 * n) := by sorry
+    sorry
+
+/-  set f := fun (x : ℝ) ↦ (semicirclePDF μ v x).toNNReal with hf
+    have c00 : Measurable fun (x : ℝ) ↦ (semicirclePDF μ v x) := by
+      set F := fun (x : ℝ) ↦ (semicirclePDF μ v x)
+      sorry
+    have c01 : Measurable f := by exact ENNReal.measurable_toNNReal.comp c00
+    have c02 := integral_withDensity_eq_integral_smul (f := f) (g := g) (μ := ℙ) c01 -/
+
+  /- Change of variable 2 (trigonometric substitution)-/
   have c1 : 1 / (2 * π * v) * ∫ (x : ℝ) in (-2 * √v)..2 * √v, x ^ (2 * n) * √(4 * v - x ^ 2)
     = v ^ (n / 2) * 1 / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ (2 * n) * √(4 - x ^ 2) := by sorry
   have c2 : v ^ (n / 2) * 1 / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ (2 * n) * √(4 - x ^ 2)
@@ -1194,6 +1219,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
   rw [c0, c1, c2]
   have c3 := integral_cos_pow_even n
   have c4 := integral_cos_pow_even (n + 1)
+
   /- Product form substitution to setup the recurrence relation derivation -/
   have c5 : v ^ n * 2 ^ (2 * n + 1) / π *
     (∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2))
@@ -1267,6 +1293,8 @@ example {Ω : Type*} [MeasureSpace Ω]
     (h0 : 0 ≤ᵐ[ℙ] f) (hmeas : AEStronglyMeasurable f) :
     ∫ x, f x ∂ ℙ = ENNReal.toReal (∫⁻ x, ENNReal.ofReal (f x) ∂ ℙ) := by
   simpa using integral_eq_lintegral_of_nonneg_ae h0 hmeas
+
+def G := fun (x : ℝ) ↦ x
 
 ---test commit
 
