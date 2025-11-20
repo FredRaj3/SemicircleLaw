@@ -1182,7 +1182,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     · simp_all only [zero_le]
     · simp_all only [ne_eq, not_false_eq_true]
 
-  /- Change of variable 1 (centering / translation invariance) -/
+  /- Change of variable 1 (reformulating into an integral over the subset of the support & centering) -/
   have c0 : ∫ (x : ℝ), (x - μ) ^ (2 * n) ∂semicircleReal μ v
     = 1 / (2 * π * v) * ∫ (x : ℝ) in (-2 * √v)..(2 * √v), x ^ (2 * n) * √(4 * v - x ^ 2) := by
     rw [semicircleReal]; push_neg at h1; simp [h1]
@@ -1198,9 +1198,64 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     have c04 : ∫ (x : ℝ), (semicirclePDF μ v x).toReal * (x - μ) ^ (2 * n)
     = ∫ (x : ℝ), (F x) * (x - μ) ^ (2 * n) := by grind
     rw[c04, c03]; dsimp [semicirclePDFReal]
+    set H := fun (x : ℝ) ↦ (f x).toReal * (g x)
     have c04 : ∫ (x : ℝ), 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
-    = ∫ (x : ℝ), 1 / (2 * π * v) * √(4 * v - x ^ 2) * x ^ (2 * n) := by sorry
+    = ∫ (x : ℝ) in (μ - 2 * √v)..(μ + 2 * √v),
+    1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by
+      set I := Icc (μ - 2 * √v) (μ + 2 * √v)
+      have c040 : Function.support H ⊆ I := by
+        have c0400 : H = (semicirclePDFReal μ v) * g := by sorry
+        rw [c0400]
+        have c0401 := Function.support_mul' (f := (semicirclePDFReal μ v)) (g := g)
+        have c0402 : Function.support (semicirclePDFReal μ v) ⊆ I := by
+          apply support_semicirclePDF_inc
+        set J := Function.support (semicirclePDFReal μ v)
+        set K := Function.support g
+        have c0403 : J ∩ K ⊆ J := by simp_all only [ne_eq, gt_iff_lt, toReal_semicirclePDF,
+          Function.support_subset_iff, mem_Icc, tsub_le_iff_right, Function.support_mul',
+          inter_subset_left, g, f, F, H, J, I, K]
+        rw [c0401]; grind
+      have c044 := setIntegral_eq_integral_of_forall_compl_eq_zero (f := H) (μ := ℙ) (s := I)
+      have c044A : ∀ x ∉ I, H x = 0 := by
+        dsimp [Function.support] at c040
+        intro x hx
+        by_contra hx0
+        have : x ∈ {x | ¬H x = 0} := by simp_all only [ne_eq, gt_iff_lt,
+        toReal_semicirclePDF, mul_eq_zero,pow_eq_zero_iff', OfNat.ofNat_ne_zero,
+        false_or, not_or, not_and, Decidable.not_not, mem_Icc, tsub_le_iff_right,
+        not_le, mem_setOf_eq, not_false_eq_true, implies_true, and_self, g, f, F, H, I]
+        have hxI : x ∈ I := by grind
+        exact (hx hxI).elim
+      have c045 : ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v),
+      (semicirclePDF μ v x).toReal * (x - μ) ^ (2 * n)
+      =  ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), (F x) * (x - μ) ^ (2 * n) := by grind
+      have c046 : ∫ (x : ℝ), (semicirclePDF μ v x).toReal * (x - μ) ^ (2 * n)
+      =  ∫ (x : ℝ), (F x) * (x - μ) ^ (2 * n) := by grind
+      rw [c045, c046, c03] at c044
+      dsimp [semicirclePDFReal] at c044
+      have c047 : ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v),
+      1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+      = ∫ (x : ℝ) in (μ - 2 * √v)..(μ + 2 * √v),
+      1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by sorry
+      rw [c047] at c044; rw [c044]; exact c044A
+    rw [c04]
+    set L := fun (x : ℝ) ↦ H (x + μ)
+    have c05 := intervalIntegral.integral_comp_sub_right
+      (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
+    dsimp [L] at c05
     sorry
+
+/-   have h1 : Continuous f := by apply Cont_semicirclePDFReal
+  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
+  have h2 : IsCompact I := by simpa using isCompact_Icc
+  have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
+  have h4 : Function.support f ⊆ I := by apply support_semicirclePDF_inc
+  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3 -/
+
+/-       have c041 : Continuous H := by sorry
+      have c042 : IsCompact I := by simpa using isCompact_Icc
+      have c043 : IntegrableOn H I := by
+        simpa using (c041.continuousOn).integrableOn_compact c042 -/
 
 /-  set f := fun (x : ℝ) ↦ (semicirclePDF μ v x).toNNReal with hf
     have c00 : Measurable fun (x : ℝ) ↦ (semicirclePDF μ v x) := by
@@ -1258,6 +1313,24 @@ lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
   sorry
 
 end Moments
+
+section Aristotle
+
+/- Recursive relationship between Catalan numbers -/
+lemma catalan_recur (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan n) := by sorry
+
+/- Part of first change of variable part of the proof -/
+lemma change_of_variable_c0 (t : ℝ) (ht : 0 < t) (k : ℕ) :
+  1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+  = 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by sorry
+
+/- Second change of variable of the proof -/
+lemma change_of_variable_2' (k : ℕ) :
+  ∫ (x : ℝ) in (-2)..2, x ^ (2 * k) / (2 * π) * √(4 - x ^ 2)
+  = -2 ^ (2 * k + 1) / π * (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k)
+  - ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k + 2)) := by sorry
+
+end Aristotle
 
 section Scribbles
 
