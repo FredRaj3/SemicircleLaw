@@ -692,7 +692,33 @@ lemma integral_id_semicircleReal : ∫ x, x ∂semicircleReal μ v = μ := by
     -- rotate_left
 
     have h_symm : ∫ (a : ℝ), semicirclePDFReal μ v a * (a - μ) = 0 := by
-       sorry
+       rw [semicirclePDFReal_def]
+
+       have : ∫ (a : ℝ), (1 / (2 * π * ↑v) * √(4 * ↑v - (a - μ) ^ 2)) * (a - μ) =
+         ∫ (y : ℝ), (1 / (2 * π * ↑v) * √(4 * ↑v - y ^ 2)) * y := by
+           congr 1
+           sorry
+
+           -- use support_semicirclePDF to transform it to the closed interval.
+           -- set hypothesis.......
+
+          --  have h_change : ∫⁻ (a : ℝ) in (fun x ↦ x + y) ⁻¹' s, semicirclePDF μ v a =
+          --                ∫⁻ (u : ℝ) in s, semicirclePDF μ v (u - y) := by
+
+       rw [this]
+       have h_odd : ∀ y, (1 / (2 * π * ↑v) * √(4 * ↑v - (-y) ^ 2) * (-y)) =
+                    -(1 / (2 * π * ↑v) * √(4 * ↑v - y ^ 2) * y) := by
+            intro y
+            ring_nf
+
+       have h_neg : ∫ (y : ℝ), (1 / (2 * π * ↑v) * √(4 * ↑v - y ^ 2)) * y =
+               ∫ (y : ℝ), (1 / (2 * π * ↑v) * √(4 * ↑v - (-y) ^ 2)) * (-y) := by
+        sorry
+
+
+       simp only [h_odd] at h_neg
+       rw [integral_neg] at h_neg
+       linarith
 
 
     rw [h_symm, zero_add]
