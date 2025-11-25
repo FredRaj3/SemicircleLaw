@@ -619,30 +619,30 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
     constructor
     · --first subgoal
       by_contra h21; push_neg at h21
-      have h22 : x - μ ≤ -(2 * √v) := by
+      have h22 : x - μ ≤ - (2 * √v) := by
         set B := 2 * √v
         exact tsub_le_iff_left.mpr h21
-      have h23 : 2 * √v ≤ -(x - μ) := by
+      have h23 : 2 * √v ≤ - (x - μ) := by
         set B := 2 * √v
         exact le_neg_of_le_neg h22
       have h24 : 4 * v ≤ (x - μ)^2 := by
         set B := 2 * √v with hB
-        have h241 : 4 * v = B^2 := by
+        have h241 : 4 * v = B ^ 2 := by
           rw [hB]; ring_nf; rw [Real.sq_sqrt]; positivity
         rw [h241]; refine sq_le_sq.mpr ?_
         have h242 : 0 ≤ B := by positivity
-        have h243 : 0 ≤ -(x - μ) := by exact Preorder.le_trans 0 B (-(x - μ)) h242 h23
+        have h243 : 0 ≤ - (x - μ) := by exact Preorder.le_trans 0 B (-(x - μ)) h242 h23
         /- Apply? helped complete this part.-/
         calc
           |B| = B := by simp [abs_of_nonneg h242]
            _  ≤ -(x - μ) := h23
-        have h244 : -(x - μ) ≤ |x - μ| := by
+        have h244 : - (x - μ) ≤ |x - μ| := by
           set A := x - μ with xA
           exact neg_le_abs A
         exact h244
-      have h25 : 4 * v - (x - μ)^2 ≤ 0 := by exact sub_nonpos.mpr h24
-      have h26 : √(4 * v - (x - μ)^2) = 0 := by exact Real.sqrt_eq_zero'.mpr h25
-      have h27 : 1 / (2 * π * v) *  √(4 * v - (x - μ)^2) = 0 := by
+      have h25 : 4 * v - (x - μ) ^ 2 ≤ 0 := by exact sub_nonpos.mpr h24
+      have h26 : √(4 * v - (x - μ) ^ 2) = 0 := by exact Real.sqrt_eq_zero'.mpr h25
+      have h27 : 1 / (2 * π * v) *  √(4 * v - (x - μ) ^ 2) = 0 := by
         exact mul_eq_zero_of_right (1 / (2 * π * ↑v)) h26
       simp_all only [ne_eq, one_div, mul_inv_rev, mul_zero, lt_self_iff_false]
       /- Hammer worked for completing the contradiction. -/
@@ -651,9 +651,9 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
       have h32 : 2 * √v ≤ x - μ := by
         set B := 2 * √v
         exact le_tsub_of_add_le_left h31
-      have h33 : 4 * v ≤ (x - μ)^2 := by
+      have h33 : 4 * v ≤ (x - μ) ^ 2 := by
         set B := 2 * √v with hB
-        have h241 : 4 * v = B^2 := by
+        have h241 : 4 * v = B ^ 2 := by
           rw [hB]; ring_nf; rw [Real.sq_sqrt]; positivity
         rw [h241]; refine (sq_le_sq₀ ?_ ?_).mpr h32
         have h242 : 0 ≤ B := by positivity
@@ -662,9 +662,9 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
         have h242 : 0 ≤ B := by positivity
         exact Preorder.le_trans 0 B A h242 h32
         /- Apply? helped complete this part.-/
-      have h34 : 4 * v - (x - μ)^2 ≤ 0 := by exact sub_nonpos.mpr h33
-      have h36 : √(4 * v - (x - μ)^2) = 0 := by exact Real.sqrt_eq_zero'.mpr h34
-      have h37 : 1 / (2 * π * v) *  √(4 * v - (x - μ)^2) = 0 := by
+      have h34 : 4 * v - (x - μ) ^ 2 ≤ 0 := by exact sub_nonpos.mpr h33
+      have h36 : √(4 * v - (x - μ) ^ 2) = 0 := by exact Real.sqrt_eq_zero'.mpr h34
+      have h37 : 1 / (2 * π * v) *  √(4 * v - (x - μ) ^ 2) = 0 := by
         exact mul_eq_zero_of_right (1 / (2 * π * ↑v)) h36
       simp_all only [ne_eq, one_div, mul_inv_rev, mul_zero, lt_self_iff_false]
       /- Hammer worked for completing the contradiction. -/
@@ -681,15 +681,15 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
       have h' : x - μ < B := by exact sub_left_lt_of_lt_add h2_right
       /- Apply? worked for proving h'. -/
       exact abs_sub_lt_iff.mpr ⟨h', h⟩
-    have h12 : 0 < 4 * (v : ℝ) - (x - μ)^2 := by
+    have h12 : 0 < 4 * (v : ℝ) - (x - μ) ^ 2 := by
       apply sub_pos.mpr
       have h13 : 0 ≤ 2 * √(v : ℝ) := by positivity
       have h14 : |x - μ| < |2 * √(v : ℝ)| := by simpa [abs_of_nonneg h13]
-      have h15 : (x - μ)^2 < (2 * √(v : ℝ))^2 := sq_lt_sq.mpr h14
-      have h16 : 0 < (2 * √(v : ℝ))^2 - (x - μ)^2 := sub_pos.mpr h15
-      have h17 : 0 < 4 * (v : ℝ) - (x - μ)^2 := by
-        have h18 : (2 * √(v : ℝ))^2 = 4 * (v : ℝ) := by
-          have h19 : (2 * √(v : ℝ))^2 = 4 * (√(v : ℝ))^2 := by ring
+      have h15 : (x - μ)^2 < (2 * √(v : ℝ)) ^ 2 := sq_lt_sq.mpr h14
+      have h16 : 0 < (2 * √(v : ℝ)) ^ 2 - (x - μ) ^ 2 := sub_pos.mpr h15
+      have h17 : 0 < 4 * (v : ℝ) - (x - μ) ^ 2 := by
+        have h18 : (2 * √(v : ℝ)) ^ 2 = 4 * (v : ℝ) := by
+          have h19 : (2 * √(v : ℝ)) ^ 2 = 4 * (√(v : ℝ)) ^ 2 := by ring
           rw [h19, Real.sq_sqrt h10]
         simpa [h18] using h16
       linarith
@@ -1167,6 +1167,13 @@ lemma test4 (n : ℕ) : (π * ∏ i ∈ Finset.range n, ((2 * i + 1) / (2 * (i +
     ring
   sorry
 
+
+lemma measurable_ofNNReal : Measurable (ENNReal.ofNNReal) := by
+  have h1 : Measurable fun (x : ℝ≥0) ↦ (x : ℝ) := measurable_subtype_coe
+  have h2 : Measurable fun (x : ℝ) ↦ ENNReal.ofReal x := ENNReal.measurable_ofReal
+  have h3 : Measurable fun (x : ℝ≥0) ↦ ENNReal.ofReal (x : ℝ) := h2.comp h1
+  simpa [ENNReal.ofReal_coe_nnreal] using h3
+
 lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v) = v ^ n * catalan n := by
   dsimp [centralMoment]; simp
@@ -1188,8 +1195,34 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     rw [semicircleReal]; push_neg at h1; simp [h1]
     set g := fun (x : ℝ) ↦ (x - μ) ^ (2 * n) with hg
     set f := fun (x : ℝ) ↦ (semicirclePDF μ v x) with hf
-    have c00 : AEMeasurable f := by sorry
-    have c01 : ∀ᵐ (x : ℝ) ∂ℙ, f x < ∞ := by sorry
+    have c00 : AEMeasurable f := by
+      have c001B : Measurable f := by
+        dsimp [f, semicirclePDF]; apply Measurable.comp; exact measurable_ofNNReal
+        have c0000 : Measurable fun (x : ℝ) ↦ semicirclePDFReal μ v x := by
+          apply measurable_semicirclePDFReal
+        have c0011 : Measurable fun (x : ℝ) ↦ Real.toNNReal (semicirclePDFReal μ v x) :=
+          measurable_real_toNNReal.comp c0000
+        simpa using c0011
+      have c001A : Measurable (semicirclePDFReal μ v) := by apply measurable_semicirclePDFReal
+      have c001 := Measurable.coe_real_ereal (f := (semicirclePDFReal μ v)) c001A
+      set F := fun (x : ℝ) ↦ Real.toEReal (semicirclePDFReal μ v x)
+      set G := fun (x : ℝ) ↦ EReal.toENNReal (F x)
+      have c002 := measurable_ereal_toENNReal
+      apply Measurable.aemeasurable; exact c001B
+    have c01 : ∀ᵐ (x : ℝ) ∂ℙ, f x < ∞ := by
+      refine ae_lt_top ?_ ?_
+      have c001B : Measurable f := by
+        dsimp [f, semicirclePDF]; apply Measurable.comp; exact measurable_ofNNReal
+        have c0000 : Measurable fun (x : ℝ) ↦ semicirclePDFReal μ v x := by
+          apply measurable_semicirclePDFReal
+        have c0011 : Measurable fun (x : ℝ) ↦ Real.toNNReal (semicirclePDFReal μ v x) :=
+          measurable_real_toNNReal.comp c0000
+        simpa using c0011
+      exact c001B
+      dsimp [f, semicirclePDF]
+      have c010 := lintegral_semicirclePDFReal_eq_one (μ := μ) (v := v) h1
+      push_neg
+      rw [c010]; simp_all only [ne_eq, gt_iff_lt, ENNReal.one_ne_top, not_false_eq_true, g, f]
     have c02 := integral_withDensity_eq_integral_toReal_smul₀ (μ := ℙ) (f := f) c00 c01 g
     dsimp [f, g] at c02; dsimp [g]; rw [c02]
     set F := fun (x : ℝ) ↦ (semicirclePDF μ v x).toReal
@@ -1204,7 +1237,14 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by
       set I := Icc (μ - 2 * √v) (μ + 2 * √v)
       have c040 : Function.support H ⊆ I := by
-        have c0400 : H = (semicirclePDFReal μ v) * g := by sorry
+        have c0400 : H = (semicirclePDFReal μ v) * g := by
+          dsimp [H, f, semicirclePDF]
+          simp_all only [ne_eq, gt_iff_lt, toReal_semicirclePDF, g, f, F, H]
+          ext x : 1
+          simp_all only [Pi.mul_apply, mul_eq_mul_right_iff, ENNReal.toReal_ofReal_eq_iff,
+            pow_eq_zero_iff', ne_eq, mul_eq_zero, OfNat.ofNat_ne_zero, false_or]
+          apply Or.inl
+          apply ProbabilityTheory.semicirclePDFReal_nonneg
         rw [c0400]
         have c0401 := Function.support_mul' (f := (semicirclePDFReal μ v)) (g := g)
         have c0402 : Function.support (semicirclePDFReal μ v) ⊆ I := by
@@ -1220,7 +1260,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
         dsimp [Function.support] at c040
         intro x hx
         by_contra hx0
-        have : x ∈ {x | ¬H x = 0} := by simp_all only [ne_eq, gt_iff_lt,
+        have : x ∈ {x | ¬ H x = 0} := by simp_all only [ne_eq, gt_iff_lt,
         toReal_semicirclePDF, mul_eq_zero,pow_eq_zero_iff', OfNat.ofNat_ne_zero,
         false_or, not_or, not_and, Decidable.not_not, mem_Icc, tsub_le_iff_right,
         not_le, mem_setOf_eq, not_false_eq_true, implies_true, and_self, g, f, F, H, I]
@@ -1236,14 +1276,35 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
       have c047 : ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v),
       1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
       = ∫ (x : ℝ) in (μ - 2 * √v)..(μ + 2 * √v),
-      1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by sorry
+      1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by
+        set f := fun (x : ℝ) ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+        have c0470 := integral_Icc_eq_integral_Ioc
+          (X := ℝ) (f := f) (μ := ℙ) (x := μ - 2 * √v) (y := μ + 2 * √v)
+        dsimp [f]; dsimp [f] at c0470; rw [c0470]
+        have c0471A : μ - 2 * √v ≤ μ + 2 * √v := by
+          have c4351 : -2 * √v ≤ 2 * √v := by
+            rename_i f_1
+            simp_all only [ne_eq, gt_iff_lt, toReal_semicirclePDF, Function.support_mul,
+              mem_Icc, tsub_le_iff_right, not_and, not_le, mul_eq_zero, pow_eq_zero_iff',
+              OfNat.ofNat_ne_zero, false_or, implies_true, one_div, mul_inv_rev, forall_const,
+              neg_mul, neg_le_self_iff, Nat.ofNat_pos, mul_nonneg_iff_of_pos_left,
+              Real.sqrt_nonneg, g, f_1, F, H, I, f]
+          grind
+        have c0471 := intervalIntegral.integral_of_le
+          (f := f) (μ := ℙ) (a := μ - 2 * √v) (b := μ + 2 * √v) c0471A
+        rw [← c0471]
       rw [c047] at c044; rw [c044]; exact c044A
     rw [c04]
     set L := fun (x : ℝ) ↦ H (x + μ)
     have c05 := intervalIntegral.integral_comp_sub_right
       (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
-    dsimp [L] at c05
-    sorry
+    dsimp [L, H, f, semicirclePDF, semicirclePDFReal, g] at c05
+    have c06 : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2))).toReal
+      * (x - μ) ^ (2 * n) = ∫ (x : ℝ) in -2 * √↑v - μ..2 * √↑v - μ, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - x ^ 2))).toReal
+      * x ^ (2 * n) := by
+      simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using c05
+
+
 
 /-   have h1 : Continuous f := by apply Cont_semicirclePDFReal
   set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
