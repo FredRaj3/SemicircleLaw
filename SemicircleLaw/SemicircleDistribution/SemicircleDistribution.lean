@@ -1310,7 +1310,12 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     = ∫ (x : ℝ) in -2 * √↑v + μ..2 * √↑v + μ, (semicirclePDF μ v (x + μ)).toReal * x ^ (2 * n) := by
       simpa [two_mul, add_assoc, add_left_comm, add_comm, sub_eq_add_neg] using c06
     dsimp [semicirclePDF, semicirclePDFReal] at c06'
-    sorry
+    set K := fun (x : ℝ) ↦ (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x + 2 * μ - μ) ^ 2))).toReal * (x + μ) ^ (2 * n)
+    set K' := fun (x : ℝ) ↦ (1 / (2 * π * ↑v) * √(4 * ↑v - (x + 2 * μ - μ) ^ 2)) * (x + μ) ^ (2 * n)
+    have c06A : K = K' := by
+      apply funext
+      intro x
+
 
 /-  set L := fun (x : ℝ) ↦ H (x + μ)
     have c05 := intervalIntegral.integral_comp_sub_right
