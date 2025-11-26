@@ -1179,6 +1179,8 @@ lemma semicirclePDF_toReal (μ : ℝ) (v : ℝ≥0) (x : ℝ) (h₀ : 0 ≤ semi
   (ENNReal.ofReal (semicirclePDFReal μ v x)).toReal = semicirclePDFReal μ v x := by
   simpa [h₀] using ENNReal.toReal_ofReal h₀
 
+set_option maxHeartbeats 1000000 in
+
 lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v) = v ^ n * catalan n := by
   dsimp [centralMoment]; simp
@@ -1300,60 +1302,121 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
         rw [← c0471]
       rw [c047] at c044; rw [c044]; exact c044A
     rw [c04]
-    have c05 :  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v, 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
-    = 1 / (2 * π * ↑v) *  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v, √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by sorry
+    have c05 :  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v,
+    1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+    = 1 / (2 * π * ↑v) *  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v,
+    √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by sorry
     set L := fun (x : ℝ) ↦ H (x + μ)
     have c06 := intervalIntegral.integral_comp_add_right
       (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
     dsimp [L, H, f, g] at c06
-    have c06' : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, (semicirclePDF μ v (x + 2 * μ)).toReal * (x + μ) ^ (2 * n)
-    = ∫ (x : ℝ) in -2 * √↑v + μ..2 * √↑v + μ, (semicirclePDF μ v (x + μ)).toReal * x ^ (2 * n) := by
+    have c06' : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v,
+    (semicirclePDF μ v (x + 2 * μ)).toReal * (x + μ) ^ (2 * n)
+    = ∫ (x : ℝ) in -2 * √↑v + μ..2 * √↑v + μ,
+    (semicirclePDF μ v (x + μ)).toReal * x ^ (2 * n) := by
       simpa [two_mul, add_assoc, add_left_comm, add_comm, sub_eq_add_neg] using c06
     dsimp [semicirclePDF, semicirclePDFReal] at c06'
-    set K := fun (x : ℝ) ↦ (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x + 2 * μ - μ) ^ 2))).toReal * (x + μ) ^ (2 * n)
+    set K := fun (x : ℝ) ↦
+    (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x + 2 * μ - μ) ^ 2))).toReal * (x + μ) ^ (2 * n)
     set K' := fun (x : ℝ) ↦ (1 / (2 * π * ↑v) * √(4 * ↑v - (x + 2 * μ - μ) ^ 2)) * (x + μ) ^ (2 * n)
     have c06A : K = K' := by
-      apply funext
-      intro x
-
-
-/-  set L := fun (x : ℝ) ↦ H (x + μ)
-    have c05 := intervalIntegral.integral_comp_sub_right
-      (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
-    dsimp [L, H, f, semicirclePDF, semicirclePDFReal, g] at c05
-    have c06 : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2))).toReal
-      * (x - μ) ^ (2 * n) = ∫ (x : ℝ) in -2 * √↑v - μ..2 * √↑v - μ, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - x ^ 2))).toReal
-      * x ^ (2 * n) := by
-      simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using c05 -/
-
-
-/-   have h1 : Continuous f := by apply Cont_semicirclePDFReal
-  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
-  have h2 : IsCompact I := by simpa using isCompact_Icc
-  have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
-  have h4 : Function.support f ⊆ I := by apply support_semicirclePDF_inc
-  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3 -/
-
-/-       have c041 : Continuous H := by sorry
-      have c042 : IsCompact I := by simpa using isCompact_Icc
-      have c043 : IntegrableOn H I := by
-        simpa using (c041.continuousOn).integrableOn_compact c042 -/
-
-/-  set f := fun (x : ℝ) ↦ (semicirclePDF μ v x).toNNReal with hf
-    have c00 : Measurable fun (x : ℝ) ↦ (semicirclePDF μ v x) := by
-      set F := fun (x : ℝ) ↦ (semicirclePDF μ v x)
-      sorry
-    have c01 : Measurable f := by exact ENNReal.measurable_toNNReal.comp c00
-    have c02 := integral_withDensity_eq_integral_smul (f := f) (g := g) (μ := ℙ) c01 -/
+      apply funext; intro x
+      have c06A0 : x + 2 * μ - μ = x + μ := by ring
+      have c06A1 : 0 ≤ 1 / (2 * π * (v : ℝ)) *
+        √(4 * (v : ℝ) - (x + 2 * μ - μ) ^ 2) := by
+        have c06A10 : 0 ≤ 1 / (2 * π * (v : ℝ)) := by
+          have hden : 0 ≤ 2 * π * (v : ℝ) := by
+            have hπ : 0 ≤ (π : ℝ) := le_of_lt Real.pi_pos
+            have hv : 0 ≤ (v : ℝ) := by exact_mod_cast (show 0 ≤ v from v.property)
+            have h2 : 0 ≤ (2 : ℝ) := by norm_num
+            simpa [two_mul, mul_assoc, mul_comm, mul_left_comm]
+            using mul_nonneg (mul_nonneg h2 hπ) hv
+          exact div_nonneg (by norm_num) hden
+        have h2 : 0 ≤ √(4 * (v : ℝ) - (x + 2 * μ - μ) ^ 2) := Real.sqrt_nonneg _
+        exact mul_nonneg c06A10 h2
+      have h_toReal : (ENNReal.ofReal
+      (1 / (2 * π * (v : ℝ)) * √(4 * (v : ℝ) - (x + 2 * μ - μ) ^ 2))).toReal
+      = 1 / (2 * π * (v : ℝ)) * √(4 * (v : ℝ) - (x + 2 * μ - μ) ^ 2) := by
+        simpa using ENNReal.toReal_ofReal c06A1
+      unfold K K'; simp [c06A0]; left; positivity
+    have c06B : intervalIntegral K (-2 * √↑v) (2 * √↑v) ℙ
+    = intervalIntegral K' (-2 * √↑v) (2 * √↑v) ℙ := by
+      rw [c06A]
+    rw [c06B] at c06'
+    dsimp [K'] at c06'
+    rw [c05]
+    have c06C : ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v, √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+    = ∫ (x : ℝ) in -(2 * √↑v)..2 * √↑v, x ^ (2 * n) * √(4 * ↑v - x ^ 2) := by
+      set f := fun (x : ℝ) ↦ √(4 * ↑v - x ^ 2) * x ^ (2 * n)
+      have c06C0 := intervalIntegral.integral_comp_sub_right
+        (E := ℝ) (a := μ - 2 * √v) (b := μ + 2 * √v) (d := μ) (f := f)
+      dsimp [f] at c06C0
+      rw [c06C0]; grind
+    rw [c06C]; grind
+  rw [c0]
 
   /- Change of variable 2 (trigonometric substitution)-/
-  have c1 : 1 / (2 * π * v) * ∫ (x : ℝ) in (-2 * √v)..2 * √v, x ^ (2 * n) * √(4 * v - x ^ 2)
-    = v ^ (n / 2) * 1 / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ (2 * n) * √(4 - x ^ 2) := by sorry
-  have c2 : v ^ (n / 2) * 1 / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ (2 * n) * √(4 - x ^ 2)
-    = v ^ n * 2 ^ (2 * n + 1) / π *
-    (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * n)
-    - ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * n + 2)) := by sorry
-  rw [c0, c1, c2]
+  have c2 : 1 / (2 * π * ↑v) * ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, x ^ ((2 : ℝ) * n) * √(4 * ↑v - x ^ 2)
+  = v ^ (n : ℝ) / (2 * π) * ∫ (x : ℝ) in -2..2, x ^ ((2 : ℝ) * n) * √(4 - x ^ 2) := by
+    have c20A : 1 / √v ≠ 0 := by
+      refine one_div_ne_zero ?_
+      exact Real.sqrt_ne_zero'.mpr h2
+    set f := fun (x : ℝ) ↦ x ^ ((2 : ℝ) * n) * √(4 * ↑v - x ^ 2)
+    have c20 := intervalIntegral.integral_comp_div_sub
+      (E := ℝ) (a := -2) (b := 2) (c := 1 / √v) (d := 0) (f := f) c20A
+    dsimp [f] at c20
+    dsimp [f]
+    have c21 : -2 / (1 / √v) - 0 = -2 * √v := by grind
+    have c22 : 2 / (1 / √v) - 0 = 2 * √v := by grind
+    rw [c21, c22] at c20
+    have c20B : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, x ^ ((2 : ℝ) * n) * √(4 * ↑v - x ^ 2)
+    = √v * ∫ (x : ℝ) in -2..2,
+    (x / (1 / √↑v) - 0) ^ ((2 : ℝ) * n) * √(4 * ↑v - (x / (1 / √↑v) - 0) ^ 2) := by grind
+    rw [c20B, ← mul_assoc]
+    have c20C : 1 / (2 * π * v) * √v = 1 / √v * 1 / (2 * π) := by
+      sorry
+    rw [c20C]
+    set F := fun (x : ℝ) ↦ (x / (1 / √↑v) - 0) ^ ((2 : ℝ) * n) * √(4 * ↑v - (x / (1 / √↑v) - 0) ^ 2)
+    set F' := fun (x : ℝ) ↦ (v ^ (n : ℝ) *  √v) * x ^ ((2 : ℝ) * n) * √(4 - x ^ 2)
+    have c23 : F = F' := by
+      apply funext; intro x; unfold F F'; simp
+      have c230 : (x * √v) ^ ((2 : ℝ) * n) = x ^ ((2 : ℝ) * n) * v ^ (n : ℝ) := by
+        set y := √v
+        calc
+          (x * y) ^ ((2 : ℝ) * n) = x ^ ((2 : ℝ) * n) * y ^ ((2 : ℝ) * n) := by sorry
+                                _ = x ^ ((2 : ℝ) * n) * √v ^ ((2 : ℝ) * n) := by dsimp [y]
+                                _ = x ^ ((2 : ℝ) * n) * v ^ (n : ℝ) := by sorry
+      have c231 : √(4 * v - (x * √v) ^ 2) = √(4 - x ^ 2) * √v := by
+        have hv : 0 ≤ v := by exact_mod_cast v.property
+        have hx : (x * √v) ^ 2 = x ^ 2 * v := by
+          simp [pow_two, mul_comm, mul_left_comm, mul_assoc]
+        have h_eq : 4 * (v : ℝ) - (x * √v) ^ 2 = (4 - x ^ 2) * v := by
+          calc
+          4 * (v : ℝ) - (x * √(v : ℝ)) ^ 2
+          = 4 * (v : ℝ) - x ^ 2 * (v : ℝ) := by simp [hx]
+          _ = (4 - x ^ 2) * (v : ℝ) := by ring
+        have : √((4 - x ^ 2) * v) = √(4 - x ^ 2) * √v := by
+          set A := (4 - x ^ 2); set B := v; exact Real.sqrt_mul' A hv
+        rw [← this]; grind
+      rw [c230, c231]; sorry
+    rw [c23]; dsimp [F']
+    set A := v ^ (n : ℝ) * √v
+    have c24 : ∫ (x : ℝ) in -2..2, A * x ^ ((2 : ℝ) * n) * √(4 - x ^ 2)
+    = A * ∫ (x : ℝ) in -2..2, x ^ ((2 : ℝ) * ↑n) * √(4 - x ^ 2) := by
+      set f := fun (x : ℝ) ↦ x ^ ((2 : ℝ) * ↑n) * √(4 - x ^ 2)
+      have : ∫ (x : ℝ) in -2..2, (f x) * A ∂ℙ = (∫ (x : ℝ) in -2..2, f x ∂ℙ) * A:= by
+        simpa using (integral_smul_const (E := ℝ) (c := A) (f := f) (μ := ℙ))
+      have c240 : ∫ (x : ℝ) in -2..2, f x * A = ∫ (x : ℝ) in -2..2, A * x ^ ((2 : ℝ) * n) * √(4 - x ^ 2) := by
+        set F₁ := fun (x : ℝ) ↦ x ^ ((2 : ℝ) * n) * √(4 - x ^ 2) * A
+        set F₂ := fun (x : ℝ) ↦ A * x ^ ((2 : ℝ) * n) * √(4 - x ^ 2)
+        have : F₁ = F₂ := by grind
+        rw [this]
+      have c241 :  A * intervalIntegral f (-2) 2 ℙ = (∫ (x : ℝ) in -2..2, f x) * A := by grind
+      rw [← c240, c241]
+      exact this
+    have c25 : 1 / √v * 1 / (2 * π) * A = v ^ (n : ℝ) / (2 * π) := by grind
+    dsimp [A] at c24; dsimp [A] at c25; rw [c24, ← mul_assoc, c25]
+
   have c3 := integral_cos_pow_even n
   have c4 := integral_cos_pow_even (n + 1)
 
@@ -1454,6 +1517,39 @@ def G := fun (x : ℝ) ↦ x
 ---test commit
 
 end Scribbles
+
+section Alternatives
+
+/-  set L := fun (x : ℝ) ↦ H (x + μ)
+    have c05 := intervalIntegral.integral_comp_sub_right
+      (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
+    dsimp [L, H, f, semicirclePDF, semicirclePDFReal, g] at c05
+    have c06 : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2))).toReal
+      * (x - μ) ^ (2 * n) = ∫ (x : ℝ) in -2 * √↑v - μ..2 * √↑v - μ, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - x ^ 2))).toReal
+      * x ^ (2 * n) := by
+      simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using c05 -/
+
+
+/-   have h1 : Continuous f := by apply Cont_semicirclePDFReal
+  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
+  have h2 : IsCompact I := by simpa using isCompact_Icc
+  have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
+  have h4 : Function.support f ⊆ I := by apply support_semicirclePDF_inc
+  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3 -/
+
+/-       have c041 : Continuous H := by sorry
+      have c042 : IsCompact I := by simpa using isCompact_Icc
+      have c043 : IntegrableOn H I := by
+        simpa using (c041.continuousOn).integrableOn_compact c042 -/
+
+/-  set f := fun (x : ℝ) ↦ (semicirclePDF μ v x).toNNReal with hf
+    have c00 : Measurable fun (x : ℝ) ↦ (semicirclePDF μ v x) := by
+      set F := fun (x : ℝ) ↦ (semicirclePDF μ v x)
+      sorry
+    have c01 : Measurable f := by exact ENNReal.measurable_toNNReal.comp c00
+    have c02 := integral_withDensity_eq_integral_smul (f := f) (g := g) (μ := ℙ) c01 -/
+
+end Alternatives
 
 end SemicircleDistribution
 
