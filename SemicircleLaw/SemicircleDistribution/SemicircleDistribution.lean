@@ -1174,6 +1174,11 @@ lemma measurable_ofNNReal : Measurable (ENNReal.ofNNReal) := by
   have h3 : Measurable fun (x : ℝ≥0) ↦ ENNReal.ofReal (x : ℝ) := h2.comp h1
   simpa [ENNReal.ofReal_coe_nnreal] using h3
 
+@[simp]
+lemma semicirclePDF_toReal (μ : ℝ) (v : ℝ≥0) (x : ℝ) (h₀ : 0 ≤ semicirclePDFReal μ v x) :
+  (ENNReal.ofReal (semicirclePDFReal μ v x)).toReal = semicirclePDFReal μ v x := by
+  simpa [h₀] using ENNReal.toReal_ofReal h₀
+
 lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v) = v ^ n * catalan n := by
   dsimp [centralMoment]; simp
@@ -1295,15 +1300,26 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
         rw [← c0471]
       rw [c047] at c044; rw [c044]; exact c044A
     rw [c04]
+    have c05 :  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v, 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+    = 1 / (2 * π * ↑v) *  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v, √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by sorry
     set L := fun (x : ℝ) ↦ H (x + μ)
+    have c06 := intervalIntegral.integral_comp_add_right
+      (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
+    dsimp [L, H, f, g] at c06
+    have c06' : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, (semicirclePDF μ v (x + 2 * μ)).toReal * (x + μ) ^ (2 * n)
+    = ∫ (x : ℝ) in -2 * √↑v + μ..2 * √↑v + μ, (semicirclePDF μ v (x + μ)).toReal * x ^ (2 * n) := by
+      simpa [two_mul, add_assoc, add_left_comm, add_comm, sub_eq_add_neg] using c06
+    dsimp [semicirclePDF, semicirclePDFReal] at c06'
+    sorry
+
+/-  set L := fun (x : ℝ) ↦ H (x + μ)
     have c05 := intervalIntegral.integral_comp_sub_right
       (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
     dsimp [L, H, f, semicirclePDF, semicirclePDFReal, g] at c05
     have c06 : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2))).toReal
       * (x - μ) ^ (2 * n) = ∫ (x : ℝ) in -2 * √↑v - μ..2 * √↑v - μ, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - x ^ 2))).toReal
       * x ^ (2 * n) := by
-      simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using c05
-
+      simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using c05 -/
 
 
 /-   have h1 : Continuous f := by apply Cont_semicirclePDFReal
