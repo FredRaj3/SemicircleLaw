@@ -324,7 +324,7 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
             have c436AY : Y = |Y| := by
               simp [Y]
             rw [c436AY] at this; exact this
-          have c436A32 : (√v)^2 = v := by simpa using sq_sqrt c436A1
+          have c436A32 : (√v) ^ 2 = v := by exact Real.sq_sqrt c436A1
           have c436A33 : 4 * v ≤ (a - μ) ^ 2 := by
             have c436A331 : (2 * √v) ^ 2 = 4 * v := by grind
             have c436A332 : |a - μ| ^ 2 = (a - μ) ^ 2 := by
@@ -926,101 +926,6 @@ lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     = v ^ n * catalan n := by
   sorry
 
-/- Proof step 1 -/
-/- The proof should be shortened with the calc tactic. -/
-
-lemma change_of_variable_1 (t : ℝ) (ht : 0 < t) (k : ℕ) :
-  1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
-  = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := by
-  have c0 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
-    = 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
-    have c01 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
-      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2 * t / t) := by grind
-    have c02 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2 * t / t)
-      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t) := by grind
-    have c03 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t)
-      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t) := by
-      have c031 : ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t)
-        = ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t) := by
-        apply intervalIntegral.integral_congr
-        intro x hx
-        dsimp
-        sorry
-      rw [c031]
-    have c04 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t)
-      = 1 / (2 * π * t) * √t * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
-      set f := fun (y : ℝ) ↦ y ^ k * √(4 - y ^ 2 / t)
-      set g := fun (y : ℝ) ↦ y ^ k * (√(4 - y ^ 2 / t) * √t)
-      have c041 : ∀ (y : ℝ), √t * f y = g y := by grind
-      set F := fun (y : ℝ) ↦ √t * f y
-      have c042 : F = g := by grind
-      rw [← c042]
-      dsimp [F]
-      have c043 := intervalIntegral.integral_const_mul
-        (a := -2 * √t) (b := 2 * √t) (f := f) (r := √t) (μ := ℙ)
-      rw [c043]
-      grind
-    have c05 : 1 / (2 * π * t) * √t * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
-      = 1 / (2 * π * √t) * ∫ (y : ℝ) in -2 * √t..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
-      set A := ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
-      have c051 : 1 / (2 * π * √t) = 1 / (2 * π * t) * √t := by
-        set B := 1 / 2 * π
-        have c0511 : 1 / √t = 1 / t * √t := by
-          have c05111 := Real.sqrt_div_self (x := t)
-          grind
-        have c0512 : B * 1 / √t = B * (1 / t * √t) := by grind
-        grind
-      rw [c051]
-    rw [c01, c02, c03, c04, c05]
-  have c1 : 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
-    = 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t := by
-    set f := fun (y : ℝ) ↦ y ^ k * √(4 - y ^ 2 / t)
-    have c11 := intervalIntegral.inv_mul_integral_comp_div_sub
-      (a := -2 * √t) (b := 2 * √t) (c := √t) (d := 0) (f := f)
-    sorry
-  have c2 : 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t
-    = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := by
-    have c21 : ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t
-      = ∫ (x : ℝ) in (-2)..2, (t ^ (k / 2) * √t) * (x ^ k * √(4 - x ^ 2)) := by grind
-    rw [c21]
-    set f := fun (x : ℝ) ↦ x ^ k * √(4 - x ^ 2) with hf
-    set A := t ^ (k / 2) * √t
-    have c22 := intervalIntegral.integral_const_mul
-      (a := -2) (b := 2) (f := f) (r := A) (μ := ℙ)
-    set B := 1 / (2 * π * √t)
-    have c23 : B * ∫ (x : ℝ) in -2..2, A * f x = B * A * ∫ (x : ℝ) in -2..2, f x := by grind
-    rw [c23]
-    have c24 : B * A = t ^ (k / 2) / (2 * π) := by
-      dsimp [A, B]
-      sorry
-    rw [c24]
-  calc
-    1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
-    = 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := c0
-  _ = 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t := c1
-  _ = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := c2
-
-/- set f := fun (x : ℝ) ↦ x ^ k * √((4 - x ^ 2 / t) * t)
-        set g := fun (x : ℝ) ↦ x ^ k * (√(4 - x ^ 2 / t) * √t)
-        have c0311 : ∀ (x : ℝ), f x = g x := by  -/
-
-/- Proof step 2 -/
-
-lemma change_of_variable_2 (k : ℕ) : ∫ (x : ℝ) in (-2)..2, x ^ (2 * k) / (2 * π) * √(4 - x ^ 2)
-  = -2 ^ (2 * k + 1) / π *
-  (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) - ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k + 2)) := by
-  calc
-    ∫ (x : ℝ) in (-2)..2, x ^ (2 * k) / (2 * π) * √(4 - x ^ 2)
-      = ∫ (x : ℝ) in 0..π, (2 * Real.cos (x)) ^ (2 * k) / (2 * π)
-        * √(4 - (2 * Real.cos x) ^ 2) * (-2 * Real.sin x) := by sorry
-    _ = -2 ^ (2 * k + 1) / π *
-        ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) * (Real.sin x) ^ 2 := by sorry
-    _ = -2 ^ (2 * k + 1) / π * ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k)
-        * (1 - (Real.cos x) ^ 2):= by sorry /- Real.sin_sq -/
-    _ = -2 ^ (2 * k + 1) / π *
-        (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) -
-        ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k + 2)):= by sorry
-
 /- Proof step 3 -/
 
 lemma test3 (m : ℕ) :
@@ -1084,45 +989,6 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     rw [c5]; dsimp [B] at ih; rw [ih]; dsimp [w] at c6; rw [c6]
     grind
 
-/- #check integral_sin_pow_even
-#check integral_sin_pow
-#check integral_cos_pow
-#check integral_cos_pow_aux -/
-
-/- Proof step 4 -/
-
-/- lemma catalan_eq_recur (n : ℕ) : catalan n
-  =  ∏ k ∈ Finset.range n, ((2 * k + 1) : ℝ) / (2 * (k + 1)) := by
-  have c0 := catalan_eq_centralBinom_div n
-  rw [c0]; dsimp [Nat.centralBinom]
-  induction n
-  case zero =>
-    simp
-  case succ m ih =>
-    sorry -/
-
-/- lemma catalan_test (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan n) := by
-  have c0A := catalan_eq_centralBinom_div (n + 1)
-  have c0B := catalan_eq_centralBinom_div (n + 2)
-  have c0C := catalan_eq_centralBinom_div (n)
-  have c1 : (n + 2) * (catalan (n + 1)) = (n + 1).centralBinom := by
-    exact succ_mul_catalan_eq_centralBinom (n + 1)
-  induction n
-  case zero => simp
-  case succ n ih =>
-    have c2 := Nat.succ_mul_centralBinom_succ (n + 1)
-    ring_nf
-    set A := (2 + n).centralBinom
-    set B := (1 + n).centralBinom
-    have c3 : catalan (n + 2) = catalan (2 + n) := by grind
-    have c4 : catalan (n + 1) = catalan (1 + n) := by grind
-    ring_nf at c0A
-    rw [c0A]
-    rw [← c4]
-    rw [c0C]
-    ring_nf
-    sorry -/
-
 noncomputable
 def P := fun (n : ℕ) ↦ ∏ i ∈ Finset.range n, ↑((2 * i + 1) / (2 * (i + 1)))
 
@@ -1179,7 +1045,7 @@ lemma semicirclePDF_toReal (μ : ℝ) (v : ℝ≥0) (x : ℝ) (h₀ : 0 ≤ semi
   (ENNReal.ofReal (semicirclePDFReal μ v x)).toReal = semicirclePDFReal μ v x := by
   simpa [h₀] using ENNReal.toReal_ofReal h₀
 
-set_option maxHeartbeats 1000000 in
+set_option maxHeartbeats 2000000 in
 
 lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) (2 * n) (semicircleReal μ v) = v ^ n * catalan n := by
@@ -1190,9 +1056,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
   h1 : v = 0
   rw [semicircleReal]; subst h1; simp; cases n <;> simp [catalan_zero]
   have h2 : v > 0 := by
-    push_neg at h1
-    simp_all only [ne_eq, gt_iff_lt]
-    apply lt_of_le_of_ne'
+    push_neg at h1; simp_all only [ne_eq, gt_iff_lt]; apply lt_of_le_of_ne'
     · simp_all only [zero_le]
     · simp_all only [ne_eq, not_false_eq_true]
 
@@ -1302,10 +1166,18 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
         rw [← c0471]
       rw [c047] at c044; rw [c044]; exact c044A
     rw [c04]
-    have c05 :  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v,
-    1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
-    = 1 / (2 * π * ↑v) *  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v,
-    √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by sorry
+    have c05 :  ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √v,
+    1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+    = 1 / (2 * π * ↑v) *  ∫ (x : ℝ) in μ - 2 * √v..μ + 2 * √v,
+    √(4 * v - (x - μ) ^ 2) * (x - μ) ^ (2 * n) := by
+      set f := fun (x : ℝ) ↦ √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+      have c050 := intervalIntegral.integral_const_mul
+        (𝕜 := ℝ) (a := μ - 2 * √v) (b := μ + 2 * √v) (μ := ℙ) (f := f) (r := 1 / (2 * π * v))
+      dsimp [f] at c050; dsimp [f]; rw [← c050]
+      set F₁ := fun (x : ℝ) ↦ 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n)
+      set F₂ := fun (x : ℝ) ↦ 1 / (2 * π * ↑v) * (√(4 * ↑v - (x - μ) ^ 2) * (x - μ) ^ (2 * n))
+      have c051 : F₁ = F₂ := by grind
+      rw [c051]
     set L := fun (x : ℝ) ↦ H (x + μ)
     have c06 := intervalIntegral.integral_comp_add_right
       (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
@@ -1356,12 +1228,12 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
   rw [c0]
 
   /- Change of variable 2 (trigonometric substitution)-/
-  have c2 : 1 / (2 * π * ↑v) * ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, x ^ ((2 : ℝ) * n) * √(4 * ↑v - x ^ 2)
-  = v ^ (n : ℝ) / (2 * π) * ∫ (x : ℝ) in -2..2, x ^ ((2 : ℝ) * n) * √(4 - x ^ 2) := by
+  have c2 : 1 / (2 * π * ↑v) * ∫ (x : ℝ) in -2 * √↑v..2 * √v, x ^ (2 * n) * √(4 * v - x ^ 2)
+  = v ^ (n : ℕ) / (2 * π) * ∫ (x : ℝ) in -2..2, x ^ (2 * n) * √(4 - x ^ 2) := by
     have c20A : 1 / √v ≠ 0 := by
       refine one_div_ne_zero ?_
       exact Real.sqrt_ne_zero'.mpr h2
-    set f := fun (x : ℝ) ↦ x ^ ((2 : ℝ) * n) * √(4 * ↑v - x ^ 2)
+    set f := fun (x : ℝ) ↦ x ^ (2 * n) * √(4 * v - x ^ 2)
     have c20 := intervalIntegral.integral_comp_div_sub
       (E := ℝ) (a := -2) (b := 2) (c := 1 / √v) (d := 0) (f := f) c20A
     dsimp [f] at c20
@@ -1369,64 +1241,204 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     have c21 : -2 / (1 / √v) - 0 = -2 * √v := by grind
     have c22 : 2 / (1 / √v) - 0 = 2 * √v := by grind
     rw [c21, c22] at c20
-    have c20B : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, x ^ ((2 : ℝ) * n) * √(4 * ↑v - x ^ 2)
+    have c20B : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, x ^ (2 * n) * √(4 * v - x ^ 2)
     = √v * ∫ (x : ℝ) in -2..2,
-    (x / (1 / √↑v) - 0) ^ ((2 : ℝ) * n) * √(4 * ↑v - (x / (1 / √↑v) - 0) ^ 2) := by grind
+    (x / (1 / √v) - 0) ^ (2 * n) * √(4 * v - (x / (1 / √v) - 0) ^ 2) := by grind
     rw [c20B, ← mul_assoc]
     have c20C : 1 / (2 * π * v) * √v = 1 / √v * 1 / (2 * π) := by
-      sorry
+      have c20C0 : √v / v = 1 / √v := by exact Real.sqrt_div_self'
+      calc
+        1 / (2 * π * v) * √v = 1 / (2 * π) * 1 / v * √v := by grind
+                           _ = 1 / (2 * π) * (√v / v) := by grind
+                           _ = 1 / (2 * π) * (1 / √v) := by rw [c20C0]
+                           _ = (1 / √v) * 1 / (2 * π) := by grind
     rw [c20C]
-    set F := fun (x : ℝ) ↦ (x / (1 / √↑v) - 0) ^ ((2 : ℝ) * n) * √(4 * ↑v - (x / (1 / √↑v) - 0) ^ 2)
-    set F' := fun (x : ℝ) ↦ (v ^ (n : ℝ) *  √v) * x ^ ((2 : ℝ) * n) * √(4 - x ^ 2)
+    set F := fun (x : ℝ) ↦ (x / (1 / √↑v) - 0) ^ (2 * n) * √(4 * ↑v - (x / (1 / √↑v) - 0) ^ 2)
+    set F' := fun (x : ℝ) ↦ (v ^ n *  √v) * x ^ (2 * n) * √(4 - x ^ 2)
     have c23 : F = F' := by
       apply funext; intro x; unfold F F'; simp
-      have c230 : (x * √v) ^ ((2 : ℝ) * n) = x ^ ((2 : ℝ) * n) * v ^ (n : ℝ) := by
+      have c230 : (x * √v) ^ (2 * n) = x ^ (2 * n) * v ^ n := by
         set y := √v
+        have c2300 : (x * y) ^ 2 = x ^ 2 * y ^ 2 := by grind
+        have c2301 : (x ^ 2) ^ n = x ^ (2 * n) := by exact Eq.symm (pow_mul x 2 n)
+        have c2302 : (y ^ 2) ^ n = y ^ (2 * n) := by exact Eq.symm (pow_mul y 2 n)
+        have c2303 : √v ^ (2 * n) = v ^ n := by
+          simp_all only [gt_iff_lt, one_div, ne_eq, inv_eq_zero,
+          NNReal.zero_le_coe, Real.sqrt_eq_zero, NNReal.coe_eq_zero, not_false_eq_true,
+          mul_inv_rev, neg_mul, div_inv_eq_mul, sub_zero, mul_one, mul_inv_cancel_left₀,
+          Real.sq_sqrt, y, f, F]
         calc
-          (x * y) ^ ((2 : ℝ) * n) = x ^ ((2 : ℝ) * n) * y ^ ((2 : ℝ) * n) := by sorry
-                                _ = x ^ ((2 : ℝ) * n) * √v ^ ((2 : ℝ) * n) := by dsimp [y]
-                                _ = x ^ ((2 : ℝ) * n) * v ^ (n : ℝ) := by sorry
+          (x * y) ^ (2 * n) = ((x * y) ^ 2) ^ n := by exact pow_mul (x * y) 2 n
+                          _ = (x ^ 2 * y ^ 2) ^ n := by rw [c2300]
+                          _ = (x ^ 2) ^ n * (y ^ 2) ^ n := by exact mul_pow (x ^ 2) (y ^ 2) n
+                          _ = x ^ (2 * n) * y ^ (2 * n) := by rw [c2301, c2302]
+                          _ = x ^ (2 * n) * √v ^ (2 * n) := by dsimp [y]
+                          _ = x ^ (2 * n) * v ^ n := by rw [c2303]
       have c231 : √(4 * v - (x * √v) ^ 2) = √(4 - x ^ 2) * √v := by
         have hv : 0 ≤ v := by exact_mod_cast v.property
         have hx : (x * √v) ^ 2 = x ^ 2 * v := by
           simp [pow_two, mul_comm, mul_left_comm, mul_assoc]
-        have h_eq : 4 * (v : ℝ) - (x * √v) ^ 2 = (4 - x ^ 2) * v := by
+        have h_eq : 4 * v - (x * √v) ^ 2 = (4 - x ^ 2) * v := by
           calc
-          4 * (v : ℝ) - (x * √(v : ℝ)) ^ 2
-          = 4 * (v : ℝ) - x ^ 2 * (v : ℝ) := by simp [hx]
-          _ = (4 - x ^ 2) * (v : ℝ) := by ring
+          4 * v - (x * √v) ^ 2 = 4 * v - x ^ 2 * v := by simp [hx]
+                                  _ = (4 - x ^ 2) * v := by ring
         have : √((4 - x ^ 2) * v) = √(4 - x ^ 2) * √v := by
           set A := (4 - x ^ 2); set B := v; exact Real.sqrt_mul' A hv
         rw [← this]; grind
-      rw [c230, c231]; sorry
+      rw [c230, c231]; grind
     rw [c23]; dsimp [F']
-    set A := v ^ (n : ℝ) * √v
-    have c24 : ∫ (x : ℝ) in -2..2, A * x ^ ((2 : ℝ) * n) * √(4 - x ^ 2)
-    = A * ∫ (x : ℝ) in -2..2, x ^ ((2 : ℝ) * ↑n) * √(4 - x ^ 2) := by
-      set f := fun (x : ℝ) ↦ x ^ ((2 : ℝ) * ↑n) * √(4 - x ^ 2)
+    set A := v ^ (n : ℕ) * √v
+    have c24 : ∫ (x : ℝ) in -2..2, A * x ^ (2 * n) * √(4 - x ^ 2)
+    = A * ∫ (x : ℝ) in -2..2, x ^ (2 * n) * √(4 - x ^ 2) := by
+      set f := fun (x : ℝ) ↦ x ^ (2 * n) * √(4 - x ^ 2)
       have : ∫ (x : ℝ) in -2..2, (f x) * A ∂ℙ = (∫ (x : ℝ) in -2..2, f x ∂ℙ) * A:= by
-        simpa using (integral_smul_const (E := ℝ) (c := A) (f := f) (μ := ℙ))
-      have c240 : ∫ (x : ℝ) in -2..2, f x * A = ∫ (x : ℝ) in -2..2, A * x ^ ((2 : ℝ) * n) * √(4 - x ^ 2) := by
-        set F₁ := fun (x : ℝ) ↦ x ^ ((2 : ℝ) * n) * √(4 - x ^ 2) * A
-        set F₂ := fun (x : ℝ) ↦ A * x ^ ((2 : ℝ) * n) * √(4 - x ^ 2)
+        apply intervalIntegral.integral_mul_const
+      have c240 : ∫ (x : ℝ) in -2..2, f x * A = ∫ (x : ℝ) in -2..2, A * x ^ (2 * n) * √(4 - x ^ 2) := by
+        set F₁ := fun (x : ℝ) ↦ x ^ (2 * n) * √(4 - x ^ 2) * A
+        set F₂ := fun (x : ℝ) ↦ A * x ^ (2 * n) * √(4 - x ^ 2)
         have : F₁ = F₂ := by grind
         rw [this]
       have c241 :  A * intervalIntegral f (-2) 2 ℙ = (∫ (x : ℝ) in -2..2, f x) * A := by grind
       rw [← c240, c241]
       exact this
-    have c25 : 1 / √v * 1 / (2 * π) * A = v ^ (n : ℝ) / (2 * π) := by grind
+    have c25 : 1 / √v * 1 / (2 * π) * A = v ^ (n : ℕ) / (2 * π) := by grind
     dsimp [A] at c24; dsimp [A] at c25; rw [c24, ← mul_assoc, c25]
-
-  have c3 := integral_cos_pow_even n
-  have c4 := integral_cos_pow_even (n + 1)
+  rw [c2]; have c3 := integral_cos_pow_even n; have c4 := integral_cos_pow_even (n + 1)
+  have c5 : ∫ (x : ℝ) in -2..2, x ^ (2 * n) * √(4 - x ^ 2) = 2 ^ (2 * n + 2) *
+  (∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2)) := by
+    have c50 : ∫ (x : ℝ) in -2..2, x ^ (2 * n) * √(4 - x ^ 2)
+    = 2 ^ (2 * n + 2) * ∫ (u : ℝ) in -1..1, u ^ (2 * n) * √(1 - u ^ 2) := by
+      set f := fun (x : ℝ) ↦ x ^ (2 * n) * √(4 - x ^ 2)
+      have c5000A : (2 : ℝ) ≠ 0 := by grind
+      have c5000 := intervalIntegral.integral_comp_mul_left (f := f) (c := (2 : ℝ)) (a := -1) (b := 1) c5000A
+      dsimp [f] at c5000; simp at c5000
+      have c5001 : ∫ (x : ℝ) in -1..1, (2 * x) ^ (2 * n) * √(4 - (2 * x) ^ 2)
+      = ∫ (x : ℝ) in -1..1, 2 ^ (2 * n + 1) * x ^ (2 * n) * √(1 - x ^ 2) := by
+        set F₁ := fun (x : ℝ) ↦ (2 * x) ^ (2 * n) * √(4 - (2 * x) ^ 2)
+        set F₂ := fun (x : ℝ) ↦ 2 ^ (2 * n + 1) * x ^ (2 * n) * √(1 - x ^ 2)
+        have c50010 : F₁ = F₂ := by
+          apply funext
+          intro x
+          unfold F₁ F₂
+          have c500100 : (2 * x) ^ (2 * n) = 2 ^ (2 * n) * x ^ (2 * n) := by exact mul_pow 2 x (2 * n)
+          have c500101 : √(4 - (2 * x) ^ 2) = 2 * √(1 - x ^ 2) := by
+            have c5001010 : 4 - (2 * x) ^ 2 = 2 ^ 2 * (1 - x ^ 2) := by
+               calc
+                4 - (2 * x) ^ 2 = 2 ^ 2 - (2 * x) ^ 2 := by norm_num
+                              _ = 2 ^ 2 - 2 ^ 2 * x ^ 2 := by grind
+                              _ = 2 ^ 2 * (1 - x ^ 2) := by grind
+            rw [c5001010]; simp_all only [gt_iff_lt, one_div, mul_inv_rev, neg_mul, Finset.prod_div_distrib,
+                ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, Nat.ofNat_nonneg, pow_succ_nonneg, Real.sqrt_mul,
+                Real.sqrt_sq, f, F₁]
+          rw [c500100, c500101]; grind
+        rw [c50010]
+      have c5002 : ∫ (x : ℝ) in -1..1, 2 ^ (2 * n + 1) * x ^ (2 * n) * √(1 - x ^ 2)
+      = 2 ^ (2 * n + 1) * ∫ (x : ℝ) in -1..1, x ^ (2 * n) * √(1 - x ^ 2) := by
+        set F := fun (x : ℝ) ↦ x ^ (2 * n) * √(1 - x ^ 2); set c := (2 ^ (2 * n + 1) : ℝ)
+        have := intervalIntegral.integral_const_mul (f := F) (r := c) (𝕜 := ℝ) (μ := ℙ) (a:= -1) (b := 1)
+        dsimp [F, c] at this; dsimp [F, c]; rw [← this]
+        set F₁ := fun (x : ℝ) ↦ 2 ^ (2 * n + 1) * x ^ (2 * n) * √(1 - x ^ 2)
+        set F₂ := fun (x : ℝ) ↦ 2 ^ (2 * n + 1) * (x ^ (2 * n) * √(1 - x ^ 2))
+        have : F₁ = F₂ := by grind
+        rw [this]
+      have c5003 : ∫ (x : ℝ) in -2..2, x ^ (2 * n) * √(4 - x ^ 2)
+      = 2 * ∫ (x : ℝ) in -1..1, (2 * x) ^ (2 * n) * √(4 - (2 * x) ^ 2) := by grind
+      dsimp [f]
+      rw [c5003, c5001, c5002]; grind
+    rw [c50]
+    have c51 : ∫ (x : ℝ) in -1..1, x ^ (2 * n) * √(1 - x ^ 2)
+    = (∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n)) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2) := by
+      have c510 : ∫ (x : ℝ) in -1..1, x ^ (2 * n) * √(1 - x ^ 2)
+      = ∫ (x : ℝ) in 0..π, (Real.sin x) ^ 2 * (Real.cos x) ^ (2 * n) := by
+        set g := fun (x : ℝ) ↦ x ^ (2 * n) * √(1 - x ^ 2)
+        set f := fun (x : ℝ) ↦ Real.cos x
+        have c5100A : ∀ x ∈ uIcc 0 π, HasDerivAt f ((deriv f) x) x := by
+          intro x
+          have c5100A0 : (deriv f) x = -Real.sin x := by dsimp [f]; exact Real.deriv_cos
+          have c5100A1 := Real.hasDerivAt_cos x
+          dsimp [f]; exact fun a ↦ HasDerivAt.congr_deriv c5100A1 (id (Eq.symm c5100A0))
+        have c5100B : ContinuousOn (deriv f) (uIcc 0 π) := by
+          have c5100B0 : (deriv f) = fun (x : ℝ) ↦ -Real.sin x := by
+            apply funext; intro x; dsimp [f]; exact Real.deriv_cos
+          have c5100B1 : Continuous (fun (x : ℝ) ↦ -Real.sin x) := by continuity
+          have c5100B2 : ContinuousOn (fun (x : ℝ) ↦ -Real.sin x) (uIcc 0 π):= by
+            exact Continuous.continuousOn c5100B1
+          exact (continuousOn_congr fun ⦃x⦄ a ↦ congrFun (id (Eq.symm c5100B0)) x).mp c5100B2
+        have c5100C : Continuous g := by continuity
+        have c5100 : ∫ (x : ℝ) in 0..π, (g ∘ f) x * (deriv f) x = ∫ (x : ℝ) in f 0..f π, g x := by
+          apply intervalIntegral.integral_comp_mul_deriv c5100A c5100B c5100C
+        dsimp [f, g] at c5100
+        simp at c5100
+        set F₁ := fun (x : ℝ) ↦ Real.cos x ^ (2 * n) * √(1 - Real.cos x ^ 2) * Real.sin x
+        set F₂ := fun (x : ℝ) ↦ Real.sin x ^ 2 * Real.cos x ^ (2 * n)
+        have c5101 : ∀ x ∈ uIcc 0 π, F₁ x = F₂ x := by
+          intro x hx; unfold F₁ F₂
+          have c51010 : √(1 - Real.cos x ^ 2) = |Real.sin x| := by
+            exact Eq.symm (Real.abs_sin_eq_sqrt_one_sub_cos_sq x)
+          have c51011 : |Real.sin x| * Real.sin x = (Real.sin x) ^ 2 := by
+            have : Real.sin x ≥ 0 := by
+              refine Real.sin_nonneg_of_mem_Icc ?_
+              have : uIcc 0 π = Icc 0 π := by refine uIcc_of_le ?_; exact Real.pi_nonneg
+              rw [← this]; exact hx
+            have c510110 : |Real.sin x| = Real.sin x := by exact abs_of_nonneg this
+            rw [c510110]; exact Eq.symm (pow_two (Real.sin x))
+          rw [c51010, ← c51011]; grind
+        have c5101A : ∫ (x : ℝ) in 0..π, F₁ x = ∫ (x : ℝ) in 0..π, F₂ x := by
+          apply intervalIntegral.integral_congr; dsimp [EqOn]; exact c5101
+        dsimp [F₁, F₂] at c5101A; dsimp [g, F₂]; rw [← c5101A]
+        have c5102 : intervalIntegral F₂ 0 π ℙ = - ∫ (x : ℝ) in 1..-1, x ^ (2 * n) * √(1 - x ^ 2) := by grind
+        dsimp [F₂] at c5102; dsimp [F₁] at c5100
+        have c5103 : ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) * √(1 - Real.cos x ^ 2) * Real.sin x =
+        - ∫ (x : ℝ) in 1..-1, x ^ (2 * n) * √(1 - x ^ 2) := by grind
+        rw [c5103]; exact intervalIntegral.integral_symm 1 (-1)
+      have c511 : ∫ (x : ℝ) in 0..π, (Real.sin x) ^ 2 * (Real.cos x) ^ (2 * n)
+      = ∫ (x : ℝ) in 0..π, (1 - (Real.cos x) ^ 2) * (Real.cos x) ^ (2 * n) := by
+        set G₁ := fun (x : ℝ) ↦ Real.sin x ^ 2
+        set G₂ := fun (x : ℝ) ↦ (1 - Real.cos x ^ 2)
+        have : G₁ = G₂ := by apply funext; intro x; exact Real.sin_sq x
+        set F := fun (x : ℝ) ↦ Real.cos x ^ (2 * n)
+        set F₁ := fun (x : ℝ) ↦ G₁ x * F x
+        set F₂ := fun (x : ℝ) ↦ G₂ x * F x
+        have : F₁ = F₂ := by
+          unfold F₁ F₂
+          exact Filter.eventuallyEq_top.mp fun x ↦ congrFun (congrArg HMul.hMul (congrFun this x)) (F x)
+        rw [this]
+      have c512 : ∫ (x : ℝ) in 0..π, (1 - (Real.cos x) ^ 2) * (Real.cos x) ^ (2 * n)
+      = (∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n)) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2) := by
+        set F₁ := fun (x : ℝ) ↦ (1 - Real.cos x ^ 2) * Real.cos x ^ (2 * n)
+        set F₂ := fun (x : ℝ) ↦ Real.cos x ^ (2 * n) - Real.cos x ^ (2 * n + 2)
+        have c5120 : F₁ = F₂ := by unfold F₁ F₂; grind
+        have c5121 : ∫ (x : ℝ) in 0..π, F₁ x = ∫ (x : ℝ) in 0..π, F₂ x := by rw [c5120]
+        dsimp [F₁, F₂] at c5121; dsimp [F₁]; rw [c5121]
+        set L₁ := fun (x : ℝ) ↦ Real.cos x ^ (2 * n)
+        set L₂ := fun (x : ℝ) ↦ Real.cos x ^ (2 * n + 2)
+        set L := fun (x : ℝ) ↦ L₁ x - L₂ x
+        have c5122 : ∫ (x : ℝ) in 0..π, L₁ x + (-L₂) x = (∫ (x : ℝ) in 0..π, L₁ x) + ∫ (x : ℝ) in 0..π, - L₂ x := by
+          have hA : IntervalIntegrable (L₁) ℙ 0 π := by
+            dsimp [L₁]; apply ((Real.continuous_cos.pow (2 * n))).intervalIntegrable
+          have hB : IntervalIntegrable (-L₂) ℙ 0 π := by
+            set L₂' := fun (x : ℝ) ↦ Real.cos x ^ (2 * n + 2)
+            have hB0: IntervalIntegrable (L₂') ℙ 0 π := by
+              dsimp [L₂']; apply ((Real.continuous_cos.pow (2 * n + 2))).intervalIntegrable
+            have hB1 := hB0.neg
+            exact hB1
+          apply intervalIntegral.integral_add hA hB
+        have c5123 : ∫ (x : ℝ) in 0..π, - L₂ x = - ∫ (x : ℝ) in 0..π, L₂ x := by
+          exact intervalIntegral.integral_neg
+        dsimp [L, L₁, L₂]; dsimp [L₁, L₂] at c5122; dsimp [L, L₁, L₂] at c5121; dsimp [L₂] at c5123
+        set F₁ := fun (x : ℝ) ↦ Real.cos x ^ (2 * n) + -Real.cos x ^ (2 * n + 2)
+        set F₂ := fun (x : ℝ) ↦ Real.cos x ^ (2 * n) - Real.cos x ^ (2 * n + 2)
+        have : F₁ = F₂ := by grind
+        rw [← this]; dsimp [F₁]; dsimp [F₁] at c5122; rw [c5122, c5123]; grind
+      rw [c510, c511, c512]
 
   /- Product form substitution to setup the recurrence relation derivation -/
-  have c5 : v ^ n * 2 ^ (2 * n + 1) / π *
-    (∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2))
-    = v ^ n * 2 ^ (2 * n + 1) / π *
-    (π * ∏ k ∈ Finset.range n, (2 * ↑k + 1) / (2 * (k + 1))
-    - π * ∏ k ∈ Finset.range (n + 1), (2 * ↑k + 1) / (2 * (k + 1))) := by sorry
-  rw [c5]; simp [catalan_eq_centralBinom_div, Nat.centralBinom]
+  have c6 : v ^ n * 2 ^ (2 * n + 1) / π *
+  (∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2))
+  = v ^ n * 2 ^ (2 * n + 1) / π *
+  (π * ∏ k ∈ Finset.range n, (2 * ↑k + 1) / (2 * (k + 1))
+  - π * ∏ k ∈ Finset.range (n + 1), (2 * ↑k + 1) / (2 * (k + 1))) := by sorry
+  rw [c5, c6]; simp [catalan_eq_centralBinom_div, Nat.centralBinom]
   set A := 2 ^ (2 * n + 1) / π *
     (π * ∏ i ∈ Finset.range n, ↑((2 * i + 1) / (2 * (i + 1))) -
       π * ∏ i ∈ Finset.range (n + 1), ↑((2 * i + 1) / (2 * (i + 1))))
@@ -1445,7 +1457,6 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
   have c7 : v ^ n * A = v ^ n * B := by grind
   dsimp [A,B] at c7; dsimp [B]; grind
 
-/- Temporary separation -/
 lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment id ((2 * n) + 1) (semicircleReal μ v)
     = 0 := by
@@ -1479,20 +1490,6 @@ end Aristotle
 
 section Scribbles
 
-def f (_ : ℝ) : ℝ := 1
-
-def g (x : ℝ) : ℝ := x
-
-def h (x : ℝ) : ℝ := x^2 - 1
-
-lemma g_cont : Continuous g := by
-  unfold g
-  continuity
-
-lemma h_cont : Continuous h := by
-  unfold h
-  continuity
-
 example :
     ∫ x in (0 : ℝ)..4, Real.sqrt (1 - (x / 2 - 1) ^ 2)
       = 2 * ∫ y in (-1 : ℝ)..1, Real.sqrt (1 - y ^ 2) := by
@@ -1512,23 +1509,20 @@ example {Ω : Type*} [MeasureSpace Ω]
     ∫ x, f x ∂ ℙ = ENNReal.toReal (∫⁻ x, ENNReal.ofReal (f x) ∂ ℙ) := by
   simpa using integral_eq_lintegral_of_nonneg_ae h0 hmeas
 
-def G := fun (x : ℝ) ↦ x
-
----test commit
-
 end Scribbles
 
-section Alternatives
+section Codegrave
 
 /-  set L := fun (x : ℝ) ↦ H (x + μ)
     have c05 := intervalIntegral.integral_comp_sub_right
       (f := L) (a := - 2 * √v) (b := 2 * √v) (d := μ)
     dsimp [L, H, f, semicirclePDF, semicirclePDFReal, g] at c05
-    have c06 : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2))).toReal
-      * (x - μ) ^ (2 * n) = ∫ (x : ℝ) in -2 * √↑v - μ..2 * √↑v - μ, (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - x ^ 2))).toReal
+    have c06 : ∫ (x : ℝ) in -2 * √↑v..2 * √↑v,
+    (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2))).toReal
+      * (x - μ) ^ (2 * n) = ∫ (x : ℝ) in -2 * √↑v - μ..2 * √↑v - μ,
+      (ENNReal.ofReal (1 / (2 * π * ↑v) * √(4 * ↑v - x ^ 2))).toReal
       * x ^ (2 * n) := by
       simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using c05 -/
-
 
 /-   have h1 : Continuous f := by apply Cont_semicirclePDFReal
   set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
@@ -1549,7 +1543,103 @@ section Alternatives
     have c01 : Measurable f := by exact ENNReal.measurable_toNNReal.comp c00
     have c02 := integral_withDensity_eq_integral_smul (f := f) (g := g) (μ := ℙ) c01 -/
 
-end Alternatives
+/- /- Proof step 1 -/
+/- The proof should be shortened with the calc tactic. -/
+
+lemma change_of_variable_1 (t : ℝ) (ht : 0 < t) (k : ℕ) :
+  1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+  = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := by
+  have c0 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+    = 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
+    have c01 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t,
+      y ^ k * √(4 * t - y ^ 2 * t / t) := by grind
+    have c02 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2 * t / t)
+      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t) := by grind
+    have c03 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t)
+      = 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t) := by
+      have c031 : ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √((4 - y ^ 2 / t) * t)
+        = ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t) := by
+        apply intervalIntegral.integral_congr
+        intro x hx
+        dsimp
+        sorry
+      rw [c031]
+    have c04 : 1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * (√(4 - y ^ 2 / t) * √t)
+      = 1 / (2 * π * t) * √t * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
+      set f := fun (y : ℝ) ↦ y ^ k * √(4 - y ^ 2 / t)
+      set g := fun (y : ℝ) ↦ y ^ k * (√(4 - y ^ 2 / t) * √t)
+      have c041 : ∀ (y : ℝ), √t * f y = g y := by grind
+      set F := fun (y : ℝ) ↦ √t * f y
+      have c042 : F = g := by grind
+      rw [← c042]
+      dsimp [F]
+      have c043 := intervalIntegral.integral_const_mul
+        (a := -2 * √t) (b := 2 * √t) (f := f) (r := √t) (μ := ℙ)
+      rw [c043]
+      grind
+    have c05 : 1 / (2 * π * t) * √t * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
+      = 1 / (2 * π * √t) * ∫ (y : ℝ) in -2 * √t..2 * √t, y ^ k * √(4 - y ^ 2 / t) := by
+      set A := ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
+      have c051 : 1 / (2 * π * √t) = 1 / (2 * π * t) * √t := by
+        set B := 1 / 2 * π
+        have c0511 : 1 / √t = 1 / t * √t := by
+          have c05111 := Real.sqrt_div_self (x := t)
+          grind
+        have c0512 : B * 1 / √t = B * (1 / t * √t) := by grind
+        grind
+      rw [c051]
+    rw [c01, c02, c03, c04, c05]
+  have c1 : 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t)
+    = 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t := by
+    set f := fun (y : ℝ) ↦ y ^ k * √(4 - y ^ 2 / t)
+    have c11 := intervalIntegral.inv_mul_integral_comp_div_sub
+      (a := -2 * √t) (b := 2 * √t) (c := √t) (d := 0) (f := f)
+    sorry
+  have c2 : 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t
+    = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := by
+    have c21 : ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t
+      = ∫ (x : ℝ) in (-2)..2, (t ^ (k / 2) * √t) * (x ^ k * √(4 - x ^ 2)) := by grind
+    rw [c21]
+    set f := fun (x : ℝ) ↦ x ^ k * √(4 - x ^ 2) with hf
+    set A := t ^ (k / 2) * √t
+    have c22 := intervalIntegral.integral_const_mul
+      (a := -2) (b := 2) (f := f) (r := A) (μ := ℙ)
+    set B := 1 / (2 * π * √t)
+    have c23 : B * ∫ (x : ℝ) in -2..2, A * f x = B * A * ∫ (x : ℝ) in -2..2, f x := by grind
+    rw [c23]
+    have c24 : B * A = t ^ (k / 2) / (2 * π) := by
+      dsimp [A, B]
+      sorry
+    rw [c24]
+  calc
+    1 / (2 * π * t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 * t - y ^ 2)
+    = 1 / (2 * π * √t) * ∫ (y : ℝ) in (-2 * √t)..2 * √t, y ^ k * √(4 - y ^ 2 / t) := c0
+  _ = 1 / (2 * π * √t) * ∫ (x : ℝ) in (-2)..2, t ^ (k / 2) * x ^ k * √(4 - x ^ 2) * √t := c1
+  _ = t ^ (k / 2) / (2 * π) * ∫ (x : ℝ) in (-2)..2, x ^ k * √(4 - x ^ 2) := c2
+
+/- set f := fun (x : ℝ) ↦ x ^ k * √((4 - x ^ 2 / t) * t)
+        set g := fun (x : ℝ) ↦ x ^ k * (√(4 - x ^ 2 / t) * √t)
+        have c0311 : ∀ (x : ℝ), f x = g x := by  -/ -/
+
+/- /- Proof step 2 -/
+
+lemma change_of_variable_2 (k : ℕ) : ∫ (x : ℝ) in (-2)..2, x ^ (2 * k) / (2 * π) * √(4 - x ^ 2)
+  = -2 ^ (2 * k + 1) / π *
+  (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) - ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k + 2)) := by
+  calc
+    ∫ (x : ℝ) in (-2)..2, x ^ (2 * k) / (2 * π) * √(4 - x ^ 2)
+      = ∫ (x : ℝ) in 0..π, (2 * Real.cos (x)) ^ (2 * k) / (2 * π)
+        * √(4 - (2 * Real.cos x) ^ 2) * (-2 * Real.sin x) := by sorry
+    _ = -2 ^ (2 * k + 1) / π *
+        ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) * (Real.sin x) ^ 2 := by sorry
+    _ = -2 ^ (2 * k + 1) / π * ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k)
+        * (1 - (Real.cos x) ^ 2):= by sorry /- Real.sin_sq -/
+    _ = -2 ^ (2 * k + 1) / π *
+        (∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k) -
+        ∫ (x : ℝ) in 0..π, (Real.cos x) ^ (2 * k + 2)):= by sorry -/
+
+end Codegrave
 
 end SemicircleDistribution
 
