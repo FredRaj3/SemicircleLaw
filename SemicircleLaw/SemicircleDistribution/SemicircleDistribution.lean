@@ -989,31 +989,22 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     rw [c5]; dsimp [B] at ih; rw [ih]; dsimp [w] at c6; rw [c6]
     grind
 
-lemma test4 (n : ℕ) : (π * ∏ i ∈ Finset.range n, ((2 * i + 1) / (2 * (i + 1))) -
-  π * ∏ i ∈ Finset.range (n + 1), ((2 * i + 1) / (2 * (i + 1))))
-  = π * 1 / (2 * n + 2) * ∏ i ∈ Finset.range n, ((2 * i + 1) / (2 * (i + 1))) := by
-  have hden : (2 * (n : ℝ) + 2) ≠ 0 := by
-    have : (0 : ℝ) < 2 * (n : ℝ) + 2 := by
-      have hn : (0 : ℝ) ≤ (n : ℝ) := by
-        exact_mod_cast (Nat.zero_le n)
-      linarith
-    exact ne_of_gt this
-  set A : ℝ :=
-    ∏ i ∈ Finset.range n, ((2 * (i : ℝ) + 1) / (2 * ((i + 1 : ℕ) : ℝ))) with hA
-  have hprod : ∏ i ∈ Finset.range (n + 1), ((2 * (i : ℝ) + 1) / (2 * ((i + 1 : ℕ) : ℝ)))
-  = ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) * A := by
-    have h := Finset.prod_range_succ (n := n) (f := fun (i : ℕ) ↦
-    ((2 * (i : ℝ) + 1) / (2 * ((i + 1 : ℕ) : ℝ))))
-    have h' := h
-    have h'' : (2 * ((n + 1 : ℕ) : ℝ)) = 2 * (n : ℝ) + 2 := by sorry
-    have : ∏ i ∈ Finset.range (n + 1), ((2 * (i : ℝ) + 1) / (2 * ((i + 1 : ℕ) : ℝ)))
-    = A * ((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) := by sorry
-    simpa [mul_comm] using this
-  have hmain : Real.pi * A - Real.pi * (((2 * (n : ℝ) + 1) / (2 * (n : ℝ) + 2)) * A)
-  = Real.pi * 1 / (2 * (n : ℝ) + 2) * A := by
-    field_simp [hden]
-    ring
-  sorry
+/- Recursive relationship between Catalan numbers -/
+lemma catalan_recur (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan n) := by
+  -- By definition of Catalan numbers, we know that $C_n = \frac{1}{n+1} \binom{2n}{n}$.
+  have h_catalan_def : ∀ n, catalan n = Nat.centralBinom n / (n + 1) := by
+    norm_num [ Nat.centralBinom, catalan_eq_centralBinom_div ];
+  norm_num [ h_catalan_def, Nat.centralBinom ];
+  rw [ ← Nat.mul_div_assoc, ← Nat.mul_div_assoc ];
+  · rw [ show 2 * ( n + 1 ) = 2 * n + 2 by ring ];
+    rw [ show 2 * n + 2 = 2 * n + 1 + 1 by ring, Nat.choose_succ_succ ];
+    rw [ Nat.succ_eq_add_one, Nat.choose_symm_of_eq_add ] <;> simp +arith +decide;
+    exact Eq.symm ( Nat.div_eq_of_eq_mul_left ( Nat.succ_pos _ ) ( by nlinarith [ Nat.succ_mul_choose_eq ( 2 * n ) n, Nat.succ_mul_choose_eq ( 2 * n + 1 ) ( n + 1 ) ] ) );
+  · have h := Nat.succ_mul_choose_eq ( 2 * n ) n;
+    rw [ Nat.choose_succ_succ ] at h;
+    exact ⟨ Nat.choose ( 2 * n ) n - Nat.choose ( 2 * n ) ( n + 1 ), by rw [ Nat.mul_sub_left_distrib, eq_tsub_iff_add_eq_of_le ] <;> nlinarith ⟩;
+  · have h := Nat.succ_mul_choose_eq ( 2 * ( n + 1 ) ) ( n + 1 );
+    exact Nat.Coprime.dvd_of_dvd_mul_left ( by norm_num [ ( by ring : 2 * ( n + 1 ) + 1 = n + 1 + 1 + ( n + 1 ) ) ] ) ( h.symm ▸ dvd_mul_left _ _ )
 
 
 lemma measurable_ofNNReal : Measurable (ENNReal.ofNNReal) := by
@@ -1431,6 +1422,43 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     have : 2 * (n + 1) = 2 * n + 2 := by exact rfl
     rw [this] at c4; rw [c3, c4]
   have c6A : v ^ n / (2 * π) * (2 ^ (2 * n + 2)) = v ^ n * 2 ^ (2 * n + 1) / π := by grind
+  rw [c5, ← mul_assoc, c6A, c6]
+  have c6B : 2 ^ (2 * n + 1) / π * (π * ∏ i ∈ Finset.range n, (2 * (i : ℝ) + 1) / (2 * (i + 1)) -
+  π * ∏ i ∈ Finset.range (n + 1), (2 * (i : ℝ) + 1) / (2 * (i + 1)))
+  = 2 ^ (2 * n + 1) * (∏ i ∈ Finset.range n, (2 * (i : ℝ) + 1) / (2 * (i + 1))
+  - ∏ i ∈ Finset.range (n + 1), (2 * (i : ℝ) + 1) / (2 * (i + 1))) := by
+    set A := (2 : ℝ) ^ (2 * n + 1)
+    set B := ∏ i ∈ Finset.range n, (2 * (i : ℝ) + 1) / (2 * (i + 1))
+    set C := ∏ i ∈ Finset.range (n + 1), (2 * (i : ℝ) + 1) / (2 * (i + 1))
+    have c6B0 : (π * B - π * C) = π * (B - C) := by exact Eq.symm (mul_sub_left_distrib π B C)
+    have c6B1 : A / π = A * π⁻¹ := by exact rfl
+    set D := B - C
+    have c6B2 : π⁻¹ * (π * D) = D := by refine inv_mul_cancel_left₀ ?_ D; exact Real.pi_ne_zero
+    rw [c6B0, c6B1]; grind
+  have c6C : v ^ n * (2 ^ (2 * n + 1) / π *
+  (π * ∏ k ∈ Finset.range n, (2 * (k : ℝ) + 1) / (2 * (k + 1)) -
+  π * ∏ k ∈ Finset.range (n + 1), (2 * (k : ℝ) + 1) / (2 * (k + 1))))
+  = v ^ n * 2 ^ (2 * n + 1) * (∏ i ∈ Finset.range n, (2 * (i : ℝ) + 1) / (2 * (i + 1))
+  - ∏ i ∈ Finset.range (n + 1), (2 * (i : ℝ) + 1) / (2 * (i + 1))) := by rw [c6B, ← mul_assoc]
+  have c6D : ↑v ^ n * 2 ^ (2 * n + 1) / π * (π * ∏ k ∈ Finset.range n,
+  (2 * (k : ℝ) + 1) / (2 * (k + 1)) - π * ∏ k ∈ Finset.range (n + 1),
+  (2 * (k : ℝ) + 1) / (2 * (k + 1)))
+  = v ^ n * (2 ^ (2 * n + 1) / π * (π * ∏ k ∈ Finset.range n, (2 * (k : ℝ) + 1) / (2 * (k + 1))
+  - π * ∏ k ∈ Finset.range (n + 1), (2 * (k : ℝ) + 1) / (2 * (k + 1)))) := by grind
+  rw [c6D, c6C]
+  have c7 := catalan_recur n
+  sorry
+
+
+ /-
+  have c6 : v ^ n * 2 ^ (2 * n + 1) / π *
+  ((∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n)) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2))
+  = v ^ n * 2 ^ (2 * n + 1) / π *
+  (π * ∏ k ∈ Finset.range n, (2 * (k : ℝ) + 1) / (2 * (k + 1))
+  - π * ∏ k ∈ Finset.range (n + 1), (2 * (k : ℝ) + 1) / (2 * (k + 1))) := by
+    have : 2 * (n + 1) = 2 * n + 2 := by exact rfl
+    rw [this] at c4; rw [c3, c4]
+  have c6A : v ^ n / (2 * π) * (2 ^ (2 * n + 2)) = v ^ n * 2 ^ (2 * n + 1) / π := by grind
   rw [c5, ← mul_assoc, c6A, c6]; simp [catalan_eq_centralBinom_div, Nat.centralBinom]
   set A := 2 ^ (2 * n + 1) / π *
     (π * ∏ i ∈ Finset.range n, ((2 * (i : ℝ) + 1) / (2 * (i + 1))) -
@@ -1446,7 +1474,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
       rw [c700]
 
     grind
-  dsimp [A,B] at c7; dsimp [B]; rw [← c7, ← mul_assoc]; simp; grind
+  dsimp [A,B] at c7; dsimp [B]; rw [← c7, ← mul_assoc]; simp; grind -/
 
 lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment id ((2 * n) + 1) (semicircleReal μ v)
