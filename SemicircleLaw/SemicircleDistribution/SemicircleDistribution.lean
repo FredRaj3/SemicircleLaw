@@ -928,6 +928,7 @@ lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
 
 /- Setup for lemma centralMoment_fun_two_mul_semicircleReal -/
 
+/- Proof code is generated (by gpt-?) -/
 lemma test3 (m : ℕ) :
   ∫ (x : ℝ) in 0..π, Real.cos x ^ (m + 2) =
   (Real.cos π ^ (m + 1) * Real.sin π - Real.cos 0 ^ (m + 1) * Real.sin 0 +
@@ -989,7 +990,7 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     rw [c5]; dsimp [B] at ih; rw [ih]; dsimp [w] at c6; rw [c6]
     grind
 
-/- Recursive relationship between Catalan numbers -/
+/- Proof code is generated (by Aristotle) -/
 lemma catalan_recur (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan n) := by
   -- By definition of Catalan numbers, we know that $C_n = \frac{1}{n+1} \binom{2n}{n}$.
   have h_catalan_def : ∀ n, catalan n = Nat.centralBinom n / (n + 1) := by
@@ -999,24 +1000,99 @@ lemma catalan_recur (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catala
   · rw [ show 2 * ( n + 1 ) = 2 * n + 2 by ring ];
     rw [ show 2 * n + 2 = 2 * n + 1 + 1 by ring, Nat.choose_succ_succ ];
     rw [ Nat.succ_eq_add_one, Nat.choose_symm_of_eq_add ] <;> simp +arith +decide;
-    exact Eq.symm ( Nat.div_eq_of_eq_mul_left ( Nat.succ_pos _ ) ( by nlinarith [ Nat.succ_mul_choose_eq ( 2 * n ) n, Nat.succ_mul_choose_eq ( 2 * n + 1 ) ( n + 1 ) ] ) );
+    exact Eq.symm ( Nat.div_eq_of_eq_mul_left ( Nat.succ_pos _ )
+      ( by nlinarith [ Nat.succ_mul_choose_eq ( 2 * n ) n,
+        Nat.succ_mul_choose_eq ( 2 * n + 1 ) ( n + 1 ) ] ) );
   · have h := Nat.succ_mul_choose_eq ( 2 * n ) n;
     rw [ Nat.choose_succ_succ ] at h;
-    exact ⟨ Nat.choose ( 2 * n ) n - Nat.choose ( 2 * n ) ( n + 1 ), by rw [ Nat.mul_sub_left_distrib, eq_tsub_iff_add_eq_of_le ] <;> nlinarith ⟩;
+    exact ⟨ Nat.choose ( 2 * n ) n - Nat.choose ( 2 * n ) ( n + 1 ),
+      by rw [ Nat.mul_sub_left_distrib, eq_tsub_iff_add_eq_of_le ] <;> nlinarith ⟩;
   · have h := Nat.succ_mul_choose_eq ( 2 * ( n + 1 ) ) ( n + 1 );
-    exact Nat.Coprime.dvd_of_dvd_mul_left ( by norm_num [ ( by ring : 2 * ( n + 1 ) + 1 = n + 1 + 1 + ( n + 1 ) ) ] ) ( h.symm ▸ dvd_mul_left _ _ )
+    exact Nat.Coprime.dvd_of_dvd_mul_left
+      ( by norm_num [ ( by ring : 2 * ( n + 1 ) + 1 = n + 1 + 1 + ( n + 1 ) ) ] )
+      ( h.symm ▸ dvd_mul_left _ _ )
 
-
+/- Proof code is generated (by gpt-5.1) -/
 lemma measurable_ofNNReal : Measurable (ENNReal.ofNNReal) := by
   have h1 : Measurable fun (x : ℝ≥0) ↦ (x : ℝ) := measurable_subtype_coe
   have h2 : Measurable fun (x : ℝ) ↦ ENNReal.ofReal x := ENNReal.measurable_ofReal
   have h3 : Measurable fun (x : ℝ≥0) ↦ ENNReal.ofReal (x : ℝ) := h2.comp h1
   simpa [ENNReal.ofReal_coe_nnreal] using h3
 
+/- Proof code is generated (by gpt-5.1) -/
 @[simp]
 lemma semicirclePDF_toReal (μ : ℝ) (v : ℝ≥0) (x : ℝ) (h₀ : 0 ≤ semicirclePDFReal μ v x) :
   (ENNReal.ofReal (semicirclePDFReal μ v x)).toReal = semicirclePDFReal μ v x := by
-  simpa [h₀] using ENNReal.toReal_ofReal h₀
+  exact ENNReal.toReal_ofReal h₀
+
+/- Proof code is mainly generated (by gpt-5.1) -/
+lemma prod_two_mul_factorial (n : ℕ) : ∏ x ∈ Finset.range n, (2 : ℝ) * (↑x + 1)
+  = 2 ^ n * (↑n.factorial : ℝ) := by
+  induction' n with n ih
+  · simp
+  · have h : ∏ x ∈ Finset.range (n + 1), (2 : ℝ) * (↑x + 1)
+    = (∏ x ∈ Finset.range n, (2 : ℝ) * (↑x + 1)) * ((2 : ℝ) * (↑n + 1)) := by
+      exact Finset.prod_range_succ (fun x : ℕ => (2 : ℝ) * (↑x + 1)) n
+    have h' : ∏ x ∈ Finset.range (n + 1), (2 : ℝ) * (↑x + 1)
+    = 2 ^ (n + 1) * (↑(Nat.factorial (n + 1)) : ℝ) := by
+      calc
+        ∏ x ∈ Finset.range (n + 1), (2 : ℝ) * (↑x + 1)
+          = (∏ x ∈ Finset.range n, (2 : ℝ) * (↑x + 1)) * ((2 : ℝ) * (↑n + 1)) := h
+        _ = (2 ^ n * (↑(Nat.factorial n) : ℝ)) * ((2 : ℝ) * (↑n + 1)) := by simp [ih]
+        _ = 2 ^ (n + 1) * (↑(Nat.factorial (n + 1)) : ℝ) := by
+          simp [pow_succ, Nat.factorial_succ, mul_comm, mul_left_comm,
+                mul_assoc, Nat.cast_mul, Nat.cast_add]
+    simpa [Nat.succ_eq_add_one] using h'
+
+set_option maxHeartbeats 2000000 in
+
+/- Proof code is generated (by claude-4-5-sonnet) -/
+lemma prod_odd_over_even_central_choose (n : ℕ) :
+  (∏ x ∈ Finset.range n, (2 * (x : ℝ) + 1)) /
+    (∏ x ∈ Finset.range n, (2 * ((x : ℝ) + 1))) =
+    (Nat.choose (2 * n) n : ℝ) / 2 ^ (2 * n) := by
+  let P_odd := ∏ x ∈ Finset.range n, (2 * (x : ℝ) + 1)
+  let P_even := ∏ x ∈ Finset.range n, (2 * ((x : ℝ) + 1))
+  have h_P_even : P_even = (2 : ℝ) ^ n * (Nat.factorial n : ℝ) := by
+    unfold P_even
+    rw [prod_two_mul_factorial]
+  have h_prod_all : P_odd * P_even = (Nat.factorial (2 * n) : ℝ) := by
+    have h_nat_prod_id : ∀ k, ∏ i ∈ Finset.range k, ((2 * i + 1) * (2 * i + 2)) = Nat.factorial (2 * k) := by
+      intro k
+      induction k with
+      | zero => simp
+      | succ k IH =>
+        rw [Finset.prod_range_succ, IH]
+        rw [show Nat.factorial (2 * (k + 1)) = Nat.factorial (2 * k + 2) by ring]
+        rw [Nat.factorial_succ, Nat.factorial_succ]
+        ring
+    unfold P_odd P_even
+    rw [← Finset.prod_mul_distrib]
+    conv_lhs => arg 2; ext x; rw [show (2 * (x : ℝ) + 1) * (2 * ((x : ℝ) + 1)) = ((2 * x + 1) * (2 * x + 2) : ℝ) by ring]
+    rw [show ∏ x ∈ Finset.range n, ((2 * x + 1) * (2 * x + 2) : ℝ) = (∏ x ∈ Finset.range n, (2 * x + 1) * (2 * x + 2) : ℕ) by simp [Nat.cast_prod]]
+    rw [h_nat_prod_id]
+  have h_P_even_ne_zero : P_even ≠ 0 := by
+    rw [h_P_even]
+    apply mul_ne_zero
+    exact pow_ne_zero _ two_ne_zero
+    simp [Nat.factorial_ne_zero]
+  calc
+    P_odd / P_even
+    _ = (↑(Nat.factorial (2 * n)) / P_even) / P_even := by field_simp; grind
+    _ = ↑(Nat.factorial (2 * n)) / (P_even * P_even) := by rw [div_div]
+    _ = ↑(Nat.factorial (2 * n)) / (((2 : ℝ) ^ n * ↑(Nat.factorial n)) ^ 2) := by rw [h_P_even]; ring
+    _ = ↑(Nat.factorial (2 * n)) / (2 ^ (2 * n) * (↑(Nat.factorial n)) ^ 2) := by rw [mul_pow, ← pow_mul, mul_comm n 2]
+    _ = (↑(Nat.choose (2 * n) n)) / 2 ^ (2 * n) := by
+      rw [show (Nat.choose (2 * n) n : ℝ) = (2 * n).factorial / (n.factorial * n.factorial) by
+        rw [Nat.choose_eq_factorial_div_factorial (by grind : n ≤ 2 * n)]
+        rw [show 2 * n - n = n by grind]
+        norm_cast
+        have : n.factorial * n.factorial ∣ (2 * n).factorial := by
+          convert Nat.factorial_mul_factorial_dvd_factorial (by grind : n ≤ 2 * n)
+          grind
+        rw [Nat.cast_div this]
+        simp [Nat.factorial_ne_zero]]
+      ring
 
 set_option maxHeartbeats 2000000 in
 
@@ -1413,7 +1489,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
       rw [c510, c511, c512]
     rw [c51]
 
-  /- Product form substitution to establish relation with the Catalan number -/
+  /- Product form substitution to establish relation with the Catalan # -/
   have c6 : v ^ n * 2 ^ (2 * n + 1) / π *
   ((∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n)) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2))
   = v ^ n * 2 ^ (2 * n + 1) / π *
@@ -1447,34 +1523,67 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
   - π * ∏ k ∈ Finset.range (n + 1), (2 * (k : ℝ) + 1) / (2 * (k + 1)))) := by grind
   rw [c6D, c6C]
   have c7 := catalan_recur n
-  sorry
-
-
- /-
-  have c6 : v ^ n * 2 ^ (2 * n + 1) / π *
-  ((∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n)) - ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2))
-  = v ^ n * 2 ^ (2 * n + 1) / π *
-  (π * ∏ k ∈ Finset.range n, (2 * (k : ℝ) + 1) / (2 * (k + 1))
-  - π * ∏ k ∈ Finset.range (n + 1), (2 * (k : ℝ) + 1) / (2 * (k + 1))) := by
-    have : 2 * (n + 1) = 2 * n + 2 := by exact rfl
-    rw [this] at c4; rw [c3, c4]
-  have c6A : v ^ n / (2 * π) * (2 ^ (2 * n + 2)) = v ^ n * 2 ^ (2 * n + 1) / π := by grind
-  rw [c5, ← mul_assoc, c6A, c6]; simp [catalan_eq_centralBinom_div, Nat.centralBinom]
-  set A := 2 ^ (2 * n + 1) / π *
-    (π * ∏ i ∈ Finset.range n, ((2 * (i : ℝ) + 1) / (2 * (i + 1))) -
-      π * ∏ i ∈ Finset.range (n + 1), ((2 * (i : ℝ) + 1) / (2 * (i + 1))))
-  set B := ↑((2 * n).choose n / (n + 1)) with hB
-  have c7 : v ^ n * A = v ^ n * B := by
-    have c70 : A = B := by
-      dsimp [A, B]
-      have c700 : 2 ^ (2 * n + 1) / π * (π * ∏ i ∈ Finset.range n, (2 * (i : ℝ) + 1) / (2 * (i + 1)) -
-      π * ∏ i ∈ Finset.range (n + 1), (2 * (i : ℝ) + 1) / (2 * (i + 1)))
-      = 2 ^ (2 * n + 1) * (∏ i ∈ Finset.range n, (2 * (i : ℝ) + 1) / (2 * (i + 1))
-      - ∏ i ∈ Finset.range (n + 1), (2 * (i : ℝ) + 1) / (2 * (i + 1))) := by sorry
-      rw [c700]
-
-    grind
-  dsimp [A,B] at c7; dsimp [B]; rw [← c7, ← mul_assoc]; simp; grind -/
+  simp [catalan_eq_centralBinom_div, Nat.centralBinom]
+  set f₁ := fun (x : ℕ) ↦ 2 * (x : ℝ) + 1
+  set f₂ := fun (x : ℕ) ↦ 2 * ((x : ℝ) + 1)
+  have c8 := Finset.prod_range_succ n (f := f₁)
+  have c8A : ∏ x ∈ Finset.range (n + 1), f₁ x = (Finset.range (n + 1)).prod f₁ := by exact rfl
+  have c8B : ∏ x ∈ Finset.range n, f₁ x = (Finset.range n).prod f₁ := by exact rfl
+  have c9 := Finset.prod_range_succ n (f := f₂)
+  have c9A : ∏ x ∈ Finset.range (n + 1), f₂ x = (Finset.range (n + 1)).prod f₂ := by exact rfl
+  have c9B : ∏ x ∈ Finset.range n, f₂ x = (Finset.range n).prod f₂ := by exact rfl
+  rw [← c8A, ← c9A, c8, c9, c8B, c9B]
+  have c10 : (Finset.range n).prod f₁ * f₁ n / ((Finset.range n).prod f₂ * f₂ n)
+  = (Finset.range n).prod f₁ / (Finset.range n).prod f₂ * (f₁ n / f₂ n) := by grind
+  rw [c10]
+  have c11 : (Finset.range n).prod f₁ / (Finset.range n).prod f₂ -
+  (Finset.range n).prod f₁ / (Finset.range n).prod f₂ * (f₁ n / f₂ n)
+  = (1 - f₁ n / f₂ n) * (Finset.range n).prod f₁ / (Finset.range n).prod f₂ := by grind
+  rw [c11]
+  have c12 : 2 ^ (2 * n + 1) * ((1 - f₁ n / f₂ n)
+  * (Finset.range n).prod f₁ / (Finset.range n).prod f₂)
+  = ↑((2 * n).choose n / (n + 1)) := by
+    have c120 : 1 - f₁ n / f₂ n = 1 / (2 * ((n : ℝ) + 1)) := by
+      have : (f₂ n) ≠ 0 := by
+        dsimp [f₂]; push_neg; refine (mul_ne_zero_iff_right ?_).mpr ?_
+        exact Nat.cast_add_one_ne_zero (R := ℝ) n
+        norm_num
+      dsimp [f₁, f₂]; grind
+    have c121 : (2 : ℝ) ^ (2 * n + 1) = (2 : ℝ) ^ (2 * n) * 2 := by grind
+    have c122 : 2 ^ (2 * n + 1) * (1 - f₁ n / f₂ n)
+    = (2 : ℝ) ^ (2 * n) / (n + 1) := by simp [c120, c121]; grind
+    have c123 : (Finset.range n).prod f₁ / (Finset.range n).prod f₂
+    = (↑((2 * n).choose n) : ℝ) / 2 ^ (2 * n) := by
+      dsimp [f₁, f₂]
+      apply prod_odd_over_even_central_choose n
+    have c124 : (↑((2 * n).choose n / (n + 1)) : ℝ)
+    = (↑((2 * n).choose n) : ℝ) / (↑n + 1) := by
+      norm_cast; field_simp
+      have c1240 : n + 1 ∣ (2 * n).choose n := by
+       apply Nat.succ_dvd_centralBinom n
+      have c1241 : ((2 * n).choose n / (n + 1)) * (n + 1) = (2 * n).choose n := by
+        exact Nat.div_mul_cancel c1240
+      have c1242 : (↑((2 * n).choose n / (n + 1)) : ℝ) * (↑n + 1)
+      = ↑((2 * n).choose n) := by exact_mod_cast c1241
+      have c1243 : (↑n + 1 : ℝ) ≠ 0 := by exact_mod_cast (Nat.succ_ne_zero n)
+      grind
+    have c125 : (2 ^ (2 * n) / (↑n + 1))
+    * ((↑((2 * n).choose n) : ℝ) / 2 ^ (2 * n))
+    = (↑((2 * n).choose n) : ℝ) / (↑n + 1) := by
+      have c1250 : (2 : ℝ) ^ (2 * n) ≠ 0 := by exact Ne.symm (NeZero.ne' (2 ^ (2 * n)))
+      have c1251 : (↑n + 1 : ℝ) ≠ 0 := by exact_mod_cast (Nat.succ_ne_zero n)
+      field_simp [c1250, c1251]; grind
+    calc
+      2 ^ (2 * n + 1) * ((1 - f₁ n / f₂ n) * (Finset.range n).prod f₁ / (Finset.range n).prod f₂)
+      = (2 ^ (2 * n + 1) * (1 - f₁ n / f₂ n))
+      * ((Finset.range n).prod f₁ / (Finset.range n).prod f₂) := by ring
+    _ = (2 ^ (2 * n) / (↑n + 1))
+      * ((Finset.range n).prod f₁ / (Finset.range n).prod f₂) := by simp [c122]
+    _ = (2 ^ (2 * n) / (↑n + 1))
+      * ((↑((2 * n).choose n) : ℝ) / 2 ^ (2 * n)) := by simp [c123]
+    _ = (↑((2 * n).choose n) : ℝ) / (↑n + 1) := by simp [c125]
+    _ = ↑((2 * n).choose n / (n + 1)) := by simp [c124]
+  rw [← c12, ← mul_assoc]
 
 lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment id ((2 * n) + 1) (semicircleReal μ v)
