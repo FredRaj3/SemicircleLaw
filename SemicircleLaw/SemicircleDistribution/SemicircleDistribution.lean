@@ -102,6 +102,54 @@ lemma stronglyMeasurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     StronglyMeasurable (semicirclePDFReal μ v) :=
   (measurable_semicirclePDFReal μ v).stronglyMeasurable
 
+lemma support_semicirclePDF_inc (μ : ℝ) (v : ℝ≥0) :
+Function.support (semicirclePDFReal μ v) ⊆ Icc (μ - 2 * √v) (μ + 2 * √v) := by
+  set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
+  intro x hx
+  by_contra hxI
+  have h5 : f x = 0 := by
+    have h6 : 4 * v - (x - μ) ^ 2 ≤ 0 := by
+      dsimp [I,Icc] at hxI
+      by_contra hxIc
+      push_neg at hxIc
+      have hxIc_1 : (x - μ)^2 < 4 * v := by exact lt_add_neg_iff_lt.mp hxIc
+      have hxIc_2 : |x - μ| < 2 * √v := by
+        set A := x - μ
+        have hxIc_21 : (2 * √v)^2 = 4 * v := by
+          calc
+            (2 * √v)^2 = 2^2 * (√v)^2 := by exact mul_pow 2 (√↑v) 2
+                     _ = 4 * (√v)^2 := by norm_num
+                     _ = 4 * v := by norm_num
+        rw [← hxIc_21] at hxIc_1
+        set B := 2 * √v
+        have : 0 ≤ B := by positivity
+        apply abs_lt_of_sq_lt_sq; exact hxIc_1; exact this
+      have hxIc_3 : -(x - μ) < 2 * √v := by
+        set A := x - μ with hA
+        calc
+          -A ≤ |A| := by exact neg_le_abs A
+            _ < 2 * √v := hxIc_2
+      have hxIc_31 : - x + μ < 2 * √v := by grind
+      have hxIc_32 : μ < x + 2 * √v := by exact lt_add_of_neg_add_lt hxIc_31
+      have hxIc_33 : μ - 2 * √v < x := by
+        set B := 2 * √v
+        exact sub_right_lt_of_lt_add hxIc_32
+      have hxIc_4 : x - μ < 2 * √v := by exact lt_of_abs_lt hxIc_2
+      have hxIc_41 : x < μ + 2 * √v := by exact lt_add_of_tsub_lt_left hxIc_4
+      apply (not_and_or).mp at hxI
+      have C1 : x ≤ μ + 2 * √v := by exact le_of_lt hxIc_41
+      have C2 : μ - 2 * √v ≤ x := by exact le_of_lt hxIc_33
+      have C3 : μ - 2 * √v ≤ x ∧ x ≤ μ + 2 * √v := by exact ⟨C2, C1⟩
+      set Co1 := μ - 2 * √v ≤ x
+      set Co2 := x ≤ μ + 2 * √v
+      have C : (¬Co1 ∨ ¬Co2) ↔ ¬(Co1 ∧ Co2) := by exact Iff.symm Decidable.not_and_iff_or_not
+      rw [C] at hxI; absurd C3; exact hxI
+    have h7 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h6
+    simp [f,h7]
+  have h8 : x ∉ Function.support f := by simpa [Function.support] using h5
+  exact h8 hx
+
 /-- The semicircle pdf is integrable. -/
 @[fun_prop]
 lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
@@ -110,101 +158,317 @@ lemma integrable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
   set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
   have h1 : Continuous f := by apply Cont_semicirclePDFReal
   set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
-  have h2 : IsCompact I := by simpa [hI] using isCompact_Icc
+  have h2 : IsCompact I := by simpa using isCompact_Icc
   have h3 : IntegrableOn f I := by simpa using (h1.continuousOn).integrableOn_compact h2
-  have h4 : Function.support f ⊆ I := by
-    intro x hx
-    by_contra hxI
-    have h6 : f x = 0 := by
-      have h7 : 4 * v - (x - μ) ^ 2 ≤ 0 := by
-        dsimp [I,Icc] at hxI
-        by_contra hxIc
-        push_neg at hxIc
-        have hxIc_1 : (x - μ)^2 < 4 * v := by exact lt_add_neg_iff_lt.mp hxIc
-        have hxIc_2 : |x - μ| < 2 * √v := by
-          set A := x - μ
-          have hxIc_21 : (2 * √v)^2 = 4 * v := by
-            calc
-            (2 * √v)^2 = 2^2 * (√v)^2 := by exact mul_pow 2 (√↑v) 2
-                     _ = 4 * (√v)^2 := by norm_num
-                     _ = 4 * v := by norm_num
-          rw [← hxIc_21] at hxIc_1
-          set B := 2 * √v
-          have : 0 ≤ B := by positivity
-          apply abs_lt_of_sq_lt_sq; exact hxIc_1; exact this
-        have hxIc_3 : -(x - μ) < 2 * √v := by
-          set A := x - μ with hA
-          calc
-            -A ≤ |A| := by exact neg_le_abs A
-             _ < 2 * √v := hxIc_2
-        have hxIc_31 : - x + μ < 2 * √v := by
-          set A := x - μ
-          calc
-            -x + μ = -(x - μ) := by ring
-                 _ = -A := by exact rfl
-                 _ ≤ |A| := by exact neg_le_abs A
-                 _ < 2 * √v := hxIc_2
-        have hxIc_32 : μ < x + 2 * √v := by exact lt_add_of_neg_add_lt hxIc_31
-        have hxIc_33 : μ - 2 * √v < x := by
-          set B := 2 * √v
-          exact sub_right_lt_of_lt_add hxIc_32
-        have hxIc_4 : x - μ < 2 * √v := by exact lt_of_abs_lt hxIc_2
-        have hxIc_41 : x < μ + 2 * √v := by exact lt_add_of_tsub_lt_left hxIc_4
-        apply (not_and_or).mp at hxI
-        have C1 : x ≤ μ + 2 * √v := by exact le_of_lt hxIc_41
-        have C2 : μ - 2 * √v ≤ x := by exact le_of_lt hxIc_33
-        have C3 : μ - 2 * √v ≤ x ∧ x ≤ μ + 2 * √v := by exact ⟨C2, C1⟩
-        set Co1 := μ - 2 * √v ≤ x
-        set Co2 := x ≤ μ + 2 * √v
-        have C : (¬Co1 ∨ ¬Co2) ↔ ¬(Co1 ∧ Co2) := by exact Iff.symm Decidable.not_and_iff_or_not
-        rw [C] at hxI; absurd C3; exact hxI
-      have h8 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h7
-      simp [f,h8]
-    have h9 : x ∉ Function.support f := by simpa [Function.support] using h6
-    exact h9 hx
+  have h4 : Function.support f ⊆ I := by apply support_semicirclePDF_inc
   exact (integrableOn_iff_integrable_of_support_subset h4).mp h3
 
+set_option maxHeartbeats 1000000 in
 
-/-Alternative Approaches to integrable_semicirclePDFReal-/
+/-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
+lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) :
+    ∫ x, semicirclePDFReal μ v x = 1 := by
+  rw [semicirclePDFReal_def]
+  simp
+  set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
+  set A := (2 * π * v)⁻¹
+  have hA : A ≠ 0 := by
+    simp [A]; grind
+  have c1 : ∫ (x : ℝ), (v)⁻¹ * (π⁻¹ * 2⁻¹) * √(4 * v - (x - μ) ^ 2)
+  = ∫ (x : ℝ), (2 * π * v)⁻¹ * √(4 * v - (x - μ) ^ 2) := by
+    apply integral_congr_ae
+    simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero,
+    OfNat.ofNat_ne_zero, or_false, false_or, NNReal.coe_inv, Filter.EventuallyEq.refl, A, I]
+  have c2 : ∫ x in I, (2 * π * v)⁻¹ * √(4 * v - (x - μ) ^ 2)
+  = ∫ (x : ℝ), (2 * π * v)⁻¹ * √(4 * v - (x - μ) ^ 2) := by
+    set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
+    have c21 : Function.support f ⊆ I := by apply support_semicirclePDF_inc
+    have c22 : f = fun x ↦ (2 * π * v)⁻¹ * √(4 * v - (x - μ) ^ 2) := by simp [f]
+    refine setIntegral_eq_integral_of_ae_compl_eq_zero ?_
+    apply ae_of_all
+    intro a haI
+    have c23 : a ∉ Function.support f := by exact fun a_1 ↦ haI (c21 a_1)
+    have c24 : f a = 0 := by simpa [Function.mem_support] using c23
+    simpa [c22] using c24
+  have c3 : ∫ x in I, A * √(4 * v - (x - μ) ^ 2) = A * ∫ x in I, √(4 * v - (x - μ) ^ 2) := by
+    exact integral_const_mul A fun a ↦ √(4 * v - (a - μ) ^ 2)
+  have c4 : ∫ x in I, √(4 * v - (x - μ) ^ 2) = A⁻¹ := by
+    simp [A,I]
+    have c41 : ∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2) = Real.pi / 2 := integral_sqrt_one_sub_sq
+    have c42 : ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2)
+    = (2 * √v) * (∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2)) := by
+      calc
+        ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2)
+        =  ∫ (y : ℝ) in (-1)..1, (2 * √v) * √(1 - y ^ 2) := by
+          apply intervalIntegral.integral_congr
+          simp
+          intro x hx
+          dsimp
+          have c421 : √(4 * v * (1 - x ^ 2)) = √(4 * v) * √(1 - x ^ 2) := by
+            simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero,
+              Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv,
+              mem_Icc, Nat.ofNat_pos, mul_nonneg_iff_of_pos_left, NNReal.zero_le_coe,
+              Real.sqrt_mul, Nat.ofNat_nonneg, I, A]
+          have c422 : √(4 * v) = 2 * √v := by
+            have c4221 : 0 ≤ v := by positivity
+            calc
+              √(4 * v)
+              = √4 * √v := by exact Real.sqrt_mul' 4 c4221
+              _ = 2 * √v := by
+                have c42211 : √(4 : ℝ) = (2 : ℝ) := by
+                  have c422111 : (4 : ℝ) = (2 : ℝ) ^ (2 : ℝ) := by ring
+                  rw [c422111]
+                  simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero,
+                  Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv,
+                  Real.rpow_ofNat, mem_Icc, Nat.ofNat_nonneg, pow_succ_nonneg, Real.sqrt_mul,
+                  Real.sqrt_sq, zero_le, I, A]
+                rw [← c42211]
+          rw [← c422, ← c421]; grind
+        _ = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2) := by
+          set B := 2 * √v
+          simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero,
+          Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv,
+          intervalIntegral.integral_const_mul, A, I, B]
+    have c43 : ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
+      = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by
+      set a := μ - 2 * √v
+      set b := μ + 2 * √v
+      set c := 2 * √v
+      set d := c⁻¹ * μ
+      have c431 : (1 : ℝ) = b / c - d := by
+        simp [b,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+            NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
+            NNReal.coe_inv, NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀,
+            A, I, a, b, c]
+      have c432 : (-1 : ℝ) = a / c - d := by
+        simp [a,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+            NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
+            NNReal.coe_inv, neg_sub,
+            NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀, A, I, b, c, d, a]
+      rw [c432, c431]
+      set f := fun y ↦ √(4 * v - 4 * v * y ^ 2)
+      have c433 :=
+      intervalIntegral.inv_mul_integral_comp_div_sub (a := a) (b := b) (c := c) (d := d) (f := f)
+      dsimp [a,b,c,d,f] at c433
+      dsimp [a,b,c,d,f]
+      have c434 : ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v,
+      √(4 * ↑v - 4 * ↑v * (x / (2 * √↑v) - (2 * √↑v)⁻¹ * μ) ^ 2)
+      = (2 * √↑v) * ∫ (x : ℝ) in (μ - 2 * √↑v) / (2 * √↑v) - (2 * √↑v)⁻¹ * μ
+      ..(μ + 2 * √↑v) / (2 * √↑v) - (2 * √↑v)⁻¹ * μ,
+      √(4 * ↑v - 4 * ↑v * x ^ 2) := by
+        grind
+      have c435 : μ - 2 * √v ≤ μ + 2 * √v := by
+        have c4351 : -2 * √v ≤ 2 * √v := by
+          simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
+          NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
+          NNReal.coe_inv, neg_sub, neg_mul, neg_le_self_iff, Nat.ofNat_pos,
+          mul_nonneg_iff_of_pos_left, Real.sqrt_nonneg, A, I, b, c, d, a, f]
+        set X := -2 * √v
+        set Y := 2 * √v
+        grind
+      have c436 : ∫ (x : ℝ) in Icc (μ - 2 * √↑v) (μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
+      = ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2) := by
+        have c436A :  ∫ (x : ℝ) in Icc (μ - 2 * √↑v) (μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
+        = ∫ (x : ℝ), √(4 * ↑v - (x - μ) ^ 2) := by
+          apply setIntegral_eq_integral_of_ae_compl_eq_zero
+          apply ae_of_all
+          intro a ha
+          dsimp [Icc] at ha
+          push_neg at ha
+          have c436A1 : 0 ≤ v := by positivity
+          have c436A2 : 2 * √v ≤ |a - μ| := by
+            by_cases c436A21 : a < μ - 2 * √v
+            have : 2 * √v ≤ μ - a := by linarith
+            have c436A22 : 0 ≤ μ - a := by linarith
+            have : 2 * √v ≤ |μ - a| := by simpa [abs_of_nonneg c436A22] using this
+            simpa [abs_sub_comm] using this
+            have c436A23 : μ - 2 * √v ≤ a := le_of_not_gt c436A21
+            have c436A24 : μ + 2 * √v < a := ha c436A23
+            have : 2 * √v ≤ a - μ := by linarith
+            have c436A24 : 0 ≤ a - μ := by linarith
+            simpa [abs_of_nonneg c436A24] using this
+          have c436A3 : (2 * √v) ^ 2 ≤ |a - μ| ^ 2 := by
+            have : |2 * √v| ≤ |a - μ| := by
+              have c436A31 : 0 ≤ 2 * √v := by
+                have := Real.sqrt_nonneg v; nlinarith
+              simpa [abs_of_nonneg c436A31] using c436A2
+            set X := 2 * √v
+            set Y := |a - μ|
+            apply sq_le_sq.mpr
+            have c436AY : Y = |Y| := by
+              simp [Y]
+            rw [c436AY] at this; exact this
+          have c436A32 : (√v) ^ 2 = v := by exact Real.sq_sqrt c436A1
+          have c436A33 : 4 * v ≤ (a - μ) ^ 2 := by
+            have c436A331 : (2 * √v) ^ 2 = 4 * v := by grind
+            have c436A332 : |a - μ| ^ 2 = (a - μ) ^ 2 := by
+              set X := a - μ
+              exact sq_abs X
+            rw [← c436A331, ← c436A332]
+            exact c436A3
+          have hnonpos : 4 * v - (a - μ) ^ 2 ≤ 0 := by linarith
+          simpa using Real.sqrt_eq_zero_of_nonpos hnonpos
+        have c436B : ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
+        = ∫ (x : ℝ), √(4 * ↑v - (x - μ) ^ 2) := by
+          set a := μ - 2 * √↑v
+          set b := μ + 2 * √↑v
+          set S := Set.Ioc a b
+          have c436B1 : ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
+          = ∫ (x : ℝ) in S, √(4 * ↑v - (x - μ) ^ 2) := by
+            have hle : a ≤ b := by linarith [Real.sqrt_nonneg (↑v : ℝ)]
+            simpa [a, b, S, sub_eq_add_neg]
+            using (intervalIntegral.integral_of_le
+            (a := a) (b := b) (f := fun x ↦ √(4 * ↑v - (x - μ) ^ 2))) hle
+          rw [c436B1]
+          apply setIntegral_eq_integral_of_ae_compl_eq_zero
+          apply ae_of_all
+          intro z hz
+          simp [S, a, b] at hz
+          have c436A1 : 0 ≤ v := by positivity
+          have c436A2 : 2 * √v ≤ |z - μ| := by
+            by_cases c436A21 : z ≤ μ - 2 * √v
+            have : 2 * √v ≤ μ - z := by linarith
+            have c436A22 : 0 ≤ μ - z := by linarith
+            have c436A22B : μ - z = |z - μ| := by
+              have c436A22B1 : |μ - z| = μ - z := by exact abs_of_nonneg c436A22
+              rw [← c436A22B1]
+              exact abs_sub_comm μ z
+            rw [← c436A22B]
+            exact this
+            push_neg at c436A21
+            have c436A23 : μ + 2 * √v < z := hz c436A21
+            have c436A24 : 2 * √v < z - μ := by exact lt_tsub_iff_left.mpr (hz c436A21)
+            have c436A25 : z - μ ≤ |z - μ| := by exact le_abs_self (z - μ)
+            have c436A26 : 2 * √v < |z - μ| := by apply lt_of_lt_of_le c436A24 c436A25
+            grind
+          have c436B2 : 4 * ↑v - (z - μ) ^ 2 ≤ 0 := by
+            have c436B21 : 4 * v ≤ (z - μ) ^ 2 := by
+              have c436B211 : 4 * v = (2 * √v) ^ 2 := by
+                have c436B2111 : (2 * √v) ^ 2 = 2 ^ 2 * √v ^ 2 := by
+                  set A := √v
+                  grind
+                rw [c436B2111]
+                have c436B2112 : √↑v ^ 2 = v := by exact Real.sq_sqrt c436A1
+                rw [c436B2112]
+                ring_nf
+              have c436B212 : |z - μ| ^ 2 = (z - μ) ^ 2 := by
+                set A := z - μ
+                exact sq_abs A
+              rw [← c436B212]
+              set A := 2 * √↑v
+              set B := |z - μ|
+              rw [c436B211]
+              have hA : A ≥ 0 := by positivity
+              have hB : 0 ≤ B := by grind
+              have habs : |A| ≤ |B| := by
+                simpa [abs_of_nonneg hA, abs_of_nonneg hB] using c436A2
+              simpa [pow_two] using (sq_le_sq.mpr habs)
+            grind
+          have c436B3 : 4 * ↑v - (z - μ) ^ 2 ≤ 0 := by grind
+          exact Real.sqrt_eq_zero_of_nonpos c436B3
+        rw [c436A, c436B]
+      rw [c436]
+      have c437 : (fun x ↦ √(4 * v - (x - μ) ^ 2))
+      = (fun x ↦ √(4 * v - 4 * ↑v * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2)) := by
+        funext x
+        have c437A : (x - μ) ^ 2 = ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2 := by
+          set X := 4 * v
+          have c437A1 : 4 * ↑v * ↑X⁻¹ * (x - μ) ^ 2 = X * X⁻¹ * (x - μ) ^ 2 := by
+            simp [X]
+          rw [c437A1]
+          have c437A2 : X * X⁻¹ * (x - μ) ^ 2 = (x - μ) ^ 2 := by
+            have c437A21 : ↑X * ↑X⁻¹ = 1 := by
+              refine CommGroupWithZero.mul_inv_cancel X ?_
+              simp [X]; push_neg; exact hv
+            have c437A22 : X * X⁻¹ * (x - μ) ^ 2 = 1 * (x - μ) ^ 2 := by
+              set Z := (x - μ) ^ 2
+              set Y := ↑X⁻¹
+              have h₁ : (↑X : ℝ) * (↑Y : ℝ) = 1 := by
+                simpa using congrArg (fun t : ℝ≥0 ↦ (t : ℝ)) c437A21
+              exact congrArg (fun t : ℝ ↦ t * Z) h₁
+            rw [c437A22]; grind
+          rw [c437A2]
+        have c437B : (4 * v)⁻¹ * (x - μ) ^ 2 = ((2 * √v)⁻¹ * (x - μ)) ^ 2 := by
+          set A := (2 * √v)⁻¹
+          set B := (x - μ)
+          have c437B1 : (A * B) ^ 2 = A ^ 2 * B ^ 2 := by grind
+          rw [c437B1]
+          have c437B2 : A ^ 2 = (4 * v)⁻¹ := by
+            simp [A]
+            set C := (√↑v)⁻¹
+            have c437B21 : (C * 2⁻¹) ^ 2 = C^2 * (2⁻¹) ^ 2 := by grind
+            rw [c437B21]
+            simp [C]
+            grind
+          rw [c437B2]
+        calc
+          √(4 * v - (x - μ) ^ 2)
+        _ = √(4 * v - ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2) := by grind
+        _ = √(4 * v - (4 * v) * ((4 * v)⁻¹ * (x - μ) ^ 2)) := by
+          have c5 : ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2 = (4 * v) * ((4 * v)⁻¹ * (x - μ) ^ 2) := by
+            rw [mul_assoc]
+          rw [c5]
+        _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * (x - μ)) ^ 2) := by rw [c437B]
+        _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * x - (2 * √v)⁻¹ * μ) ^ 2) := by grind
+        _ = √(4 * v - (4 * v) * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2) := by grind
+      rw [c437]
+      exact c434
+    calc
+      ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
+      = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by exact c43
+      _ = (2 * √v) * ((2 * √v) * (∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2))) := by rw [← c42]
+      _ = (4 * v) * (∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2)) := by
+        set C := ∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2)
+        calc
+          2 * √v * ((2 * √v) * C)
+          = (2 * √v * (2 * √v)) * C := by ring_nf
+          _ = (4 * v) * C := by
+            simp [mul_assoc, mul_comm, mul_left_comm]; constructor; ring
+      _ = (4 * v) * (Real.pi / 2) := by rw [← c41]
+      _ = 2 * π * v := by ring
+  calc
+    ∫ (x : ℝ), (v)⁻¹ * (π⁻¹ * 2⁻¹) * √(4 * v - (x - μ) ^ 2)
+    = ∫ (x : ℝ), (2 * π * v)⁻¹ * √(4 * v - (x - μ) ^ 2) := by apply c1
+    _ = ∫ x in I, A * √(4 * v - (x - μ) ^ 2) := by rw [← c2]
+    _ = A * ∫ x in I, √(4 * v - (x - μ) ^ 2) := by exact c3
+    _ = A * A⁻¹ := by rw [c4]
+    _ = 1 := by rw [mul_inv_cancel₀ hA]
 
-  /-have h4 : Function.support f ⊆ I := by
-    have h5 : Function.support f = Ioo (μ - 2 * √v) (μ + 2 * √v) := by sorry
-    have h6 : Ioo (μ - 2 * √v) (μ + 2 * √v) ⊆ I := by
-      rw [hI]; intro x; simp; sorry
-    simpa [h5] using h6
-  exact (integrableOn_iff_integrable_of_support_subset h4).mp h3-/
+lemma test
+    (f : ℝ → ℝ)
+    (h0 : 0 ≤ᵐ[ℙ] f) (hmeas : AEStronglyMeasurable f) :
+    ∫ x, f x ∂ ℙ = ENNReal.toReal (∫⁻ x, ENNReal.ofReal (f x) ∂ ℙ) := by
+  simpa using integral_eq_lintegral_of_nonneg_ae h0 hmeas
 
-  /-intro x hx
-    by_contra hxI
-    have h6 : f x = 0 := by
-      have h7 : 4 * v - (x - μ) ^ 2 ≤ 0 := by sorry
-      have h8 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h7
-      simp [f,h8]
-    have h9 : x ∉ Function.support f := by simpa [Function.support] using h6
-    exact h9 hx-/
-
-  /-apply IntegrableOn.integrable_of_ae_notMem_eq_zero h3
-  have h5 : ∀ (x : ℝ), x ∉ I → f x = 0 := by sorry-/
-
-  /-have h4 : IntegrableOn f Iᶜ := by
-    have h5 : IntegrableOn
-  have h : IntegrableOn f (I ∪ Iᶜ) := IntegrableOn.union h3 h4
-  have h' : I ∪ Iᶜ = Set.univ := Set.union_compl_self I
-  rw [h'] at h
-  rw [← integrableOn_univ]; exact h-/
-
+lemma test2 {A : ℝ≥0∞}
+  (h : ENNReal.toReal A = (1 : ℝ)) : A = (1 : ℝ≥0∞) := by
+  exact (ENNReal.toReal_eq_one_iff A).mp h
 
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
     ∫⁻ x, ENNReal.ofReal (semicirclePDFReal μ v x) = 1 := by
   rw [semicirclePDFReal_def]
-  simp
-  sorry
-
-/-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
-lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) :
-    ∫ x, semicirclePDFReal μ v x = 1 := by
-  sorry
+  set f := fun x ↦ 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2) with hf
+  have c1 := semicirclePDFReal_nonneg
+  have c3 := stronglyMeasurable_semicirclePDFReal
+  have c4 : AEStronglyMeasurable (semicirclePDFReal μ v) := by
+    apply StronglyMeasurable.aestronglyMeasurable; apply c3
+  have c5 := test
+  have c6 :  0 ≤ᶠ[ae ℙ] (semicirclePDFReal μ v) := by
+    apply ae_of_all; simp; apply c1
+  have c7 : ∫ (x : ℝ), (semicirclePDFReal μ v x)
+    = (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x)).toReal := by
+    apply c5; exact c6; exact c4
+  have c8 : 1 = (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x)).toReal := by
+    have c81 :  ∫ (x : ℝ), (semicirclePDFReal μ v x) = 1 := by
+      apply integral_semicirclePDFReal_eq_one; exact h
+    rw [← c81]; apply c7
+  have c9 : ENNReal.toReal (1 : ℝ≥0∞) = (1 : ℝ) := by exact rfl
+  have c10 : (1 : ℝ≥0∞) = ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) := by
+    rw [← c9] at c8; exact Eq.symm (test2 (id (Eq.symm c8)))
+  have c11 : ∫⁻ (x : ℝ), ENNReal.ofReal ((fun x ↦ 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2)) x)
+    = ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) := by rw [← semicirclePDFReal_def]
+  rw [c11, ← c10]
 
 lemma semicirclePDFReal_sub {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
     semicirclePDFReal μ v (x - y) = semicirclePDFReal (μ + y) v x := by
@@ -216,7 +480,8 @@ lemma semicirclePDFReal_add {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
   rw [sub_eq_add_neg, ← semicirclePDFReal_sub, sub_eq_add_neg, neg_neg]
 
 lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
-    semicirclePDFReal μ v (c⁻¹ * x) = |c| * semicirclePDFReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) x := by
+    semicirclePDFReal μ v (c⁻¹ * x)
+    = |c| * semicirclePDFReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) x := by
   rw [semicirclePDFReal, semicirclePDFReal]; simp
   have h1 : √(4 * v - (c⁻¹ * x - μ)^2) = √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) := by
       have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by
