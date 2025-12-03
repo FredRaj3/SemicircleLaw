@@ -354,10 +354,7 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
               have c436B212 : |z - μ| ^ 2 = (z - μ) ^ 2 := by
                 set A := z - μ
                 exact sq_abs A
-              rw [← c436B212]
-              set A := 2 * √↑v
-              set B := |z - μ|
-              rw [c436B211]
+              rw [← c436B212]; set A := 2 * √↑v; set B := |z - μ|; rw [c436B211]
               have hA : A ≥ 0 := by positivity
               have hB : 0 ≤ B := by grind
               have habs : |A| ≤ |B| := by
@@ -381,25 +378,20 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
               refine CommGroupWithZero.mul_inv_cancel X ?_
               simp [X]; push_neg; exact hv
             have c437A22 : X * X⁻¹ * (x - μ) ^ 2 = 1 * (x - μ) ^ 2 := by
-              set Z := (x - μ) ^ 2
-              set Y := ↑X⁻¹
+              set Z := (x - μ) ^ 2; set Y := ↑X⁻¹
               have h₁ : (↑X : ℝ) * (↑Y : ℝ) = 1 := by
                 simpa using congrArg (fun t : ℝ≥0 ↦ (t : ℝ)) c437A21
               exact congrArg (fun t : ℝ ↦ t * Z) h₁
             rw [c437A22]; grind
           rw [c437A2]
         have c437B : (4 * v)⁻¹ * (x - μ) ^ 2 = ((2 * √v)⁻¹ * (x - μ)) ^ 2 := by
-          set A := (2 * √v)⁻¹
-          set B := (x - μ)
+          set A := (2 * √v)⁻¹; set B := (x - μ)
           have c437B1 : (A * B) ^ 2 = A ^ 2 * B ^ 2 := by grind
           rw [c437B1]
           have c437B2 : A ^ 2 = (4 * v)⁻¹ := by
-            simp [A]
-            set C := (√↑v)⁻¹
+            simp [A]; set C := (√↑v)⁻¹
             have c437B21 : (C * 2⁻¹) ^ 2 = C^2 * (2⁻¹) ^ 2 := by grind
-            rw [c437B21]
-            simp [C]
-            grind
+            rw [c437B21]; simp [C]; grind
           rw [c437B2]
         calc
           √(4 * v - (x - μ) ^ 2)
@@ -411,8 +403,7 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
         _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * (x - μ)) ^ 2) := by rw [c437B]
         _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * x - (2 * √v)⁻¹ * μ) ^ 2) := by grind
         _ = √(4 * v - (4 * v) * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2) := by grind
-      rw [c437]
-      exact c434
+      rw [c437]; exact c434
     calc
       ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
       = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by exact c43
@@ -434,16 +425,6 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
     _ = A * A⁻¹ := by rw [c4]
     _ = 1 := by rw [mul_inv_cancel₀ hA]
 
-lemma test
-    (f : ℝ → ℝ)
-    (h0 : 0 ≤ᵐ[ℙ] f) (hmeas : AEStronglyMeasurable f) :
-    ∫ x, f x ∂ ℙ = ENNReal.toReal (∫⁻ x, ENNReal.ofReal (f x) ∂ ℙ) := by
-  simpa using integral_eq_lintegral_of_nonneg_ae h0 hmeas
-
-lemma test2 {A : ℝ≥0∞}
-  (h : ENNReal.toReal A = (1 : ℝ)) : A = (1 : ℝ≥0∞) := by
-  exact (ENNReal.toReal_eq_one_iff A).mp h
-
 /-- The semicircle distribution pdf integrates to 1 when the variance is not zero. -/
 lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) :
     ∫⁻ x, ENNReal.ofReal (semicirclePDFReal μ v x) = 1 := by
@@ -453,19 +434,20 @@ lemma lintegral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (h : v ≠ 0) 
   have c3 := stronglyMeasurable_semicirclePDFReal
   have c4 : AEStronglyMeasurable (semicirclePDFReal μ v) := by
     apply StronglyMeasurable.aestronglyMeasurable; apply c3
-  have c5 := test
   have c6 :  0 ≤ᶠ[ae ℙ] (semicirclePDFReal μ v) := by
     apply ae_of_all; simp; apply c1
   have c7 : ∫ (x : ℝ), (semicirclePDFReal μ v x)
     = (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x)).toReal := by
-    apply c5; exact c6; exact c4
+    apply integral_eq_lintegral_of_nonneg_ae; exact c6; exact c4
   have c8 : 1 = (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x)).toReal := by
     have c81 :  ∫ (x : ℝ), (semicirclePDFReal μ v x) = 1 := by
       apply integral_semicirclePDFReal_eq_one; exact h
     rw [← c81]; apply c7
   have c9 : ENNReal.toReal (1 : ℝ≥0∞) = (1 : ℝ) := by exact rfl
-  have c10 : (1 : ℝ≥0∞) = ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) := by
-    rw [← c9] at c8; exact Eq.symm (test2 (id (Eq.symm c8)))
+  have c10 : ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) = (1 : ℝ≥0∞) := by
+    rw [← c9] at c8
+    apply (ENNReal.toReal_eq_one_iff (∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x))).mp
+    exact id (Eq.symm c8)
   have c11 : ∫⁻ (x : ℝ), ENNReal.ofReal ((fun x ↦ 1 / (2 * π * ↑v) * √(4 * ↑v - (x - μ) ^ 2)) x)
     = ∫⁻ (x : ℝ), ENNReal.ofReal (semicirclePDFReal μ v x) := by rw [← semicirclePDFReal_def]
   rw [c11, ← c10]
@@ -498,7 +480,8 @@ lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0
         have h2111 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
         rw [h2111]; ring
       rw [h211]; ring
-    have h22 : (c⁻¹ * c)^2 * (4 * v) - (c⁻¹)^2 * (x - c * μ)^2 = (c⁻¹)^2 * (4 * (c^2 * v)) - (c⁻¹)^2 * (x - c * μ)^2 := by ring
+    have h22 : (c⁻¹ * c)^2 * (4 * v) - (c⁻¹)^2 * (x - c * μ) ^ 2
+      = (c⁻¹) ^ 2 * (4 * (c^2 * v)) - (c⁻¹) ^ 2 * (x - c * μ) ^ 2 := by ring
     rw [h21,h22]
     set A := 4 * (c^2 * v)
     set B := (x - c * μ)^2
