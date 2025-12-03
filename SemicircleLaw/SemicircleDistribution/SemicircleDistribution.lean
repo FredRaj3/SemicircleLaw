@@ -941,7 +941,12 @@ lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
     have c0 : ∫ (x : ℝ) in 0..π, Real.cos x ^ 0 = π := by simp
     simp
   case succ n ih =>
-    have c1 := test3
+    have c1 : ∀ (m : ℕ),
+    ∫ (x : ℝ) in 0..π, Real.cos x ^ (m + 2) =
+    (Real.cos π ^ (m + 1) * Real.sin π - Real.cos 0 ^ (m + 1) * Real.sin 0 +
+    (m + 1) * ∫ (x : ℝ) in 0..π, Real.cos x ^ m) -
+    (m + 1) * ∫ (x : ℝ) in 0..π, Real.cos x ^ (m + 2) := by
+      apply integral_cos_pow_aux (a := 0) (b := π)
     simp at c1
     set A := ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n + 2)
     set B := ∫ (x : ℝ) in 0..π, Real.cos x ^ (2 * n)
