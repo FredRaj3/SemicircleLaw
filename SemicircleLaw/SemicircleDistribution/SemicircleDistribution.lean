@@ -553,30 +553,6 @@ lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0
     rw [h51, h52]
   rw [h5]; ring
 
-  /- have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by grind
-      have h12 : (c⁻¹ * x - μ)^2 = (c⁻¹)^2 * (x - c * μ)^2 := by rw [h11]; ring
-      rw [h12] -/
-
-  /- have h211 : (c⁻¹ * c)^2 = 1 := by
-        have h2111 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
-        rw [h2111]; ring
-      rw [h211]; ring -/
-
-  /- have h111 : c⁻¹ * x - μ = c⁻¹ * x - 1 * μ := by linarith
-        have h112 : c⁻¹ * c = 1 := by exact inv_mul_cancel₀ hc
-        have h113 : c⁻¹ * x - 1 * μ = c⁻¹ * x - (c⁻¹ * c) * μ := by rw [h112]
-        have h114 : c⁻¹ * x - (c⁻¹ * c) * μ = c⁻¹ * (x - c * μ) := by ring
-        rw [h111,h113]; exact h114 -/
-
-  /-     have h41 : |c|⁻¹ = (|c| * |c|⁻¹) * |c|⁻¹ := by
-      have h411 :|c| * |c|⁻¹ = 1 := by
-        refine mul_inv_cancel₀ ?_; exact abs_ne_zero.mpr hc
-      rw [h411]; ring
-    calc
-      |c|⁻¹ = (|c| * |c|⁻¹) * |c|⁻¹ := by apply h41
-          _ = |c| * (|c|⁻¹ * |c|⁻¹) := by ring
-          _ = |c| * (|c|⁻¹)^2 := by ring -/
-
 lemma semicirclePDFReal_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c * x)
       = |c⁻¹| * semicirclePDFReal (c⁻¹ * μ) (⟨(c^2)⁻¹, inv_nonneg.mpr (sq_nonneg _)⟩ * v) x := by
@@ -923,14 +899,6 @@ lemma memLp_id_semicircleReal' (p : ℝ≥0∞) (hp : p ≠ ∞) : MemLp id p (s
 
 /- Setup for lemma centralMoment_fun_two_mul_semicircleReal -/
 
-/- Proof code is generated (by gpt-?) -/
-lemma test3 (m : ℕ) :
-  ∫ (x : ℝ) in 0..π, Real.cos x ^ (m + 2) =
-  (Real.cos π ^ (m + 1) * Real.sin π - Real.cos 0 ^ (m + 1) * Real.sin 0 +
-    (m + 1) * ∫ (x : ℝ) in 0..π, Real.cos x ^ m) -
-  (m + 1) * ∫ (x : ℝ) in 0..π, Real.cos x ^ (m + 2) := by
-  apply integral_cos_pow_aux (a := 0) (b := π)
-
 noncomputable def w (k : ℕ) : ℝ := ((2 : ℝ) * (k : ℝ) + 1) / ((2 : ℝ) * ((k : ℝ) + 1))
 
 lemma integral_cos_pow_even (n : ℕ) : (∫ x in 0..π, Real.cos x ^ (2 * n))
@@ -1057,7 +1025,8 @@ lemma prod_odd_over_even_central_choose (n : ℕ) :
     unfold P_even
     rw [prod_two_mul_factorial]
   have h_prod_all : P_odd * P_even = (Nat.factorial (2 * n) : ℝ) := by
-    have h_nat_prod_id : ∀ k, ∏ i ∈ Finset.range k, ((2 * i + 1) * (2 * i + 2)) = Nat.factorial (2 * k) := by
+    have h_nat_prod_id : ∀ k, ∏ i ∈ Finset.range k, ((2 * i + 1) * (2 * i + 2))
+      = Nat.factorial (2 * k) := by
       intro k
       induction k with
       | zero => simp
@@ -1068,8 +1037,10 @@ lemma prod_odd_over_even_central_choose (n : ℕ) :
         ring
     unfold P_odd P_even
     rw [← Finset.prod_mul_distrib]
-    conv_lhs => arg 2; ext x; rw [show (2 * (x : ℝ) + 1) * (2 * ((x : ℝ) + 1)) = ((2 * x + 1) * (2 * x + 2) : ℝ) by ring]
-    rw [show ∏ x ∈ Finset.range n, ((2 * x + 1) * (2 * x + 2) : ℝ) = (∏ x ∈ Finset.range n, (2 * x + 1) * (2 * x + 2) : ℕ) by simp [Nat.cast_prod]]
+    conv_lhs => arg 2; ext x; rw [show (2 * (x : ℝ) + 1) * (2 * ((x : ℝ) + 1))
+      = ((2 * x + 1) * (2 * x + 2) : ℝ) by ring]
+    rw [show ∏ x ∈ Finset.range n, ((2 * x + 1) * (2 * x + 2) : ℝ)
+      = (∏ x ∈ Finset.range n, (2 * x + 1) * (2 * x + 2) : ℕ) by simp [Nat.cast_prod]]
     rw [h_nat_prod_id]
   have h_P_even_ne_zero : P_even ≠ 0 := by
     rw [h_P_even]
@@ -1080,10 +1051,13 @@ lemma prod_odd_over_even_central_choose (n : ℕ) :
     P_odd / P_even
     _ = (↑(Nat.factorial (2 * n)) / P_even) / P_even := by field_simp; grind
     _ = ↑(Nat.factorial (2 * n)) / (P_even * P_even) := by rw [div_div]
-    _ = ↑(Nat.factorial (2 * n)) / (((2 : ℝ) ^ n * ↑(Nat.factorial n)) ^ 2) := by rw [h_P_even]; ring
-    _ = ↑(Nat.factorial (2 * n)) / (2 ^ (2 * n) * (↑(Nat.factorial n)) ^ 2) := by rw [mul_pow, ← pow_mul, mul_comm n 2]
+    _ = ↑(Nat.factorial (2 * n))
+      / (((2 : ℝ) ^ n * ↑(Nat.factorial n)) ^ 2) := by rw [h_P_even]; ring
+    _ = ↑(Nat.factorial (2 * n))
+      / (2 ^ (2 * n) * (↑(Nat.factorial n)) ^ 2) := by rw [mul_pow, ← pow_mul, mul_comm n 2]
     _ = (↑(Nat.choose (2 * n) n)) / 2 ^ (2 * n) := by
-      rw [show (Nat.choose (2 * n) n : ℝ) = (2 * n).factorial / (n.factorial * n.factorial) by
+      rw [show (Nat.choose (2 * n) n : ℝ)
+        = (2 * n).factorial / (n.factorial * n.factorial) by
         rw [Nat.choose_eq_factorial_div_factorial (by grind : n ≤ 2 * n)]
         rw [show 2 * n - n = n by grind]
         norm_cast
