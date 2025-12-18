@@ -41,12 +41,12 @@ linter.style.setOption = true
 [[require]]
 name = "Hammer"
 git = "https://github.com/JOSHCLUNE/LeanHammer"
-rev = "v4.22.0"
+rev = "v4.24.0"
 
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.22.0"
+rev = "v4.24.0"
 
 [[require]]
 name = "checkdecls"
