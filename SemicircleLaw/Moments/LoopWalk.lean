@@ -1,7 +1,6 @@
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Real.Basic
-import Batteries.Data.Rat.Basic
 import Mathlib.Algebra.Ring.Defs
 import Mathlib.Data.Finset.Basic
 import Hammer

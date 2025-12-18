@@ -6,6 +6,7 @@ import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Combinatorics.Enumerative.Catalan
+import Mathlib.Tactic
 import Hammer
 
 /-Richard's imports-/
@@ -1470,7 +1471,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
     = (↑((2 * n).choose n) : ℝ) / (↑n + 1) := by
       have c1250 : (2 : ℝ) ^ (2 * n) ≠ 0 := by exact Ne.symm (NeZero.ne' (2 ^ (2 * n)))
       have c1251 : (↑n + 1 : ℝ) ≠ 0 := by exact_mod_cast (Nat.succ_ne_zero n)
-      field_simp [c1250, c1251]; grind
+      field_simp [c1250, c1251];
     calc
       2 ^ (2 * n + 1) * ((1 - f₁ n / f₂ n) * (Finset.range n).prod f₁ / (Finset.range n).prod f₂)
       = (2 ^ (2 * n + 1) * (1 - f₁ n / f₂ n))
@@ -1499,24 +1500,6 @@ lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
   unfold id; apply centralMoment_fun_odd_semicircleReal
 
 end Moments
-
-section Scribbles
-
-def f (_ : ℝ) : ℝ := 1
-
-def g (x : ℝ) : ℝ := x
-
-def h (x : ℝ) : ℝ := x^2 - 1
-
-lemma g_cont : Continuous g := by
-  unfold g
-  continuity
-
-lemma h_cont : Continuous h := by
-  unfold h
-  continuity
-
-end Scribbles
 
 end SemicircleDistribution
 
