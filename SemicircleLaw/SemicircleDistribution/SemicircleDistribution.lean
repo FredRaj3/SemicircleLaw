@@ -892,29 +892,28 @@ lemma variance_id_semicircleReal : Var[id; semicircleReal μ v] = v :=
 /-- All the moments of a real semicircle distribution are finite. That is, the identity is in Lp for
 all finite `p`. -/
 lemma memLp_id_semicircleReal (p : ℝ≥0) : MemLp id p (semicircleReal μ v) := by
-  -- The semicircle distribution is compactly supported, so all moments are finite.
-  have h_compact_support : MeasureTheory.MemLp id (↑(Real.toNNReal p)) (ProbabilityTheory.semicircleReal μ v) := by
-    have h_compact_support : MeasureTheory.MemLp (fun x => x) ⊤ (ProbabilityTheory.semicircleReal μ v) := by
-      -- Since the semicircle distribution is compactly supported, the identity function is bounded.
-      have h_compact_support : ∃ M : ℝ, ∀ x ∈ Function.support (semicirclePDF μ v), |x| ≤ M := by
-        by_cases hv : v = 0;
-        · aesop;
-        · have := ProbabilityTheory.support_semicirclePDF ( μ := μ ) ( hv := hv );
-          exact ⟨ |μ| + 2 * Real.sqrt v, fun x hx => abs_le.mpr ⟨ by cases abs_cases μ <;> linarith [ Set.mem_Ioo.mp ( this ▸ hx ) ], by cases abs_cases μ <;> linarith [ Set.mem_Ioo.mp ( this ▸ hx ) ] ⟩ ⟩;
-      -- Since the identity function is bounded by M almost everywhere, it is in L^∞.
-      have h_bounded : ∃ M : ℝ, ∀ᵐ x ∂ProbabilityTheory.semicircleReal μ v, |x| ≤ M := by
-        unfold ProbabilityTheory.semicircleReal; aesop;
-        · exact ⟨ _, le_rfl ⟩;
-        · use w; rw [ MeasureTheory.ae_withDensity_iff ] ; aesop;
-          exact?;
-      refine' ⟨ _, _ ⟩;
-      · fun_prop;
-      · refine' lt_of_le_of_lt ( csInf_le _ _ ) _ <;> norm_num;
-        exact ENNReal.ofReal ( h_bounded.choose );
-        · filter_upwards [ h_bounded.choose_spec ] with x hx using by simpa only [ Real.enorm_eq_ofReal_abs ] using ENNReal.ofReal_le_ofReal hx;
-        · exact ENNReal.ofReal_lt_top;
-    exact h_compact_support.mono_exponent ( by simp +decide );
-  aesop
+  -- The semicircle distribution is in L∞
+  have h_L_infty : MeasureTheory.MemLp (fun x => x) ⊤ (ProbabilityTheory.semicircleReal μ v) := by
+   -- The semicircle distribution is compactly supported.
+    have h_compact_support : ∃ M : ℝ, ∀ x ∈ Function.support (semicirclePDF μ v), |x| ≤ M := by
+      by_cases hv : v = 0;
+      · aesop;
+      · have := ProbabilityTheory.support_semicirclePDF ( μ := μ ) ( hv := hv );
+        exact ⟨ |μ| + 2 * Real.sqrt v, fun x hx => abs_le.mpr ⟨ by cases abs_cases μ <;> linarith [ Set.mem_Ioo.mp ( this ▸ hx ) ], by cases abs_cases μ <;> linarith [ Set.mem_Ioo.mp ( this ▸ hx ) ] ⟩ ⟩;
+    -- Since the semicircle distribution is compactly supported, the identity is bounded ae.
+    have h_bounded : ∃ M : ℝ, ∀ᵐ x ∂ProbabilityTheory.semicircleReal μ v, |x| ≤ M := by
+      unfold ProbabilityTheory.semicircleReal; aesop;
+      · exact ⟨ _, le_rfl ⟩;
+      · use w; rw [ MeasureTheory.ae_withDensity_iff ]; aesop;
+        exact measurable_semicirclePDF μ v;
+    -- Since the identity function is bounded by M almost everywhere, it is in L^∞.
+    refine' ⟨ _, _ ⟩;
+    · fun_prop;
+    · refine' lt_of_le_of_lt ( csInf_le _ _ ) _ <;> norm_num;
+      exact ENNReal.ofReal ( h_bounded.choose );
+      · filter_upwards [ h_bounded.choose_spec ] with x hx using by simpa only [ Real.enorm_eq_ofReal_abs ] using ENNReal.ofReal_le_ofReal hx;
+      · exact ENNReal.ofReal_lt_top;
+  exact h_L_infty.mono_exponent ( by simp +decide );
 
 /-- All the moments of a real semicircle distribution are finite. That is, the identity is in Lp for
 all finite `p`. -/
