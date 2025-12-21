@@ -1561,12 +1561,9 @@ lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     = v ^ n * catalan n := by
   unfold id; apply centralMoment_fun_two_mul_semicircleReal
 
-
-
 lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) ((2 * n) + 1) (semicircleReal μ v)
     = 0 := by
-  -- Use the fact that the odd moments of the semicircle distribution are zero.
     by_cases hv : v = 0;
     · simp +decide [ hv, ProbabilityTheory.centralMoment, ProbabilityTheory.semicircleReal ];
     · -- Use the substitution $u = x - \mu$ to transform the integral.
@@ -1574,9 +1571,8 @@ lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
         rw [ ← MeasureTheory.integral_add_right_eq_self _ μ ] ; congr ; ext ; ring;
       -- Use the fact that the integral of an odd function over the entire real line is zero.
       have h_odd_integral : ∫ u, u ^ (2 * n + 1) * semicirclePDFReal μ v (u + μ) = ∫ u, -u ^ (2 * n + 1) * semicirclePDFReal μ v (u + μ) := by
-        rw [ ← MeasureTheory.integral_neg_eq_self ] ; congr ; ext ; ring;
+        rw [ ← MeasureTheory.integral_neg_eq_self ] ; congr ; ext ; ring_nf;
         simp +decide [ ProbabilityTheory.semicirclePDFReal ];
-      -- By combining the results from h_subst and h_odd_integral, we conclude that the integral is zero.
       have h_zero : ∫ u, u ^ (2 * n + 1) * semicirclePDFReal μ v (u + μ) = 0 := by
         norm_num [ MeasureTheory.integral_neg ] at * ; linarith;
       convert h_zero using 1;
