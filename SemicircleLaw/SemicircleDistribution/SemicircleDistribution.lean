@@ -7,7 +7,6 @@ import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
 import Mathlib.Combinatorics.Enumerative.Catalan
 import Mathlib.Tactic
-import Hammer
 
 /-Richard's imports-/
 import Mathlib.MeasureTheory.Function.LocallyIntegrable
@@ -824,13 +823,93 @@ variable {μ : ℝ} {v : ℝ≥0}
 /-- The mean of a real semicircle distribution `semicircleReal μ v` is its mean parameter `μ`. -/
 @[simp]
 lemma integral_id_semicircleReal : ∫ x, x ∂semicircleReal μ v = μ := by
-  sorry
+  admit
 
 /-- The variance of a real semicircle distribution `semicircleReal μ v` is
 its variance parameter `v`. -/
 @[simp]
 lemma variance_fun_id_semicircleReal : Var[fun x ↦ x; semicircleReal μ v] = v := by
-  sorry
+  norm_num [ ProbabilityTheory.variance, ProbabilityTheory.evariance] at *;
+  rw [ ProbabilityTheory.semicircleReal] ; aesop;
+  have h_integral : ∫ x, (x - μ) ^ 2 * semicirclePDFReal μ v x = v := by
+    --Rewrite the integral in terms of the semicircle PDF
+    have h_integral' : ∫ x in Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v), (x - μ)^2 *
+    (Real.sqrt (4 * v - (x - μ)^2)) = (v : ℝ) * (2 * Real.pi * v) := by
+      --Suffices to calculate the integral by centering around 0 instead of μ
+      suffices h_integral_simplified : ∫ x in Set.Icc (-2 * Real.sqrt v) (2 * Real.sqrt v),
+      x^2 * Real.sqrt (4 * v - x^2) = (v : ℝ) * (2 * Real.pi * v) by
+        rw [ ← h_integral_simplified, ← MeasureTheory.integral_indicator,
+        ← MeasureTheory.integral_indicator ] <;> norm_num [ Set.indicator ];
+        rw [ ← MeasureTheory.integral_add_right_eq_self _ μ ] ; congr ; ext ; aesop;
+        · exact Or.inr <| Real.sqrt_eq_zero_of_nonpos <| by
+            contrapose! a; constructor <;>
+            nlinarith [ Real.sqrt_nonneg v, Real.sq_sqrt <| show 0 ≤ ( v : ℝ ) by positivity];
+        · exact absurd ( h_1 ( by linarith ) ) ( by linarith );
+      -- Simplify the integral using the substitution $x = 2\sqrt{v} \sin \theta$.
+      suffices h_integral_subst : ∫ θ in Set.Icc (-Real.pi / 2) (Real.pi / 2),
+      (2 * Real.sqrt v * Real.sin θ)^2 * Real.sqrt (4 * v - (2 * Real.sqrt v * Real.sin θ)^2) *
+      (2 * Real.sqrt v * Real.cos θ) = (v : ℝ) * (2 * Real.pi * v) by
+        rw [ ← h_integral_subst, MeasureTheory.integral_Icc_eq_integral_Ioc,
+        ← intervalIntegral.integral_of_le ( by linarith [ Real.pi_pos, Real.sqrt_nonneg v ] ) ];
+        rw [ MeasureTheory.integral_Icc_eq_integral_Ioc,
+        ← intervalIntegral.integral_of_le ( by linarith [ Real.pi_pos ] ) ];
+        symm;
+        convert intervalIntegral.integral_comp_mul_deriv _ _ _ using 2;
+        any_goals intro x hx; exact HasDerivAt.const_mul ( 2 * Real.sqrt v) (Real.hasDerivAt_sin x);
+        · rfl;
+        · norm_num [ neg_div ];
+        · norm_num;
+        · exact Continuous.continuousOn ( by continuity );
+        · continuity;
+      -- Simplify the integrand using trigonometric identities, and show it equals 2*π*v.
+      suffices h_integral_simplified : ∫ θ in Set.Icc (-Real.pi / 2) (Real.pi / 2),
+      16 * v^2 * Real.sin θ^2 * Real.cos θ^2 = (v : ℝ) * (2 * Real.pi * v) by
+        convert h_integral_simplified using 1;
+        refine' MeasureTheory.setIntegral_congr_fun measurableSet_Icc fun x hx => _ ; ring;
+        norm_num [ Real.sin_sq, h ] ; ring;
+        rw [ Real.sqrt_mul <| by positivity, Real.sqrt_mul <| by positivity ] ; ring;
+        rw [ show ( Real.sqrt v ) ^ 4 = ( Real.sqrt v ^ 2 ) ^ 2 by
+          ring, Real.sq_sqrt <| by positivity ];
+          rw[Real.sqrt_sq <| Real.cos_nonneg_of_mem_Icc ⟨by linarith [Real.pi_pos, hx.1 ], hx.2 ⟩];
+          ring;
+      rw [ MeasureTheory.integral_Icc_eq_integral_Ioc,
+      ← intervalIntegral.integral_of_le ( by linarith [ Real.pi_pos ] ) ] ;
+      norm_num [ mul_assoc, neg_div ] ; ring;
+      norm_num [ mul_two ];
+    /- Use the above simplifications to deduce that the integral of $(x - \mu)^2$ over the
+    semicircle distribution is $v$ to conclude the proof. -/
+    have h_final : ∫ x, (x - μ)^2 * (semicirclePDFReal μ v x) =
+    (∫ x in Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v),
+    (x - μ)^2 * (Real.sqrt (4 * v - (x - μ)^2))) / (2 * Real.pi * v) := by
+      rw [ ← MeasureTheory.integral_indicator ] <;> norm_num [ Set.indicator ];
+      rw [ ← MeasureTheory.integral_div ] ; congr ; ext x ; aesop;
+      · unfold ProbabilityTheory.semicirclePDFReal; ring;
+      · contrapose! h_1;
+        constructor <;> contrapose! h_1 <;> unfold ProbabilityTheory.semicirclePDFReal at * <;>
+        aesop;
+        · rw [ Real.sqrt_eq_zero_of_nonpos ( by
+            nlinarith [ Real.sqrt_nonneg v,
+            Real.mul_self_sqrt ( show 0 ≤ ( v : ℝ ) by positivity ) ] ) ];
+        · rw [ Real.sqrt_eq_zero_of_nonpos ( by
+            nlinarith [ Real.sqrt_nonneg v,
+            Real.mul_self_sqrt ( show 0 ≤ ( v : ℝ ) by positivity ) ] ) ];
+    rw [ h_final, h_integral', mul_div_cancel_right₀ _ ( by positivity ) ];
+  convert h_integral using 1;
+  /-Show equivalence of (∫⁻ (ω : ℝ), ‖ω - μ‖ₑ ^ 2 ∂ℙ.withDensity (semicirclePDF μ v)).toReal
+  = ∫ (x : ℝ), (x - μ) ^ 2 * semicirclePDFReal μ v x via measure theory lemmas-/
+  rw [ MeasureTheory.integral_eq_lintegral_of_nonneg_ae ];
+  · rw [ MeasureTheory.lintegral_withDensity_eq_lintegral_mul ];
+    · norm_num [ mul_comm, ProbabilityTheory.semicirclePDF ];
+      congr! 2;
+      ext; rw [ ENNReal.ofReal_mul ( sq_nonneg _ ) ] ;
+      norm_num [ ← ENNReal.ofReal_pow, Real.enorm_eq_ofReal_abs ];
+    · exact Measurable.ennreal_ofReal ( ProbabilityTheory.measurable_semicirclePDFReal μ v );
+    · fun_prop;
+  · exact Filter.Eventually.of_forall fun x =>
+      mul_nonneg ( sq_nonneg _ ) ( ProbabilityTheory.semicirclePDFReal_nonneg _ _ _ );
+  · exact Continuous.aestronglyMeasurable ( by
+      exact Continuous.mul ( by continuity ) ( by
+       exact ProbabilityTheory.Cont_semicirclePDFReal μ v ) )
 
 /-- The variance of a real semicircle distribution `semicircleReal μ v` is
 its variance parameter `v`. -/
@@ -840,8 +919,32 @@ lemma variance_id_semicircleReal : Var[id; semicircleReal μ v] = v :=
 
 /-- All the moments of a real semicircle distribution are finite. That is, the identity is in Lp for
 all finite `p`. -/
-lemma memLp_id_semicircleReal (p : ℝ≥0) : MemLp id p (semicircleReal μ v) :=
-  sorry
+lemma memLp_id_semicircleReal (p : ℝ≥0) : MemLp id p (semicircleReal μ v) := by
+  -- The semicircle distribution is in L∞
+  have h_L_infty : MeasureTheory.MemLp (fun x => x) ⊤ (ProbabilityTheory.semicircleReal μ v) := by
+   -- The semicircle distribution is compactly supported.
+    have h_compact_support : ∃ M : ℝ, ∀ x ∈ Function.support (semicirclePDF μ v), |x| ≤ M := by
+      by_cases hv : v = 0;
+      · aesop;
+      · have := ProbabilityTheory.support_semicirclePDF ( μ := μ ) ( hv := hv );
+        exact ⟨ |μ| + 2 * Real.sqrt v, fun x hx => abs_le.mpr ⟨ by
+           cases abs_cases μ <;> linarith [ Set.mem_Ioo.mp ( this ▸ hx ) ], by
+             cases abs_cases μ <;> linarith [ Set.mem_Ioo.mp ( this ▸ hx ) ] ⟩ ⟩;
+    -- Since the semicircle distribution is compactly supported, the identity is bounded ae.
+    have h_bounded : ∃ M : ℝ, ∀ᵐ x ∂ProbabilityTheory.semicircleReal μ v, |x| ≤ M := by
+      unfold ProbabilityTheory.semicircleReal; aesop;
+      · exact ⟨ _, le_rfl ⟩;
+      · use w; rw [ MeasureTheory.ae_withDensity_iff ]; aesop;
+        exact measurable_semicirclePDF μ v;
+    -- Since the identity function is bounded by M almost everywhere, it is in L^∞.
+    refine' ⟨ _, _ ⟩;
+    · fun_prop;
+    · refine' lt_of_le_of_lt ( csInf_le _ _ ) _ <;> norm_num;
+      exact ENNReal.ofReal ( h_bounded.choose );
+      · filter_upwards [ h_bounded.choose_spec ] with x hx using by
+         simpa only [ Real.enorm_eq_ofReal_abs ] using ENNReal.ofReal_le_ofReal hx;
+      · exact ENNReal.ofReal_lt_top;
+  exact h_L_infty.mono_exponent ( by simp +decide );
 
 /-- All the moments of a real semicircle distribution are finite. That is, the identity is in Lp for
 all finite `p`. -/
@@ -958,7 +1061,7 @@ lemma prod_odd_over_even_central_choose (n : ℕ) :
       | zero => simp
       | succ k IH =>
         rw [Finset.prod_range_succ, IH]
-        rw [show Nat.factorial (2 * (k + 1)) = Nat.factorial (2 * k + 2) by ring]
+        rw [show Nat.factorial (2 * (k + 1)) = Nat.factorial (2 * k + 2) by ring_nf]
         rw [Nat.factorial_succ, Nat.factorial_succ]
         ring
     unfold P_odd P_even
@@ -1491,8 +1594,25 @@ lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
 
 lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) ((2 * n) + 1) (semicircleReal μ v)
-    = 0 :=
-  sorry
+    = 0 := by
+    by_cases hv : v = 0;
+    · simp +decide [ hv, ProbabilityTheory.centralMoment, ProbabilityTheory.semicircleReal ];
+    · -- Use the substitution $u = x - \mu$ to transform the integral.
+      have h_subst : ∫ x, (x - μ) ^ (2 * n + 1) * semicirclePDFReal μ v x =
+        ∫ u, u ^ (2 * n + 1) * semicirclePDFReal μ v (u + μ) := by
+        rw [ ← MeasureTheory.integral_add_right_eq_self _ μ ] ; congr ; ext ; ring;
+      -- Use the fact that the integral of an odd function over the entire real line is zero.
+      have h_odd_integral : ∫ u, u ^ (2 * n + 1) * semicirclePDFReal μ v (u + μ) =
+        ∫ u, -u ^ (2 * n + 1) * semicirclePDFReal μ v (u + μ) := by
+        rw [ ← MeasureTheory.integral_neg_eq_self ] ; congr ; ext ; ring_nf;
+        simp +decide [ ProbabilityTheory.semicirclePDFReal ];
+      have h_zero : ∫ u, u ^ (2 * n + 1) * semicirclePDFReal μ v (u + μ) = 0 := by
+        norm_num [ MeasureTheory.integral_neg ] at * ; linarith;
+      convert h_zero using 1;
+      rw [ ← h_subst, ProbabilityTheory.centralMoment ];
+      rw [ integral_semicircleReal_eq_integral_smul ] ; aesop;
+      · simpa only [ mul_comm ] using h_subst;
+      · assumption
 
 lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment id ((2 * n) + 1) (semicircleReal μ v)
