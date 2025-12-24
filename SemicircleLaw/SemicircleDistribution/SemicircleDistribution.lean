@@ -1720,6 +1720,22 @@ lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
 
 end Moments
 
+lemma catalan_recur (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catalan n) := by
+  -- By definition of Catalan numbers, we know that $C_n = \frac{1}{n+1} \binom{2n}{n}$.
+  have h_catalan_def : ∀ n, catalan n = Nat.centralBinom n / (n + 1) := by
+    norm_num [ Nat.centralBinom, catalan_eq_centralBinom_div ];
+  norm_num [ h_catalan_def, Nat.centralBinom ];
+  rw [ ← Nat.mul_div_assoc, ← Nat.mul_div_assoc ];
+  · rw [ show 2 * ( n + 1 ) = 2 * n + 2 by ring ];
+    rw [ show 2 * n + 2 = 2 * n + 1 + 1 by ring, Nat.choose_succ_succ ];
+    rw [ Nat.succ_eq_add_one, Nat.choose_symm_of_eq_add ] <;> simp +arith +decide;
+    exact Eq.symm ( Nat.div_eq_of_eq_mul_left ( Nat.succ_pos _ ) ( by nlinarith [ Nat.succ_mul_choose_eq ( 2 * n ) n, Nat.succ_mul_choose_eq ( 2 * n + 1 ) ( n + 1 ) ] ) );
+  · have h := Nat.succ_mul_choose_eq ( 2 * n ) n;
+    rw [ Nat.choose_succ_succ ] at h;
+    exact ⟨ Nat.choose ( 2 * n ) n - Nat.choose ( 2 * n ) ( n + 1 ), by rw [ Nat.mul_sub_left_distrib, eq_tsub_iff_add_eq_of_le ] <;> nlinarith ⟩;
+  · have h := Nat.succ_mul_choose_eq ( 2 * ( n + 1 ) ) ( n + 1 );
+    exact Nat.Coprime.dvd_of_dvd_mul_left ( by norm_num [ ( by ring : 2 * ( n + 1 ) + 1 = n + 1 + 1 + ( n + 1 ) ) ] ) ( h.symm ▸ dvd_mul_left _ _ )
+
 end SemicircleDistribution
 
 end ProbabilityTheory
