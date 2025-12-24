@@ -823,7 +823,106 @@ variable {μ : ℝ} {v : ℝ≥0}
 /-- The mean of a real semicircle distribution `semicircleReal μ v` is its mean parameter `μ`. -/
 @[simp]
 lemma integral_id_semicircleReal : ∫ x, x ∂semicircleReal μ v = μ := by
-  admit
+    by_cases hv : v = 0
+    · simp [hv]
+    rw [integral_semicircleReal_eq_integral_smul hv]
+    have : (fun x => semicirclePDFReal μ v x • x) =
+         (fun x => semicirclePDFReal μ v x * (x - μ + μ)) := by
+        ext x
+        simp [smul_eq_mul]
+    rw [this]
+    have : (fun x => semicirclePDFReal μ v x * (x - μ + μ)) =
+         (fun x => semicirclePDFReal μ v x * (x - μ) + semicirclePDFReal μ v x * μ) := by
+         ext x
+         ring_nf
+    rw [this]
+    rw [integral_add]
+    have h_symm : ∫ (a : ℝ), semicirclePDFReal μ v a * (a - μ) = 0 := by
+       rw [semicirclePDFReal_def]
+       have : ∫ (a : ℝ), (1 / (2 * π * ↑v) * √(4 * ↑v - (a - μ) ^ 2)) * (a - μ) =
+         ∫ (y : ℝ), (1 / (2 * π * ↑v) * √(4 * ↑v - y ^ 2)) * y := by
+           rw [ eq_comm, ← MeasureTheory.integral_sub_right_eq_self _ μ ]
+       rw [this]
+       have h_odd : ∀ y, (1 / (2 * π * ↑v) * √(4 * ↑v - (-y) ^ 2) * (-y)) =
+                    -(1 / (2 * π * ↑v) * √(4 * ↑v - y ^ 2) * y) := by
+            intro y
+            ring_nf
+       have h_neg : ∫ (y : ℝ), (1 / (2 * π * ↑v) * √(4 * ↑v - y ^ 2)) * y =
+               ∫ (y : ℝ), (1 / (2 * π * ↑v) * √(4 * ↑v - (-y) ^ 2)) * (-y) := by
+        /- By substituting $y$ with $-y$, we can show that the integral of the function over
+        the entire real line is equal to the integral of its negative.-/
+        have h_subst : ∀ {f : ℝ → ℝ}, (∫ y, f y) = (∫ y, f (-y)) := by
+          intro f; rw [ ← MeasureTheory.integral_neg_eq_self ] ;
+        rw [ h_subst ]
+       simp only [h_odd] at h_neg
+       rw [integral_neg] at h_neg
+       linarith
+    rw [h_symm, zero_add]
+    have : (fun a => semicirclePDFReal μ v a * μ) = (fun a => μ * semicirclePDFReal μ v a) := by
+       ext a; ring
+    rw [this]
+    rw [integral_const_mul]
+    rw [integral_semicirclePDFReal_eq_one μ hv]
+    ring_nf
+    /- Since the semicircle PDF is continuous and compactly supported,
+    the product with (x - μ) is also continuous and compactly supported, hence integrable.-/
+    have h_cont_compact : Continuous (fun x => semicirclePDFReal μ v x * (x - μ)) ∧ ∃ C,
+      ∀ x, abs (semicirclePDFReal μ v x * (x - μ)) ≤ C := by
+      aesop
+      generalize_proofs at *;
+      · exact Continuous.mul
+          ( ProbabilityTheory.Cont_semicirclePDFReal μ v ) ( continuous_id.sub continuous_const );
+      · /- Since the semicircle PDF is continuous and compactly supported, the product with (x - μ)
+         is also continuous and compactly supported, hence bounded.-/
+        have h_cont_compact : ContinuousOn (fun x => semicirclePDFReal μ v x * (x - μ))
+          (Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v)) := by
+          exact Continuous.continuousOn ( by exact Continuous.mul ( by
+            exact ProbabilityTheory.Cont_semicirclePDFReal μ v) (continuous_id.sub continuous_const));
+        /- Since the function is continuous on a compact interval,
+        it attains a maximum and minimum there.-/
+        obtain ⟨M, hM⟩ : ∃ M, ∀ x ∈ Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v),
+          abs (semicirclePDFReal μ v x * (x - μ)) ≤ M := by
+          /- By the Extreme Value Theorem, since the function is continuous on a compact interval,
+          it attains a maximum and minimum on this interval.-/
+          have h_extreme_value : ∃ M, ∀ x ∈ Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v),
+              abs (semicirclePDFReal μ v x * (x - μ)) ≤ M := by
+            have h_compact : IsCompact (Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v)) := by
+              exact CompactIccSpace.isCompact_Icc
+            exact IsCompact.exists_bound_of_continuousOn h_compact h_cont_compact |>
+              fun ⟨ M, hM ⟩ => ⟨ M, fun x hx => hM x hx ⟩
+          generalize_proofs at *;
+          exact h_extreme_value;
+        /- Since the semicircle PDF is zero outside the interval [μ - 2√v, μ + 2√v],
+          the product with (x - μ) is also zero outside this interval. -/
+        have h_zero_outside : ∀ x, x ∉ Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v)
+         → semicirclePDFReal μ v x * (x - μ) = 0 := by
+          intro x hx
+          unfold ProbabilityTheory.semicirclePDFReal; aesop;
+          apply Or.inl
+          apply Real.sqrt_eq_zero_of_nonpos
+          simp
+          rw [imp_iff_not_or] at hx
+          rcases hx with hx | hx
+          · nlinarith [Real.sqrt_nonneg v, Real.sq_sqrt (NNReal.coe_nonneg v)]
+          · nlinarith [Real.sqrt_nonneg v, Real.sq_sqrt (NNReal.coe_nonneg v)]
+        simp_rw [← abs_mul]
+        exact ⟨ Max.max M 0, fun x => if hx : x ∈ Set.Icc ( μ - 2 * Real.sqrt v ) ( μ + 2 * Real.sqrt v ) then  le_trans (hM x hx) ( le_max_left M 0 ) else by rw [ h_zero_outside x hx ] ; norm_num ⟩;
+    have h_integrable : MeasureTheory.IntegrableOn (fun x => semicirclePDFReal μ v x * (x - μ)) (fun x => x ∈ Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v)) := by
+      -- Since the function is continuous on a compact interval, it is integrable.
+      have h_cont : ContinuousOn (fun x => semicirclePDFReal μ v x * (x - μ)) (Set.Icc (μ - 2 * Real.sqrt v) (μ + 2 * Real.sqrt v)) := by
+        exact h_cont_compact.1.continuousOn;
+      exact h_cont.integrableOn_Icc;
+    convert h_integrable using 1;
+    ext;
+    rw [ MeasureTheory.integrableOn_iff_integrable_of_support_subset ];
+    intro x hx; contrapose! hx; aesop;
+    exact False.elim <| a <| by rw [ ProbabilityTheory.semicirclePDFReal ] ; exact mul_eq_zero_of_right _ <| Real.sqrt_eq_zero_of_nonpos <| le_of_not_gt fun h' => hx <| ⟨ by nlinarith [ Real.sqrt_nonneg v, Real.sq_sqrt <| show ( v : ℝ ) ≥ 0 by positivity ], by nlinarith [ Real.sqrt_nonneg v, Real.sq_sqrt <| show ( v : ℝ ) ≥ 0 by positivity ] ⟩ ;
+    -- Since ProbabilityTheory.semicirclePDFReal μ v x is integrable, multiplying it by a constant μ preserves integrability.
+    have h_integrable : MeasureTheory.Integrable (fun x => ProbabilityTheory.semicirclePDFReal μ v x) := by
+      exact?;
+    -- Since the semicircle PDF is integrable, multiplying it by a constant μ preserves integrability.
+    apply MeasureTheory.Integrable.mul_const h_integrable μ
+
 
 /-- The variance of a real semicircle distribution `semicircleReal μ v` is
 its variance parameter `v`. -/
