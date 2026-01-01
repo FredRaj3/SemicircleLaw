@@ -477,21 +477,16 @@ lemma semicircleReal_map_add_const (y : ℝ) :
         apply lintegral_congr_ae
         filter_upwards [] with a
         ring_nf
-
       have h_comp : Measurable (fun u ↦ semicirclePDF μ v (u - y)) :=
               (measurable_semicirclePDF μ v).comp (measurable_sub_const y)
       rw [h1]
-
       -- this is the key lemma which helps us convert LHS
       rw [<- setLIntegral_map hs h_comp]
       rw [map_add_right_eq_self volume y]
       simp [h_meas]
-
     rw[h_change]
-
     apply lintegral_congr_ae
     filter_upwards [] with x
-
     -- the original semicirclePDFReal needs to be modified
     have semicirclePDFReal_sub_ENNReal {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
              ENNReal.ofReal (semicirclePDFReal μ v (x - y)) =
@@ -500,22 +495,17 @@ lemma semicircleReal_map_add_const (y : ℝ) :
 
     exact semicirclePDFReal_sub_ENNReal x y
 
-
 /-- The map of a semicircle distribution by addition of a constant is semicircular. -/
 lemma semicircleReal_map_const_add (y : ℝ) :
     (semicircleReal μ v).map (y + ·) = semicircleReal (μ + y) v := by
   simp_rw [add_comm y]
   exact semicircleReal_map_add_const y
 
-
-
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_const_mul (c : ℝ) :
     (semicircleReal μ v).map (c * ·) = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
-
   by_cases hc : c = 0
   · simp [hc]
-
   by_cases hv : v = 0
   · rw [hv, semicircleReal_zero_var]
     simp [mul_zero]
@@ -532,16 +522,11 @@ lemma semicircleReal_map_const_mul (c : ℝ) :
           exact this
         have h_c : c = 0 := by rwa [sq_eq_zero_iff] at h_sq
         exact hc h_c
-
       · exact hv
-
     rw [semicircleReal_of_var_ne_zero (c * μ) h_nonzero]
-
     rw [Measure.map_apply (measurable_const_mul c) hs]
     rw [withDensity_apply' _]
     rw [withDensity_apply' _]
-
-
     have h1 : ∫⁻ (a : ℝ) in (c * ·) ⁻¹' s, semicirclePDF μ v a
       = ∫⁻ (a : ℝ) in (c * ·) ⁻¹' s, semicirclePDF μ v (c⁻¹ * (c * a)) := by
         apply lintegral_congr_ae
@@ -552,19 +537,12 @@ lemma semicircleReal_map_const_mul (c : ℝ) :
         have h_ne : c ≠ 0 := hc
         rw [inv_mul_cancel₀ h_ne]
         rw [one_mul]
-
     rw [h1]
-
-
     have h_map : ∫⁻ (a : ℝ) in (c * ·) ⁻¹' s, semicirclePDF μ v ((c⁻¹ * (c * a)))
                 = ∫⁻ (u : ℝ) in s, (ENNReal.ofReal (|c|⁻¹)) * semicirclePDF μ v (c⁻¹ * u) := by
-
           have h_meas : Measurable (c * ·) := measurable_const_mul c
-
-
           have h_comp : Measurable (fun u ↦ semicirclePDF μ v (c⁻¹ * u)) := by
               apply Measurable.comp (measurable_semicirclePDF μ v) (measurable_const_mul (c⁻¹))
-
           rw [← setLIntegral_map hs h_comp]
 
           have h_volume : (volume : Measure ℝ).map (c * ·) = ENNReal.ofReal (|c|⁻¹) • volume := by
@@ -581,15 +559,11 @@ lemma semicircleReal_map_const_mul (c : ℝ) :
           rw [lintegral_const_mul]
           rw [ENNReal.ofReal]
           rfl
-
           exact h_comp
           exact h_meas
-
     rw [h_map]
-
     apply lintegral_congr_ae
     filter_upwards [] with a
-
     simp only [semicirclePDF]
     rw [<- ENNReal.ofReal_mul]
     · congr 1
@@ -598,15 +572,10 @@ lemma semicircleReal_map_const_mul (c : ℝ) :
          exact hc (abs_eq_zero.1 (inv_eq_zero.1 H))
       rw[semicirclePDFReal_inv_mul hc]
       rw [← mul_assoc]
-
       have : |c|⁻¹ * |c| = 1 := inv_mul_cancel₀ (abs_ne_zero.2 hc)
-
       rw [this]
       rw [one_mul]
-
     exact inv_nonneg.2 (abs_nonneg c)
-
-
 
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_mul_const (c : ℝ) :
