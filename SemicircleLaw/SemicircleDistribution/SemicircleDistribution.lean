@@ -520,7 +520,6 @@ lemma semicircleReal_map_const_mul (c : ℝ) :
   · rw [hv, semicircleReal_zero_var]
     simp [mul_zero]
     rw [Measure.map_dirac (measurable_const_mul c)]
-
   · apply Measure.ext
     intro s hs
     rw [semicircleReal_of_var_ne_zero μ hv]
