@@ -1805,3 +1805,5 @@ lemma catalan_recur (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catala
 end SemicircleDistribution
 
 end ProbabilityTheory
+
+/- Test commit -/
