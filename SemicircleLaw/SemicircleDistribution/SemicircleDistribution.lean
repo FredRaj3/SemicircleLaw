@@ -102,53 +102,30 @@ lemma stronglyMeasurable_semicirclePDFReal (μ : ℝ) (v : ℝ≥0) :
     StronglyMeasurable (semicirclePDFReal μ v) :=
   (measurable_semicirclePDFReal μ v).stronglyMeasurable
 
+/-- The support of the semicircle pdf is contained in [μ - 2 * √v, μ + 2 * √v]. --/
 lemma support_semicirclePDF_inc (μ : ℝ) (v : ℝ≥0) :
 Function.support (semicirclePDFReal μ v) ⊆ Icc (μ - 2 * √v) (μ + 2 * √v) := by
   set f := fun x ↦ 1 / (2 * π * v) * √(4 * v - (x - μ) ^ 2)
   set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
   intro x hx
   by_contra hxI
-  have h5 : f x = 0 := by
-    have h6 : 4 * v - (x - μ) ^ 2 ≤ 0 := by
-      dsimp [I,Icc] at hxI
-      by_contra hxIc
-      push_neg at hxIc
-      have hxIc_1 : (x - μ)^2 < 4 * v := by exact lt_add_neg_iff_lt.mp hxIc
-      have hxIc_2 : |x - μ| < 2 * √v := by
-        set A := x - μ
-        have hxIc_21 : (2 * √v)^2 = 4 * v := by
-          calc
-            (2 * √v)^2 = 2^2 * (√v)^2 := by exact mul_pow 2 (√↑v) 2
-                     _ = 4 * (√v)^2 := by norm_num
-                     _ = 4 * v := by norm_num
-        rw [← hxIc_21] at hxIc_1
-        set B := 2 * √v
-        have : 0 ≤ B := by positivity
-        apply abs_lt_of_sq_lt_sq; exact hxIc_1; exact this
-      have hxIc_3 : -(x - μ) < 2 * √v := by
-        set A := x - μ with hA
-        calc
-          -A ≤ |A| := by exact neg_le_abs A
-            _ < 2 * √v := hxIc_2
-      have hxIc_31 : - x + μ < 2 * √v := by grind
-      have hxIc_32 : μ < x + 2 * √v := by exact lt_add_of_neg_add_lt hxIc_31
-      have hxIc_33 : μ - 2 * √v < x := by
-        set B := 2 * √v
-        exact sub_right_lt_of_lt_add hxIc_32
-      have hxIc_4 : x - μ < 2 * √v := by exact lt_of_abs_lt hxIc_2
-      have hxIc_41 : x < μ + 2 * √v := by exact lt_add_of_tsub_lt_left hxIc_4
-      apply (not_and_or).mp at hxI
-      have C1 : x ≤ μ + 2 * √v := by exact le_of_lt hxIc_41
-      have C2 : μ - 2 * √v ≤ x := by exact le_of_lt hxIc_33
-      have C3 : μ - 2 * √v ≤ x ∧ x ≤ μ + 2 * √v := by exact ⟨C2, C1⟩
-      set Co1 := μ - 2 * √v ≤ x
-      set Co2 := x ≤ μ + 2 * √v
-      have C : (¬Co1 ∨ ¬Co2) ↔ ¬(Co1 ∧ Co2) := by exact Iff.symm Decidable.not_and_iff_or_not
-      rw [C] at hxI; absurd C3; exact hxI
-    have h7 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h6
-    simp [f,h7]
-  have h8 : x ∉ Function.support f := by simpa [Function.support] using h5
-  exact h8 hx
+  have h0 : f x = 0 := by
+    have h1 : 4 * v - (x - μ) ^ 2 ≤ 0 := by
+      dsimp [I, Icc] at hxI
+      by_contra h_pos
+      have h_abs_lt : |x - μ| < 2 * √v := by
+        apply abs_lt_of_sq_lt_sq
+        rw [mul_pow, Real.sq_sqrt (NNReal.coe_nonneg v)]
+        linarith [h_pos]
+        positivity
+      apply hxI
+      constructor
+      · linarith [neg_lt_of_abs_lt h_abs_lt]
+      · linarith [lt_of_abs_lt h_abs_lt]
+    have h2 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h1
+    simp [f,h2]
+  have h3 : x ∉ Function.support f := by simpa [Function.support] using h0
+  exact h3 hx
 
 /-- The semicircle pdf is integrable. -/
 @[fun_prop]
@@ -561,21 +538,11 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
       have h23 : 2 * √v ≤ -(x - μ) := by
         set B := 2 * √v
         exact le_neg_of_le_neg h22
-      have h24 : 4 * v ≤ (x - μ)^2 := by
-        set B := 2 * √v with hB
-        have h241 : 4 * v = B^2 := by
-          rw [hB]; ring_nf; rw [Real.sq_sqrt]; positivity
-        rw [h241]; refine sq_le_sq.mpr ?_
-        have h242 : 0 ≤ B := by positivity
-        have h243 : 0 ≤ -(x - μ) := by exact Preorder.le_trans 0 B (-(x - μ)) h242 h23
-        /- Apply? helped complete this part.-/
-        calc
-          |B| = B := by simp [abs_of_nonneg h242]
-           _  ≤ -(x - μ) := h23
-        have h244 : -(x - μ) ≤ |x - μ| := by
-          set A := x - μ with xA
-          exact neg_le_abs A
-        exact h244
+      have h24 : 4 * ↑v ≤ (x - μ) ^ 2 := by
+        rw [show (4 * ↑v : ℝ) = (2 * √v)^2
+        by { ring_nf; rw [Real.sq_sqrt (by positivity)] }, sq_le_sq]
+        rw [abs_of_nonneg (by positivity)]
+        exact le_trans h23 (neg_le_abs _)
       have h25 : 4 * v - (x - μ)^2 ≤ 0 := by exact sub_nonpos.mpr h24
       have h26 : √(4 * v - (x - μ)^2) = 0 := by exact Real.sqrt_eq_zero'.mpr h25
       have h27 : 1 / (2 * π * v) *  √(4 * v - (x - μ)^2) = 0 := by
@@ -587,16 +554,12 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
       have h32 : 2 * √v ≤ x - μ := by
         set B := 2 * √v
         exact le_tsub_of_add_le_left h31
-      have h33 : 4 * v ≤ (x - μ)^2 := by
-        set B := 2 * √v with hB
-        have h241 : 4 * v = B^2 := by
-          rw [hB]; ring_nf; rw [Real.sq_sqrt]; positivity
-        rw [h241]; refine (sq_le_sq₀ ?_ ?_).mpr h32
-        have h242 : 0 ≤ B := by positivity
-        exact h242
-        set A := x - μ with xA
-        have h242 : 0 ≤ B := by positivity
-        exact Preorder.le_trans 0 B A h242 h32
+      have h33 : 4 * ↑v ≤ (x - μ) ^ 2 := by
+        rw [show (4 * ↑v : ℝ) = (2 * √v)^2
+        by { ring_nf; rw [Real.sq_sqrt (by positivity)] }]
+        apply (sq_le_sq₀ _ _).mpr h32
+        · positivity
+        · exact le_trans (by positivity) h32
         /- Apply? helped complete this part.-/
       have h34 : 4 * v - (x - μ)^2 ≤ 0 := by exact sub_nonpos.mpr h33
       have h36 : √(4 * v - (x - μ)^2) = 0 := by exact Real.sqrt_eq_zero'.mpr h34
@@ -610,13 +573,11 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
     have h3 : (v : ℝ) ≠ 0 := (NNReal.coe_ne_zero).mpr hv
     have h4 : 0 ≤ v := by positivity
     have h10 : 0 ≤ (v : ℝ) := by positivity
-    have h11 : |x - μ| < 2 * √(v : ℝ) := by
-      set B := 2 * √(v : ℝ)
-      have h : μ - x < B := by exact sub_lt_comm.mp h2_left
-      /- Apply? worked for proving h. -/
-      have h' : x - μ < B := by exact sub_left_lt_of_lt_add h2_right
-      /- Apply? worked for proving h'. -/
-      exact abs_sub_lt_iff.mpr ⟨h', h⟩
+    have h11 : |x - μ| < 2 * √v := by
+      rw [abs_sub_lt_iff]
+      constructor
+      · linarith [h2_right]
+      · linarith [h2_left]
     have h12 : 0 < 4 * (v : ℝ) - (x - μ)^2 := by
       apply sub_pos.mpr
       have h13 : 0 ≤ 2 * √(v : ℝ) := by positivity
@@ -1805,7 +1766,3 @@ lemma catalan_recur (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catala
 end SemicircleDistribution
 
 end ProbabilityTheory
-
-/- Test commit -/
-
-/- Test commit -/
