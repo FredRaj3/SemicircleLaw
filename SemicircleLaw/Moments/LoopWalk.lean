@@ -4,7 +4,6 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.Ring.Defs
 import Mathlib.Data.Finset.Basic
-import Hammer
 
 /-!
 
@@ -238,7 +237,7 @@ explicit, and the last _ left implicit for the ending vertex of the walk.
 
 /-- The edge associated to the dart. -/
 def dartEdge (d : V × V) : Sym2 V :=
-  Sym2.mk d
+  Sym2.mk d.1 d.2
 
 /- The `edges` of a walk is the list of edges it visits in order.
 This is defined to be the list of edges underlying `SimpleGraph.LoopWalk.darts`.-/
@@ -320,7 +319,7 @@ lemma vertex_edge_inequality {u v : V} (p : G.LoopWalk u v) :
         -- The support set of the cons walk is the union of {v} and the support set of the rest of the walk.
         simp [SimpleGraph.LoopWalk.supportSet];
         ext; simp [SimpleGraph.LoopWalk.support]
-      have h_edge : (SimpleGraph.LoopWalk.cons ‹_› ‹_›).edgeSet = {(Sym2.mk (v, p))} ∪ (‹_› : G.LoopWalk p ih).edgeSet := by
+      have h_edge : (SimpleGraph.LoopWalk.cons ‹_› ‹_›).edgeSet = {s(v, p)} ∪ (‹_› : G.LoopWalk p ih).edgeSet := by
         simp [SimpleGraph.LoopWalk.edgeSet, SimpleGraph.LoopWalk.edges];
         rw [ SimpleGraph.LoopWalk.darts.eq_def ] ; aesop;
       -- By the induction hypothesis, we know that the cardinality of the support set of the rest of the walk is less than or equal to the cardinality of its edge set plus one.
@@ -331,24 +330,55 @@ lemma vertex_edge_inequality {u v : V} (p : G.LoopWalk u v) :
         have h_card_union : ({v} ∪ p_1.supportSet).card = p_1.supportSet.card := by
           rw [ Finset.union_eq_right.mpr ( Finset.singleton_subset_iff.mpr hv ) ];
         simp [h_card_union.symm]
-        exact h_card_union.symm ▸ le_trans h_ind ( add_le_add_right ( Finset.card_mono <| by aesop_cat ) _ );
-      · -- Since $s(v, p)$ is a new element not in $p_1.edgeSet$, adding it to the edge set increases the cardinality by 1.
+        have h_edge_card :
+            p_1.edgeSet.card ≤ (insert s(v, p) p_1.edgeSet).card :=
+          Finset.card_le_card (Finset.subset_insert _ _)
+        have h_edge_card_succ :
+            p_1.edgeSet.card + 1 ≤ (insert s(v, p) p_1.edgeSet).card + 1 := by
+          simpa [Nat.add_comm] using add_le_add_right h_edge_card 1
+        exact h_card_union.symm ▸ le_trans h_ind h_edge_card_succ;
+      · -- Since $s(v, p)$ is a new element not in `p_1.edgeSet`, adding it to the edge set increases the cardinality by 1.
         have h_card_union : ({s(v, p)} ∪ p_1.edgeSet).card = p_1.edgeSet.card + 1 := by
           rw [ Finset.union_comm, Finset.card_union_of_disjoint ] ; aesop;
           simp +decide [ Finset.disjoint_singleton_right ];
           intro H; have := Finset.mem_union_left ( { s(v, p) } ) H;
-          -- If $s(v, p)$ is in $p_1.edges$, then there must be a dart $(v, p)$ in $p_1.darts$, which would mean that $v$ is in the support of $p_1$.
+          -- If $s(v, p)$ is in p_1.edges, then there must be a dart `(v, p)` in `p_1.darts`, which would mean that `v` is in the support of `p_1`.
           have H' : s(v, p) ∈ p_1.edges := by
             simp_all +decide [SimpleGraph.LoopWalk.edgeSet]
           have h_dart : ∃ d ∈ p_1.darts, d = (v, p) := by
             unfold SimpleGraph.LoopWalk.edges at H'; aesop;
-            -- Since the edges are unordered, if (w, w_1) is in p_1.darts and its edge is s(v, p), then (w, w_1) must be either (v, p) or (p, v).
+            -- Since the edges are unordered, if `(w, w_1)` is in `p_1.darts` and its edge is `s(v, p)`, then `(w, w_1)` must be either `(v, p)` or `(p, v)`.
             have h_dart_cases : (w, w_1) = (v, p) ∨ (w, w_1) = (p, v) := by
               unfold SimpleGraph.LoopWalk.dartEdge at right; aesop;
             aesop;
-            -- Since the support of p_1 is the list of vertices it visits, and (w, w_1) is in the darts, w_1 must be in the support.
+            -- Since the support of `p_1` is the list of vertices it visits, and `(w, w_1)` is in the darts, `w_1` must be in the support.
             have h_support : w_1 ∈ p_1.support := by
-              sorry
+              have h_support_snd :
+                  ∀ {u v : V} (p : G.LoopWalk u v), ∀ d, d ∈ p.darts → d.2 ∈ p.support := by
+                have start_mem_support :
+                    ∀ {u v : V} (p : G.LoopWalk u v), u ∈ p.support := by
+                  intro u v p
+                  cases p <;> simp [SimpleGraph.LoopWalk.support]
+                intro u v p
+                induction p with
+                | nil =>
+                  intro d hd
+                  cases hd
+                | cons h q ih =>
+                  intro d hd
+                  simp [SimpleGraph.LoopWalk.darts, SimpleGraph.LoopWalk.support] at hd ⊢
+                  rcases hd with hd | hd
+                  · cases hd
+                    exact Or.inr (start_mem_support q)
+                  · exact Or.inr (ih d hd)
+                | loop q ih =>
+                  intro d hd
+                  simp [SimpleGraph.LoopWalk.darts, SimpleGraph.LoopWalk.support] at hd ⊢
+                  rcases hd with hd | hd
+                  · cases hd
+                    simp
+                  · exact Or.inr (ih d hd)
+              exact h_support_snd p_1 (w, w_1) left
             exact False.elim <| hv <| List.mem_toFinset.mpr h_support;
           obtain ⟨ d, hd₁, rfl ⟩ := h_dart; exact hv ( by
             have h_support : ∀ {u v : V} (p : G.LoopWalk u v), ∀ d ∈ p.darts, d.1 ∈ p.support := by
@@ -363,13 +393,20 @@ lemma vertex_edge_inequality {u v : V} (p : G.LoopWalk u v) :
                 · exact mem_of_mem_head? rfl;
                 · (expose_names; exact mem_of_mem_tail (p_ih d h_1));
             exact List.mem_toFinset.mpr ( h_support _ _ hd₁ ) ) ;
-        sorry
+        have h_support_card :
+            ({v} ∪ p_1.supportSet).card = p_1.supportSet.card + 1 := by
+          rw [Finset.union_comm, Finset.card_union_of_disjoint]
+          · simp
+          · simp [Finset.disjoint_singleton_right, hv]
+        have h_insert_card : (insert s(v, p) p_1.edgeSet).card = p_1.edgeSet.card + 1 := by
+          simpa [Finset.singleton_union] using h_card_union
+        exact h_insert_card.symm ▸ h_ind
     exact h_ind;
   · -- The support set of the loop walk is the same as the support set of the underlying walk.
     have h_support_eq : (LoopWalk.loop ‹_›).supportSet = ‹G.LoopWalk _ _›.supportSet := by
       -- The support set of the loop walk is the same as the support set of the underlying walk because adding a loop does not introduce any new vertices.
       simp [LoopWalk.supportSet];
-      -- By definition of support, the starting vertex u is included in the support of the walk p.
+      -- By definition of support, the starting vertex `u` is included in the support of the walk `p`.
       induction' ‹G.LoopWalk _ _› with u v p ih <;> simp [LoopWalk.support] at *;
     -- Since the support set of the loop walk is the same as the support set of the underlying walk, we can apply the induction hypothesis directly.
     rw [h_support_eq];
@@ -465,31 +502,31 @@ lemma permMapWalk_refl (p : (K n).LoopWalk u v) :
   permMapWalk n (Equiv.refl (Fin n)) p = p := by
   classical
   induction p with
-  | nil =>
-    simp
-  | @cons u v w h p ih =>
-    have h_adj_eq : (permMap n (Equiv.refl (Fin n))).map_adj h = h := by
-      apply Subsingleton.elim
-    simpa [h_adj_eq, ih]
-  | @loop u v p ih =>
-    simpa [ih]
+  | nil => rfl
+  | cons h p ih =>
+    have h_adj_eq :
+        (permMap n (Equiv.refl (Fin n))).map_adj h = h :=
+      Subsingleton.elim _ _
+    rw [permMapWalk_cons, h_adj_eq, ih]
+    rfl
+  | loop p ih =>
+    rw [permMapWalk_loop, ih]
+    rfl
 
-@[simp]
 lemma permMapWalk_comp (t s : Equiv.Perm (Fin n))
   (p : (K n).LoopWalk u v) :
   permMapWalk n t (permMapWalk n s p) = permMapWalk n (t * s) p := by
   classical
   induction p with
-  | nil =>
-    simp
-  | @cons u v w h p ih =>
+  | nil => rfl
+  | cons h p ih =>
     have h_adj_eq :
-        (permMap n t).map_adj ((permMap n s).map_adj h)
-        = (permMap n (t * s)).map_adj h := by
-      apply Subsingleton.elim
-    simp [ih]
-  | @loop u v p ih =>
-    simp [ih]
+        (permMap n t).map_adj ((permMap n s).map_adj h) = (permMap n (t * s)).map_adj h :=
+      Subsingleton.elim _ _
+    simpa [permMapWalk, SimpleGraph.LoopWalk.map, permMap', permMap, h_adj_eq, ih,
+      Equiv.Perm.mul_def]
+  | loop p ih =>
+    simpa [permMapWalk, SimpleGraph.LoopWalk.map, permMap', permMap, ih, Equiv.Perm.mul_def]
 
 @[simp]
 lemma perm_symm_mul_self (s : Equiv.Perm (Fin n)) :
@@ -704,8 +741,8 @@ def complicatedWalk : G_comp.LoopWalk 1 5 :=
 
 #eval selfDarts complicatedWalk
 #eval connectingDarts complicatedWalk
-#eval edgeCount complicatedWalk (Sym2.mk (1,4))
-#eval edgeCount complicatedWalk (Sym2.mk (1,1))
+#eval edgeCount complicatedWalk (Sym2.mk 1 4)
+#eval edgeCount complicatedWalk (Sym2.mk 1 1)
 #eval length complicatedWalk
 #eval loop_count complicatedWalk
 #eval support complicatedWalk
