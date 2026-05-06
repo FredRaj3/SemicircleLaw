@@ -665,7 +665,7 @@ lemma semicircleReal_map_add_const (y : ℝ) :
     (semicircleReal μ v).map (· + y) = semicircleReal (μ + y) v := by
   by_cases hv : v = 0
   · rw [hv, semicircleReal_zero_var, semicircleReal_zero_var]
-    rw [Measure.map_dirac (measurable_id'.add_const y)]
+    rw [Measure.map_dirac μ]
 
   · apply Measure.ext
     intro s hs
@@ -701,7 +701,6 @@ lemma semicircleReal_map_add_const (y : ℝ) :
              ENNReal.ofReal (semicirclePDFReal μ v (x - y)) =
              ENNReal.ofReal (semicirclePDFReal (μ + y) v x) := by
       rw [semicirclePDFReal_sub x y]
-
     exact semicirclePDFReal_sub_ENNReal x y
 
 /-- The map of a semicircle distribution by addition of a constant is semicircular. -/
@@ -714,11 +713,22 @@ lemma semicircleReal_map_const_add (y : ℝ) :
 lemma semicircleReal_map_const_mul (c : ℝ) :
     (semicircleReal μ v).map (c * ·) = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
   by_cases hc : c = 0
-  · simp [hc]
+  · subst hc
+    rw [show (fun x : ℝ ↦ 0 * x) = fun _ ↦ (0 : ℝ) by ext x; simp]
+    rw [Measure.map_const]
+    have hcoef : (⟨(0 : ℝ) ^ 2, sq_nonneg (0 : ℝ)⟩ : NNReal) = 0 := by
+      apply Subtype.ext
+      change (0 : ℝ) ^ 2 = (0 : ℝ)
+      norm_num
+    have hvar : ⟨(0 : ℝ) ^ 2, sq_nonneg (0 : ℝ)⟩ * v = 0 := by
+      rw [hcoef]
+      exact zero_mul v
+    have hmean : (0 : ℝ) * μ = 0 := by ring
+    rw [hmean, hvar, semicircleReal_zero_var]
+    simp [measure_univ]
   by_cases hv : v = 0
   · rw [hv, semicircleReal_zero_var]
-    simp [mul_zero]
-    rw [Measure.map_dirac (measurable_const_mul c)]
+    simp only [mul_zero, semicircleReal_zero_var, Measure.map_dirac μ]
   · apply Measure.ext
     intro s hs
     rw [semicircleReal_of_var_ne_zero μ hv]
@@ -793,7 +803,19 @@ lemma semicircleReal_map_mul_const (c : ℝ) :
   exact semicircleReal_map_const_mul c
 
 lemma semicircleReal_map_neg : (semicircleReal μ v).map (fun x ↦ -x) = semicircleReal (-μ) v := by
-  simpa using semicircleReal_map_const_mul (μ := μ) (v := v) (-1)
+  have hneg : (fun x : ℝ ↦ -x) = (-1 * ·) := by
+    ext x
+    ring
+  rw [hneg, semicircleReal_map_const_mul (-1)]
+  have hmean : (-1 : ℝ) * μ = -μ := by ring
+  have hcoef : (⟨(-1 : ℝ) ^ 2, sq_nonneg (-1 : ℝ)⟩ : NNReal) = 1 := by
+    apply Subtype.ext
+    change (-1 : ℝ) ^ 2 = (1 : ℝ)
+    norm_num
+  have hvar : ⟨(-1 : ℝ) ^ 2, sq_nonneg (-1 : ℝ)⟩ * v = v := by
+    rw [hcoef]
+    exact one_mul v
+  rw [hmean, hvar]
 
 lemma semicircleReal_map_sub_const (y : ℝ) :
     (semicircleReal μ v).map (· - y) = semicircleReal (μ - y) v := by
@@ -833,7 +855,7 @@ lemma semicircleReal_const_mul {X : Ω → ℝ} (hX : Measure.map X ℙ = semici
   rw [← AEMeasurable.map_map_of_aemeasurable (measurable_id'.const_mul c).aemeasurable hXm, hX]
   exact semicircleReal_map_const_mul c
 
-/-- If `X` is a real random variable with semicircualr law with mean `μ` and variance `v`,
+/-- If `X` is a real random variable with semicircular law with mean `μ` and variance `v`,
 then `X * c` has a semicircular law with mean `c * μ` and variance `c^2 * v`. -/
 lemma semicircleReal_mul_const {X : Ω → ℝ} (hX : Measure.map X ℙ = semicircleReal μ v) (c : ℝ) :
     Measure.map (fun ω ↦ X ω * c) ℙ = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
@@ -946,7 +968,7 @@ lemma integral_id_semicircleReal : ∫ x, x ∂semicircleReal μ v = μ := by
     exact False.elim <| a <| by rw [ ProbabilityTheory.semicirclePDFReal ] ; exact mul_eq_zero_of_right _ <| Real.sqrt_eq_zero_of_nonpos <| le_of_not_gt fun h' => hx <| ⟨ by nlinarith [ Real.sqrt_nonneg v, Real.sq_sqrt <| show ( v : ℝ ) ≥ 0 by positivity ], by nlinarith [ Real.sqrt_nonneg v, Real.sq_sqrt <| show ( v : ℝ ) ≥ 0 by positivity ] ⟩ ;
     -- Since ProbabilityTheory.semicirclePDFReal μ v x is integrable, multiplying it by a constant μ preserves integrability.
     have h_integrable : MeasureTheory.Integrable (fun x => ProbabilityTheory.semicirclePDFReal μ v x) := by
-      exact?;
+      exact integrable_semicirclePDFReal μ v;
     -- Since the semicircle PDF is integrable, multiplying it by a constant μ preserves integrability.
     apply MeasureTheory.Integrable.mul_const h_integrable μ
 
