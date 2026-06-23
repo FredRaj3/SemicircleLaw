@@ -59,9 +59,12 @@ jobs:
 
       - if: github.ref == 'refs/heads/main'
         name: Upstreaming dashboard
-        run: |
-          mkdir -p website/_includes
-          python3 scripts/upstreaming_dashboard.py
+        uses: leanprover-community/upstreaming-dashboard-action@main
+        with:
+          website-directory: ./website
+          project-name: SemicircleLaw
+          include-drafts: true
+          branch-name: main
 
       - if: github.ref == 'refs/heads/main'
         name: File dependencies
