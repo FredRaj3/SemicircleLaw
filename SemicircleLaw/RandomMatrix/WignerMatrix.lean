@@ -15,8 +15,6 @@ import Mathlib.Order.Filter.Defs
 import Mathlib.LinearAlgebra.Matrix.Symmetric
 import Mathlib.Data.Sym.Sym2
 
-import Hammer
-
 
 /-!
 # Wigner Matrices
@@ -103,7 +101,7 @@ lemma symmetric (Y : isWignerMatrix n μ ν X P) : ∀ (ω : Ω), (X ω).IsSymm 
   apply Y.symm
 
 @[simp]
-lemma indep_entries (Y : isWignerMatrix n μ ν X P) (i j k l : Fin n) (hdiff : Sym2.mk (i,j) ≠ Sym2.mk (k,l)) :
+lemma indep_entries (Y : isWignerMatrix n μ ν X P) (i j k l : Fin n) (hdiff : s(i, j) ≠ s(k, l)) :
     IndepFun (fun ω ↦ X ω i j) (fun ω ↦ X ω k l) P := by
   -- Define the projections from the Wigner matrix to its entries.
   let proj : {p : Fin n × Fin n // p.1 ≤ p.2} → Ω → ℝ := fun p ↦ (fun ω ↦ X ω p.val.1 p.val.2);
@@ -338,7 +336,7 @@ lemma wignerMatrixTracePowerMeasurable (n : ℕ) (k : ℕ) :
   apply measurable_trace
   apply wignerMatrixPowMeasurable
 
-  /-- The map that sends a Wigner Matrix to the trace of its kth power is measurable.-/
+/-- The map that sends a Wigner Matrix to the trace of its kth power is measurable.-/
 @[fun_prop]
 lemma wignerMatrixScaledTracePowerMeasurable (n : ℕ) (k : ℕ) :
     Measurable (wignerMatrixScaledTracePower n k) := by

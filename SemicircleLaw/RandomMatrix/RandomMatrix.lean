@@ -4,11 +4,9 @@ import Mathlib.Probability.Independence.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Combinatorics.Enumerative.Catalan
+import Mathlib.Combinatorics.Enumerative.Catalan.Basic
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.MeasureTheory.MeasurableSpace.Constructions
-
-import Hammer
 
 
 /-!
@@ -72,12 +70,8 @@ variable {Ω : Type*} [MeasurableSpace Ω] {rmtx : Ω → Matrix (Fin m) (Fin n)
 entry is measurable.-/
 @[fun_prop]
 lemma measurable_matrix_map (m n : ℕ ) (X : Ω → Matrix (Fin m) (Fin n) α)
-    (hmeas_entry : ∀ (i : Fin m) (j : Fin n), Measurable (fun ω ↦ X ω i j)) : Measurable X := by
-  rw[measurable_pi_iff]
-  intro i
-  rw[measurable_pi_iff]
-  intro j
-  apply hmeas_entry
+    (hmeas_entry : ∀ (i : Fin m) (j : Fin n), Measurable (fun ω ↦ X ω i j)) : Measurable X :=
+  measurable_pi_lambda X fun i ↦ measurable_pi_lambda _ fun j ↦ hmeas_entry i j
 
 /-- For any i ≤ m and j ≤ n, The (i, j)-th entry of an m × n random matrix is a random variable.-/
 lemma measurable_entry {m n : ℕ} (X : Ω → Matrix (Fin m) (Fin n) α) (hX : Measurable X) :

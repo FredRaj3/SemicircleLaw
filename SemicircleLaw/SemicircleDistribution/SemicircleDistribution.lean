@@ -5,7 +5,7 @@ import Mathlib.Probability.Independence.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Combinatorics.Enumerative.Catalan
+import Mathlib.Combinatorics.Enumerative.Catalan.Basic
 import Mathlib.Tactic
 
 /-Richard's imports-/
@@ -251,7 +251,7 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
           apply ae_of_all
           intro a ha
           dsimp [Icc] at ha
-          push_neg at ha
+          push Not at ha
           have c436A1 : 0 ≤ v := by positivity
           have c436A2 : 2 * √v ≤ |a - μ| := by
             by_cases c436A21 : a < μ - 2 * √v
@@ -293,9 +293,8 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
           have c436B1 : ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
           = ∫ (x : ℝ) in S, √(4 * ↑v - (x - μ) ^ 2) := by
             have hle : a ≤ b := by linarith [Real.sqrt_nonneg (↑v : ℝ)]
-            simpa [a, b, S, sub_eq_add_neg]
-            using (intervalIntegral.integral_of_le
-            (a := a) (b := b) (f := fun x ↦ √(4 * ↑v - (x - μ) ^ 2))) hle
+            exact intervalIntegral.integral_of_le
+              (a := a) (b := b) (f := fun x ↦ √(4 * ↑v - (x - μ) ^ 2)) hle
           rw [c436B1]
           apply setIntegral_eq_integral_of_ae_compl_eq_zero
           apply ae_of_all
@@ -312,7 +311,7 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
               exact abs_sub_comm μ z
             rw [← c436A22B]
             exact this
-            push_neg at c436A21
+            push Not at c436A21
             have c436A23 : μ + 2 * √v < z := hz c436A21
             have c436A24 : 2 * √v < z - μ := by exact lt_tsub_iff_left.mpr (hz c436A21)
             have c436A25 : z - μ ≤ |z - μ| := by exact le_abs_self (z - μ)
@@ -353,7 +352,7 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
           have c437A2 : X * X⁻¹ * (x - μ) ^ 2 = (x - μ) ^ 2 := by
             have c437A21 : ↑X * ↑X⁻¹ = 1 := by
               refine CommGroupWithZero.mul_inv_cancel X ?_
-              simp [X]; push_neg; exact hv
+              simp [X]; push Not; exact hv
             have c437A22 : X * X⁻¹ * (x - μ) ^ 2 = 1 * (x - μ) ^ 2 := by
               set Z := (x - μ) ^ 2; set Y := ↑X⁻¹
               have h₁ : (↑X : ℝ) * (↑Y : ℝ) = 1 := by
@@ -440,7 +439,7 @@ lemma semicirclePDFReal_add {μ : ℝ} {v : ℝ≥0} (x y : ℝ) :
 
 lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c⁻¹ * x)
-    = |c| * semicirclePDFReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) x := by
+    = |c| * semicirclePDFReal (c * μ) (NNReal.mk (c^2) (sq_nonneg _) * v) x := by
   rw [semicirclePDFReal, semicirclePDFReal]; simp
   have h1 : √(4 * v - (c⁻¹ * x - μ)^2) = √(4 * v - (c⁻¹)^2 * (x - c * μ)^2) := by
       have h11 : c⁻¹ * x - μ = c⁻¹ * (x - c * μ) := by
@@ -492,7 +491,8 @@ lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0
 
 lemma semicirclePDFReal_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c * x)
-      = |c⁻¹| * semicirclePDFReal (c⁻¹ * μ) (⟨(c^2)⁻¹, inv_nonneg.mpr (sq_nonneg _)⟩ * v) x := by
+      = |c⁻¹| * semicirclePDFReal (c⁻¹ * μ)
+        (NNReal.mk ((c^2)⁻¹) (inv_nonneg.mpr (sq_nonneg _)) * v) x := by
   conv_lhs => rw [← inv_inv c, semicirclePDFReal_inv_mul (inv_ne_zero hc)]
   simp
 
@@ -516,10 +516,10 @@ lemma semicirclePDF_nonneg (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) (x : ℝ) : 0
 
 
 lemma semicirclePDF_lt_top {μ : ℝ} {v : ℝ≥0} {x : ℝ} : semicirclePDF μ v x < ∞ := by
-simp [semicirclePDF]
+  simp [semicirclePDF]
 
 lemma semicirclePDF_ne_top {μ : ℝ} {v : ℝ≥0} {x : ℝ} : semicirclePDF μ v x ≠ ∞ := by
-simp [semicirclePDF]
+  simp [semicirclePDF]
 
 /-- The support of the semicircle pdf with mean μ and variance v is [μ - 2√ v, μ + 2√ v]
 Need to set the interval correctly in the statement of the lemma-/
@@ -528,10 +528,10 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
     Function.support (semicirclePDF μ v) = Ioo (μ - 2 * √v) (μ + 2 * √v) := by
   dsimp [Function.support,semicirclePDF]; ext x; simp; constructor
   · --first goal
-    dsimp [semicirclePDF]; intro h1; rw [semicirclePDFReal_def] at h1; dsimp at h1
+    intro h1; rw [semicirclePDFReal_def] at h1; dsimp at h1
     constructor
     · --first subgoal
-      by_contra h21; push_neg at h21
+      by_contra h21; push Not at h21
       have h22 : x - μ ≤ -(2 * √v) := by
         set B := 2 * √v
         exact tsub_le_iff_left.mpr h21
@@ -550,7 +550,7 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
       simp_all only [ne_eq, one_div, mul_inv_rev, mul_zero, lt_self_iff_false]
       /- Hammer worked for completing the contradiction. -/
     · --second subgoal
-      by_contra h31; push_neg at h31
+      by_contra h31; push Not at h31
       have h32 : 2 * √v ≤ x - μ := by
         set B := 2 * √v
         exact le_tsub_of_add_le_left h31
@@ -568,7 +568,7 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
       simp_all only [ne_eq, one_div, mul_inv_rev, mul_zero, lt_self_iff_false]
       /- Hammer worked for completing the contradiction. -/
   · --second goal
-    dsimp [semicirclePDF]; intro h2; rw [semicirclePDFReal_def]; dsimp
+    intro h2; rw [semicirclePDFReal_def]; dsimp
     rcases h2 with ⟨h2_left,h2_right⟩
     have h3 : (v : ℝ) ≠ 0 := (NNReal.coe_ne_zero).mpr hv
     have h4 : 0 ≤ v := by positivity
@@ -592,7 +592,7 @@ lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
       linarith
     exact mul_pos (one_div_pos.mpr (by positivity)) (Real.sqrt_pos.mpr h12)
 
-@[measurability, fun_prop]
+@[fun_prop]
 lemma measurable_semicirclePDF (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDF μ v) :=
   (measurable_semicirclePDFReal _ _).ennreal_ofReal
 
@@ -665,7 +665,7 @@ lemma semicircleReal_map_add_const (y : ℝ) :
     (semicircleReal μ v).map (· + y) = semicircleReal (μ + y) v := by
   by_cases hv : v = 0
   · rw [hv, semicircleReal_zero_var, semicircleReal_zero_var]
-    rw [Measure.map_dirac (measurable_id'.add_const y)]
+    rw [Measure.map_dirac' (measurable_id'.add_const y)]
 
   · apply Measure.ext
     intro s hs
@@ -712,22 +712,22 @@ lemma semicircleReal_map_const_add (y : ℝ) :
 
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_const_mul (c : ℝ) :
-    (semicircleReal μ v).map (c * ·) = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
+    (semicircleReal μ v).map (c * ·)
+    = semicircleReal (c * μ) (NNReal.mk (c^2) (sq_nonneg _) * v) := by
   by_cases hc : c = 0
   · simp [hc]
   by_cases hv : v = 0
   · rw [hv, semicircleReal_zero_var]
     simp [mul_zero]
-    rw [Measure.map_dirac (measurable_const_mul c)]
   · apply Measure.ext
     intro s hs
     rw [semicircleReal_of_var_ne_zero μ hv]
-    have h_nonzero : ⟨c^2, sq_nonneg _⟩ * v ≠ 0 := by
+    have h_nonzero : NNReal.mk (c^2) (sq_nonneg _) * v ≠ 0 := by
       rw [ne_eq, mul_eq_zero, not_or]
       constructor
       · intro h
         have h_sq : c^2 = 0 := by
-          have : (⟨c^2, sq_nonneg _⟩ : ℝ≥0).val = 0 := by rw [h]; rfl
+          have : (NNReal.mk (c^2) (sq_nonneg _)).val = 0 := by rw [h]; rfl
           exact this
         have h_c : c = 0 := by rwa [sq_eq_zero_iff] at h_sq
         exact hc h_c
@@ -788,7 +788,8 @@ lemma semicircleReal_map_const_mul (c : ℝ) :
 
 /-- The map of a semicircle distribution by multiplication by a constant is semicircular. -/
 lemma semicircleReal_map_mul_const (c : ℝ) :
-    (semicircleReal μ v).map (· * c) = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
+    (semicircleReal μ v).map (· * c)
+    = semicircleReal (c * μ) (NNReal.mk (c^2) (sq_nonneg _) * v) := by
   simp_rw [mul_comm _ c]
   exact semicircleReal_map_const_mul c
 
@@ -827,16 +828,19 @@ lemma semicircleReal_const_add {X : Ω → ℝ} (hX : Measure.map X ℙ = semici
 /-- If `X` is a real random variable with semicircular law with mean `μ` and variance `v`, then
 `c * X` has a semicircular law with mean `c * μ` and variance `c^2 * v`. -/
 lemma semicircleReal_const_mul {X : Ω → ℝ} (hX : Measure.map X ℙ = semicircleReal μ v) (c : ℝ) :
-    Measure.map (fun ω ↦ c * X ω) ℙ = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
+    Measure.map (fun ω ↦ c * X ω) ℙ
+    = semicircleReal (c * μ) (NNReal.mk (c^2) (sq_nonneg _) * v) := by
   have hXm : AEMeasurable X := aemeasurable_of_map_neZero (by rw [hX]; infer_instance)
-  change Measure.map ((fun ω ↦ c * ω) ∘ X) ℙ = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v)
+  change Measure.map ((fun ω ↦ c * ω) ∘ X) ℙ
+    = semicircleReal (c * μ) (NNReal.mk (c^2) (sq_nonneg _) * v)
   rw [← AEMeasurable.map_map_of_aemeasurable (measurable_id'.const_mul c).aemeasurable hXm, hX]
   exact semicircleReal_map_const_mul c
 
 /-- If `X` is a real random variable with semicircualr law with mean `μ` and variance `v`,
 then `X * c` has a semicircular law with mean `c * μ` and variance `c^2 * v`. -/
 lemma semicircleReal_mul_const {X : Ω → ℝ} (hX : Measure.map X ℙ = semicircleReal μ v) (c : ℝ) :
-    Measure.map (fun ω ↦ X ω * c) ℙ = semicircleReal (c * μ) (⟨c^2, sq_nonneg _⟩ * v) := by
+    Measure.map (fun ω ↦ X ω * c) ℙ
+    = semicircleReal (c * μ) (NNReal.mk (c^2) (sq_nonneg _) * v) := by
   simp_rw [mul_comm _ c]
   exact semicircleReal_const_mul hX c
 
@@ -1234,14 +1238,14 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
   h1 : v = 0
   rw [semicircleReal]; subst h1; simp; cases n <;> simp [catalan_zero]
   have h2 : v > 0 := by
-    push_neg at h1; simp_all only [ne_eq, gt_iff_lt]; apply lt_of_le_of_ne'
+    push Not at h1; simp_all only [ne_eq, gt_iff_lt]; apply lt_of_le_of_ne'
     · simp_all only [zero_le]
     · simp_all only [ne_eq, not_false_eq_true]
 
   /- Change of variable 1 (reformulating into an integral over the subset of the support & centering) -/
   have c0 : ∫ (x : ℝ), (x - μ) ^ (2 * n) ∂semicircleReal μ v
     = 1 / (2 * π * v) * ∫ (x : ℝ) in (-2 * √v)..(2 * √v), x ^ (2 * n) * √(4 * v - x ^ 2) := by
-    rw [semicircleReal]; push_neg at h1; simp [h1]
+    rw [semicircleReal]; push Not at h1; simp [h1]
     set g := fun (x : ℝ) ↦ (x - μ) ^ (2 * n) with hg
     set f := fun (x : ℝ) ↦ (semicirclePDF μ v x) with hf
     have c00 : AEMeasurable f := by
@@ -1270,7 +1274,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
       exact c001B
       dsimp [f, semicirclePDF]
       have c010 := lintegral_semicirclePDFReal_eq_one (μ := μ) (v := v) h1
-      push_neg
+      push Not
       rw [c010]; simp_all only [ne_eq, gt_iff_lt, ENNReal.one_ne_top, not_false_eq_true, g, f]
     have c02 := integral_withDensity_eq_integral_toReal_smul₀ (μ := ℙ) (f := f) c00 c01 g
     dsimp [f, g] at c02; dsimp [g]; rw [c02]
@@ -1673,7 +1677,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
   = ↑((2 * n).choose n / (n + 1)) := by
     have c120 : 1 - f₁ n / f₂ n = 1 / (2 * ((n : ℝ) + 1)) := by
       have : (f₂ n) ≠ 0 := by
-        dsimp [f₂]; push_neg; refine (mul_ne_zero_iff_right ?_).mpr ?_
+        dsimp [f₂]; push Not; refine (mul_ne_zero_iff_right ?_).mpr ?_
         exact Nat.cast_add_one_ne_zero (R := ℝ) n
         norm_num
       dsimp [f₁, f₂]; grind
@@ -1716,7 +1720,7 @@ lemma centralMoment_fun_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ
 lemma centralMoment_two_mul_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment id (2 * n) (semicircleReal μ v)
     = v ^ n * catalan n := by
-  unfold id; apply centralMoment_fun_two_mul_semicircleReal
+  exact centralMoment_fun_two_mul_semicircleReal μ v n
 
 lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment (fun x ↦ x) ((2 * n) + 1) (semicircleReal μ v)
@@ -1743,7 +1747,7 @@ lemma centralMoment_fun_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
 lemma centralMoment_odd_semicircleReal (μ : ℝ) (v : ℝ≥0) (n : ℕ) :
     centralMoment id ((2 * n) + 1) (semicircleReal μ v)
     = 0 := by
-  unfold id; apply centralMoment_fun_odd_semicircleReal
+  exact centralMoment_fun_odd_semicircleReal μ v n
 
 end Moments
 
@@ -1756,11 +1760,11 @@ lemma catalan_recur (n : ℕ): (n + 2) * catalan (n + 1) = (4 * n + 2) * (catala
   · rw [ show 2 * ( n + 1 ) = 2 * n + 2 by ring ];
     rw [ show 2 * n + 2 = 2 * n + 1 + 1 by ring, Nat.choose_succ_succ ];
     rw [ Nat.succ_eq_add_one, Nat.choose_symm_of_eq_add ] <;> simp +arith +decide;
-    exact Eq.symm ( Nat.div_eq_of_eq_mul_left ( Nat.succ_pos _ ) ( by nlinarith [ Nat.succ_mul_choose_eq ( 2 * n ) n, Nat.succ_mul_choose_eq ( 2 * n + 1 ) ( n + 1 ) ] ) );
-  · have h := Nat.succ_mul_choose_eq ( 2 * n ) n;
+    exact Eq.symm ( Nat.div_eq_of_eq_mul_left ( Nat.succ_pos _ ) ( by nlinarith [ Nat.add_one_mul_choose_eq ( 2 * n ) n, Nat.add_one_mul_choose_eq ( 2 * n + 1 ) ( n + 1 ) ] ) );
+  · have h := Nat.add_one_mul_choose_eq ( 2 * n ) n;
     rw [ Nat.choose_succ_succ ] at h;
     exact ⟨ Nat.choose ( 2 * n ) n - Nat.choose ( 2 * n ) ( n + 1 ), by rw [ Nat.mul_sub_left_distrib, eq_tsub_iff_add_eq_of_le ] <;> nlinarith ⟩;
-  · have h := Nat.succ_mul_choose_eq ( 2 * ( n + 1 ) ) ( n + 1 );
+  · have h := Nat.add_one_mul_choose_eq ( 2 * ( n + 1 ) ) ( n + 1 );
     exact Nat.Coprime.dvd_of_dvd_mul_left ( by norm_num [ ( by ring : 2 * ( n + 1 ) + 1 = n + 1 + 1 + ( n + 1 ) ) ] ) ( h.symm ▸ dvd_mul_left _ _ )
 
 end SemicircleDistribution

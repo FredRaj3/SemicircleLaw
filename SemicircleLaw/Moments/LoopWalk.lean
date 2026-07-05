@@ -4,7 +4,6 @@ import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.Ring.Defs
 import Mathlib.Data.Finset.Basic
-import Hammer
 
 /-!
 
@@ -154,7 +153,7 @@ theorem concat_eq_append {u v w : V} (p : G.LoopWalk u v) (h : G.Adj v w) :
 /-- The concatenation of the reverse of the first walk with the second walk. -/
 protected def reverseAux {u v w : V} : G.LoopWalk u v → G.LoopWalk u w → G.LoopWalk v w
   | nil, q => q
-  | cons h p, q => LoopWalk.reverseAux p (cons (G.symm h) q)
+  | cons h p, q => LoopWalk.reverseAux p (cons h.symm q)
   | loop p, q => LoopWalk.reverseAux p (loop q)
 
 /-- The walk in reverse. -/
@@ -238,7 +237,7 @@ explicit, and the last _ left implicit for the ending vertex of the walk.
 
 /-- The edge associated to the dart. -/
 def dartEdge (d : V × V) : Sym2 V :=
-  Sym2.mk d
+  Sym2.mk d.1 d.2
 
 /- The `edges` of a walk is the list of edges it visits in order.
 This is defined to be the list of edges underlying `SimpleGraph.LoopWalk.darts`.-/
@@ -280,7 +279,6 @@ lemma abs_w_i_eq_k {u v : V} (p : G.LoopWalk u v) : ∑(e : edgeSet p),
     have h_sum_edges : ∀ (l : List (Sym2 V)), ∑ e ∈ l.toFinset, List.count e l = l.length := by
       intros l
       apply List.sum_toFinset_count_eq_length;
-    convert h_sum_edges p.edges using 1;
     have h_length_eq : ∀ (p : G.LoopWalk u v), p.length = p.edges.length := by
       intros p
       induction' p with u v w h p ih
@@ -289,7 +287,10 @@ lemma abs_w_i_eq_k {u v : V} (p : G.LoopWalk u v) : ∑(e : edgeSet p),
         rw [dart_length_eq_walk_length ih]
       · expose_names
         rw [dart_length_eq_walk_length p_1]
-    apply h_length_eq;
+    calc ∑ e ∈ p.edgeSet, p.edgeCount e
+        = ∑ e ∈ p.edges.toFinset, List.count e p.edges := Finset.sum_congr rfl h_edge_count
+      _ = p.edges.length := h_sum_edges p.edges
+      _ = p.length := (h_length_eq p).symm
   rw [ ← h_sum_edges, Finset.sum_coe_sort ]
 
 /-- The loop_count of a walk is the number of loops along it. -/
@@ -320,7 +321,7 @@ lemma vertex_edge_inequality {u v : V} (p : G.LoopWalk u v) :
         -- The support set of the cons walk is the union of {v} and the support set of the rest of the walk.
         simp [SimpleGraph.LoopWalk.supportSet];
         ext; simp [SimpleGraph.LoopWalk.support]
-      have h_edge : (SimpleGraph.LoopWalk.cons ‹_› ‹_›).edgeSet = {(Sym2.mk (v, p))} ∪ (‹_› : G.LoopWalk p ih).edgeSet := by
+      have h_edge : (SimpleGraph.LoopWalk.cons ‹_› ‹_›).edgeSet = {s(v, p)} ∪ (‹_› : G.LoopWalk p ih).edgeSet := by
         simp [SimpleGraph.LoopWalk.edgeSet, SimpleGraph.LoopWalk.edges];
         rw [ SimpleGraph.LoopWalk.darts.eq_def ] ; aesop;
       -- By the induction hypothesis, we know that the cardinality of the support set of the rest of the walk is less than or equal to the cardinality of its edge set plus one.
@@ -331,7 +332,8 @@ lemma vertex_edge_inequality {u v : V} (p : G.LoopWalk u v) :
         have h_card_union : ({v} ∪ p_1.supportSet).card = p_1.supportSet.card := by
           rw [ Finset.union_eq_right.mpr ( Finset.singleton_subset_iff.mpr hv ) ];
         simp [h_card_union.symm]
-        exact h_card_union.symm ▸ le_trans h_ind ( add_le_add_right ( Finset.card_mono <| by aesop_cat ) _ );
+        exact h_card_union.symm ▸ le_trans h_ind
+          (Nat.add_le_add_right (Finset.card_mono (Finset.subset_insert _ _)) 1);
       · -- Since $s(v, p)$ is a new element not in $p_1.edgeSet$, adding it to the edge set increases the cardinality by 1.
         have h_card_union : ({s(v, p)} ∪ p_1.edgeSet).card = p_1.edgeSet.card + 1 := by
           rw [ Finset.union_comm, Finset.card_union_of_disjoint ] ; aesop;
@@ -468,9 +470,9 @@ lemma permMapWalk_refl (p : (K n).LoopWalk u v) :
   | nil =>
     simp
   | @cons u v w h p ih =>
-    have h_adj_eq : (permMap n (Equiv.refl (Fin n))).map_adj h = h := by
-      apply Subsingleton.elim
-    simpa [h_adj_eq, ih]
+    show cons _ (permMapWalk n (Equiv.refl (Fin n)) p) = cons h p
+    rw [ih]
+    exact rfl
   | @loop u v p ih =>
     simpa [ih]
 
@@ -483,11 +485,9 @@ lemma permMapWalk_comp (t s : Equiv.Perm (Fin n))
   | nil =>
     simp
   | @cons u v w h p ih =>
-    have h_adj_eq :
-        (permMap n t).map_adj ((permMap n s).map_adj h)
-        = (permMap n (t * s)).map_adj h := by
-      apply Subsingleton.elim
-    simp [ih]
+    show cons _ (permMapWalk n t (permMapWalk n s p)) = cons _ (permMapWalk n (t * s) p)
+    rw [ih]
+    exact rfl
   | @loop u v p ih =>
     simp [ih]
 
@@ -704,8 +704,8 @@ def complicatedWalk : G_comp.LoopWalk 1 5 :=
 
 #eval selfDarts complicatedWalk
 #eval connectingDarts complicatedWalk
-#eval edgeCount complicatedWalk (Sym2.mk (1,4))
-#eval edgeCount complicatedWalk (Sym2.mk (1,1))
+#eval edgeCount complicatedWalk s(1,4)
+#eval edgeCount complicatedWalk s(1,1)
 #eval length complicatedWalk
 #eval loop_count complicatedWalk
 #eval support complicatedWalk
@@ -725,7 +725,7 @@ def moreComplicatedWalk : G_comp.LoopWalk 1 5 :=
 
 #eval loop_count moreComplicatedWalk
 #eval darts moreComplicatedWalk
-#eval edges moreComplicatedWalk
+#eval! edges moreComplicatedWalk
 
 /- A closed complicated LoopWalk: 1 → 4 → 1 → 1 → 3 → 1 (loop at the repeated 1's)-/
 def closedComplicatedWalk : G_comp.LoopWalk 0 0 :=
@@ -742,15 +742,15 @@ def closedComplicatedWalk : G_comp.LoopWalk 0 0 :=
 #eval loop_count myWalk
 #eval support myWalk
 #eval darts myWalk
-#eval edges myWalk
+#eval! edges myWalk
 
 
 #eval support myWalkReverse
-#eval support (reverse myWalk)
+#eval! support (reverse myWalk)
 
 #eval support oneLoopWalk
 #eval darts oneLoopWalk
-#eval support (reverse complicatedWalk)
+#eval! support (reverse complicatedWalk)
 
 
 def subtract_one : (Fin 6) → (Fin 6) :=
