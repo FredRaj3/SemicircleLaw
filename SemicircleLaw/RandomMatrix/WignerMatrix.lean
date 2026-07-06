@@ -4,12 +4,11 @@ import Mathlib.Probability.Independence.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Probability.Distributions.Gaussian.Basic
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
-import Mathlib.Combinatorics.Enumerative.Catalan
+import Mathlib.Combinatorics.Enumerative.Catalan.Basic
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
 import Mathlib.Probability.HasLaw
 import SemicircleLaw.RandomMatrix.RandomMatrix
-import Mathlib.Combinatorics.Enumerative.Catalan
 import Mathlib.Topology.Filter
 import Mathlib.Order.Filter.Defs
 import Mathlib.LinearAlgebra.Matrix.Symmetric

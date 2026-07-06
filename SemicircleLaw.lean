@@ -1,4 +1,6 @@
 import SemicircleLaw.EmpiricalMeasure.Defs
+import SemicircleLaw.Mathlib.Analysis.Real.Pi.Wallis
+import SemicircleLaw.Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import SemicircleLaw.Mathlib.Probability.Condexp
 import SemicircleLaw.SemicircleDistribution.SemicircleDistribution
 import SemicircleLaw.Moments.LoopWalk
