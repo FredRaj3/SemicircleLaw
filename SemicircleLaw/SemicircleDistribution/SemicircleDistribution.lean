@@ -248,7 +248,6 @@ lemma semicirclePDFReal_inv_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0
   field_simp
   rw [sq_abs, mul_comm]
 
-
 lemma semicirclePDFReal_mul {μ : ℝ} {v : ℝ≥0} {c : ℝ} (hc : c ≠ 0) (x : ℝ) :
     semicirclePDFReal μ v (c * x)
       = |c⁻¹| * semicirclePDFReal (c⁻¹ * μ) (⟨(c^2)⁻¹, inv_nonneg.mpr (sq_nonneg _)⟩ * v) x := by
@@ -285,71 +284,27 @@ Need to set the interval correctly in the statement of the lemma-/
 @[simp]
 lemma support_semicirclePDF {μ : ℝ} {v : ℝ≥0} (hv : v ≠ 0) :
     Function.support (semicirclePDF μ v) = Ioo (μ - 2 * √v) (μ + 2 * √v) := by
-  dsimp [Function.support,semicirclePDF]; ext x; simp; constructor
-  · --first goal
-    dsimp [semicirclePDF]; intro h1; rw [semicirclePDFReal_def] at h1; dsimp at h1
-    constructor
-    · --first subgoal
-      by_contra h21; push_neg at h21
-      have h22 : x - μ ≤ -(2 * √v) := by
-        set B := 2 * √v
-        exact tsub_le_iff_left.mpr h21
-      have h23 : 2 * √v ≤ -(x - μ) := by
-        set B := 2 * √v
-        exact le_neg_of_le_neg h22
-      have h24 : 4 * ↑v ≤ (x - μ) ^ 2 := by
-        rw [show (4 * ↑v : ℝ) = (2 * √v)^2
-        by { ring_nf; rw [Real.sq_sqrt (by positivity)] }, sq_le_sq]
-        rw [abs_of_nonneg (by positivity)]
-        exact le_trans h23 (neg_le_abs _)
-      have h25 : 4 * v - (x - μ)^2 ≤ 0 := by exact sub_nonpos.mpr h24
-      have h26 : √(4 * v - (x - μ)^2) = 0 := by exact Real.sqrt_eq_zero'.mpr h25
-      have h27 : 1 / (2 * π * v) *  √(4 * v - (x - μ)^2) = 0 := by
-        exact mul_eq_zero_of_right (1 / (2 * π * ↑v)) h26
-      simp_all only [ne_eq, one_div, mul_inv_rev, mul_zero, lt_self_iff_false]
-      /- Hammer worked for completing the contradiction. -/
-    · --second subgoal
-      by_contra h31; push_neg at h31
-      have h32 : 2 * √v ≤ x - μ := by
-        set B := 2 * √v
-        exact le_tsub_of_add_le_left h31
-      have h33 : 4 * ↑v ≤ (x - μ) ^ 2 := by
-        rw [show (4 * ↑v : ℝ) = (2 * √v)^2
-        by { ring_nf; rw [Real.sq_sqrt (by positivity)] }]
-        apply (sq_le_sq₀ _ _).mpr h32
-        · positivity
-        · exact le_trans (by positivity) h32
-        /- Apply? helped complete this part.-/
-      have h34 : 4 * v - (x - μ)^2 ≤ 0 := by exact sub_nonpos.mpr h33
-      have h36 : √(4 * v - (x - μ)^2) = 0 := by exact Real.sqrt_eq_zero'.mpr h34
-      have h37 : 1 / (2 * π * v) *  √(4 * v - (x - μ)^2) = 0 := by
-        exact mul_eq_zero_of_right (1 / (2 * π * ↑v)) h36
-      simp_all only [ne_eq, one_div, mul_inv_rev, mul_zero, lt_self_iff_false]
-      /- Hammer worked for completing the contradiction. -/
-  · --second goal
-    dsimp [semicirclePDF]; intro h2; rw [semicirclePDFReal_def]; dsimp
-    rcases h2 with ⟨h2_left,h2_right⟩
-    have h3 : (v : ℝ) ≠ 0 := (NNReal.coe_ne_zero).mpr hv
-    have h4 : 0 ≤ v := by positivity
-    have h10 : 0 ≤ (v : ℝ) := by positivity
-    have h11 : |x - μ| < 2 * √v := by
-      rw [abs_sub_lt_iff]
-      constructor
-      · linarith [h2_right]
-      · linarith [h2_left]
-    have h12 : 0 < 4 * (v : ℝ) - (x - μ)^2 := by
-      apply sub_pos.mpr
-      have h13 : 0 ≤ 2 * √(v : ℝ) := by positivity
-      have h14 : |x - μ| < |2 * √(v : ℝ)| := by simpa [abs_of_nonneg h13]
-      have h15 : (x - μ)^2 < (2 * √(v : ℝ))^2 := sq_lt_sq.mpr h14
-      have h16 : 0 < (2 * √(v : ℝ))^2 - (x - μ)^2 := sub_pos.mpr h15
-      have h17 : 0 < 4 * (v : ℝ) - (x - μ)^2 := by
-        have h18 : (2 * √(v : ℝ))^2 = 4 * (v : ℝ) := by
-          have h19 : (2 * √(v : ℝ))^2 = 4 * (√(v : ℝ))^2 := by ring
-          rw [h19, Real.sq_sqrt h10]
-        simpa [h18] using h16
-      linarith
-    exact mul_pos (one_div_pos.mpr (by positivity)) (Real.sqrt_pos.mpr h12)
+  have hv0 : (0 : ℝ) < v := by
+    have : 0 < v := pos_iff_ne_zero.mpr hv
+    exact_mod_cast this
+  have hs : √(v : ℝ) ^ 2 = v := Real.sq_sqrt hv0.le
+  have hspos : 0 < √(v : ℝ) := Real.sqrt_pos.mpr hv0
+  have hconst : 0 < 1 / (2 * π * (v : ℝ)) := by positivity
+  ext x
+  simp only [Function.mem_support, ne_eq, semicirclePDF, semicirclePDFReal,
+    ENNReal.ofReal_eq_zero, not_le, mem_Ioo]
+  have hmul : 0 < 1 / (2 * π * (v : ℝ)) * √(4 * (v : ℝ) - (x - μ) ^ 2)
+      ↔ 0 < √(4 * (v : ℝ) - (x - μ) ^ 2) := by
+    refine ⟨fun h => ?_, fun h => mul_pos hconst h⟩
+    rcases (Real.sqrt_nonneg (4 * (v : ℝ) - (x - μ) ^ 2)).lt_or_eq with h' | h'
+    · exact h'
+    · rw [← h', mul_zero] at h; exact absurd h (lt_irrefl 0)
+  rw [hmul, Real.sqrt_pos]
+  constructor
+  · intro h
+    constructor <;> nlinarith
+  · rintro ⟨h1, h2⟩
+    nlinarith
 
 @[measurability, fun_prop]
 lemma measurable_semicirclePDF (μ : ℝ) (v : ℝ≥0) : Measurable (semicirclePDF μ v) :=
