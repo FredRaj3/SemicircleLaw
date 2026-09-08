@@ -109,23 +109,12 @@ Function.support (semicirclePDFReal μ v) ⊆ Icc (μ - 2 * √v) (μ + 2 * √v
   set I := Icc (μ - 2 * √v) (μ + 2 * √v) with hI
   intro x hx
   by_contra hxI
-  have h0 : f x = 0 := by
-    have h1 : 4 * v - (x - μ) ^ 2 ≤ 0 := by
-      dsimp [I, Icc] at hxI
-      by_contra h_pos
-      have h_abs_lt : |x - μ| < 2 * √v := by
-        apply abs_lt_of_sq_lt_sq
-        rw [mul_pow, Real.sq_sqrt (NNReal.coe_nonneg v)]
-        linarith [h_pos]
-        positivity
-      apply hxI
-      constructor
-      · linarith [neg_lt_of_abs_lt h_abs_lt]
-      · linarith [lt_of_abs_lt h_abs_lt]
-    have h2 : √(4 * v - (x - μ) ^ 2) = 0 := Real.sqrt_eq_zero_of_nonpos h1
-    simp [f,h2]
-  have h3 : x ∉ Function.support f := by simpa [Function.support] using h0
-  exact h3 hx
+  have h1 : f x = 0 := by
+    simp only [hI, mem_Icc, not_and_or, not_le] at hxI
+    simp [f, Real.sqrt_eq_zero_of_nonpos (show 4 * (v : ℝ) - (x - μ) ^ 2 ≤ 0 by
+      rcases hxI with h | h <;> nlinarith [Real.sq_sqrt v.coe_nonneg, Real.sqrt_nonneg (v : ℝ)])]
+  have h2 : x ∉ Function.support f := by simpa [Function.support] using h1
+  exact h2 hx
 
 /-- The semicircle pdf is integrable. -/
 @[fun_prop]
@@ -170,230 +159,41 @@ lemma integral_semicirclePDFReal_eq_one (μ : ℝ) {v : ℝ≥0} (hv : v ≠ 0) 
   have c3 : ∫ x in I, A * √(4 * v - (x - μ) ^ 2) = A * ∫ x in I, √(4 * v - (x - μ) ^ 2) := by
     exact integral_const_mul A fun a ↦ √(4 * v - (a - μ) ^ 2)
   have c4 : ∫ x in I, √(4 * v - (x - μ) ^ 2) = A⁻¹ := by
-    simp [A,I]
-    have c41 : ∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2) = Real.pi / 2 := integral_sqrt_one_sub_sq
-    have c42 : ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2)
-    = (2 * √v) * (∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2)) := by
-      calc
-        ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2)
-        =  ∫ (y : ℝ) in (-1)..1, (2 * √v) * √(1 - y ^ 2) := by
-          apply intervalIntegral.integral_congr
-          simp
-          intro x hx
-          dsimp
-          have c421 : √(4 * v * (1 - x ^ 2)) = √(4 * v) * √(1 - x ^ 2) := by
-            simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero,
-              Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv,
-              mem_Icc, Nat.ofNat_pos, mul_nonneg_iff_of_pos_left, NNReal.zero_le_coe,
-              Real.sqrt_mul, Nat.ofNat_nonneg, I, A]
-          have c422 : √(4 * v) = 2 * √v := by
-            have c4221 : 0 ≤ v := by positivity
-            calc
-              √(4 * v)
-              = √4 * √v := by exact Real.sqrt_mul' 4 c4221
-              _ = 2 * √v := by
-                have c42211 : √(4 : ℝ) = (2 : ℝ) := by
-                  have c422111 : (4 : ℝ) = (2 : ℝ) ^ (2 : ℝ) := by ring
-                  rw [c422111]
-                  simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero,
-                  Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv,
-                  Real.rpow_ofNat, mem_Icc, Nat.ofNat_nonneg, pow_succ_nonneg, Real.sqrt_mul,
-                  Real.sqrt_sq, zero_le, I, A]
-                rw [← c42211]
-          rw [← c422, ← c421]; grind
-        _ = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2) := by
-          set B := 2 * √v
-          simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero, NNReal.coe_eq_zero,
-          Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true, NNReal.coe_inv,
-          intervalIntegral.integral_const_mul, A, I, B]
-    have c43 : ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
-      = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by
-      set a := μ - 2 * √v
-      set b := μ + 2 * √v
-      set c := 2 * √v
-      set d := c⁻¹ * μ
-      have c431 : (1 : ℝ) = b / c - d := by
-        simp [b,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
-            NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
-            NNReal.coe_inv, NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀,
-            A, I, a, b, c]
-      have c432 : (-1 : ℝ) = a / c - d := by
-        simp [a,c,d]; ring_nf; simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
-            NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
-            NNReal.coe_inv, neg_sub,
-            NNReal.zero_le_coe, Real.sqrt_eq_zero, mul_inv_cancel₀, A, I, b, c, d, a]
-      rw [c432, c431]
-      set f := fun y ↦ √(4 * v - 4 * v * y ^ 2)
-      have c433 :=
-      intervalIntegral.inv_mul_integral_comp_div_sub (a := a) (b := b) (c := c) (d := d) (f := f)
-      dsimp [a,b,c,d,f] at c433
-      dsimp [a,b,c,d,f]
-      have c434 : ∫ (x : ℝ) in μ - 2 * √↑v..μ + 2 * √↑v,
-      √(4 * ↑v - 4 * ↑v * (x / (2 * √↑v) - (2 * √↑v)⁻¹ * μ) ^ 2)
-      = (2 * √↑v) * ∫ (x : ℝ) in (μ - 2 * √↑v) / (2 * √↑v) - (2 * √↑v)⁻¹ * μ
-      ..(μ + 2 * √↑v) / (2 * √↑v) - (2 * √↑v)⁻¹ * μ,
-      √(4 * ↑v - 4 * ↑v * x ^ 2) := by
-        grind
-      have c435 : μ - 2 * √v ≤ μ + 2 * √v := by
-        have c4351 : -2 * √v ≤ 2 * √v := by
-          simp_all only [ne_eq, mul_inv_rev, mul_eq_zero, inv_eq_zero,
-          NNReal.coe_eq_zero, Real.pi_ne_zero, OfNat.ofNat_ne_zero, or_self, not_false_eq_true,
-          NNReal.coe_inv, neg_sub, neg_mul, neg_le_self_iff, Nat.ofNat_pos,
-          mul_nonneg_iff_of_pos_left, Real.sqrt_nonneg, A, I, b, c, d, a, f]
-        set X := -2 * √v
-        set Y := 2 * √v
-        grind
-      have c436 : ∫ (x : ℝ) in Icc (μ - 2 * √↑v) (μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
-      = ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2) := by
-        have c436A :  ∫ (x : ℝ) in Icc (μ - 2 * √↑v) (μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
-        = ∫ (x : ℝ), √(4 * ↑v - (x - μ) ^ 2) := by
-          apply setIntegral_eq_integral_of_ae_compl_eq_zero
-          apply ae_of_all
-          intro a ha
-          dsimp [Icc] at ha
-          push_neg at ha
-          have c436A1 : 0 ≤ v := by positivity
-          have c436A2 : 2 * √v ≤ |a - μ| := by
-            by_cases c436A21 : a < μ - 2 * √v
-            have : 2 * √v ≤ μ - a := by linarith
-            have c436A22 : 0 ≤ μ - a := by linarith
-            have : 2 * √v ≤ |μ - a| := by simpa [abs_of_nonneg c436A22] using this
-            simpa [abs_sub_comm] using this
-            have c436A23 : μ - 2 * √v ≤ a := le_of_not_gt c436A21
-            have c436A24 : μ + 2 * √v < a := ha c436A23
-            have : 2 * √v ≤ a - μ := by linarith
-            have c436A24 : 0 ≤ a - μ := by linarith
-            simpa [abs_of_nonneg c436A24] using this
-          have c436A3 : (2 * √v) ^ 2 ≤ |a - μ| ^ 2 := by
-            have : |2 * √v| ≤ |a - μ| := by
-              have c436A31 : 0 ≤ 2 * √v := by
-                have := Real.sqrt_nonneg v; nlinarith
-              simpa [abs_of_nonneg c436A31] using c436A2
-            set X := 2 * √v
-            set Y := |a - μ|
-            apply sq_le_sq.mpr
-            have c436AY : Y = |Y| := by
-              simp [Y]
-            rw [c436AY] at this; exact this
-          have c436A32 : (√v) ^ 2 = v := by exact Real.sq_sqrt c436A1
-          have c436A33 : 4 * v ≤ (a - μ) ^ 2 := by
-            have c436A331 : (2 * √v) ^ 2 = 4 * v := by grind
-            have c436A332 : |a - μ| ^ 2 = (a - μ) ^ 2 := by
-              set X := a - μ
-              exact sq_abs X
-            rw [← c436A331, ← c436A332]
-            exact c436A3
-          have hnonpos : 4 * v - (a - μ) ^ 2 ≤ 0 := by linarith
-          simpa using Real.sqrt_eq_zero_of_nonpos hnonpos
-        have c436B : ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
-        = ∫ (x : ℝ), √(4 * ↑v - (x - μ) ^ 2) := by
-          set a := μ - 2 * √↑v
-          set b := μ + 2 * √↑v
-          set S := Set.Ioc a b
-          have c436B1 : ∫ (x : ℝ) in (μ - 2 * √↑v)..(μ + 2 * √↑v), √(4 * ↑v - (x - μ) ^ 2)
-          = ∫ (x : ℝ) in S, √(4 * ↑v - (x - μ) ^ 2) := by
-            have hle : a ≤ b := by linarith [Real.sqrt_nonneg (↑v : ℝ)]
-            simpa [a, b, S, sub_eq_add_neg]
-            using (intervalIntegral.integral_of_le
-            (a := a) (b := b) (f := fun x ↦ √(4 * ↑v - (x - μ) ^ 2))) hle
-          rw [c436B1]
-          apply setIntegral_eq_integral_of_ae_compl_eq_zero
-          apply ae_of_all
-          intro z hz
-          simp [S, a, b] at hz
-          have c436A1 : 0 ≤ v := by positivity
-          have c436A2 : 2 * √v ≤ |z - μ| := by
-            by_cases c436A21 : z ≤ μ - 2 * √v
-            have : 2 * √v ≤ μ - z := by linarith
-            have c436A22 : 0 ≤ μ - z := by linarith
-            have c436A22B : μ - z = |z - μ| := by
-              have c436A22B1 : |μ - z| = μ - z := by exact abs_of_nonneg c436A22
-              rw [← c436A22B1]
-              exact abs_sub_comm μ z
-            rw [← c436A22B]
-            exact this
-            push_neg at c436A21
-            have c436A23 : μ + 2 * √v < z := hz c436A21
-            have c436A24 : 2 * √v < z - μ := by exact lt_tsub_iff_left.mpr (hz c436A21)
-            have c436A25 : z - μ ≤ |z - μ| := by exact le_abs_self (z - μ)
-            have c436A26 : 2 * √v < |z - μ| := by apply lt_of_lt_of_le c436A24 c436A25
-            grind
-          have c436B2 : 4 * ↑v - (z - μ) ^ 2 ≤ 0 := by
-            have c436B21 : 4 * v ≤ (z - μ) ^ 2 := by
-              have c436B211 : 4 * v = (2 * √v) ^ 2 := by
-                have c436B2111 : (2 * √v) ^ 2 = 2 ^ 2 * √v ^ 2 := by
-                  set A := √v
-                  grind
-                rw [c436B2111]
-                have c436B2112 : √↑v ^ 2 = v := by exact Real.sq_sqrt c436A1
-                rw [c436B2112]
-                ring_nf
-              have c436B212 : |z - μ| ^ 2 = (z - μ) ^ 2 := by
-                set A := z - μ
-                exact sq_abs A
-              rw [← c436B212]; set A := 2 * √↑v; set B := |z - μ|; rw [c436B211]
-              have hA : A ≥ 0 := by positivity
-              have hB : 0 ≤ B := by grind
-              have habs : |A| ≤ |B| := by
-                simpa [abs_of_nonneg hA, abs_of_nonneg hB] using c436A2
-              simpa [pow_two] using (sq_le_sq.mpr habs)
-            grind
-          have c436B3 : 4 * ↑v - (z - μ) ^ 2 ≤ 0 := by grind
-          exact Real.sqrt_eq_zero_of_nonpos c436B3
-        rw [c436A, c436B]
-      rw [c436]
-      have c437 : (fun x ↦ √(4 * v - (x - μ) ^ 2))
-      = (fun x ↦ √(4 * v - 4 * ↑v * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2)) := by
-        funext x
-        have c437A : (x - μ) ^ 2 = ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2 := by
-          set X := 4 * v
-          have c437A1 : 4 * ↑v * ↑X⁻¹ * (x - μ) ^ 2 = X * X⁻¹ * (x - μ) ^ 2 := by
-            simp [X]
-          rw [c437A1]
-          have c437A2 : X * X⁻¹ * (x - μ) ^ 2 = (x - μ) ^ 2 := by
-            have c437A21 : ↑X * ↑X⁻¹ = 1 := by
-              refine CommGroupWithZero.mul_inv_cancel X ?_
-              simp [X]; push_neg; exact hv
-            have c437A22 : X * X⁻¹ * (x - μ) ^ 2 = 1 * (x - μ) ^ 2 := by
-              set Z := (x - μ) ^ 2; set Y := ↑X⁻¹
-              have h₁ : (↑X : ℝ) * (↑Y : ℝ) = 1 := by
-                simpa using congrArg (fun t : ℝ≥0 ↦ (t : ℝ)) c437A21
-              exact congrArg (fun t : ℝ ↦ t * Z) h₁
-            rw [c437A22]; grind
-          rw [c437A2]
-        have c437B : (4 * v)⁻¹ * (x - μ) ^ 2 = ((2 * √v)⁻¹ * (x - μ)) ^ 2 := by
-          set A := (2 * √v)⁻¹; set B := (x - μ)
-          have c437B1 : (A * B) ^ 2 = A ^ 2 * B ^ 2 := by grind
-          rw [c437B1]
-          have c437B2 : A ^ 2 = (4 * v)⁻¹ := by
-            simp [A]; set C := (√↑v)⁻¹
-            have c437B21 : (C * 2⁻¹) ^ 2 = C^2 * (2⁻¹) ^ 2 := by grind
-            rw [c437B21]; simp [C]; grind
-          rw [c437B2]
-        calc
-          √(4 * v - (x - μ) ^ 2)
-        _ = √(4 * v - ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2) := by grind
-        _ = √(4 * v - (4 * v) * ((4 * v)⁻¹ * (x - μ) ^ 2)) := by
-          have c5 : ((4 * v) * (4 * v)⁻¹) * (x - μ) ^ 2 = (4 * v) * ((4 * v)⁻¹ * (x - μ) ^ 2) := by
-            rw [mul_assoc]
-          rw [c5]
-        _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * (x - μ)) ^ 2) := by rw [c437B]
-        _ = √(4 * v - (4 * v) * ((2 * √v)⁻¹ * x - (2 * √v)⁻¹ * μ) ^ 2) := by grind
-        _ = √(4 * v - (4 * v) * (x / (2 * √v) - (2 * √v)⁻¹ * μ) ^ 2) := by grind
-      rw [c437]; exact c434
-    calc
-      ∫ (x : ℝ) in Icc (μ - 2 * √v) (μ + 2 * √v), √(4 * v - (x - μ) ^ 2)
-      = (2 * √v) * ∫ (y : ℝ) in (-1)..1, √(4 * v - 4 * v * y ^ 2) := by exact c43
-      _ = (2 * √v) * ((2 * √v) * (∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2))) := by rw [← c42]
-      _ = (4 * v) * (∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2)) := by
-        set C := ∫ (y : ℝ) in (-1)..1, √(1 - y ^ 2)
-        calc
-          2 * √v * ((2 * √v) * C)
-          = (2 * √v * (2 * √v)) * C := by ring_nf
-          _ = (4 * v) * C := by
-            simp [mul_assoc, mul_comm, mul_left_comm]; constructor; ring
-      _ = (4 * v) * (Real.pi / 2) := by rw [← c41]
-      _ = 2 * π * v := by ring
+    have hv0 : (0 : ℝ) < v := NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr hv)
+    have hsq : √(v : ℝ) ^ 2 = (v : ℝ) := Real.sq_sqrt v.coe_nonneg
+    have hs : 0 < √(v : ℝ) := Real.sqrt_pos.mpr hv0
+    -- pointwise form of the integrand after scaling
+    have hpt : ∀ t : ℝ, √(4 * (v : ℝ) - (2 * √v * t) ^ 2) = 2 * √v * √(1 - t ^ 2) := by
+      intro t
+      have h4 : 4 * (v : ℝ) - (2 * √v * t) ^ 2 = (2 * √v) ^ 2 * (1 - t ^ 2) := by
+        nlinarith [hsq]
+      rw [h4, Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]
+    -- set integral over Icc  →  interval integral
+    have h1 : ∫ x in I, √(4 * (v : ℝ) - (x - μ) ^ 2)
+        = ∫ x in (μ - 2 * √v)..(μ + 2 * √v), √(4 * (v : ℝ) - (x - μ) ^ 2) := by
+      rw [intervalIntegral.integral_of_le (by nlinarith), hI,
+        MeasureTheory.integral_Icc_eq_integral_Ioc]
+    -- translate by μ
+    have h2 : ∫ x in (μ - 2 * √v)..(μ + 2 * √v), √(4 * (v : ℝ) - (x - μ) ^ 2)
+        = ∫ y in (-(2 * √v))..(2 * √v), √(4 * (v : ℝ) - y ^ 2) := by
+      have h := intervalIntegral.integral_comp_sub_right
+        (a := μ - 2 * √(v : ℝ)) (b := μ + 2 * √(v : ℝ))
+        (fun y : ℝ => √(4 * (v : ℝ) - y ^ 2)) μ
+      rw [show μ - 2 * √(v : ℝ) - μ = -(2 * √(v : ℝ)) by ring,
+          show μ + 2 * √(v : ℝ) - μ = 2 * √(v : ℝ) by ring] at h
+      exact h
+    -- rescale by 2√v
+    have h3 : ∫ y in (-(2 * √v))..(2 * √v), √(4 * (v : ℝ) - y ^ 2)
+        = (2 * √v) * ∫ t in (-1 : ℝ)..1, √(4 * (v : ℝ) - (2 * √v * t) ^ 2) := by
+      have h := intervalIntegral.smul_integral_comp_mul_left
+        (a := (-1 : ℝ)) (b := (1 : ℝ))
+        (fun y : ℝ => √(4 * (v : ℝ) - y ^ 2)) (2 * √(v : ℝ))
+      simp only [smul_eq_mul, mul_neg, mul_one] at h
+      exact h.symm
+    rw [h1, h2, h3]
+    simp only [hpt, intervalIntegral.integral_const_mul, integral_sqrt_one_sub_sq, A]
+    field_simp
+    nlinarith [hsq]
   calc
     ∫ (x : ℝ), (v)⁻¹ * (π⁻¹ * 2⁻¹) * √(4 * v - (x - μ) ^ 2)
     = ∫ (x : ℝ), (2 * π * v)⁻¹ * √(4 * v - (x - μ) ^ 2) := by apply c1
