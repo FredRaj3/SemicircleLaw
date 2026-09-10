@@ -12,11 +12,31 @@ import json
 import pathlib
 
 def main():
-    pr_file = subprocess.run(["curl", "https://raw.githubusercontent.com/leanprover-community/queueboard/refs/heads/master/processed_data/open_pr_data.json"],
-        capture_output = True,
-        text = True)
-    pr_json = json.loads(pr_file.stdout)["pr_statusses"]
-    pr_dict = {pr["number"] : pr for pr in pr_json}
+    QUEUEBOARD_ENDPOINT = (
+        "https://queueboard-backend-7f9cf5a8499a.herokuapp.com/"
+        "api/v1/queueboard/snapshot"
+        "?repo=leanprover-community/mathlib4&rule_set_id=1"
+    )
+
+    pr_file = subprocess.run(
+        ["curl", "-fsSL", QUEUEBOARD_ENDPOINT],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    payload = json.loads(pr_file.stdout)
+
+    pr_dict = {
+        int(number): {
+            "number": int(number),
+            "title": pr["title"],
+            "files": pr["modified_files"],
+            "is_draft": pr["is_draft"],
+        }
+        for number, pr in payload["prs"].items()
+        if pr["state"] == "open"
+    }
 
     file_touched_pr = {}
     for pr in pr_dict:
