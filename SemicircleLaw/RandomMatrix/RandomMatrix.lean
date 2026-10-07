@@ -89,7 +89,14 @@ lemma measurable_entry {m n : ℕ} (X : Ω → Matrix (Fin m) (Fin n) α) (hX : 
 @[fun_prop]
 lemma matrix_measurable_pow {n : ℕ} (X : Ω → Matrix (Fin n) (Fin n) α) (hX : Measurable X)
     (k : ℕ) : Measurable (fun ω ↦ (X ω) ^ k) := by
-  sorry
+  induction k with
+  | zero => simpa using measurable_const
+  | succ k ih =>
+    apply measurable_matrix_map
+    intro i j
+    simp only [pow_succ, Matrix.mul_apply]
+    exact Finset.measurable_sum _ fun l _ ↦
+      (measurable_entry _ ih i l).mul (measurable_entry _ hX l j)
 
 /-- The trace of a random square matrix is a random variable. -/
 @[fun_prop]
