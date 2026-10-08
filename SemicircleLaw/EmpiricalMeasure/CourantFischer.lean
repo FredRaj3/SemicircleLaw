@@ -1,4 +1,5 @@
-import Mathlib
+import Mathlib.Analysis.InnerProductSpace.Positive
+import Mathlib.Analysis.InnerProductSpace.Spectrum
 
 /-!
 # The Courant–Fischer min-max theorem
