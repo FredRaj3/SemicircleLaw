@@ -5,6 +5,7 @@ import Mathlib.MeasureTheory.Integral.BoundedContinuousFunction
 
 /-!
 # Wigner's semicircle law
+
 Let `𝐗ₙ = (1/√n) 𝐘ₙ` be a sequence of Wigner matrices built from the family
 `{Y_{ij}}_{1 ≤ i ≤ j}` (see `RandomMatrixTheory.IsWignerFamily`), with
 `𝔼(Y_{ij}) = 0`, `𝔼(Y_{12}²) = t` and all moments of `Y₁₁` and `Y₁₂` finite. Then the
@@ -17,16 +18,18 @@ probability*: for every `f ∈ C_b(ℝ)` and `ε > 0`,
 open MeasureTheory Filter Topology RandomMatrixTheory ProbabilityTheory
 open scoped NNReal
 open scoped BoundedContinuousFunction
+
 namespace RandomMatrix
 
 variable {Ω : Type*} [MeasurableSpace Ω]
 
-/-- **Wigner's semicircle law** Let `𝐗ₙ = (1/√n) 𝐘ₙ` be a sequence of
+/-- **Wigner's semicircle law** (Kemp, Theorem 2.3). Let `𝐗ₙ = (1/√n) 𝐘ₙ` be a sequence of
 Wigner matrices on the probability space `(Ω, 𝓕, ℙ)`, built from a Wigner family
 `{Y_{ij}}_{1 ≤ i ≤ j}` whose entries satisfy
 * `𝔼(Y_{ij}) = 0` for all `1 ≤ i ≤ j`,
 * `𝔼(Y_{12}²) = t`,
 * `𝔼(|Y₁₁|ᵏ) < ∞` and `𝔼(|Y₁₂|ᵏ) < ∞` for all `k ≥ 1`.
+
 Then `μ_{𝐗ₙ} → σ_t` weakly in probability: for every `f ∈ C_b(ℝ)` and `ε > 0`,
 `lim_{n → ∞} ℙ(|∫ f dμ_{𝐗ₙ}(·, w) - ∫ f dσ_t| > ε) = 0`. -/
 theorem wigner_semicircle_law {P : Measure Ω} [IsProbabilityMeasure P]
@@ -41,3 +44,5 @@ theorem wigner_semicircle_law {P : Measure Ω} [IsProbabilityMeasure P]
         |∫ x, f x ∂(RandomSymmMatrix.ofWigner ⟨Y, hY, hXY⟩ n).esd w -
           ∫ x, f x ∂semicircleReal 0 t|}) atTop (𝓝 0) := by
   sorry
+
+end RandomMatrix
