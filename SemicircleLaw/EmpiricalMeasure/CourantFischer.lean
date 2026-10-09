@@ -26,6 +26,8 @@ noncomputable def rayleighQuotient (A : Matrix (Fin n) (Fin n) ℝ)
     (x : EuclideanSpace ℝ (Fin n)) : ℝ :=
   inner ℝ x (op A x) / ‖x‖ ^ 2
 
+/-- The linear operator `x ↦ A x` on `ℝⁿ` associated to a real symmetric matrix `A`
+    is symmetric with respect to the standard inner product on `ℝⁿ`. --/
 lemma isSymmetric_op {A : Matrix (Fin n) (Fin n) ℝ} (hA : A.IsSymm) : (op A).IsSymmetric := by
   apply Matrix.isHermitian_iff_isSymmetric.1
   unfold Matrix.IsHermitian
@@ -44,6 +46,8 @@ noncomputable def eigenbasis {A : Matrix (Fin n) (Fin n) ℝ} (hA : A.IsSymm) :
 
 variable {A : Matrix (Fin n) (Fin n) ℝ} (hA : A.IsSymm)
 
+/-- The eigenvalues of a real symmetric matrix `A`,
+    when indexed in descending order, form a nonincreasing sequence. --/
 theorem eigenvaluesDesc_antitone : Antitone (eigenvaluesDesc hA) :=
   (isSymmetric_op hA).eigenvalues_antitone _
 
