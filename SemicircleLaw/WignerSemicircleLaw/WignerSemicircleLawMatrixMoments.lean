@@ -1,4 +1,4 @@
-import SemicircleLaw.Experiments.WignerMatrix
+import SemicircleLaw.RandomMatrixAlternative.WignerMatrix
 import SemicircleLaw.SemicircleDistribution.SemicircleDistribution
 import Mathlib.MeasureTheory.Function.ConvergenceInMeasure
 import Mathlib.LinearAlgebra.Matrix.Trace
