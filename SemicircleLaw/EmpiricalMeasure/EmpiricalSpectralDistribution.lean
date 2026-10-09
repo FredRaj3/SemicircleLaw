@@ -1,6 +1,6 @@
 import SemicircleLaw.EmpiricalMeasure.EigenvalueContinuity
 import SemicircleLaw.EmpiricalMeasure.RandomProbabilityMeasure
-import SemicircleLaw.Experiments.WignerMatrix
+import SemicircleLaw.RandomMatrixAlternative.WignerMatrix
 import Mathlib.MeasureTheory.Measure.Dirac
 import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Metrizable

@@ -1,4 +1,4 @@
-import SemicircleLaw.Experiments.RandomMatrix
+import SemicircleLaw.RandomMatrixAlternative.RandomMatrix
 import Mathlib.Probability.IdentDistrib
 import Mathlib.Probability.Independence.Basic
 import Mathlib.Data.Real.Sqrt
