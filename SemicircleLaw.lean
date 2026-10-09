@@ -1,4 +1,4 @@
-import SemicircleLaw.EmpiricalMeasure.Defs
+import SemicircleLaw.EmpiricalMeasure.EmpiricalSpectralDistribution
 import SemicircleLaw.Mathlib.Probability.Condexp
 import SemicircleLaw.Hammer.HammerTest
 import SemicircleLaw.SemicircleDistribution.SemicircleDistribution
