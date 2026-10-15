@@ -1,0 +1,125 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# formalization.yaml v0.4. Replace every TEMPLATE value before submitting.
+# Replace a placeholder list with [] only when its adjacent comment permits it;
+# lists described as required must remain nonempty.
+version: "v0.4"
+
+project:
+  name: "TEMPLATE: name of the formalization"
+  description: >-
+    TEMPLATE: concise public account of the mathematical content and principal
+    results of the formalization
+  # Required nonempty list of name strings or mappings with a nonempty name.
+  authors:
+    - "TEMPLATE: formalizer name"
+  # Required root licence. Keep this in sync with the Apache-2.0 LICENSE file.
+  license: "Apache-2.0"
+  # Required nonempty list of name strings or mappings with a nonempty name.
+  # For a thin wrapper, name people responsible for this submitted wrapper;
+  # submission authorization separately covers the underlying formalization.
+  responsible_maintainers:
+    - "TEMPLATE: person responsible for this formalization"
+
+# Omit repository for an ordinary project: Palomar treats this submitted
+# repository as the substantive proof development. If this repository is only
+# a thin Comparator wrapper, uncomment and pin the actual formalization in this
+# exact shape:
+# repository:
+#   substantive_formalization:
+#     id: "TEMPLATE: owner/repository or https://github.com/owner/repository"
+#     revision: "TEMPLATE: full 40-character lowercase commit SHA"
+
+classification:
+  # Use 1–2 official arXiv identifiers such as math.LO and 1–8 five-character
+  # MSC 2020 identifiers such as 03B35.
+  arxiv: ["TEMPLATE: official arXiv identifier such as math.LO"]
+  msc2020: ["TEMPLATE: five-character MSC 2020 identifier such as 03B35"]
+
+sources:
+  # Sources must be nonempty. Every source needs a title and relationship; the
+  # relationship must be exactly formalizes, adapts, independently-proves,
+  # background, or other.
+  # Choose one result origin:
+  # - For a theorem first presented by this formalization, set one source to
+  #   type: original-proof and relationship: other. All additional source
+  #   relationships must be background or other.
+  # - Otherwise, omit type: original-proof and give at least one source a
+  #   formalizes, adapts, or independently-proves relationship. A new proof of
+  #   a known published result is source-based and uses independently-proves.
+  # Type, authors, contributors, id, location, note, license, and
+  # author_endorsement are optional; remove them when genuinely inapplicable.
+  # Authors are bibliographic authors. Contributors record other source roles,
+  # with one name and free-form role such as editor or problem-proposer.
+  # Type is a concise free-text
+  # description such as article, paper, book, formalization, web post, folklore,
+  # conversation, or other. The exact value original-proof is reserved for the
+  # result-origin declaration described above.
+  # Original-result example:
+  # - title: "TEMPLATE: describe the result first presented here"
+  #   type: original-proof
+  #   relationship: other
+  - title: "TEMPLATE: title of the mathematical source"
+    authors:
+      - "TEMPLATE: source author"
+    contributors:
+      - name: "TEMPLATE: source contributor"
+        role: "TEMPLATE: contributor role, for example editor or problem-proposer"
+    id: "TEMPLATE: stable identifier or versioned URL"
+    type: "TEMPLATE: concise source kind, for example article, book, or formalization"
+    location: "TEMPLATE: stable URL or bibliographic location, if available"
+    relationship: "TEMPLATE: formalizes, adapts, independently-proves, background, or other"
+    note: "TEMPLATE: explain relationship or author_endorsement: other; otherwise remove"
+    license: "TEMPLATE: source license or unknown"
+    author_endorsement: "TEMPLATE: participated, endorsed, no-response, not-contacted, declined, n/a, or other"
+
+related_formalizations:
+  # Remove this field or use [] when none are known.
+  - id: "TEMPLATE: stable URL or identifier for earlier formalization"
+    relationship: "TEMPLATE: builds-on, adapts, independent, supersedes, or other"
+    note: "TEMPLATE: explain the relationship"
+
+status:
+  scope: >-
+    TEMPLATE: state exactly what is and is not formalized, including any weaker
+    theorem, changed hypotheses, or omitted material.
+  # Count the proof development, excluding Challenge.lean's deliberate sorry.
+  # Replace each count with an unquoted nonnegative integer, for example 0.
+  sorry_count: "TEMPLATE: unquoted nonnegative integer"
+  sorry_in_definitions: "TEMPLATE: unquoted nonnegative integer"
+  axioms: ["TEMPLATE: declaration names, or replace this list with []"]
+  # status.main_results is optional. Add it only when a short curated
+  # project-level list is useful; it need not mirror Comparator declarations.
+
+automation:
+  methods:
+    - method: "TEMPLATE: manual, copilot, agent, autonomous, or other"
+      models: ["TEMPLATE: model names, or replace this list with []"]
+      framework: "TEMPLATE: framework name, or n/a"
+      tool_setup: "TEMPLATE: exact detail, such as AI-assisted, editors, tactics, agents, or other tools used"
+      cost:
+        wall_time: "TEMPLATE: approximate elapsed effort"
+        spend_usd: "TEMPLATE: amount, subscription-based, or not tracked"
+        hardware: "TEMPLATE: local machine, API-only, or other"
+      prompting_notes: "TEMPLATE: representative prompting notes, or n/a"
+  spend_usd: "TEMPLATE: total amount, subscription-based, or not tracked"
+  notes: "TEMPLATE: describe the overall human and automation workflow"
+
+fidelity:
+  divergences: "TEMPLATE: all known divergences from the cited source, or none known"
+
+review:
+  status: "TEMPLATE: honest review status, for example self-assessed"
+  reviewers:
+    - "TEMPLATE: reviewer name, or none"
+  notes: "TEMPLATE: describe statement audits and mathematical review performed"
+
+alignment:
+  namespace: "TEMPLATE: project namespace"
+  statements:
+    - source: "TEMPLATE: source theorem or section"
+      lean: "TEMPLATE: fully qualified Lean declaration"
+      module: "TEMPLATE: Lean module containing the declaration"
+      status: "TEMPLATE: proved, partial, adapted, or other honest description"
+      note: "TEMPLATE: explain the correspondence and any qualifications"
+
+acknowledgements: "TEMPLATE: libraries, tools, and people to credit"
