@@ -15,8 +15,6 @@ import Mathlib.Order.Filter.Defs
 import Mathlib.LinearAlgebra.Matrix.Symmetric
 import Mathlib.Data.Sym.Sym2
 
-import Hammer
-
 
 /-!
 # Wigner Matrices
@@ -77,7 +75,6 @@ lemma off_diagonal_law (Y : isWignerMatrix n μ ν X P) (i j : Fin n) (hij : i �
   by_cases h : j < i;
   · -- Since $j < i$, we can apply the off_diag_dist condition directly.
     apply Y.off_diag_dist i j h
-    all_goals unreachable!;
   · -- Since $i < j$, we can apply the off_diag_dist hypothesis with $i$ and $j$ swapped.
     have h_swap : HasLaw (fun ω ↦ X ω j i) μ P := by
       cases lt_or_gt_of_ne hij <;> aesop
@@ -103,7 +100,7 @@ lemma symmetric (Y : isWignerMatrix n μ ν X P) : ∀ (ω : Ω), (X ω).IsSymm 
   apply Y.symm
 
 @[simp]
-lemma indep_entries (Y : isWignerMatrix n μ ν X P) (i j k l : Fin n) (hdiff : Sym2.mk (i,j) ≠ Sym2.mk (k,l)) :
+lemma indep_entries (Y : isWignerMatrix n μ ν X P) (i j k l : Fin n) (hdiff : Sym2.mk i j ≠ Sym2.mk k l) :
     IndepFun (fun ω ↦ X ω i j) (fun ω ↦ X ω k l) P := by
   -- Define the projections from the Wigner matrix to its entries.
   let proj : {p : Fin n × Fin n // p.1 ≤ p.2} → Ω → ℝ := fun p ↦ (fun ω ↦ X ω p.val.1 p.val.2);
@@ -211,7 +208,8 @@ lemma wignerMatrixEntryFunctionSymmetric (ω : WignerSpace n) {i : Fin n} {j : F
   wignerMatrixEntryFunction ω i j = wignerMatrixEntryFunction ω j i := by
   rw[wignerMatrixEntryFunction, wignerMatrixEntryFunction]
 
-  sorry
+  simp_all
+  grind
 
 def wignerMatrixMap' (ω : WignerSpace n) : Matrix (Fin n) (Fin n) ℝ :=
   Matrix.of (wignerMatrixEntryFunction ω)
