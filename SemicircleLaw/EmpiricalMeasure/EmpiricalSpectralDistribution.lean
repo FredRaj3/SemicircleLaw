@@ -1,6 +1,7 @@
 import SemicircleLaw.EmpiricalMeasure.EigenvalueContinuity
 import SemicircleLaw.EmpiricalMeasure.RandomProbabilityMeasure
 import SemicircleLaw.RandomMatrixAlternative.WignerMatrix
+import Mathlib.LinearAlgebra.Charpoly.ToMatrix
 import Mathlib.MeasureTheory.Measure.Dirac
 import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Metrizable
@@ -63,26 +64,31 @@ noncomputable def eigenvalue (X : RandomSymmMatrix Ω n) (w : Ω) (j : Fin n) : 
 theorem eigenvalue_antitone (X : RandomSymmMatrix Ω n) (w : Ω) : Antitone (X.eigenvalue w) :=
   eigenvaluesDesc_antitone (X.isSymm w)
 
-/-- The sorted eigenvalues do not depend on the chosen dimension witness. -/
-private lemma eigenvalues_cast {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    [FiniteDimensional ℝ E] {T : E →ₗ[ℝ] E} (hT : T.IsSymmetric) {m m' : ℕ} (h : m = m')
-    (hm : Module.finrank ℝ E = m) (hm' : Module.finrank ℝ E = m') (i : Fin m) :
-    hT.eigenvalues hm' (Fin.cast h i) = hT.eigenvalues hm i := by
-  subst h; rfl
-
-/-- `eigenvaluesDesc` agrees with Mathlib's sorted eigenvalues `eigenvalues₀`. -/
-lemma eigenvalue_eq_eigenvalues₀ (X : RandomSymmMatrix Ω n) (w : Ω) (j : Fin n) :
-    X.eigenvalue w j = (X.isHermitian w).eigenvalues₀ (Fin.cast (Fintype.card_fin n).symm j) :=
-  (eigenvalues_cast _ _ _ _ j).symm
-
 /-- The `λⱼ(X w)` are exactly the `n` (real) eigenvalues of `X w`, counted with multiplicity:
 the characteristic polynomial of `X w` has roots `λ₁(X w), …, λₙ(X w)`. -/
 theorem charpoly_roots (X : RandomSymmMatrix Ω n) (w : Ω) :
     (X w).charpoly.roots = Multiset.map (fun j => X.eigenvalue w j) Finset.univ.val := by
-  simp_rw [eigenvalue_eq_eigenvalues₀]
-  rw [(X.isHermitian w).roots_charpoly_eq_eigenvalues₀, Fin.univ_val_map, Fin.univ_val_map]
-  congr 1
-  exact (List.ofFn_congr (Fintype.card_fin n) _).trans rfl
+  have hA := X.isSymm w
+  -- the charpoly of the matrix is the charpoly of the operator `x ↦ (X w) x` on `ℝⁿ`
+  have h1 : (X w).charpoly = (op (X w)).charpoly := by
+    rw [← LinearMap.charpoly_toMatrix (op (X w)) (EuclideanSpace.basisFun (Fin n) ℝ).toBasis]
+    congr 1
+    ext i j
+    simp [LinearMap.toMatrix_apply]
+  -- in the orthonormal eigenbasis that operator is diagonal
+  have h2 : (op (X w)).charpoly = (Matrix.diagonal (eigenvaluesDesc hA)).charpoly := by
+    rw [← LinearMap.charpoly_toMatrix (op (X w)) (eigenbasis hA).toBasis]
+    congr 1
+    ext i j
+    by_cases h : i = j
+    · subst h; simp [LinearMap.toMatrix_apply, op_eigenbasis]
+    · simp [LinearMap.toMatrix_apply, op_eigenbasis, h]
+  have h3 : (Finset.univ.val.map fun i => Polynomial.X - Polynomial.C (eigenvaluesDesc hA i)) =
+      ((Finset.univ.val.map (eigenvaluesDesc hA)).map fun a => Polynomial.X - Polynomial.C a) := by
+    rw [Multiset.map_map]; rfl
+  rw [h1, h2, Matrix.charpoly_diagonal, Finset.prod_eq_multiset_prod, h3,
+    Polynomial.roots_multiset_prod_X_sub_C]
+  rfl
 
 /-- The **empirical spectral distribution** of `X`:
 `μ_X(·, w) := (1/n) ∑_{j=1}^n δ_{λⱼ(X w)}`, a (random) measure on `(ℝ, 𝓑(ℝ))`. -/
