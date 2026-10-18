@@ -13,7 +13,7 @@ import pathlib
 
 def main():
     QUEUEBOARD_ENDPOINT = (
-        "https://queueboard-backend-7f9cf5a8499a.herokuapp.com/"
+        "https://queueboard.mathlib.org/"
         "api/v1/queueboard/snapshot"
         "?repo=leanprover-community/mathlib4&rule_set_id=1"
     )
